@@ -7,13 +7,7 @@ function Server() {
     `${process.env.REACT_APP_URL}/${localStorage.getItem("user")._id}/servers`
   );
 
-  return (
-    <ul>
-      {servers.map((server) => (
-        <li>{server.name}</li>
-      ))}
-    </ul>
-  );
+  return <ul>{servers && servers.map((server) => <li>{server.name}</li>)}</ul>;
 }
 
 export default Server;

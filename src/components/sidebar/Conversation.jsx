@@ -4,14 +4,15 @@ import useFetch from "../../hooks/useFetch";
 
 function Conversation() {
   const { data: conversations, error } = useFetch(
-    `${process.env.REACT_APP_URL}/${localStorage.getItem("user")._id}/conversations`
+    `${process.env.REACT_APP_URL}/${
+      localStorage.getItem("user")._id
+    }/conversations`
   );
 
   return (
     <ul>
-      {conversations.map((conversation) => (
-        <li>{conversation._id}</li>
-      ))}
+      {conversations &&
+        conversations.map((conversation) => <li>{conversation._id}</li>)}
     </ul>
   );
 }

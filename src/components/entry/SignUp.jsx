@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 function SignUp() {
   const initial = {
@@ -10,6 +11,7 @@ function SignUp() {
 
   const [values, setValues] = useState(initial);
   const [errors, setErrors] = useState({ ...initial, response: "" });
+  const history = useHistory();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -60,21 +62,23 @@ function SignUp() {
     - If SignUp failed, return { errors: [] }
     */
 
-    const response = await fetch(
-      `${process.env.REACT_APP_URL}/auth/signup`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          username: values.username,
-          email: values.email,
-          password: values.password,
-        }),
-      }
-    );
+    const response = await fetch(`${process.env.REACT_APP_URL}/auth/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: values.username,
+        email: values.email,
+        password: values.password,
+      }),
+    });
+
+    const json = await response.json();
 
     // If there are form errors, display them.
-    if (response.errors) {
-      response.errors.map((error) =>
+    if (json.errors) {
+      json.errors.map((error) =>
         setErrors((prev) => {
           return {
             ...prev,
@@ -85,9 +89,10 @@ function SignUp() {
     }
 
     // If the user was created and logged-in properly, save the jwt and user information.
-    if (response.jwt) {
-      localStorage.setItem("jwt", response.jwt);
-      localStorage.setItem("user", JSON.stringify(response.user));
+    if (json.token) {
+      localStorage.setItem("jwt", json.jwt);
+      localStorage.setItem("user", JSON.stringify(json.user));
+      history.push("/");
     }
   };
 

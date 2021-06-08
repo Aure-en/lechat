@@ -4,7 +4,7 @@ import PrivateRoute from "./routes/types/PrivateRoute";
 import EntryRoute from "./routes/types/EntryRoute";
 import Login from "./routes/entry/Login";
 import SignUp from "./routes/entry/SignUp";
-import Dashboard from "./routes/Dashboard";
+import Dashboard from "./routes/dashboard/Dashboard";
 
 function App() {
   return (

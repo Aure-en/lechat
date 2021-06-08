@@ -82,7 +82,7 @@ function Login() {
   return (
     <form onSubmit={handleSubmit}>
       <label htmlFor="email">
-        Email
+        Email / Username
         <input
           type="text"
           id="email"
