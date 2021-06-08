@@ -14,7 +14,7 @@ function Server() {
       {isOpen && (
         <>
           {ReactDOM.createPortal(
-            <div>test</div>,
+            <Form />,
             document.body.querySelector("#modal-root")
           )}
         </>
