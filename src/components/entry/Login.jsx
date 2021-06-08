@@ -1,13 +1,15 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 function Login() {
   const initial = {
-    email: "",
+    identifier: "",
     password: "",
   };
 
   const [values, setValues] = useState(initial);
   const [errors, setErrors] = useState({ ...initial, response: "" });
+  const history = useHistory();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,18 +22,20 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors(initial);
+
     // Client-side validation
     // Check that all fields are filled.
-    Object.keys(values).map((value) => {
-      if (!values[value]) {
-        setErrors((prev) => {
-          return {
-            ...prev,
-            [value]: `${value} must be specified.`,
-          };
-        });
-      }
-    });
+    if (!values.identifier) {
+      setErrors((prev) => {
+        return { ...prev, identifier: "Email / Username must be specified" };
+      });
+    }
+
+    if (!values.password) {
+      setErrors((prev) => {
+        return { ...prev, identifier: "Password must be specified" };
+      });
+    }
 
     // If there are errors, display them without submitting the form.
     let hasErrors = false;
@@ -49,20 +53,22 @@ function Login() {
     - If login failed, return { errors: [] }
     */
 
-    const response = await fetch(
-      `${process.env.REACT_APP_URL}/auth/login`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          email: values.email,
-          password: values.password,
-        }),
-      }
-    );
+    const response = await fetch(`${process.env.REACT_APP_URL}/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        identifier: values.identifier,
+        password: values.password,
+      }),
+    });
+
+    const json = await response.json();
 
     // If there are form errors, display them.
-    if (response.errors) {
-      response.errors.map((error) =>
+    if (json.errors) {
+      json.errors.map((error) =>
         setErrors((prev) => {
           return {
             ...prev,
@@ -73,25 +79,26 @@ function Login() {
     }
 
     // If the user was logged-in properly, save the jwt and user information.
-    if (response.jwt) {
-      localStorage.setItem("jwt", response.jwt);
-      localStorage.setItem("user", JSON.stringify(response.user));
+    if (json.token) {
+      localStorage.setItem("jwt", json.token);
+      localStorage.setItem("user", JSON.stringify(json.user));
+      history.push("/");
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <label htmlFor="email">
+      <label htmlFor="identifier">
         Email / Username
         <input
           type="text"
-          id="email"
-          name="email"
-          value={values.email}
+          id="identifier"
+          name="identifier"
+          value={values.identifier}
           onChange={handleInputChange}
         />
       </label>
-      {errors.email && <div>{errors.email}</div>}
+      {errors.identifier && <div>{errors.identifier}</div>}
 
       <label htmlFor="password">
         Password

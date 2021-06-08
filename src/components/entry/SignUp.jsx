@@ -90,7 +90,7 @@ function SignUp() {
 
     // If the user was created and logged-in properly, save the jwt and user information.
     if (json.token) {
-      localStorage.setItem("jwt", json.jwt);
+      localStorage.setItem("jwt", json.token);
       localStorage.setItem("user", JSON.stringify(json.user));
       history.push("/");
     }
