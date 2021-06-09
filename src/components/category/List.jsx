@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import useFetch from "../../hooks/useFetch";
 import Channels from "../channel/List";
-import ChannelForm from "../channel/Form";
+import ChannelModal from "../modals/Channel";
 
 function List({ serverId }) {
   const { data: categories } = useFetch(
@@ -16,7 +16,7 @@ function List({ serverId }) {
           <li key={category._id}>
             {category.name}
             <Channels categoryId={category._id} />
-            <ChannelForm categoryId={category._id} />
+            <ChannelModal serverId={serverId} categoryId={category._id} />
           </li>
         ))}
     </ul>

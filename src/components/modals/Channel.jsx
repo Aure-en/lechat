@@ -1,9 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
 import useModal from "../../hooks/useModal";
 import Form from "../channel/Form";
 
-function Channel() {
+function Channel({ serverId, categoryId }) {
   const { isOpen, setIsOpen } = useModal();
   return (
     <>
@@ -14,7 +15,7 @@ function Channel() {
       {isOpen && (
         <>
           {ReactDOM.createPortal(
-            <Form />,
+            <Form serverId={serverId} categoryId={categoryId} />,
             document.body.querySelector("#modal-root")
           )}
         </>
@@ -24,3 +25,8 @@ function Channel() {
 }
 
 export default Channel;
+
+Channel.propTypes = {
+  serverId: PropTypes.string.isRequired,
+  categoryId: PropTypes.string.isRequired,
+};

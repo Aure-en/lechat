@@ -6,8 +6,8 @@ function Form({ serverId }) {
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
-    setError("");
     e.preventDefault();
+    setError("");
 
     // Validation
     if (!name) {
