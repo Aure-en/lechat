@@ -14,7 +14,14 @@ function App() {
         <EntryRoute exact path="/login" component={Login} />
         <EntryRoute exact path="/signup" component={SignUp} />
         <PrivateRoute exact path="/" component={Dashboard} />
-        <PrivateRoute exact path="/servers/:serverId" component={Server} />
+        <PrivateRoute
+          exact
+          path={[
+            "/servers/:serverId",
+            "/servers/:serverId/channels/:channelId",
+          ]}
+          component={Server}
+        />
       </Switch>
     </Router>
   );

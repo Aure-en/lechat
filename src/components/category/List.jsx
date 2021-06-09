@@ -15,7 +15,7 @@ function List({ serverId }) {
         categories.map((category) => (
           <li key={category._id}>
             {category.name}
-            <Channels categoryId={category._id} />
+            <Channels serverId={serverId} categoryId={category._id} />
             <ChannelModal serverId={serverId} categoryId={category._id} />
           </li>
         ))}
