@@ -3,9 +3,10 @@ import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 
 function Form({ message }) {
-  const [text, setText] = useState(message.text || "");
+  const [text, setText] = useState("");
   const location = useLocation();
 
+  // If we want to edit a message, load its text.
   useEffect(() => {
     setText(message.text);
   }, [message]);

@@ -7,6 +7,7 @@ import SignUp from "./routes/entry/SignUp";
 import Dashboard from "./routes/dashboard/Dashboard";
 import Server from "./routes/server/Server";
 import Settings from "./routes/server/Settings";
+import UserSettings from "./routes/Settings";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           path="/servers/:serverId/settings"
           component={Settings}
         />
+        <PrivateRoute exact path="/settings" component={UserSettings} />
       </Switch>
     </Router>
   );
