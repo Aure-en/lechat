@@ -1,18 +1,26 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Categories from "../components/category/List";
-import CategoryModal from "../components/modals/Category";
-import Channel from "./Channel";
+import Categories from "../../components/category/List";
+import CategoryModal from "../../components/modals/Category";
+import ServerModal from "../../components/modals/Server";
+import Channel from "../Channel";
+import useFetch from "../../hooks/useFetch";
 
 function Server({ match }) {
+  const { data: server } = useFetch(
+    `${process.env.REACT_APP_URL}/servers/${match.params.serverId}`
+  );
+
   return (
     <>
       {/* Left sidebar */}
       <Categories serverId={match.params.serverId} />
       <CategoryModal serverId={match.params.serverId} />
+      {server && <ServerModal server={server} />}
 
       {/* Main */}
       <div>
+        {server && server.name}
         {match.params.channelId && (
           <Channel channelId={match.params.channelId} />
         )}

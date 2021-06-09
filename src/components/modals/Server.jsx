@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
 import useModal from "../../hooks/useModal";
-import Form from "../server/Form";
+import Create from "../server/Form";
 
 function Server() {
   const { isOpen, setIsOpen } = useModal();
@@ -14,7 +15,7 @@ function Server() {
       {isOpen && (
         <>
           {ReactDOM.createPortal(
-            <Form />,
+            <Create />,
             document.body.querySelector("#modal-root")
           )}
         </>
@@ -24,3 +25,10 @@ function Server() {
 }
 
 export default Server;
+
+Server.propTypes = {
+  server: PropTypes.shape({
+    name: PropTypes.string,
+    _id: PropTypes.string,
+  }).isRequired,
+};

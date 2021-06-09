@@ -4,7 +4,6 @@ import { useLocation } from "react-router-dom";
 function Form() {
   const [message, setMessage] = useState("");
   const location = useLocation();
-  console.log(location.pathname);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

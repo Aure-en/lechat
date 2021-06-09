@@ -5,7 +5,8 @@ import EntryRoute from "./routes/types/EntryRoute";
 import Login from "./routes/entry/Login";
 import SignUp from "./routes/entry/SignUp";
 import Dashboard from "./routes/dashboard/Dashboard";
-import Server from "./routes/Server";
+import Server from "./routes/server/Server";
+import Settings from "./routes/server/Settings";
 
 function App() {
   return (
@@ -21,6 +22,11 @@ function App() {
             "/servers/:serverId/channels/:channelId",
           ]}
           component={Server}
+        />
+        <PrivateRoute
+          exact
+          path="/servers/:serverId/settings"
+          component={Settings}
         />
       </Switch>
     </Router>
