@@ -53,12 +53,12 @@ function Email() {
   return (
     <form onSubmit={handleSubmit}>
       <label htmlFor="email">
-        Email
         <input
           type="email"
           id="email"
           name="email"
           value={values.email}
+          placeholder="New email address"
           onChange={(e) =>
             setValues((prev) => {
               return { ...prev, email: e.target.value };
@@ -69,12 +69,12 @@ function Email() {
       {errors.email && <small>{errors.email}</small>}
 
       <label htmlFor="password">
-        Password
         <input
           type="password"
           id="password"
           name="password"
           value={values.password}
+          placeholder="Current password"
           onChange={(e) =>
             setValues((prev) => {
               return { ...prev, password: e.target.value };
