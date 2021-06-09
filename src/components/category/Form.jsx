@@ -16,7 +16,6 @@ function Form({ serverId, category }) {
     }
 
     // Save the category (create or update it)
-
     const url = category
       ? `${process.env.REACT_APP_URL}/categories/${category._id}`
       : `${process.env.REACT_APP_URL}/servers/${serverId}/categories`;
