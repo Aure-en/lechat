@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Email from "../components/settings/Email";
 import Password from "../components/settings/Password";
+import Username from "../components/settings/Username";
 
 function Settings() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
@@ -16,6 +17,12 @@ function Settings() {
           <div>
             Password
             <Password />
+          </div>
+
+          <div>
+            {user.username}
+            Username
+            <Username />
           </div>
         </>
       )}
