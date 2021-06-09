@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import useFetch from "../../hooks/useFetch";
 import Channels from "../channel/List";
 import ChannelModal from "../modals/Channel";
+import CategoryModal from "../modals/Category";
 
 function List({ serverId }) {
   const { data: categories } = useFetch(
@@ -17,6 +18,7 @@ function List({ serverId }) {
             {category.name}
             <Channels serverId={serverId} categoryId={category._id} />
             <ChannelModal serverId={serverId} categoryId={category._id} />
+            <CategoryModal serverId={serverId} category={category} />
           </li>
         ))}
     </ul>

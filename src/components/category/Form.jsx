@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-function Form({ serverId }) {
-  const [name, setName] = useState("");
+function Form({ serverId, category }) {
+  const [name, setName] = useState((category && category.name) || "");
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
@@ -15,18 +15,22 @@ function Form({ serverId }) {
       return;
     }
 
-    // Save the category
-    const res = await fetch(
-      `${process.env.REACT_APP_URL}/servers/${serverId}/categories`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name }),
-      }
-    );
+    // Save the category (create or update it)
+
+    const url = category
+      ? `${process.env.REACT_APP_URL}/categories/${category._id}`
+      : `${process.env.REACT_APP_URL}/servers/${serverId}/categories`;
+
+    const method = category ? "PUT" : "POST";
+
+    const res = await fetch(url, {
+      method,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name }),
+    });
     const json = await res.json();
     console.log(json);
 
@@ -48,7 +52,7 @@ function Form({ serverId }) {
       </label>
       {error && <small>{error}</small>}
 
-      <button type="submit">Create Category</button>
+      <button type="submit">{category ? "Update" : "Create"} Category</button>
     </form>
   );
 }
@@ -57,4 +61,12 @@ export default Form;
 
 Form.propTypes = {
   serverId: PropTypes.string.isRequired,
+  category: PropTypes.shape({
+    name: PropTypes.string,
+    _id: PropTypes.string,
+  }),
+};
+
+Form.defaultProps = {
+  category: undefined,
 };

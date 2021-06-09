@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import Categories from "../../components/category/List";
 import CategoryModal from "../../components/modals/Category";
-import ServerModal from "../../components/modals/Server";
 import Channel from "../Channel";
 import useFetch from "../../hooks/useFetch";
 
@@ -16,7 +15,6 @@ function Server({ match }) {
       {/* Left sidebar */}
       <Categories serverId={match.params.serverId} />
       <CategoryModal serverId={match.params.serverId} />
-      {server && <ServerModal server={server} />}
 
       {/* Main */}
       <div>
