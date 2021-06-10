@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Categories from "../../components/category/List";
 import CategoryModal from "../../components/modals/Category";
-import Channel from "../Channel";
+import Channel from "./Channel";
 import useFetch from "../../hooks/useFetch";
 
 function Server({ match }) {

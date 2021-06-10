@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function All() {
   const [friends, setFriends] = useState([]);
@@ -21,7 +22,6 @@ function All() {
       const json = await res.json();
       if (json.error) return setError(json.error);
       setFriends(json);
-      console.log(json);
     })();
   }, []);
 
@@ -39,10 +39,15 @@ function All() {
     <ul>
       {friends.map((friend) => (
         <li key={friend._id}>
-          {friend.recipient._id === JSON.parse(localStorage.getItem("user"))._id ? (
-            <>{friend.sender.username}</>
+          {friend.recipient._id ===
+          JSON.parse(localStorage.getItem("user"))._id ? (
+            <Link to={`/conversations/${friend.sender._id}`}>
+              {friend.sender.username}
+            </Link>
           ) : (
-            <>{friend.recipient.username}</>
+            <Link to={`/conversations/${friend.sender._id}`}>
+              {friend.recipient.username}
+            </Link>
           )}
           <button type="button" onClick={() => remove(friend._id)}>
             Remove Friend

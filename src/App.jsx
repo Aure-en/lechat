@@ -9,6 +9,7 @@ import Server from "./routes/server/Server";
 import Settings from "./routes/server/Settings";
 import UserSettings from "./routes/Settings";
 import Friends from "./routes/Friends";
+import Conversation from "./routes/Conversation";
 
 function App() {
   return (
@@ -32,6 +33,11 @@ function App() {
         />
         <PrivateRoute exact path="/settings" component={UserSettings} />
         <PrivateRoute exact path="/friends" component={Friends} />
+        <PrivateRoute
+          exact
+          path="/conversations/:userId"
+          component={Conversation}
+        />
       </Switch>
     </Router>
   );
