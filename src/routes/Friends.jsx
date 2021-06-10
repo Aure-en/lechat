@@ -1,16 +1,19 @@
-import React from 'react'
+import React from "react";
 import Add from "../components/friends/Add";
-import List from "../components/friends/List";
+import All from "../components/friends/All";
+import Pending from "../components/friends/Pending";
 
 function Friends() {
   return (
     <div>
       Add a friend:
       <Add />
-      Friends:
-      <List />
+      All friends:
+      <All />
+      Pending requests:
+      <Pending />
     </div>
-  )
+  );
 }
 
-export default Friends
+export default Friends;
