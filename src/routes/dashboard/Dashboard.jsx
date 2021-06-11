@@ -1,6 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import Server from "../../components/modals/Server";
+import Sidebar from "../../components/sidebar/Sidebar";
 
 function Dashboard() {
   const history = useHistory();
@@ -18,6 +19,7 @@ function Dashboard() {
       >
         Log Out
       </button>
+      <Sidebar />
     </div>
   );
 }

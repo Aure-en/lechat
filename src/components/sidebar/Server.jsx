@@ -4,7 +4,7 @@ import useFetch from "../../hooks/useFetch";
 
 function Server() {
   const { data: servers, error } = useFetch(
-    `${process.env.REACT_APP_URL}/${localStorage.getItem("user")._id}/servers`
+    `${process.env.REACT_APP_URL}/users/${JSON.parse(localStorage.getItem("user"))._id}/servers`
   );
 
   return <ul>{servers && servers.map((server) => <li>{server.name}</li>)}</ul>;
