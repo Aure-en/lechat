@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 
-function Form({ message }) {
+function Form({ conversationId, message }) {
   const [text, setText] = useState("");
   const location = useLocation();
 
@@ -18,9 +18,13 @@ function Form({ message }) {
     if (!text) return;
 
     // Save the message (create or update)
+
+    // -- TO-DO -- Find a cleaner way to get the request URL.
     const url = message
       ? `${process.env.REACT_APP_URL}/messages/${message._id}`
-      : `${process.env.REACT_APP_URL}${location.pathname}/messages`;
+      : location.pathname.includes('servers') ? 
+        `${process.env.REACT_APP_URL}${location.pathname}/messages`
+        : `${process.env.REACT_APP_URL}/conversations/${conversationId}/messages`;
 
     const method = message ? "PUT" : "POST";
 

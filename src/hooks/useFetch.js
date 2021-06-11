@@ -8,7 +8,12 @@ function useFetch(url) {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const res = await fetch(url);
+      const res = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          "Content-Type": "application/json",
+        },
+      });
       const json = await res.json();
       console.log(json);
       if (json.error) {

@@ -45,7 +45,7 @@ function All() {
               {friend.sender.username}
             </Link>
           ) : (
-            <Link to={`/conversations/${friend.sender._id}`}>
+            <Link to={`/conversations/${friend.recipient._id}`}>
               {friend.recipient.username}
             </Link>
           )}
