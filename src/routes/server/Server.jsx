@@ -4,6 +4,7 @@ import Categories from "../../components/category/List";
 import CategoryModal from "../../components/modals/Category";
 import Channel from "./Channel";
 import useFetch from "../../hooks/useFetch";
+import Members from "../../components/server/Members";
 import Leave from "../../components/server/Leave";
 
 function Server({ match }) {
@@ -27,6 +28,7 @@ function Server({ match }) {
       </div>
 
       {/* Right sidebar */}
+      <Members serverId={match.params.serverId} />
     </>
   );
 }
