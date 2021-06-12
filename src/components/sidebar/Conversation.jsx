@@ -14,7 +14,7 @@ function Conversation() {
     <ul>
       {conversations &&
         conversations.map((conversation) => (
-          <li>
+          <li key={conversation._id}>
             <Link
               to={`/conversations/${
                 conversation.members.find(
