@@ -7,6 +7,7 @@ import SignUp from "./routes/entry/SignUp";
 import Dashboard from "./routes/dashboard/Dashboard";
 import Server from "./routes/server/Server";
 import Settings from "./routes/server/Settings";
+import Join from "./routes/server/Join";
 import UserSettings from "./routes/Settings";
 import Friends from "./routes/Friends";
 import Conversation from "./routes/Conversation";
@@ -31,6 +32,7 @@ function App() {
           path="/servers/:serverId/settings"
           component={Settings}
         />
+        <PrivateRoute exact path="/join/:serverId" component={Join} />
         <PrivateRoute exact path="/settings" component={UserSettings} />
         <PrivateRoute exact path="/friends" component={Friends} />
         <PrivateRoute

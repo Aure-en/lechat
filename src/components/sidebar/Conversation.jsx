@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import useFetch from "../../hooks/useFetch";
 
@@ -14,12 +15,21 @@ function Conversation() {
       {conversations &&
         conversations.map((conversation) => (
           <li>
-            {
-              conversation.members.find(
-                (user) =>
-                  user._id !== JSON.parse(localStorage.getItem("user"))._id
-              ).username
-            }
+            <Link
+              to={`/conversations/${
+                conversation.members.find(
+                  (user) =>
+                    user._id !== JSON.parse(localStorage.getItem("user"))._id
+                )._id
+              }`}
+            >
+              {
+                conversation.members.find(
+                  (user) =>
+                    user._id !== JSON.parse(localStorage.getItem("user"))._id
+                ).username
+              }
+            </Link>
           </li>
         ))}
     </ul>
