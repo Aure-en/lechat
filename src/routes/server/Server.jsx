@@ -4,6 +4,7 @@ import Categories from "../../components/category/List";
 import CategoryModal from "../../components/modals/Category";
 import Channel from "./Channel";
 import useFetch from "../../hooks/useFetch";
+import Leave from "../../components/server/Leave";
 
 function Server({ match }) {
   const { data: server } = useFetch(
@@ -15,6 +16,7 @@ function Server({ match }) {
       {/* Left sidebar */}
       <Categories serverId={match.params.serverId} />
       <CategoryModal serverId={match.params.serverId} />
+      <Leave serverId={match.params.serverId} />
 
       {/* Main */}
       <div>
