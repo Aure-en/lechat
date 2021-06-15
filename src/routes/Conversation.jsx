@@ -77,6 +77,14 @@ function Conversation({ match }) {
   };
 
   const handleUpdate = (updated) => {
+    // Doesn't update messages if we are the author
+    // Messages was already updated instantaneously by the form handler.
+    if (
+      updated.document.author._id ===
+      JSON.parse(localStorage.getItem("user"))._id
+    )
+      return;
+
     setMessages((prev) => {
       const update = [...prev].map((message) => {
         return message._id.toString() === updated.document._id
@@ -86,6 +94,7 @@ function Conversation({ match }) {
       return update;
     });
   };
+
   const handleDelete = (deleted) => {
     if (
       messages.findIndex((message) => message._id === deleted.document._id) !==
@@ -118,7 +127,6 @@ function Conversation({ match }) {
     return () => socket.off("delete");
   }, [messages]);
 
-
   return (
     <>
       {conversation && (
@@ -133,6 +141,7 @@ function Conversation({ match }) {
             conversationId={conversation._id}
             message={editing}
             setEditing={setEditing}
+            setMessages={setMessages}
           />
         </>
       )}
