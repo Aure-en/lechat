@@ -32,7 +32,7 @@ function Server({ match }) {
           />
           <PrivateRoute
             exact
-            path="/servers/:serverId/:channelId"
+            path="/servers/:serverId/channels/:channelId"
             render={() => <Channel channelId={match.params.channelId} />}
           />
         </Switch>

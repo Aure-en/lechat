@@ -6,6 +6,7 @@ function useMessage(url) {
 
   // Load messages
   useEffect(() => {
+    if (!url) return;
     (async () => {
       const res = await fetch(url, {
         headers: {

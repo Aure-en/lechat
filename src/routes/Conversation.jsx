@@ -79,3 +79,7 @@ function Conversation({ match }) {
 }
 
 export default Conversation;
+
+Conversation.propTypes = {
+  match: PropTypes.shape.isRequired,
+};
