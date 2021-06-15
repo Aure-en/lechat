@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import socket from "../../socket/socket";
 
 function Login() {
   const initial = {
@@ -82,6 +83,7 @@ function Login() {
     if (json.token) {
       localStorage.setItem("jwt", json.token);
       localStorage.setItem("user", JSON.stringify(json.user));
+      socket.emit("authentification", JSON.stringify(json.user));
       history.push("/");
     }
   };

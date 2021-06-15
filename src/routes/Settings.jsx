@@ -3,6 +3,7 @@ import Email from "../components/settings/Email";
 import Password from "../components/settings/Password";
 import Username from "../components/settings/Username";
 import Avatar from "../components/settings/Avatar";
+import LogOut from "../components/settings/LogOut";
 
 function Settings() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
@@ -29,6 +30,8 @@ function Settings() {
             Avatar
             <Avatar />
           </div>
+
+          <LogOut />
         </>
       )}
     </>
