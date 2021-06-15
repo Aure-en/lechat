@@ -8,6 +8,16 @@ function Messages({ channelId, conversationId, setEditing }) {
     : `${process.env.REACT_APP_URL}/channels/${channelId}/messages`;
   const [messages, setMessages] = useState([]);
 
+  const remove = async (id) => {
+    await fetch(`${process.env.REACT_APP_URL}/messages/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
   // Get messages
   useEffect(() => {
     (async () => {
@@ -23,19 +33,32 @@ function Messages({ channelId, conversationId, setEditing }) {
     })();
   }, []);
 
-  useEffect(() => {
-    console.log("MESSAGES", messages);
-  }, [messages]);
-
   // Set up socket listeners
   const handleInsert = (newMessage) => {
-    console.log(newMessage);
     setMessages([...messages, newMessage.document]);
-    console.log("INSERT");
   };
 
-  const handleUpdate = () => {};
-  const handleDelete = () => {};
+  const handleUpdate = (updated) => {
+    setMessages((prev) => {
+      const update = [...prev].map((message) => {
+        return message._id.toString() === updated.document._id
+          ? updated.document
+          : message;
+      });
+      return update;
+    });
+  };
+  const handleDelete = (deleted) => {
+    if (
+      messages.findIndex((message) => message._id === deleted.document._id) !==
+      -1
+    ) {
+      setMessages((prev) =>
+        prev.filter((message) => message._id !== deleted.document._id)
+      );
+    }
+    console.log("DELETE");
+  };
 
   useEffect(() => {
     socket.on("insert", (document) => {
@@ -45,12 +68,18 @@ function Messages({ channelId, conversationId, setEditing }) {
   }, [messages]);
 
   useEffect(() => {
-    socket.on("update", handleUpdate);
-  }, []);
+    socket.on("update", (document) => {
+      handleUpdate(document);
+    });
+    return () => socket.off("update");
+  }, [messages]);
 
   useEffect(() => {
-    socket.on("delete", handleDelete);
-  }, []);
+    socket.on("delete", (document) => {
+      handleDelete(document);
+    });
+    return () => socket.off("delete");
+  }, [messages]);
 
   return (
     <ul>
@@ -59,9 +88,14 @@ function Messages({ channelId, conversationId, setEditing }) {
           {message.author.username} {message.text}
           {message.author._id ===
             JSON.parse(localStorage.getItem("user"))._id && (
-            <button type="button" onClick={() => setEditing(message)}>
-              Edit
-            </button>
+            <>
+              <button type="button" onClick={() => setEditing(message)}>
+                Edit
+              </button>
+              <button type="button" onClick={() => remove(message._id)}>
+                Delete
+              </button>
+            </>
           )}
         </li>
       ))}
