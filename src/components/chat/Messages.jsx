@@ -1,13 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import socket from "../../socket/socket";
 
-function Messages({ channelId, conversationId, setEditing }) {
-  const url = conversationId
-    ? `${process.env.REACT_APP_URL}/conversations/${conversationId}/messages`
-    : `${process.env.REACT_APP_URL}/channels/${channelId}/messages`;
-  const [messages, setMessages] = useState([]);
-
+function Messages({ messages, setEditing }) {
   const remove = async (id) => {
     await fetch(`${process.env.REACT_APP_URL}/messages/${id}`, {
       method: "DELETE",
@@ -17,69 +11,6 @@ function Messages({ channelId, conversationId, setEditing }) {
       },
     });
   };
-
-  // Get messages
-  useEffect(() => {
-    (async () => {
-      console.log("fetching");
-      const res = await fetch(url, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-          "Content-Type": "application/json",
-        },
-      });
-      const json = await res.json();
-      if (!json.error) setMessages(json);
-    })();
-  }, []);
-
-  // Set up socket listeners
-  const handleInsert = (newMessage) => {
-    setMessages([...messages, newMessage.document]);
-  };
-
-  const handleUpdate = (updated) => {
-    setMessages((prev) => {
-      const update = [...prev].map((message) => {
-        return message._id.toString() === updated.document._id
-          ? updated.document
-          : message;
-      });
-      return update;
-    });
-  };
-  const handleDelete = (deleted) => {
-    if (
-      messages.findIndex((message) => message._id === deleted.document._id) !==
-      -1
-    ) {
-      setMessages((prev) =>
-        prev.filter((message) => message._id !== deleted.document._id)
-      );
-    }
-    console.log("DELETE");
-  };
-
-  useEffect(() => {
-    socket.on("insert", (document) => {
-      handleInsert(document);
-    });
-    return () => socket.off("insert");
-  }, [messages]);
-
-  useEffect(() => {
-    socket.on("update", (document) => {
-      handleUpdate(document);
-    });
-    return () => socket.off("update");
-  }, [messages]);
-
-  useEffect(() => {
-    socket.on("delete", (document) => {
-      handleDelete(document);
-    });
-    return () => socket.off("delete");
-  }, [messages]);
 
   return (
     <ul>
@@ -106,13 +37,19 @@ function Messages({ channelId, conversationId, setEditing }) {
 export default Messages;
 
 Messages.propTypes = {
-  channelId: PropTypes.string,
-  conversationId: PropTypes.string,
+  messages: PropTypes.arrayOf(
+    PropTypes.shape({
+      author: PropTypes.shape({
+        username: PropTypes.string,
+        _id: PropTypes.string,
+      }),
+      text: PropTypes.string,
+      _id: PropTypes.string,
+    })
+  ).isRequired,
   setEditing: PropTypes.func,
 };
 
 Messages.defaultProps = {
-  channelId: undefined,
-  conversationId: undefined,
   setEditing: () => {},
 };

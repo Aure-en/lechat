@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 
-function Form({ conversationId, message }) {
+function Form({ conversationId, message, setEditing }) {
   const [text, setText] = useState("");
   const location = useLocation();
 
   // If we want to edit a message, load its text.
   useEffect(() => {
-    setText(message.text);
+    message ? setText(message.text) : setText("");
   }, [message]);
 
   const handleSubmit = async (e) => {
@@ -36,6 +36,12 @@ function Form({ conversationId, message }) {
       },
       body: JSON.stringify({ text }),
     });
+
+    if (message) {
+      setEditing(false);
+    }
+
+    setText("");
   };
 
   return (
@@ -61,8 +67,10 @@ Form.propTypes = {
     text: PropTypes.string,
     _id: PropTypes.string,
   }),
+  setEditing: PropTypes.func,
 };
 
 Form.defaultProps = {
   message: undefined,
+  setEditing: () => {},
 };
