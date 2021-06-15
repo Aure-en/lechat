@@ -9,6 +9,15 @@ function List({ serverId, categoryId }) {
     `${process.env.REACT_APP_URL}/categories/${categoryId}/channels`
   );
 
+  const remove = (id) => {
+    fetch(`${process.env.REACT_APP_URL}/channels/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    });
+  };
+
   return (
     <ul>
       {channels &&
@@ -22,6 +31,7 @@ function List({ serverId, categoryId }) {
               categoryId={categoryId}
               channel={channel}
             />
+            <button type="button" onClick={() => remove(channel._id)}>Delete</button>
           </li>
         ))}
     </ul>

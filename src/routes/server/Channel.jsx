@@ -7,7 +7,7 @@ import useMessage from "../../hooks/useMessage";
 function Channel({ channelId }) {
   const [editing, setEditing] = useState(false);
   const { messages, setMessages } = useMessage(
-    `${process.env.REACT_APP_URL}/channels/${channelId}/messages`
+    channelId && `${process.env.REACT_APP_URL}/channels/${channelId}/messages`
   );
 
   return (
