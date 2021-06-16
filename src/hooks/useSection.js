@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import socket from "../socket/socket";
 
-function useServer(url) {
-  const [elements, setElements] = useState([]);
+function useSection(url) {
+  // section the server subdivision (either 'category' or 'channel')
+  const [sections, setSections] = useState([]);
 
-  // Load categories
+  // Load categories and channels
   useEffect(() => {
     if (!url) return;
     (async () => {
@@ -14,33 +15,47 @@ function useServer(url) {
         },
       });
       const json = await res.json();
-      if (!json.error) setElements(json);
+      if (!json.error) setSections(json);
     })();
   }, [url]);
 
   // Set up socket listeners
   const handleInsert = (document) => {
-    console.log(document);
-    setElements([...elements, document.document]);
+    if (document.section === "category") {
+      // Inserting a category
+      setSections([...sections, document.document]);
+    } else {
+      // Inserting a channel in a category
+      setSections(
+        [...sections].map((category) => {
+          if (category._id === document.document.category.toString()) {
+            const updated = { ...category };
+            updated.channel.push(document.document);
+            return updated;
+          }
+          return category;
+        })
+      );
+    }
   };
 
   const handleUpdate = (updated) => {
-    console.log(updated);
-    setElements((prev) =>
+    setSections((prev) =>
       [...prev].map((document) =>
-        updated.document._id.toString() === document._id ? updated.document : document
+        updated.document._id.toString() === document._id
+          ? updated.document
+          : document
       )
     );
   };
 
   const handleDelete = (deleted) => {
-    console.log(deleted);
     if (
-      elements.findIndex(
+      sections.findIndex(
         (document) => document._id === deleted.document._id
       ) !== -1
     ) {
-      setElements((prev) =>
+      setSections((prev) =>
         prev.filter((document) => document._id !== deleted.document._id)
       );
     }
@@ -51,26 +66,25 @@ function useServer(url) {
       handleInsert(document);
     });
     return () => socket.off("insert");
-  }, [elements]);
+  }, [sections]);
 
   useEffect(() => {
     socket.on("update", (document) => {
       handleUpdate(document);
     });
     return () => socket.off("update");
-  }, [elements]);
+  }, [sections]);
 
   useEffect(() => {
     socket.on("delete", (document) => {
       handleDelete(document);
     });
     return () => socket.off("delete");
-  }, [elements]);
+  }, [sections]);
 
   return {
-    elements,
-    setElements,
+    elements: sections,
   };
 }
 
-export default useServer;
+export default useSection;
