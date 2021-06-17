@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import socket from "../../socket/socket";
 import useSection from "../../hooks/useSection";
 import useTest from "../../hooks/useTest";
 import Channels from "../channel/List";
@@ -24,18 +25,27 @@ function List({ serverId }) {
 
   return (
     <ul>
-      {categories &&
-        categories.map((category) => (
-          <li key={category._id}>
-            {category.name}
-            <Channels serverId={serverId} categoryId={category._id} />
-            <ChannelModal serverId={serverId} categoryId={category._id} />
-            <CategoryModal serverId={serverId} category={category} />
-            <button type="button" onClick={() => remove(category._id)}>
-              Delete
-            </button>
-          </li>
-        ))}
+      {categories.map((category) => (
+        <li key={category._id}>
+          {category.name}
+          <Channels serverId={serverId} categoryId={category._id} />
+          <ChannelModal serverId={serverId} categoryId={category._id} />
+          <CategoryModal serverId={serverId} category={category} />
+          <button type="button" onClick={() => remove(category._id)}>
+            Delete
+          </button>
+        </li>
+      ))}
+      <button
+        type="button"
+        onClick={() => {
+          console.log("INSERT", socket.listeners("insert"));
+          console.log("UPDATE", socket.listeners("update"));
+          console.log("DELETE", socket.listeners("delete"));
+        }}
+      >
+        Listeners
+      </button>
     </ul>
   );
 }

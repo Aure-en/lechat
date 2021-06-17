@@ -12,8 +12,6 @@ function List({ serverId, categoryId }) {
     categoryId
   );
 
-  useTest(`CHANNEL FROM ${categoryId}`, "channel", categoryId);
-
   function remove(id) {
     fetch(`${process.env.REACT_APP_URL}/channels/${id}`, {
       method: "DELETE",
@@ -25,22 +23,21 @@ function List({ serverId, categoryId }) {
 
   return (
     <ul>
-      {channels &&
-        channels.map((channel) => (
-          <li key={channel._id}>
-            <Link to={`/servers/${serverId}/channels/${channel._id}`}>
-              {channel.name}
-            </Link>
-            <ChannelModal
-              serverId={serverId}
-              categoryId={categoryId}
-              channel={channel}
-            />
-            <button type="button" onClick={() => remove(channel._id)}>
-              Delete
-            </button>
-          </li>
-        ))}
+      {channels.map((channel) => (
+        <li key={channel._id}>
+          <Link to={`/servers/${serverId}/channels/${channel._id}`}>
+            {channel.name}
+          </Link>
+          <ChannelModal
+            serverId={serverId}
+            categoryId={categoryId}
+            channel={channel}
+          />
+          <button type="button" onClick={() => remove(channel._id)}>
+            Delete
+          </button>
+        </li>
+      ))}
     </ul>
   );
 }

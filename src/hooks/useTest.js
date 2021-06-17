@@ -25,25 +25,17 @@ function useTest(url, str, section, categoryId) {
 
   const handleInsert = (document) => {
     if (document.section === "category" && section === "category") {
-      console.log("INSERT CATEGORY: ", str);
       setSections((prev) => [...prev, document.document]);
     } else if (
       document.document.category === categoryId &&
       section === "channel"
     ) {
-      console.log(
-        document.document.category,
-        categoryId,
-        document.document.category === categoryId
-      );
-      console.log("INSERT CHANNEL: ", str);
       setSections((prev) => [...prev, document.document]);
     }
   };
 
   const handleUpdate = (document) => {
     if (document.section === "category" && section === "category") {
-      console.log("UPDATE CATEGORY: ", str);
       setSections((prev) =>
         [...prev].map((category) =>
           document.document._id === category._id ? document.document : category
@@ -53,12 +45,6 @@ function useTest(url, str, section, categoryId) {
       document.document.category === categoryId &&
       section === "channel"
     ) {
-      console.log(
-        document.document.category,
-        categoryId,
-        document.document.category === categoryId
-      );
-      console.log("UPDATE CHANNEL: ", str);
       setSections((prev) =>
         [...prev].map((channel) =>
           document.document._id === channel._id ? document.document : channel
@@ -69,39 +55,32 @@ function useTest(url, str, section, categoryId) {
 
   const handleDelete = (document) => {
     if (document.section === "category" && section === "category") {
-      console.log("DELETE CATEGORY: ", str);
-    } else if (
-      document.document.category === categoryId &&
-      section === "channel"
-    ) {
-      console.log(
-        document.document.category,
-        categoryId,
-        document.document.category === categoryId
+      setSections((prev) =>
+        [...prev].filter((category) => category._id !== document.document._id)
       );
-      console.log("DELETE CHANNEL: ", str);
+    } else if (document.section === "channel" && section === "channel") {
+      setSections((prev) =>
+        [...prev].filter((channel) => channel._id !== document.document._id)
+      );
     }
   };
 
   useEffect(() => {
-    socket.on("insert", (document) => {
-      handleInsert(document);
-    });
-    return () => socket.off("insert");
+    const insert = (document) => handleInsert(document);
+    socket.on("insert", insert);
+    return () => socket.off("insert", insert);
   }, []);
 
   useEffect(() => {
-    socket.on("update", (document) => {
-      handleUpdate(document);
-    });
-    return () => socket.off("update");
+    const update = (document) => handleUpdate(document);
+    socket.on("update", update);
+    return () => socket.off("update", update);
   }, []);
 
   useEffect(() => {
-    socket.on("delete", (document) => {
-      handleDelete(document);
-    });
-    return () => socket.off("delete");
+    const remove = (document) => handleDelete(document);
+    socket.on("delete", remove);
+    return () => socket.off("delete", remove);
   }, []);
 
   return {
