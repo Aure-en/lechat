@@ -40,47 +40,66 @@ function useSection(url) {
   };
 
   const handleUpdate = (updated) => {
-    setSections((prev) =>
-      [...prev].map((document) =>
-        updated.document._id.toString() === document._id
-          ? updated.document
-          : document
-      )
-    );
-  };
-
-  const handleDelete = (deleted) => {
-    if (
-      sections.findIndex(
-        (document) => document._id === deleted.document._id
-      ) !== -1
-    ) {
+    if (document.section === "category") {
+      // Updating a category
       setSections((prev) =>
-        prev.filter((document) => document._id !== deleted.document._id)
+        [...prev].map((category) =>
+          updated.document._id === category._id ? updated.document : category
+        )
       );
+    } else {
+      // Updating a channel
+      setSections((prev) => {
+        const sections = [...prev];
+        const category = sections.findIndex((category) => {
+          console.log(category._id === updated.document._id);
+          category._id === updated.document.category;
+        });
+        sections[category].channel.map((channel) =>
+          updated.document._id === channel._id ? updated.document : channel
+        );
+      });
     }
   };
 
-  useEffect(() => {
-    socket.on("insert", (document) => {
-      handleInsert(document);
-    });
-    return () => socket.off("insert");
-  }, [sections]);
+  const handleDelete = (deleted) => {
+    if (deleted.section === "category") {
+      setSections((prev) =>
+        prev.filter((document) => document._id !== deleted.document._id)
+      );
+    } else {
+      setSections((prev) => {
+        const sections = [...prev];
+        const category = prev.findIndex(
+          (category) => category._id === deleted.document.category
+        );
+        sections[category].channel.filter((channel) => {
+          channel._id !== deleted.document._id;
+        });
+      });
+    }
+  };
 
-  useEffect(() => {
-    socket.on("update", (document) => {
-      handleUpdate(document);
-    });
-    return () => socket.off("update");
-  }, [sections]);
+  // useEffect(() => {
+  //   socket.on("insert", (document) => {
+  //     handleInsert(document);
+  //   });
+  //   return () => socket.off("insert");
+  // }, [sections]);
 
-  useEffect(() => {
-    socket.on("delete", (document) => {
-      handleDelete(document);
-    });
-    return () => socket.off("delete");
-  }, [sections]);
+  // useEffect(() => {
+  //   socket.on("update", (document) => {
+  //     handleUpdate(document);
+  //   });
+  //   return () => socket.off("update");
+  // }, [sections]);
+
+  // useEffect(() => {
+  //   socket.on("delete", (document) => {
+  //     handleDelete(document);
+  //   });
+  //   return () => socket.off("delete");
+  // }, [sections]);
 
   return {
     elements: sections,

@@ -1,13 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import useSection from "../../hooks/useSection";
+import useTest from "../../hooks/useTest";
 import Channels from "../channel/List";
 import ChannelModal from "../modals/Channel";
 import CategoryModal from "../modals/Category";
 
 function List({ serverId }) {
-  const { elements: categories } = useSection(
+  const { sections: categories } = useTest(
     `${process.env.REACT_APP_URL}/servers/${serverId}/categories`,
+    "CATEGORY LIST",
+    "category"
   );
 
   const remove = (id) => {
@@ -21,17 +24,18 @@ function List({ serverId }) {
 
   return (
     <ul>
-      {categories.map((category) => (
-        <li key={category._id}>
-          {category.name}
-          <Channels channels={category.channel} />
-          <ChannelModal serverId={serverId} categoryId={category._id} />
-          <CategoryModal serverId={serverId} category={category} />
-          <button type="button" onClick={() => remove(category._id)}>
-            Delete
-          </button>
-        </li>
-      ))}
+      {categories &&
+        categories.map((category) => (
+          <li key={category._id}>
+            {category.name}
+            <Channels serverId={serverId} categoryId={category._id} />
+            <ChannelModal serverId={serverId} categoryId={category._id} />
+            <CategoryModal serverId={serverId} category={category} />
+            <button type="button" onClick={() => remove(category._id)}>
+              Delete
+            </button>
+          </li>
+        ))}
     </ul>
   );
 }
