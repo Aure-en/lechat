@@ -24,43 +24,34 @@ function useTest(url, str, section, categoryId) {
   }, [url]);
 
   const handleInsert = (document) => {
-    if (document.section === "category" && section === "category") {
-      setSections((prev) => [...prev, document.document]);
-    } else if (
-      document.document.category === categoryId &&
-      section === "channel"
+    if (
+      (document.section === "category" && section === "category") ||
+      (document.document.category === categoryId && section === "channel")
     ) {
       setSections((prev) => [...prev, document.document]);
     }
   };
 
   const handleUpdate = (document) => {
-    if (document.section === "category" && section === "category") {
-      setSections((prev) =>
-        [...prev].map((category) =>
-          document.document._id === category._id ? document.document : category
-        )
-      );
-    } else if (
-      document.document.category === categoryId &&
-      section === "channel"
+    if (
+      (document.section === "category" && section === "category") ||
+      (document.document.category === categoryId && section === "channel")
     ) {
       setSections((prev) =>
-        [...prev].map((channel) =>
-          document.document._id === channel._id ? document.document : channel
+        [...prev].map((section) =>
+          document.document._id === section._id ? document.document : section
         )
       );
     }
   };
 
   const handleDelete = (document) => {
-    if (document.section === "category" && section === "category") {
+    if (
+      (document.section === "category" && section === "category") ||
+      (document.section === "channel" && section === "channel")
+    ) {
       setSections((prev) =>
-        [...prev].filter((category) => category._id !== document.document._id)
-      );
-    } else if (document.section === "channel" && section === "channel") {
-      setSections((prev) =>
-        [...prev].filter((channel) => channel._id !== document.document._id)
+        [...prev].filter((section) => section._id !== document.document._id)
       );
     }
   };
