@@ -12,6 +12,9 @@ const colors = {
   server_icon_bg: "rgb(105, 105, 105)",
   server_icon_text: "rgb(255, 255, 255)",
 
+  modal_overlay: "rgba(0, 0, 0, 0.3)",
+  modal_bg: "rgb(255, 255, 255)",
+
   error: "rgb(144, 37, 37)",
 };
 

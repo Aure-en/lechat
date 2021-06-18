@@ -67,6 +67,12 @@ const GlobalStyles = createGlobalStyle`
     font-weight: 300;
   }
 
+  #modal-root {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
   body,
   #root {
     width: 100vw;

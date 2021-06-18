@@ -1,38 +1,25 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React, { useState } from "react";
 import styled from "styled-components";
-import PropTypes from "prop-types";
-import useModal from "../../hooks/useModal";
 import Create from "../server/Form";
+import Modal from "./Modal";
 
 function Server() {
-  const { isOpen, setIsOpen } = useModal();
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <>
       <Button type="button" onClick={() => setIsOpen(true)}>
         +
       </Button>
 
-      {isOpen && (
-        <>
-          {ReactDOM.createPortal(
-            <Create />,
-            document.body.querySelector("#modal-root")
-          )}
-        </>
-      )}
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+        <Create />
+      </Modal>
     </>
   );
 }
 
 export default Server;
-
-Server.propTypes = {
-  server: PropTypes.shape({
-    name: PropTypes.string,
-    _id: PropTypes.string,
-  }).isRequired,
-};
 
 const Button = styled.button`
   display: flex;
