@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import styled from "styled-components";
 import socket from "../../socket/socket";
+import Button from "../shared/Submit";
 
 function Login() {
   const initial = {
@@ -89,35 +91,117 @@ function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="identifier">
-        Email / Username
-        <input
-          type="text"
-          id="identifier"
-          name="identifier"
-          value={values.identifier}
-          onChange={handleInputChange}
-        />
-      </label>
-      {errors.identifier && <div>{errors.identifier}</div>}
+    <Container>
+      <Header>
+        <Heading>Welcome back</Heading>
+        <div>We are delighted to see you again!</div>
+      </Header>
+      <Form onSubmit={handleSubmit}>
+        <Field>
+          <Label htmlFor="identifier">
+            Email / Username
+            <Input
+              type="text"
+              id="identifier"
+              name="identifier"
+              value={values.identifier}
+              onChange={handleInputChange}
+              placeholder="Enter your email or username"
+            />
+          </Label>
+          {errors.identifier && <Error>{errors.identifier}</Error>}
+        </Field>
 
-      <label htmlFor="password">
-        Password
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={values.password}
-          onChange={handleInputChange}
-        />
-      </label>
-      {errors.password && <div>{errors.password}</div>}
+        <Field>
+          <Label htmlFor="password">
+            Password
+            <Input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              value={values.password}
+              onChange={handleInputChange}
+            />
+          </Label>
+          {errors.password && <Error>{errors.password}</Error>}
+        </Field>
 
-      {errors.response && <div>{errors.response}</div>}
-      <button type="submit">Submit</button>
-    </form>
+        <Button>Submit</Button>
+        {errors.response && <Error>{errors.response}</Error>}
+      </Form>
+      <Small>
+        Not a member yet? <StyledLink to="/signup">Sign up now.</StyledLink>
+      </Small>
+    </Container>
   );
 }
 
 export default Login;
+
+const Container = styled.div`
+  border: 1px solid ${(props) => props.theme.border_primary};
+  max-width: 30rem;
+  padding: 3rem;
+`;
+
+const Header = styled.div`
+  text-align: center;
+  margin-bottom: 2rem;
+`;
+
+const Heading = styled.h2`
+  font-family: "Playfair Display", sans-serif;
+  font-size: 2rem;
+  line-height: 2.75rem;
+  margin: 0;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Field = styled.div`
+  margin-bottom: 2rem;
+`;
+
+const Label = styled.label`
+  display: flex;
+  flex-direction: column;
+  text-transform: uppercase;
+  font-size: 0.825rem;
+  letter-spacing: 1px;
+`;
+
+const Input = styled.Input`
+  border: none;
+  border-bottom: 1px solid ${(props) => props.theme.input_border};
+  padding: 0.5rem 0 0.25rem 0;
+
+  &::placeholder {
+    color: ${(props) => props.theme.input_border};
+  }
+
+  &:focus {
+    border-bottom: 1px solid ${(props) => props.theme.input_border_active};
+  }
+`;
+
+const Error = styled.div`
+  color: ${(props) => props.theme.error};
+  font-size: 0.825rem;
+`;
+
+const Small = styled.small`
+  display: block;
+  font-size: 0.825rem;
+  margin-top: 1rem;
+  color: ${(props) => props.theme.text_secondary};
+`;
+
+const StyledLink = styled(Link)`
+  &:hover {
+    color: ${(props) => props.theme.text_primary};
+  }
+`;
