@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import socket from "../socket/socket";
 
-function useSection(url) {
-  // section the server subdivision (either 'category' or 'channel')
+function useSection(url, section, categoryId) {
   const [sections, setSections] = useState([]);
 
   // Load categories and channels
@@ -14,95 +13,71 @@ function useSection(url) {
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
         },
       });
-      const json = await res.json();
-      if (!json.error) setSections(json);
+
+      try {
+        const json = await res.json();
+        if (!json.error) setSections(json);
+      } catch (e) {
+        setSections([]);
+      }
     })();
   }, [url]);
 
-  // Set up socket listeners
   const handleInsert = (document) => {
-    if (document.section === "category") {
-      // Inserting a category
-      setSections([...sections, document.document]);
-    } else {
-      // Inserting a channel in a category
-      setSections(
-        [...sections].map((category) => {
-          if (category._id === document.document.category.toString()) {
-            const updated = { ...category };
-            updated.channel.push(document.document);
-            return updated;
-          }
-          return category;
-        })
-      );
+    if (
+      (document.section === "category" && section === "category") ||
+      (document.document.category === categoryId && section === "channel")
+    ) {
+      setSections((prev) => [...prev, document.document]);
     }
   };
 
-  const handleUpdate = (updated) => {
-    if (document.section === "category") {
-      // Updating a category
+  const handleUpdate = (document) => {
+    if (
+      (document.section === "category" && section === "category") ||
+      (document.document.category === categoryId && section === "channel")
+    ) {
       setSections((prev) =>
-        [...prev].map((category) =>
-          updated.document._id === category._id ? updated.document : category
+        [...prev].map((section) =>
+          document.document._id === section._id ? document.document : section
         )
       );
-    } else {
-      // Updating a channel
-      setSections((prev) => {
-        const sections = [...prev];
-        const category = sections.findIndex((category) => {
-          console.log(category._id === updated.document._id);
-          category._id === updated.document.category;
-        });
-        sections[category].channel.map((channel) =>
-          updated.document._id === channel._id ? updated.document : channel
-        );
-      });
     }
   };
 
-  const handleDelete = (deleted) => {
-    if (deleted.section === "category") {
+  const handleDelete = (document) => {
+    if (
+      (document.section === "category" && section === "category") ||
+      (document.section === "channel" && section === "channel")
+    ) {
       setSections((prev) =>
-        prev.filter((document) => document._id !== deleted.document._id)
+        [...prev].filter((section) => section._id !== document.document._id)
       );
-    } else {
-      setSections((prev) => {
-        const sections = [...prev];
-        const category = prev.findIndex(
-          (category) => category._id === deleted.document.category
-        );
-        sections[category].channel.filter((channel) => {
-          channel._id !== deleted.document._id;
-        });
-      });
     }
   };
 
-  // useEffect(() => {
-  //   socket.on("insert", (document) => {
-  //     handleInsert(document);
-  //   });
-  //   return () => socket.off("insert");
-  // }, [sections]);
+  // Listeners must be named to remove them and them only when the section unmounts.
+  useEffect(() => {
+    const insert = (document) => handleInsert(document);
+    socket.on("insert", insert);
+    return () => socket.off("insert", insert);
+  }, []);
 
-  // useEffect(() => {
-  //   socket.on("update", (document) => {
-  //     handleUpdate(document);
-  //   });
-  //   return () => socket.off("update");
-  // }, [sections]);
+  useEffect(() => {
+    const update = (document) => handleUpdate(document);
+    socket.on("update", update);
+    return () => socket.off("update", update);
+  }, []);
 
-  // useEffect(() => {
-  //   socket.on("delete", (document) => {
-  //     handleDelete(document);
-  //   });
-  //   return () => socket.off("delete");
-  // }, [sections]);
+  useEffect(() => {
+    const remove = (document) => handleDelete(document);
+    socket.on("delete", remove);
+    return () => socket.off("delete", remove);
+  }, []);
 
   return {
-    elements: sections,
+    sections,
+    setSections,
   };
 }
 

@@ -2,12 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import ChannelModal from "../modals/Channel";
-import useTest from "../../hooks/useTest";
+import useSection from "../../hooks/useSection";
 
 function List({ serverId, categoryId }) {
-  const { sections: channels } = useTest(
+  const { sections: channels } = useSection(
     `${process.env.REACT_APP_URL}/categories/${categoryId}/channels`,
-    `CHANNEL FROM ${categoryId}`,
     "channel",
     categoryId
   );

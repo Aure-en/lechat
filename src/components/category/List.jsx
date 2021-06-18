@@ -1,16 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import socket from "../../socket/socket";
 import useSection from "../../hooks/useSection";
-import useTest from "../../hooks/useTest";
 import Channels from "../channel/List";
 import ChannelModal from "../modals/Channel";
 import CategoryModal from "../modals/Category";
 
 function List({ serverId }) {
-  const { sections: categories } = useTest(
+  const { sections: categories } = useSection(
     `${process.env.REACT_APP_URL}/servers/${serverId}/categories`,
-    "CATEGORY LIST",
     "category"
   );
 
@@ -36,16 +33,6 @@ function List({ serverId }) {
           </button>
         </li>
       ))}
-      <button
-        type="button"
-        onClick={() => {
-          console.log("INSERT", socket.listeners("insert"));
-          console.log("UPDATE", socket.listeners("update"));
-          console.log("DELETE", socket.listeners("delete"));
-        }}
-      >
-        Listeners
-      </button>
     </ul>
   );
 }
