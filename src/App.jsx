@@ -8,7 +8,6 @@ import Login from "./routes/entry/Login";
 import SignUp from "./routes/entry/SignUp";
 import Dashboard from "./routes/dashboard/Dashboard";
 import socket from "./socket/socket";
-import "normalize.css";
 
 function App() {
   useEffect(() => {

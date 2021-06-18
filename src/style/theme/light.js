@@ -9,6 +9,9 @@ const colors = {
   input_border: "rgb(155, 155, 155)",
   input_border_active: "rgb(25, 25, 25)",
 
+  server_icon_bg: "rgb(105, 105, 105)",
+  server_icon_text: "rgb(255, 255, 255)",
+
   error: "rgb(144, 37, 37)",
 };
 

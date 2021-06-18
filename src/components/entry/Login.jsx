@@ -174,7 +174,7 @@ const Label = styled.label`
   letter-spacing: 1px;
 `;
 
-const Input = styled.Input`
+const Input = styled.input`
   border: none;
   border-bottom: 1px solid ${(props) => props.theme.input_border};
   padding: 0.5rem 0 0.25rem 0;
