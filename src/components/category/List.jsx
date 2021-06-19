@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import useSection from "../../hooks/useSection";
+import useSection from "../../hooks/realtime/useSection";
 import Channels from "../channel/List";
 import ChannelModal from "../modals/server/Channel";
 import CategoryModal from "../modals/server/Category";

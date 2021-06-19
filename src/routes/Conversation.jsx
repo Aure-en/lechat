@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Form from "../components/chat/Form";
 import Messages from "../components/chat/Messages";
-import useMessage from "../hooks/useMessage";
+import useMessage from "../hooks/chat/useMessage";
 
 function Conversation({ match }) {
   const [conversation, setConversation] = useState();

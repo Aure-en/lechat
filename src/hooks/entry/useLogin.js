@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import socket from "../socket/socket";
+import socket from "../../socket/socket";
 
 function useLogin() {
   const initial = {

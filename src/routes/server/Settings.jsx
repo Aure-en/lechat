@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Form from "../../components/server/Form";
-import useFetch from "../../hooks/useFetch";
+import useFetch from "../../hooks/shared/useFetch";
 
 function Settings({ match }) {
   const { data: server } = useFetch(

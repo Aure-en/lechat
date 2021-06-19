@@ -6,7 +6,7 @@ import Categories from "../../components/category/List";
 import CategoryModal from "../../components/modals/server/Category";
 import Channel from "./Channel";
 import About from "./About";
-import useFetch from "../../hooks/useFetch";
+import useFetch from "../../hooks/shared/useFetch";
 import Members from "../../components/server/Members";
 import Leave from "../../components/server/Leave";
 

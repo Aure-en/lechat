@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
-import useFetch from "../../hooks/useFetch";
+import useFetch from "../../hooks/shared/useFetch";
 
 function Join({ match }) {
   const { data: server } = useFetch(

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import socket from "../socket/socket";
+import socket from "../../socket/socket";
 
 function useSection(url, section, categoryId) {
   const [sections, setSections] = useState([]);

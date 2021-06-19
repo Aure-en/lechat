@@ -42,8 +42,12 @@ Upload.propTypes = {
       type: PropTypes.string,
       data: PropTypes.arrayOf(PropTypes.number),
     }),
-  }).isRequired,
+  }),
   send: PropTypes.func.isRequired,
+};
+
+Upload.defaultProps = {
+  previous: undefined,
 };
 
 const Label = styled.label`

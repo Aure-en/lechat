@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import ChannelModal from "../modals/server/Channel";
-import useSection from "../../hooks/useSection";
+import useSection from "../../hooks/realtime/useSection";
 
 function List({ serverId, categoryId }) {
   const { sections: channels } = useSection(

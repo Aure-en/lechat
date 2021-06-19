@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import useFetch from "../../hooks/useFetch";
+import useFetch from "../../hooks/shared/useFetch";
 
 function Conversation() {
   const { data: conversations, error } = useFetch(

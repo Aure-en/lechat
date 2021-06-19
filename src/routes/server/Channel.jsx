@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Messages from "../../components/chat/Messages";
 import Form from "../../components/chat/Form";
-import useMessage from "../../hooks/useMessage";
+import useMessage from "../../hooks/chat/useMessage";
 
 function Channel({ channelId }) {
   const [editing, setEditing] = useState(false);

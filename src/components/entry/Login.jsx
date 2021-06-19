@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import useLogin from "../../hooks/useLogin";
+import useLogin from "../../hooks/entry/useLogin";
 import Button from "../shared/buttons/Gradient";
 
 function Login() {

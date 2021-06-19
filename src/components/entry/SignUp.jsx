@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import useSignUp from "../../hooks/useSignUp";
+import useSignUp from "../../hooks/entry/useSignUp";
 import Button from "../shared/buttons/Gradient";
 
 function SignUp() {

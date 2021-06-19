@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import useFetch from "../../hooks/useFetch";
+import useFetch from "../../hooks/shared/useFetch";
 
 function Members({ serverId }) {
   const { data: members } = useFetch(
