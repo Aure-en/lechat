@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import { Switch } from "react-router-dom";
 import PrivateRoute from "../types/PrivateRoute";
 import Home from "./Home";
@@ -10,7 +11,7 @@ import UserSettings from "../Settings";
 
 function Dashboard() {
   return (
-    <div>
+    <Container>
       <Sidebar />
       <Switch>
         <PrivateRoute
@@ -23,8 +24,12 @@ function Dashboard() {
         <PrivateRoute exact path="/settings" component={UserSettings} />
         <PrivateRoute path="/" component={Home} />
       </Switch>
-    </div>
+    </Container>
   );
 }
 
 export default Dashboard;
+
+const Container = styled.div`
+  display: flex;
+`;

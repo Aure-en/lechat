@@ -1,29 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import useModal from "../../hooks/useModal";
-import Form from "../channel/Form";
+import Form from "../../channel/Form";
+import Modal from "../Modal";
 
 function Channel({ serverId, categoryId, channel }) {
-  const { isOpen, setIsOpen } = useModal();
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <>
       <button type="button" onClick={() => setIsOpen(true)}>
         {channel ? "Update" : "Create"} Channel
       </button>
 
-      {isOpen && (
-        <>
-          {ReactDOM.createPortal(
-            <Form
-              serverId={serverId}
-              categoryId={categoryId}
-              channel={channel}
-            />,
-            document.body.querySelector("#modal-root")
-          )}
-        </>
-      )}
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+        <Form serverId={serverId} categoryId={categoryId} channel={channel} />
+      </Modal>
     </>
   );
 }

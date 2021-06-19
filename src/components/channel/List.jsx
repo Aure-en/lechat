@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import ChannelModal from "../modals/Channel";
+import ChannelModal from "../modals/server/Channel";
 import useSection from "../../hooks/useSection";
 
 function List({ serverId, categoryId }) {

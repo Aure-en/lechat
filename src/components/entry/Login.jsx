@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import socket from "../../socket/socket";
-import Button from "../shared/Submit";
+import Button from "../shared/buttons/Gradient";
 
 function Login() {
   const initial = {

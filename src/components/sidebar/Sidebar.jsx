@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Server from "./Server";
 import Conversation from "./Conversation";
-import Create from "../modals/Server";
+import Create from "../modals/server/Server";
 
 function Sidebar() {
   return (

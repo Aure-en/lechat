@@ -113,6 +113,10 @@ const GlobalStyles = createGlobalStyle`
     font-weight: initial;
   }
 
+  small {
+    font-size: 0.75rem;
+    color: ${({ theme }) => theme.text_secondary};
+  }
 `;
 
 export default GlobalStyles;

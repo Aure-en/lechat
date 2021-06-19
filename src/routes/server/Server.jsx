@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Switch } from "react-router-dom";
 import PrivateRoute from "../types/PrivateRoute";
 import Categories from "../../components/category/List";
-import CategoryModal from "../../components/modals/Category";
+import CategoryModal from "../../components/modals/server/Category";
 import Channel from "./Channel";
 import About from "./About";
 import useFetch from "../../hooks/useFetch";

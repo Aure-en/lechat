@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import SubmitBtn from "../shared/Submit";
-import { ReactComponent as IconUpload } from "../../assets/icons/upload.svg";
+import SubmitBtn from "../shared/buttons/Gradient";
+
+import { ReactComponent as IconUpload } from "../../assets/icons/general/upload.svg";
 
 function Form({ server }) {
   const [name, setName] = useState((server && server.name) || "");
@@ -88,7 +89,7 @@ function Form({ server }) {
   };
 
   return (
-    <Container>
+    <div>
       <Header>
         <Heading>{server ? "Update your server" : "Create a server"}</Heading>
         <p>
@@ -137,14 +138,13 @@ function Form({ server }) {
           {nameError && <Error>{nameError}</Error>}
         </Field>
 
-        <Buttons>
-          <BackBtn type="button">← Back</BackBtn>
+        <Button>
           <SubmitBtn type="submit">
             {server ? "Update" : "Create"} Server
           </SubmitBtn>
-        </Buttons>
+        </Button>
       </FormContainer>
-    </Container>
+    </div>
   );
 }
 
@@ -156,12 +156,6 @@ Form.propTypes = {
     _id: PropTypes.string,
   }).isRequired,
 };
-
-const Container = styled.div`
-  border: 1px solid ${(props) => props.theme.border_primary};
-  max-width: 30rem;
-  padding: 3rem;
-`;
 
 const Header = styled.div`
   text-align: center;
@@ -217,13 +211,18 @@ const ImageLabel = styled.label`
   width: 5rem;
   height: 5rem;
   border-radius: 50%;
-  border: ${(props) =>
-    !props.$preview && `2px dashed ${props.theme.border}`};
+  border: ${(props) => !props.$preview && !props.$previous && `2px dashed ${props.theme.border}`};
   text-transform: uppercase;
   font-size: 0.75rem;
   font-weight: 400;
   cursor: pointer;
-  background: ${(props) => props.$preview && `url(${props.$preview})`};
+  background: ${(props) => {
+    if (props.$preview) return `url(${props.$preview})`;
+    if (props.$previous && !props.$preview)
+      return `url('data:${props.$previous.contentType};base64,${Buffer.from(
+        props.$previous.data
+      ).toString("base64")}')`;
+  }};
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -240,15 +239,7 @@ const Error = styled.div`
   font-size: 0.825rem;
 `;
 
-const Buttons = styled.div`
+const Button = styled.div`
   display: flex;
-  justify-content: space-between;
-`;
-
-const BackBtn = styled.button`
-  color: ${(props) => props.theme.text_secondary};
-
-  &:hover {
-    color: ${(props) => props.theme.text_primary};
-  }
+  justify-content: flex-end;
 `;

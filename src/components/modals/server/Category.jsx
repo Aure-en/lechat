@@ -1,25 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import useModal from "../../hooks/useModal";
-import Form from "../category/Form";
+import Form from "../../category/Form";
+import Modal from "../Modal";
 
 function Category({ serverId, category }) {
-  const { isOpen, setIsOpen } = useModal();
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <>
       <button type="button" onClick={() => setIsOpen(true)}>
         {category ? "Update" : "Create"} Category
       </button>
 
-      {isOpen && (
-        <>
-          {ReactDOM.createPortal(
-            <Form serverId={serverId} category={category} />,
-            document.body.querySelector("#modal-root")
-          )}
-        </>
-      )}
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+        <Form serverId={serverId} category={category} />
+      </Modal>
     </>
   );
 }

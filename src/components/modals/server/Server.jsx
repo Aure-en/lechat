@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Create from "../server/Form";
-import Modal from "./Modal";
+import Create from "../../server/Form";
+import Modal from "../Modal";
 
 function Server() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,7 +13,7 @@ function Server() {
       </Button>
 
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-        <Create />
+        <Create setIsOpen={setIsOpen} />
       </Modal>
     </>
   );

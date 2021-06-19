@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-function Submit({ children }) {
+function Gradient({ children }) {
   return (
     <Button type="submit">
       <span>{children}</span>
@@ -10,9 +10,9 @@ function Submit({ children }) {
   );
 }
 
-export default Submit;
+export default Gradient;
 
-Submit.propTypes = {
+Gradient.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,

@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 
+
+import { ReactComponent as IconClose } from "../../assets/icons/general/close.svg";
+
 function Modal({ isOpen, setIsOpen, children }) {
   const ref = useRef();
   return (
@@ -15,7 +18,15 @@ function Modal({ isOpen, setIsOpen, children }) {
                 if (e.target.contains(ref.current)) setIsOpen(false);
               }}
             >
-              <Container ref={ref}>{children}</Container>
+              <Container ref={ref}>
+                <CloseBtn type="button" onClick={() => setIsOpen(false)}>
+                  <IconClose />
+                </CloseBtn>
+                {children}
+                <BackBtn type="button" onClick={() => setIsOpen(false)}>
+                  ← Back
+                </BackBtn>
+              </Container>
             </Wrapper>,
             document.body.querySelector("#modal-root")
           )}
@@ -54,4 +65,26 @@ const Container = styled.div`
     -50.1%
   ); // translate(50%, 50%) makes border blurry due to Chrome bug (?)
   background: ${(props) => props.theme.modal_bg};
+  border: 1px solid ${(props) => props.theme.border_primary};
+  max-width: 30rem;
+  padding: 3rem;
+`;
+
+const Button = styled.button`
+  position: absolute;
+  color: ${(props) => props.theme.text_secondary};
+
+  &:hover {
+    color: ${(props) => props.theme.text_primary};
+  }
+`;
+
+const CloseBtn = styled(Button)`
+  top: 1.5rem;
+  right: 1.5rem;
+`;
+
+const BackBtn = styled(Button)`
+  bottom: 3.65rem;
+  left: 3rem;
 `;

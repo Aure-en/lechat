@@ -8,21 +8,7 @@ function Settings({ match }) {
     `${process.env.REACT_APP_URL}/servers/${match.params.serverId}`
   );
 
-  return (
-    <>
-      {server && (
-        <>
-          <img
-            src={`data:${server.icon.contentType};base64,${Buffer.from(
-              server.icon.data
-            ).toString("base64")}`}
-            alt={server.title}
-          />
-          <Form server={server} />
-        </>
-      )}
-    </>
-  );
+  return <>{server && <Form server={server} />}</>;
 }
 
 export default Settings;
