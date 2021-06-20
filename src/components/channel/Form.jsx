@@ -1,56 +1,45 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
+import styled from "styled-components";
+import useChannel from "../../hooks/server/useChannel";
+import SubmitBtn from "../shared/buttons/Gradient";
 
 function Form({ serverId, categoryId, channel }) {
-  const [name, setName] = useState((channel && channel.name) || "");
-  const [error, setError] = useState("");
+  const { name, setName, error, handleSubmit } = useChannel(
+    serverId,
+    categoryId,
+    channel
+  );
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-
-    // Validation
-    if (!name) {
-      setError("Name must be specified.");
-      return;
-    }
-
-    // Save the channel (create or update it)
-    const url = channel
-      ? `${process.env.REACT_APP_URL}/channels/${channel._id}`
-      : `${process.env.REACT_APP_URL}/servers/${serverId}/categories/${categoryId}/channels`;
-
-    const method = channel ? "PUT" : "POST";
-
-    const res = await fetch(url, {
-      method,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, category: categoryId }),
-    });
-    const json = await res.json();
-
-    if (json.errors) {
-      setError(json.errors.filter((err) => err.param === "name")[0].msg);
-    }
-  };
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="name">
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </label>
-      {error && <small>{error}</small>}
+    <div>
+      <Header>
+        <Heading>{channel ? "Update" : "Create"} Channel</Heading>
+        <p>Channels are where your friends will gather to chat</p>
+      </Header>
+      <FormContainer onSubmit={handleSubmit}>
+        <Field>
+          <Label htmlFor="name">
+            Name
+            <Input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Enter the channel name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </Label>
+          {error && <Error>{error}</Error>}
+        </Field>
 
-      <button type="submit">{channel ? "Update" : "Create"} Channel</button>
-    </form>
+        <Button>
+          <SubmitBtn type="submit">
+            {channel ? "Update" : "Create"} Channel
+          </SubmitBtn>
+        </Button>
+      </FormContainer>
+    </div>
   );
 }
 
@@ -68,3 +57,58 @@ Form.propTypes = {
 Form.defaultProps = {
   channel: undefined,
 };
+
+const Header = styled.div`
+  text-align: center;
+  margin-bottom: 2rem;
+`;
+
+const Heading = styled.h2`
+  font-family: "Playfair Display", sans-serif;
+  font-size: 1.75rem;
+  line-height: 2.75rem;
+  margin: 0;
+`;
+
+const FormContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Field = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+`;
+
+const Label = styled.label`
+  display: flex;
+  flex-direction: column;
+  text-transform: uppercase;
+  font-size: 0.825rem;
+  letter-spacing: 1px;
+`;
+
+const Input = styled.input`
+  border: none;
+  border-bottom: 1px solid ${(props) => props.theme.input_border};
+  padding: 0.5rem 0 0.25rem 0;
+
+  &::placeholder {
+    color: ${(props) => props.theme.input_border};
+  }
+
+  &:focus {
+    border-bottom: 1px solid ${(props) => props.theme.input_border_active};
+  }
+`;
+
+const Error = styled.div`
+  color: ${(props) => props.theme.error};
+  font-size: 0.825rem;
+`;
+
+const Button = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;

@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 
-
 import { ReactComponent as IconClose } from "../../assets/icons/general/close.svg";
 
 function Modal({ isOpen, setIsOpen, children }) {
@@ -60,10 +59,9 @@ const Container = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(
-    -50.1%,
-    -50.1%
-  ); // translate(50%, 50%) makes border blurry due to Chrome bug (?)
+  // Borders are a bit blurry on Chrome when using this.
+  transform: translate(-50%, -50%);
+  backface-visibility: hidden;
   background: ${(props) => props.theme.modal_bg};
   border: 1px solid ${(props) => props.theme.border_primary};
   max-width: 30rem;
