@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+import styled from "styled-components";
 import { Switch } from "react-router-dom";
 import PrivateRoute from "../types/PrivateRoute";
 import Categories from "../../components/category/List";
 import CategoryModal from "../../components/modals/server/Category";
 import Channel from "./Channel";
-import About from "./About";
 import useFetch from "../../hooks/shared/useFetch";
 import Members from "../../components/server/Members";
 import Leave from "../../components/server/Leave";
@@ -16,31 +16,26 @@ function Server({ match }) {
   );
 
   return (
-    <>
+    <Container>
       {/* Left sidebar */}
       <Categories serverId={match.params.serverId} />
-      <CategoryModal serverId={match.params.serverId} />
-      <Leave serverId={match.params.serverId} />
+      {/* <CategoryModal serverId={match.params.serverId} />
+      <Leave serverId={match.params.serverId} /> */}
 
       {/* Main */}
       {server && (
         <Switch>
           <PrivateRoute
             exact
-            path="/servers/:serverId"
-            render={() => <About server={server} />}
-          />
-          <PrivateRoute
-            exact
             path="/servers/:serverId/channels/:channelId"
-            render={() => <Channel channelId={match.params.channelId} />}
+            render={() => <Channel />}
           />
         </Switch>
       )}
 
       {/* Right sidebar */}
       <Members serverId={match.params.serverId} />
-    </>
+    </Container>
   );
 }
 
@@ -54,3 +49,9 @@ Server.propTypes = {
     }),
   }).isRequired,
 };
+
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: 15rem 1fr 15rem;
+  width: 100%;
+`;

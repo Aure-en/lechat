@@ -1,34 +1,68 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import Group from "./Group";
 
 function Messages({ messages, setEditing }) {
-  const remove = async (id) => {
-    await fetch(`${process.env.REACT_APP_URL}/messages/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        "Content-Type": "application/json",
-      },
-    });
+  const [ordered, setOrdered] = useState([]);
+
+  // Helper function to compare dates
+  const compareDates = (timestamp1, timestamp2) => {
+    const date1 = new Date(timestamp1);
+    const date2 = new Date(timestamp2);
+    if (
+      date1.getDate() === date2.getDate() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getFullYear() === date2.getFullYear()
+    )
+      return true;
+    return false;
   };
+
+  // Group messages by author and time so that the author isn't displayed in front of every message.
+  useEffect(() => {
+    if (messages.length === 0) return;
+    const ordered = [];
+    const unordered = [...messages];
+
+    unordered.map((message, index) => {
+      // Create the first group from the first message
+      if (index === 0) {
+        ordered.push({
+          author: message.author,
+          timestamp: message.timestamp,
+          messages: [message],
+        });
+        return;
+      }
+
+      /*
+        Loop over messages.
+        - If the message has the same author and same date as the previous one,
+          push it in the same group.
+        - Else, create a new group of messages.
+      */
+
+      if (
+        message.author._id === ordered[ordered.length - 1].author._id &&
+        compareDates(message.timestamp, ordered[ordered.length - 1].timestamp)
+      ) {
+        ordered[ordered.length - 1].messages.push(message);
+      } else {
+        ordered.push({
+          author: message.author,
+          timestamp: message.timestamp,
+          messages: [message],
+        });
+      }
+    });
+
+    setOrdered(ordered);
+  }, [messages]);
 
   return (
     <ul>
-      {messages.map((message) => (
-        <li key={message._id}>
-          {message.author.username} {message.text}
-          {message.author._id ===
-            JSON.parse(localStorage.getItem("user"))._id && (
-            <>
-              <button type="button" onClick={() => setEditing(message)}>
-                Edit
-              </button>
-              <button type="button" onClick={() => remove(message._id)}>
-                Delete
-              </button>
-            </>
-          )}
-        </li>
+      {ordered.map((messages) => (
+        <Group key={message._id} messages={messages} setEditing={setEditing} />
       ))}
     </ul>
   );

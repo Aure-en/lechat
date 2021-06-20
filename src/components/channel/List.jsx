@@ -28,8 +28,9 @@ function List({ serverId, categoryId }) {
 
 function Channel({ serverId, categoryId, channel }) {
   const [hovered, setHovered] = useState(false);
-  const current = useRouteMatch("/servers/:serverId/channels/:channelId").params
-    .channelId;
+  const current =
+    useRouteMatch("/servers/:serverId/channels/:channelId") &&
+    useRouteMatch("/servers/:serverId/channels/:channelId").params.channelId;
 
   function remove(id) {
     fetch(`${process.env.REACT_APP_URL}/channels/${id}`, {

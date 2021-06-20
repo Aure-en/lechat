@@ -15,11 +15,13 @@ function List({ serverId }) {
   );
 
   return (
-    <Ul>
-      {categories.map((category) => (
-        <Li key={category._id} serverId={serverId} category={category} />
-      ))}
-    </Ul>
+    <Nav>
+      <ul>
+        {categories.map((category) => (
+          <Li key={category._id} serverId={serverId} category={category} />
+        ))}
+      </ul>
+    </Nav>
   );
 }
 
@@ -61,10 +63,10 @@ List.propTypes = {
   serverId: PropTypes.string.isRequired,
 };
 
-const Ul = styled.ul`
-  width: 12.5rem;
+const Nav = styled.nav`
   overflow-y: auto;
   padding: 0.5rem;
+  border-right: 1px solid ${(props) => props.theme.border};
 `;
 
 const Category = styled.div`
