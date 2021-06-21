@@ -20,7 +20,6 @@ function Messages({ messages, setEditing }) {
 
   // Group messages by author and time so that the author isn't displayed in front of every message.
   useEffect(() => {
-    if (messages.length === 0) return;
     const ordered = [];
     const unordered = [...messages];
 
@@ -31,6 +30,7 @@ function Messages({ messages, setEditing }) {
           author: message.author,
           timestamp: message.timestamp,
           messages: [message],
+          _id: message._id,
         });
         return;
       }
@@ -52,6 +52,7 @@ function Messages({ messages, setEditing }) {
           author: message.author,
           timestamp: message.timestamp,
           messages: [message],
+          _id: message._id,
         });
       }
     });
@@ -62,7 +63,7 @@ function Messages({ messages, setEditing }) {
   return (
     <ul>
       {ordered.map((messages) => (
-        <Group key={message._id} messages={messages} setEditing={setEditing} />
+        <Group key={messages._id} messages={messages} setEditing={setEditing} />
       ))}
     </ul>
   );

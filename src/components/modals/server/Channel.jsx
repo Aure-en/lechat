@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Form from "../../channel/Form";
 import Modal from "../Modal";
 
-import { ReactComponent as IconPlus } from "../../../assets/icons/general/plus.svg";
+import IconPlus from "../../../assets/icons/general/IconPlus";
 import { ReactComponent as IconSettings } from "../../../assets/icons/general/settings.svg";
 
 function Channel({ serverId, categoryId, channel }) {
@@ -12,7 +12,7 @@ function Channel({ serverId, categoryId, channel }) {
   return (
     <>
       <Button type="button" onClick={() => setIsOpen(true)}>
-        {channel ? <IconSettings /> : <IconPlus />}
+        {channel ? <IconSettings /> : <IconPlus size={20} strokeWidth={1} />}
       </Button>
 
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>

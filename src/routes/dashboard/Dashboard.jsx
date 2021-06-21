@@ -31,6 +31,7 @@ function Dashboard() {
 export default Dashboard;
 
 const Container = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr;
   height: 100%;
 `;

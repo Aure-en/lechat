@@ -21,12 +21,9 @@ function Sidebar() {
 export default Sidebar;
 
 const Nav = styled.nav`
-  padding: 0.5rem;
+  padding: 0.75rem;
   overflow-y: auto;
-  border-right: 1px solid ${(props) => props.theme.border};
-
-  & > *:first-child {
-    margin-bottom: 0.5rem;
-    border-bottom: 1px solid ${(props) => props.theme.sidebar_border};
-  }
+  background: ${(props) => props.theme.bg_sidebar};
+  margin: 1rem;
+  border-radius: 1rem;
 `;

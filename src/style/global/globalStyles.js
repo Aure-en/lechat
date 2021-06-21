@@ -59,9 +59,8 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    font-family: 'Noto Sans JP', 'Trebuchet MS', sans-serif;
-    font-size: .875rem;
-    background: ${({ theme }) => theme.bg_app};
+    font-family: 'Assistant', 'Trebuchet MS', sans-serif;
+    background: ${({ theme }) => theme.bg_primary};
     color: ${({ theme }) => theme.text_primary};
     line-height: 1.25rem;
     font-weight: 300;
@@ -88,7 +87,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   button {
-    font-family: 'Noto Sans JP', 'Trebuchet MS', sans-serif;
+    font-family: 'Assistant', 'Trebuchet MS', sans-serif;
     background: none;
     border: none;
     cursor: pointer;
@@ -101,7 +100,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   input {
-    font-family: 'Noto Sans JP', 'Trebuchet MS', sans-serif;
+    font-family: 'Assistant', 'Trebuchet MS', sans-serif;
   
     &:focus {
       outline: 1px solid transparent;
@@ -109,7 +108,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', 'Noto Sans JP', 'Trebuchet MS', sans-serif;
+    font-family: 'Playfair Display', 'Assistant', 'Trebuchet MS', sans-serif;
     font-weight: initial;
   }
 

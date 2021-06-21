@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Switch } from "react-router-dom";
 import PrivateRoute from "../types/PrivateRoute";
-import Categories from "../../components/category/List";
+import Sidebar from "../../components/server/Sidebar";
 import CategoryModal from "../../components/modals/server/Category";
 import Channel from "./Channel";
 import useFetch from "../../hooks/shared/useFetch";
@@ -18,7 +18,7 @@ function Server({ match }) {
   return (
     <Container>
       {/* Left sidebar */}
-      <Categories serverId={match.params.serverId} />
+      <Sidebar serverId={match.params.serverId} />
       {/* <CategoryModal serverId={match.params.serverId} />
       <Leave serverId={match.params.serverId} /> */}
 
@@ -52,6 +52,6 @@ Server.propTypes = {
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 15rem 1fr 15rem;
+  grid-template-columns: 17.5rem 1fr 15rem;
   width: 100%;
 `;

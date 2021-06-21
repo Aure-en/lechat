@@ -67,7 +67,7 @@ const Default = styled.div`
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  background: ${(props) => props.theme.server_icon_bg};
+  background: ${(props) => props.theme.bg_button};
   color: ${(props) => props.theme.server_icon_text};
   font-size: 1.5rem;
 `;

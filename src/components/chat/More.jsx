@@ -116,7 +116,7 @@ const Option = styled.button`
   padding: 0.25rem 1rem;
   width: 100%;
   text-align: start;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   white-space: nowrap;
 
   &:hover {

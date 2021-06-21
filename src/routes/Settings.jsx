@@ -77,7 +77,7 @@ const Heading = styled.h1`
 `;
 
 const Subheading = styled.h2`
-  font-family: "Source Sans Pro", "Trebuchet MS", sans-serif;
+  font-family: "Assistant", "Trebuchet MS", sans-serif;
   font-weight: 400;
   font-size: 0.75rem;
   text-transform: uppercase;

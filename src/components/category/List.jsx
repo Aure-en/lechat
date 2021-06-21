@@ -6,7 +6,7 @@ import Channels from "../channel/List";
 import ChannelModal from "../modals/server/Channel";
 import CategoryModal from "../modals/server/Category";
 
-import { ReactComponent as IconChevron } from "../../assets/icons/server/chevron-down.svg";
+import IconChevron from "../../assets/icons/server/IconChevron";
 
 function List({ serverId }) {
   const { sections: categories } = useSection(
@@ -65,8 +65,6 @@ List.propTypes = {
 
 const Nav = styled.nav`
   overflow-y: auto;
-  padding: 0.5rem;
-  border-right: 1px solid ${(props) => props.theme.border};
 `;
 
 const Category = styled.div`
@@ -80,7 +78,7 @@ const Name = styled.button`
   display: flex;
   align-items: center;
   text-transform: uppercase;
-  font-size: 0.813rem;
+  font-size: 0.875rem;
   font-weight: 400;
   color: ${(props) => props.theme.text_secondary};
 `;

@@ -48,9 +48,9 @@ function Channel({ serverId, categoryId, channel }) {
       onMouseLeave={() => setHovered(false)}
       $current={current === channel._id}
     >
-      <Link to={`/servers/${serverId}/channels/${channel._id}`}>
-        # {channel.name}
-      </Link>
+      <StyledLink to={`/servers/${serverId}/channels/${channel._id}`}>
+        {channel.name}
+      </StyledLink>
       {hovered && (
         <ChannelModal
           serverId={serverId}
@@ -84,10 +84,24 @@ Channel.propTypes = {
 const Li = styled.li`
   display: flex;
   justify-content: space-between;
-  padding: 0.15rem 0 0.15rem 1.5rem;
+  padding: 0.25rem 0;
   font-weight: ${(props) => props.$current && 400};
 
   & > *:first-child {
     flex: 1;
+  }
+`;
+
+const StyledLink = styled(Link)`
+  text-indent: 2rem;
+
+  &:before {
+    content: "";
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: ${(props) => props.theme.bg_button};
+    transform: rotate(45deg);
+    margin-right: 1rem;
   }
 `;

@@ -23,19 +23,13 @@ function Group({ messages, setEditing }) {
 export default Group;
 
 Group.propTypes = {
-  messages: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string,
-      username: PropTypes.string,
-      avatar: PropTypes.shape({
-        contentType: PropTypes.string,
-        data: PropTypes.shape({
-          type: PropTypes.string,
-          data: PropTypes.arrayOf(PropTypes.number),
-        }),
-      }),
-    })
-  ).isRequired,
+  messages: PropTypes.shape({
+    messages: PropTypes.arrayOf(
+      PropTypes.shape({
+        _id: PropTypes.string,
+      })
+    ),
+  }).isRequired,
   setEditing: PropTypes.func,
 };
 
