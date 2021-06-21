@@ -31,5 +31,4 @@ export default Channel;
 const Container = styled.main`
   display: grid;
   grid-template-rows: 1fr auto;
-  padding: 0.5rem 1rem;
 `;
