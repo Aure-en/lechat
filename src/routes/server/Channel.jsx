@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
+import Header from "../../components/chat/Header";
 import Messages from "../../components/chat/Messages";
 import Form from "../../components/chat/Form";
 import useMessage from "../../hooks/chat/useMessage";
@@ -18,13 +19,9 @@ function Channel() {
     channelId && `${process.env.REACT_APP_URL}/channels/${channelId}/messages`
   );
 
-  useEffect(() => {
-    console.log(messages);
-  }, [messages]);
-
   return (
     <Container>
-      {channel && <div>{channel.name}</div>}
+      {channel && <Header name={channel.name} description={channel.about} />}
       <Messages messages={messages} setEditing={setEditing} />
       <Form
         message={editing}

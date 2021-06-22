@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import styled from "styled-components";
 import Group from "./Group";
 
 function Messages({ messages, setEditing }) {
@@ -61,11 +62,11 @@ function Messages({ messages, setEditing }) {
   }, [messages]);
 
   return (
-    <ul>
+    <Ul>
       {ordered.map((messages) => (
         <Group key={messages._id} messages={messages} setEditing={setEditing} />
       ))}
-    </ul>
+    </Ul>
   );
 }
 
@@ -88,3 +89,7 @@ Messages.propTypes = {
 Messages.defaultProps = {
   setEditing: () => {},
 };
+
+const Ul = styled.ul`
+  padding: 0 1rem;
+`;

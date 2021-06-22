@@ -26,8 +26,7 @@ function About({ serverId }) {
       <Description>
         {server.about}
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Error quos
-        deserunt voluptatibus labore sit, iste illum rerum ipsa maiores porro
-        iusto cum.
+        deserunt voluptatibus labore sit.
       </Description>
     </Container>
   );
@@ -73,7 +72,7 @@ const Default = styled.div`
   width: 5rem;
   height: 5rem;
   border-radius: 50%;
-  background: ${(props) => props.theme.server_icon_bg};
+  background: ${(props) => props.theme.bg_button};
   color: ${(props) => props.theme.server_icon_text};
   font-size: 1.5rem;
 `;
