@@ -26,7 +26,7 @@ function List({ serverId }) {
 }
 
 function Li({ serverId, category }) {
-  const [open, setOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(true);
 
   const remove = (id) => {
     fetch(`${process.env.REACT_APP_URL}/categories/${id}`, {
@@ -40,15 +40,15 @@ function Li({ serverId, category }) {
   return (
     <li>
       <Category>
-        <Name type="button" onClick={() => setOpen(!open)} >
-          <Icon $open={open}>
+        <Name type="button" onClick={() => setIsOpen(!isOpen)} >
+          <Icon $open={isOpen}>
             <IconChevron />
           </Icon>
           {category.name}
         </Name>
         <ChannelModal serverId={serverId} categoryId={category._id} />
       </Category>
-      {open && <Channels serverId={serverId} categoryId={category._id} />}
+      {isOpen && <Channels serverId={serverId} categoryId={category._id} />}
       {/* <CategoryModal serverId={serverId} category={category} />
     <button type="button" onClick={() => remove(category._id)}>
       Delete

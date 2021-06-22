@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import About from "./About";
-import Categories from "../category/List";
+import About from "../About";
+import Categories from "../../category/List";
 
-function Sidebar({ serverId }) {
+function Left({ serverId }) {
   return (
     <Container>
       <About serverId={serverId} />
@@ -13,9 +13,9 @@ function Sidebar({ serverId }) {
   );
 }
 
-export default Sidebar;
+export default Left;
 
-Sidebar.propTypes = {
+Left.propTypes = {
   serverId: PropTypes.string.isRequired,
 };
 

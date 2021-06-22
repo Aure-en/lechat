@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Switch } from "react-router-dom";
 import PrivateRoute from "../types/PrivateRoute";
-import Sidebar from "../../components/server/Sidebar";
+import SidebarLeft from "../../components/server/sidebar/Left";
+import SidebarRight from "../../components/server/sidebar/Right";
 import CategoryModal from "../../components/modals/server/Category";
 import Channel from "./Channel";
 import useFetch from "../../hooks/shared/useFetch";
-import Members from "../../components/server/Members";
 import Leave from "../../components/server/Leave";
 
 function Server({ match }) {
@@ -18,7 +18,7 @@ function Server({ match }) {
   return (
     <Container>
       {/* Left sidebar */}
-      <Sidebar serverId={match.params.serverId} />
+      <SidebarLeft serverId={match.params.serverId} />
       {/* <CategoryModal serverId={match.params.serverId} />
       <Leave serverId={match.params.serverId} /> */}
 
@@ -34,7 +34,7 @@ function Server({ match }) {
       )}
 
       {/* Right sidebar */}
-      <Members serverId={match.params.serverId} />
+      <SidebarRight serverId={match.params.serverId} />
     </Container>
   );
 }
