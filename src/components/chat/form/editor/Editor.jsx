@@ -15,12 +15,20 @@ import {
   Component as LinkComponent,
   strategy as linkStrategy,
 } from "./entities/Link";
+import {
+  Component as UrlComponent,
+  strategy as UrlStrategy,
+} from "./entities/Url";
 import Buttons from "./buttons/Buttons";
 
 const decorator = new CompositeDecorator([
   {
     strategy: linkStrategy,
     component: LinkComponent,
+  },
+  {
+    strategy: UrlStrategy,
+    component: UrlComponent,
   },
 ]);
 
