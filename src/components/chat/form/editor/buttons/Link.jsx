@@ -26,10 +26,48 @@ function Link({ editorState, setEditorState }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const selection = editorState.getSelection();
     const contentState = editorState.getCurrentContent();
+    const selection = editorState.getSelection();
 
-    
+    // Insert text
+    const contentWithText = Modifier.replaceText(
+      contentState,
+      selection,
+      values.text
+    );
+
+    // Create link entity
+    const contentWithEntity = contentWithText.createEntity(
+      "LINK",
+      "MUTABLE",
+      values.url
+    );
+    const entityKey = contentWithEntity.getLastCreatedEntityKey();
+
+    // Select text
+    let selectionState = SelectionState.createEmpty();
+    selectionState = selectionState.merge({
+      anchorKey: selection.getAnchorKey(),
+      anchorOffset: selection.getAnchorOffset(),
+      focusKey: selection.getAnchorKey(),
+      focusOffset: selection.getAnchorOffset() + values.text.length,
+    });
+
+    // Apply link entity to text
+    const contentWithLink = Modifier.applyEntity(
+      contentWithEntity,
+      selectionState,
+      entityKey
+    );
+
+    // Create state with the entity
+    const stateWithLink = EditorState.push(editorState, contentWithLink);
+
+    // Move focus to the end (after the newly inserted text)
+    const stateWithFocus = EditorState.moveFocusToEnd(stateWithLink);
+
+    // Update state
+    setEditorState(stateWithFocus);
   };
 
   return (

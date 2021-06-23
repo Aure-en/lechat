@@ -8,13 +8,25 @@ import {
   EditorState,
   Modifier,
   RichUtils,
+  CompositeDecorator,
 } from "draft-js";
 import "draft-js/dist/Draft.css";
+import {
+  Component as LinkComponent,
+  strategy as linkStrategy,
+} from "./entities/Link";
 import Buttons from "./buttons/Buttons";
+
+const decorator = new CompositeDecorator([
+  {
+    strategy: linkStrategy,
+    component: LinkComponent,
+  },
+]);
 
 function TextEditor({ send, prev }) {
   const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
+    EditorState.createEmpty(decorator)
   );
 
   const onChange = (editorState) => {
@@ -69,7 +81,7 @@ function TextEditor({ send, prev }) {
   useEffect(() => {
     if (!prev) return;
     const content = convertFromRaw(JSON.parse(prev));
-    setEditorState(EditorState.createWithContent(content));
+    setEditorState(EditorState.createWithContent(content, decorator));
   }, [prev]);
 
   return (

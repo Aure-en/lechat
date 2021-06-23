@@ -8,7 +8,7 @@ function Tooltip({ name, keys }) {
     <ReactTooltip id={name}>
       <Content>
         <span>{name}</span>
-        {keys && <Ul>{keys && keys.map((key) => <Li>{key}</Li>)}</Ul>}
+        {keys && <Ul>{keys && keys.map((key) => <Li key={key}>{key}</Li>)}</Ul>}
       </Content>
     </ReactTooltip>
   );
