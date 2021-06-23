@@ -33,6 +33,8 @@ const colors = {
 
   menu_bg: "rgb(255, 255, 255)",
   menu_bg_hover: "rgb(200, 200, 200)",
+
+  tooltip_key: "rgba(200, 200, 200, 0.9)",
 };
 
 export default colors;

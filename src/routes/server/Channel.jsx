@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../../components/chat/Header";
@@ -6,7 +6,7 @@ import Messages from "../../components/chat/Messages";
 import Form from "../../components/chat/Form";
 import useMessage from "../../hooks/chat/useMessage";
 import useFetch from "../../hooks/shared/useFetch";
-import TextEditor from "../../components/chat/form.jsx/TextEditor";
+import TextEditor from "../../components/chat/form/editor/Editor";
 
 function Channel() {
   const { channelId } = useRouteMatch(

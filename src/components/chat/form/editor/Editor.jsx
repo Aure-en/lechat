@@ -10,6 +10,7 @@ import {
   RichUtils,
 } from "draft-js";
 import "draft-js/dist/Draft.css";
+import Buttons from "./buttons/Buttons";
 
 function TextEditor({ send, prev }) {
   const [editorState, setEditorState] = useState(() =>
@@ -80,6 +81,7 @@ function TextEditor({ send, prev }) {
         onChange={(editorState) => onChange(editorState)}
         blockStyleFn={customBlockFn}
       />
+      <Buttons editorState={editorState} setEditorState={setEditorState} />
     </Container>
   );
 }

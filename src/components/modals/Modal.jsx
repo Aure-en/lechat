@@ -13,7 +13,7 @@ function Modal({ isOpen, setIsOpen, children }) {
         <>
           {ReactDOM.createPortal(
             <Wrapper
-              onClick={(e) => {
+              onMouseDown={(e) => {
                 if (e.target.contains(ref.current)) setIsOpen(false);
               }}
             >
@@ -61,7 +61,6 @@ const Container = styled.div`
   left: 50%;
   // Borders are a bit blurry on Chrome when using this.
   transform: translate(-50%, -50%);
-  backface-visibility: hidden;
   background: ${(props) => props.theme.modal_bg};
   border: 1px solid ${(props) => props.theme.border_primary};
   max-width: 30rem;
