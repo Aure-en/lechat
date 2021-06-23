@@ -9,7 +9,8 @@ function Unordered({ editorState, setEditorState }) {
     <Button
       editorState={editorState}
       setEditorState={setEditorState}
-      style="UNORDERED"
+      display="block"
+      style="unordered-list-item"
       name="Unordered"
       keys={["Ctrl", "*"]}
     >

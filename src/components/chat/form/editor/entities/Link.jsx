@@ -20,6 +20,14 @@ export function Component({ contentState, entityKey, children }) {
   );
 }
 
+Component.propTypes = {
+  contentState: PropTypes.shape({
+    getEntity: PropTypes.func,
+  }).isRequired,
+  entityKey: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};
+
 export const strategy = (contentBlock, callback, contentState) => {
   contentBlock.findEntityRanges((character) => {
     const entityKey = character.getEntity();
@@ -31,6 +39,10 @@ export const strategy = (contentBlock, callback, contentState) => {
 };
 
 const Link = styled.a`
-  color: red;
-  font-size: 2rem;
+  color: ${(props) => props.theme.text_link};
+
+  &:hover {
+    color: ${(props) => props.theme.text_link_hover};
+    text-decoration: underline;
+  }
 `;

@@ -18,7 +18,7 @@ export function Component({ children }) {
 
 export const strategy = (contentBlock, callback) => {
   const regex =
-    /([\w+]+\:\/\/)?([\w\d-]+\.)*[\w-]+[\.\:]\w+([\/\?\=\&\#\.]?[\w-]+)*\/?/gim;
+    /([a-z0-9-]+\:\/+)([^\/\s]+)([a-z0-9\-@\^=%&;\/~\+]*)[\?]?([^ \#\r\n]*)#?([^ \#\r\n]*)/gim;
   const text = contentBlock.getText();
   let match;
   while ((match = regex.exec(text))) {
@@ -37,6 +37,10 @@ Component.propTypes = {
 };
 
 const Link = styled.a`
-  color: red;
-  font-size: 2rem;
+  color: ${(props) => props.theme.text_link};
+
+  &:hover {
+    color: ${(props) => props.theme.text_link_hover};
+    text-decoration: underline;
+  }
 `;

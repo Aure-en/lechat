@@ -7,6 +7,7 @@ import Modal from "../../../../modals/Modal";
 import SubmitBtn from "../../../../shared/buttons/Gradient";
 
 import { ReactComponent as IconLink } from "../../../../../assets/icons/editor/link.svg";
+import ReactTooltip from "react-tooltip";
 
 function Link({ editorState, setEditorState }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,7 +51,7 @@ function Link({ editorState, setEditorState }) {
       anchorKey: selection.getAnchorKey(),
       anchorOffset: selection.getAnchorOffset(),
       focusKey: selection.getAnchorKey(),
-      focusOffset: selection.getAnchorOffset() + values.text.length,
+      focusOffset: selection.getAnchorOffset() + values.text.length + 1,
     });
 
     // Apply link entity to text
@@ -72,7 +73,12 @@ function Link({ editorState, setEditorState }) {
 
   return (
     <>
-      <Button type="button" onClick={() => setIsOpen(!isOpen)}>
+      <Button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        data-tip="Test"
+        data-for="Link"
+      >
         <IconLink />
       </Button>
 

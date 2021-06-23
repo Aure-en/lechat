@@ -9,9 +9,10 @@ function Code({ editorState, setEditorState }) {
     <Button
       editorState={editorState}
       setEditorState={setEditorState}
-      style="CODE"
+      display="block"
+      style="code-block"
       name="Code"
-      keys={["Ctrl", "$"]}
+      keys={["Ctrl", "J"]}
     >
       <IconBold />
     </Button>

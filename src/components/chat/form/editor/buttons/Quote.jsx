@@ -9,7 +9,8 @@ function Quote({ editorState, setEditorState }) {
     <Button
       editorState={editorState}
       setEditorState={setEditorState}
-      style="QUOTE"
+      display="block"
+      style="blockquote"
       name="Quote"
       keys={["Ctrl", '"']}
     >

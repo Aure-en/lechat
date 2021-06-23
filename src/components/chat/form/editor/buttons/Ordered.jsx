@@ -9,7 +9,8 @@ function Ordered({ editorState, setEditorState }) {
     <Button
       editorState={editorState}
       setEditorState={setEditorState}
-      style="ORDERED"
+      display="block"
+      style="ordered-list-item"
       name="Ordered"
       keys={["Ctrl", "1"]}
     >

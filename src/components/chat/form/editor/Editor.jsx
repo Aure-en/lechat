@@ -9,6 +9,8 @@ import {
   Modifier,
   RichUtils,
   CompositeDecorator,
+  getDefaultKeyBinding,
+  KeyBindingUtil,
 } from "draft-js";
 import "draft-js/dist/Draft.css";
 import {
@@ -23,10 +25,12 @@ import Buttons from "./buttons/Buttons";
 
 const decorator = new CompositeDecorator([
   {
+    // Used to insert links
     strategy: linkStrategy,
     component: LinkComponent,
   },
   {
+    // Detect urls and create a link from them
     strategy: UrlStrategy,
     component: UrlComponent,
   },
@@ -42,8 +46,51 @@ function TextEditor({ send, prev }) {
     send(JSON.stringify(convertToRaw(editorState.getCurrentContent())));
   };
 
+  const keyBindingFn = (e) => {
+    const { hasCommandModifier } = KeyBindingUtil;
+    // Cmd + 1 🠒 Ordered List
+    if (e.keyCode === 97 && hasCommandModifier(e)) {
+      return "ordered-list-item";
+    }
+
+    // Cmd + * 🠒 Unordered List
+    if (e.keyCode === 220 && hasCommandModifier(e)) {
+      return "unordered-list-item";
+    }
+
+    // Cmd + " 🠒 Quote
+    if (e.keyCode === 51 && hasCommandModifier(e)) {
+      return "blockquote";
+    }
+
+    if (
+      e.keyCode === 13 &&
+      hasCommandModifier(e) &&
+      (RichUtils.getCurrentBlockType(editorState) === "blockquote" ||
+        RichUtils.getCurrentBlockType(editorState) === "code-block")
+    ) {
+      console.log("NEWLINE")
+      return "block-newline";
+    }
+    return getDefaultKeyBinding(e);
+  };
+
   // Allows the user to use keyboard shortcuts (ex: Ctrl + B to bold)
   const handleKeyCommand = (command) => {
+    if (
+      command === "ordered-list-item" ||
+      command === "unordered-list-item" ||
+      command === "blockquote"
+    ) {
+      setEditorState(RichUtils.toggleBlockType(editorState, command));
+      return "handled";
+    }
+
+    if (command === "block-newline") {
+      setEditorState(RichUtils.insertSoftNewline(editorState));
+      return "handled";
+    }
+
     const state = RichUtils.handleKeyCommand(editorState, command);
     if (state) setEditorState(state);
   };
@@ -62,7 +109,7 @@ function TextEditor({ send, prev }) {
       const newContent = Modifier.replaceText(
         editorState.getCurrentContent(),
         editorState.getSelection(),
-        "      "
+        "  "
       );
       const state = EditorState.push(
         editorState,
@@ -76,12 +123,8 @@ function TextEditor({ send, prev }) {
   // Sets up custom blocks (quote, code)
   const customBlockFn = (contentBlock) => {
     const type = contentBlock.getType();
-    if (type === "CODE") {
-      return "code";
-    }
-    if (type === "QUOTE") {
-      return "quote";
-    }
+    if (type === "code-block") return "code";
+    if (type === "blockquote") return "quote";
     return "";
   };
 
@@ -96,6 +139,7 @@ function TextEditor({ send, prev }) {
     <Container>
       <Editor
         editorState={editorState}
+        keyBindingFn={keyBindingFn}
         handleKeyCommand={handleKeyCommand}
         onTab={handleTab}
         onChange={(editorState) => onChange(editorState)}

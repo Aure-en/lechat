@@ -116,6 +116,29 @@ const GlobalStyles = createGlobalStyle`
     font-size: 0.75rem;
     color: ${({ theme }) => theme.text_secondary};
   }
+
+  // Text Editor
+  .code {
+    background: ${({ theme }) => theme.bg_code};
+    padding: .5rem;
+    margin: 1rem;
+    font-family: "Monospace";
+    font-size: 0.875rem;
+  }
+
+  .quote {
+    position: relative;
+    margin: 1rem 0 1rem 1rem;
+  }
+
+  .quote:before {
+    position: absolute;
+    content: '';
+    border: 2px solid ${({ theme }) => theme.border_quote};
+    border-radius: 15%;
+    left: -.75rem;
+    height: 100%;
+  }
 `;
 
 export default GlobalStyles;
