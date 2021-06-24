@@ -38,7 +38,12 @@ const colors = {
   menu_bg: "rgb(255, 255, 255)",
   menu_bg_hover: "rgb(200, 200, 200)",
 
-  tooltip_key: "rgba(200, 200, 200, 0.9)",
+  // Text Editor buttons
+  editor_bg_hover: "rgb(236, 247, 250)",
+  editor_bg_active: "rgb(206, 232, 239)",
+  editor_text: "rgb(104, 153, 165)",
+  editor_text_active: "rgb(12, 88, 107)",
+  tooltip_key: "rgba(236, 247, 250, 0.9)",
 };
 
 export default colors;

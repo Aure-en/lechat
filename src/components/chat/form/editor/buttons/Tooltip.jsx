@@ -5,7 +5,7 @@ import ReactTooltip from "react-tooltip";
 
 function Tooltip({ name, keys }) {
   return (
-    <ReactTooltip id={name}>
+    <ReactTooltip id={name} delayShow={500}>
       <Content>
         <span>{name}</span>
         {keys && <Ul>{keys && keys.map((key) => <Li key={key}>{key}</Li>)}</Ul>}

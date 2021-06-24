@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Button from "./Button";
 
-import { ReactComponent as IconBold } from "../../../../../assets/icons/editor/code.svg";
+import IconCode from "../../../../../assets/icons/editor/IconCode";
 
 function Code({ editorState, setEditorState }) {
   return (
@@ -14,7 +14,7 @@ function Code({ editorState, setEditorState }) {
       name="Code"
       keys={["Ctrl", "^"]}
     >
-      <IconBold />
+      <IconCode />
     </Button>
   );
 }

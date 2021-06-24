@@ -6,7 +6,7 @@ import Channels from "../channel/List";
 import ChannelModal from "../modals/server/Channel";
 import CategoryModal from "../modals/server/Category";
 
-import IconChevron from "../../assets/icons/server/IconChevron";
+import IconChevron from "../../assets/icons/general/IconChevron";
 
 function List({ serverId }) {
   const { sections: categories } = useSection(

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Button from "./Button";
 
-import { ReactComponent as IconOrdered } from "../../../../../assets/icons/editor/unordered.svg";
+import IconUnordered from "../../../../../assets/icons/editor/IconUnordered";
 
 function Unordered({ editorState, setEditorState }) {
   return (
@@ -14,7 +14,7 @@ function Unordered({ editorState, setEditorState }) {
       name="Unordered"
       keys={["Ctrl", "*"]}
     >
-      <IconOrdered />
+      <IconUnordered />
     </Button>
   );
 }

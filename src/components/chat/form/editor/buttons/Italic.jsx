@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Button from "./Button";
 
-import { ReactComponent as IconBold } from "../../../../../assets/icons/editor/italic.svg";
+import IconItalic from "../../../../../assets/icons/editor/IconItalic";
 
 function Italic({ editorState, setEditorState }) {
   return (
@@ -13,7 +13,7 @@ function Italic({ editorState, setEditorState }) {
       name="Italic"
       keys={["Ctrl", "I"]}
     >
-      <IconBold />
+      <IconItalic />
     </Button>
   );
 }

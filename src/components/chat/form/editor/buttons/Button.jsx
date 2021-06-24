@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Children, cloneElement, isValidElement } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { RichUtils } from "draft-js";
@@ -35,7 +35,26 @@ function Button({
         data-tip
         data-for={name}
       >
-        {children}
+        {/* Pass active props to children to
+        apply a different style to the svg when
+        the button is active */}
+        {Children.map(children, (child) => {
+          let active;
+          if (
+            (display === "inline" &&
+              editorState.getCurrentInlineStyle().has(style)) ||
+            (display === "block" &&
+              RichUtils.getCurrentBlockType(editorState) === style)
+          ) {
+            active = true;
+          }
+          if (isValidElement(child)) {
+            return cloneElement(child, {
+              strokeWidth: active && 1.5,
+            });
+          }
+          return child;
+        })}
       </Container>
 
       <Tooltip name={name} keys={keys} />
@@ -64,5 +83,15 @@ Button.defaultProps = {
 };
 
 const Container = styled.button`
-  background: ${(props) => props.$active && "red"};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.1rem;
+  border-radius: 3px;
+  color: ${(props) => props.theme.editor_text};
+  background: ${(props) => props.$active && props.theme.editor_bg_active};
+
+  &:hover {
+    background: ${(props) => !props.$active && props.theme.editor_bg_hover};
+  }
 `;

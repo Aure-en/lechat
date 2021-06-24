@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Button from "./Button";
 
-import { ReactComponent as IconOrdered } from "../../../../../assets/icons/editor/ordered.svg";
+import IconOrdered from "../../../../../assets/icons/editor/IconOrdered";
 
 function Ordered({ editorState, setEditorState }) {
   return (

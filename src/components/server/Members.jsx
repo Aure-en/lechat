@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import useFetch from "../../hooks/shared/useFetch";
-import IconChevron from "../../assets/icons/server/IconChevron";
+import IconChevron from "../../assets/icons/general/IconChevron";
 
 function Members({ serverId }) {
   const [isOpen, setIsOpen] = useState(false);

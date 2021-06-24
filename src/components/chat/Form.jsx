@@ -12,12 +12,6 @@ function Form({ conversationId, message, setEditing, setMessages }) {
   );
   return (
     <form onSubmit={handleSubmit}>
-      {/* <textarea
-        id="message"
-        name="message"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      /> */}
       <Editor
         send={setText}
         prev={message && message.text}

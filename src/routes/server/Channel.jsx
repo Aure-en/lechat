@@ -6,7 +6,6 @@ import Messages from "../../components/chat/Messages";
 import Form from "../../components/chat/Form";
 import useMessage from "../../hooks/chat/useMessage";
 import useFetch from "../../hooks/shared/useFetch";
-import TextEditor from "../../components/chat/form/editor/Editor";
 
 function Channel() {
   const { channelId } = useRouteMatch(
@@ -29,7 +28,6 @@ function Channel() {
         setEditing={setEditing}
         setMessages={setMessages}
       />
-      <TextEditor />
     </Container>
   );
 }

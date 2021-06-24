@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Button from "./Button";
 
-import { ReactComponent as IconOrdered } from "../../../../../assets/icons/editor/quote.svg";
+import IconQuote from "../../../../../assets/icons/editor/IconQuote";
 
 function Quote({ editorState, setEditorState }) {
   return (
@@ -14,7 +14,7 @@ function Quote({ editorState, setEditorState }) {
       name="Quote"
       keys={["Ctrl", '"']}
     >
-      <IconOrdered />
+      <IconQuote />
     </Button>
   );
 }

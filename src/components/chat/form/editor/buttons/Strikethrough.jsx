@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Button from "./Button";
 
-import { ReactComponent as IconStrikethrough } from "../../../../../assets/icons/editor/strikethrough.svg";
+import IconStrike from "../../../../../assets/icons/editor/IconStrike";
 
 function Strikethrough({ editorState, setEditorState }) {
   return (
@@ -13,7 +13,7 @@ function Strikethrough({ editorState, setEditorState }) {
       name="Strikethrough"
       keys={["Ctrl", "-"]}
     >
-      <IconStrikethrough />
+      <IconStrike />
     </Button>
   );
 }

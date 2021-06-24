@@ -6,8 +6,7 @@ import Tooltip from "./Tooltip";
 import Modal from "../../../../modals/Modal";
 import SubmitBtn from "../../../../shared/buttons/Gradient";
 
-import { ReactComponent as IconLink } from "../../../../../assets/icons/editor/link.svg";
-import ReactTooltip from "react-tooltip";
+import IconLink from "../../../../../assets/icons/editor/IconLink";
 
 function Link({ editorState, setEditorState }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,7 +50,7 @@ function Link({ editorState, setEditorState }) {
       anchorKey: selection.getAnchorKey(),
       anchorOffset: selection.getAnchorOffset(),
       focusKey: selection.getAnchorKey(),
-      focusOffset: selection.getAnchorOffset() + values.text.length + 1,
+      focusOffset: selection.getAnchorOffset() + values.text.length,
     });
 
     // Apply link entity to text
@@ -76,10 +75,11 @@ function Link({ editorState, setEditorState }) {
       <Button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
+        $isOpen={isOpen}
         data-tip="Test"
         data-for="Link"
       >
-        <IconLink />
+        <IconLink strokeWidth={isOpen && 1.5} />
       </Button>
 
       <Tooltip name="Link" keys={["Ctrl", ":"]} />
@@ -137,7 +137,19 @@ Link.propTypes = {
   setEditorState: PropTypes.func.isRequired,
 };
 
-const Button = styled.button``;
+const Button = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.1rem;
+  border-radius: 3px;
+  color: ${(props) => props.theme.editor_text};
+  background: ${(props) => props.$isOpen && props.theme.editor_bg_active};
+
+  &:hover {
+    background: ${(props) => !props.$isOpen && props.theme.editor_bg_hover};
+  }
+`;
 
 const Heading = styled.h3`
   font-family: "Playfair Display", sans-serif;
