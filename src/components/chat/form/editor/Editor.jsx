@@ -36,7 +36,7 @@ const decorator = new CompositeDecorator([
   },
 ]);
 
-function TextEditor({ send, prev }) {
+function TextEditor({ send, prev, onEnter }) {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(decorator)
   );
@@ -63,24 +63,34 @@ function TextEditor({ send, prev }) {
       return "blockquote";
     }
 
+    // Cmd + ^ 🠒 Code
+    if (e.keyCode === 219 && hasCommandModifier(e)) {
+      return "code-block";
+    }
+
+    // Cmd + Enter 🠒 onEnter (submit the form)
+    if (e.keyCode === 13) {
+      return "send";
+    }
+
     if (
       e.keyCode === 13 &&
       hasCommandModifier(e) &&
       (RichUtils.getCurrentBlockType(editorState) === "blockquote" ||
         RichUtils.getCurrentBlockType(editorState) === "code-block")
     ) {
-      console.log("NEWLINE")
       return "block-newline";
     }
     return getDefaultKeyBinding(e);
   };
 
-  // Allows the user to use keyboard shortcuts (ex: Ctrl + B to bold)
+  // Allows the user to use keyboard shortcuts (ex: Ctrl + $ to write code)
   const handleKeyCommand = (command) => {
     if (
       command === "ordered-list-item" ||
       command === "unordered-list-item" ||
-      command === "blockquote"
+      command === "blockquote" ||
+      command === "code-block"
     ) {
       setEditorState(RichUtils.toggleBlockType(editorState, command));
       return "handled";
@@ -88,6 +98,12 @@ function TextEditor({ send, prev }) {
 
     if (command === "block-newline") {
       setEditorState(RichUtils.insertSoftNewline(editorState));
+      return "handled";
+    }
+
+    if (command === "send") {
+      onEnter();
+      console.log("send");
       return "handled";
     }
 
@@ -142,7 +158,7 @@ function TextEditor({ send, prev }) {
         keyBindingFn={keyBindingFn}
         handleKeyCommand={handleKeyCommand}
         onTab={handleTab}
-        onChange={(editorState) => onChange(editorState)}
+        onChange={onChange}
         blockStyleFn={customBlockFn}
       />
       <Buttons editorState={editorState} setEditorState={setEditorState} />
@@ -154,10 +170,14 @@ export default TextEditor;
 
 TextEditor.propTypes = {
   send: PropTypes.func, // Send content to parent
+  prev: PropTypes.string, // Previous content if we are editing a message
+  onEnter: PropTypes.func, // Action on pressing Enter.
 };
 
 TextEditor.defaultProps = {
   send: () => {},
+  prev: "",
+  onEnter: undefined,
 };
 
 const Container = styled.div`

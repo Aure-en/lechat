@@ -12,7 +12,7 @@ function Code({ editorState, setEditorState }) {
       display="block"
       style="code-block"
       name="Code"
-      keys={["Ctrl", "J"]}
+      keys={["Ctrl", "^"]}
     >
       <IconBold />
     </Button>
