@@ -2,12 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import {
+  ContentBlock,
   Editor,
   EditorState,
   Modifier,
   RichUtils,
   getDefaultKeyBinding,
   KeyBindingUtil,
+  genKey,
 } from "draft-js";
 import "draft-js/dist/Draft.css";
 
@@ -39,11 +41,7 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
       return "code-block";
     }
 
-    // Cmd + Enter 🠒 onEnter (submit the form)
-    if (e.keyCode === 13) {
-      return "send";
-    }
-
+    // Ctrl + Enter 🠒 Jump to a new line if we are in a styled block
     if (
       e.keyCode === 13 &&
       hasCommandModifier(e) &&
@@ -51,6 +49,19 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
         RichUtils.getCurrentBlockType(editorState) === "code-block")
     ) {
       return "block-newline";
+    }
+
+    // Ctrl + Enter 🠒 Create a new block if we are not in a styled block
+    if (e.keyCode === 13 && hasCommandModifier(e)) {
+      return "new-block";
+    }
+
+    // Enter 🠒 onEnter (submit the form)
+    if (
+      e.keyCode === 13 &&
+      RichUtils.getCurrentBlockType(editorState) === "unstyled"
+    ) {
+      return "send";
     }
     return getDefaultKeyBinding(e);
   };
@@ -72,6 +83,30 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
       return "handled";
     }
 
+    if (command === "new-block") {
+      // Create a new block
+      const blockMap = editorState.getCurrentContent().getBlockMap();
+      const newBlock = new ContentBlock({
+        key: genKey(),
+        text: "",
+        type: "unstyled",
+      });
+
+      // Insert the new block in the contentState
+      const newBlockMap = blockMap
+        .toSeq()
+        .concat([[newBlock.getKey(), newBlock]])
+        .toOrderedMap();
+      const newContent = editorState
+        .getCurrentContent()
+        .merge({ blockMap: newBlockMap });
+      const stateWithBlock = EditorState.push(editorState, newContent);
+
+      // Force the selection to the end
+      const stateWithFocus = EditorState.moveFocusToEnd(stateWithBlock);
+      setEditorState(stateWithFocus);
+    }
+
     if (command === "send") {
       onEnter();
       return "handled";
@@ -89,9 +124,11 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
       blockType === "unordered-list-item" ||
       blockType === "ordered-list-item"
     ) {
+      // If we are in a list, tab nests the lists.
       const state = RichUtils.onTab(e, editorState, 5);
       if (state) setEditorState(state);
     } else {
+      // Otherwise, just acts like a normal tab.
       const newContent = Modifier.replaceText(
         editorState.getCurrentContent(),
         editorState.getSelection(),
@@ -132,6 +169,11 @@ export default TextEditor;
 
 TextEditor.propTypes = {
   onEnter: PropTypes.func, // Action on pressing Enter.
+  editorState: PropTypes.shape({
+    getCurrentContent: PropTypes.func,
+    getSelection: PropTypes.func,
+  }).isRequired,
+  setEditorState: PropTypes.func.isRequired,
 };
 
 TextEditor.defaultProps = {
