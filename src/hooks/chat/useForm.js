@@ -1,20 +1,29 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { EditorState, convertToRaw } from "draft-js";
+import decorator from "../../components/chat/form/editor/entities/decorator";
 
 function useForm(conversationId, message, setEditing, setMessages) {
-  const [text, setText] = useState("");
+  // editorState contains the typed text with rich edition.
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty(decorator)
+  );
   const location = useLocation();
 
   // If we want to edit a message, load its text.
   useEffect(() => {
-    message ? setText(message.text) : setText("");
+    message && setEditorState(message.text);
   }, [message]);
 
   const handleSubmit = async (e) => {
     e && e.preventDefault();
 
     // Validation
-    if (!text) return;
+    // If nothing is written in the text editor, doesn't submit the form.
+    const content = convertToRaw(editorState.getCurrentContent());
+    if (content.blocks.length === 1 && !content.blocks[0].text) return;
+
+    const text = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
 
     // Update the messages displayed without waiting for the dabatase on update
     // Cannot do that with adding message unless I set an _id myself.
@@ -59,12 +68,12 @@ function useForm(conversationId, message, setEditing, setMessages) {
       setEditing(false);
     }
 
-    setText("");
+    setEditorState(EditorState.createEmpty(decorator));
   };
 
   return {
-    text,
-    setText,
+    editorState,
+    setEditorState,
     handleSubmit,
   };
 }

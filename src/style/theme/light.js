@@ -38,6 +38,9 @@ const colors = {
   menu_bg: "rgb(255, 255, 255)",
   menu_bg_hover: "rgb(200, 200, 200)",
 
+  send_bg: "rgb(234, 144, 77)",
+  send_text: "rgb(255, 255, 255)",
+
   // Text Editor buttons
   editor_bg_hover: "rgb(236, 247, 250)",
   editor_bg_active: "rgb(206, 232, 239)",

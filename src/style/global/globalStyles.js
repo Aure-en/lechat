@@ -118,6 +118,11 @@ const GlobalStyles = createGlobalStyle`
   }
 
   // Text Editor
+  .public-DraftEditor-content {
+    min-height: 5rem;
+    padding: 1rem;
+  }
+
   .code {
     background: ${({ theme }) => theme.bg_code};
     padding: .5rem;

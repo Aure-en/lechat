@@ -2,26 +2,26 @@ import React from "react";
 import PropTypes from "prop-types";
 import Button from "./Button";
 
-import IconOrdered from "../../../../../assets/icons/editor/IconOrdered";
+import IconCode from "../../../../assets/icons/editor/IconCode";
 
-function Ordered({ editorState, setEditorState }) {
+function Code({ editorState, setEditorState }) {
   return (
     <Button
       editorState={editorState}
       setEditorState={setEditorState}
       display="block"
-      style="ordered-list-item"
-      name="Ordered"
-      keys={["Ctrl", "1"]}
+      style="code-block"
+      name="Code"
+      keys={["Ctrl", "^"]}
     >
-      <IconOrdered />
+      <IconCode />
     </Button>
   );
 }
 
-export default Ordered;
+export default Code;
 
-Ordered.propTypes = {
+Code.propTypes = {
   editorState: PropTypes.shape({
     getCurrentInlineStyle: PropTypes.func,
   }).isRequired,

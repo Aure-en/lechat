@@ -2,26 +2,25 @@ import React from "react";
 import PropTypes from "prop-types";
 import Button from "./Button";
 
-import IconCode from "../../../../../assets/icons/editor/IconCode";
+import IconStrike from "../../../../assets/icons/editor/IconStrike";
 
-function Code({ editorState, setEditorState }) {
+function Strikethrough({ editorState, setEditorState }) {
   return (
     <Button
       editorState={editorState}
       setEditorState={setEditorState}
-      display="block"
-      style="code-block"
-      name="Code"
-      keys={["Ctrl", "^"]}
+      style="STRIKETHROUGH"
+      name="Strikethrough"
+      keys={["Ctrl", "-"]}
     >
-      <IconCode />
+      <IconStrike />
     </Button>
   );
 }
 
-export default Code;
+export default Strikethrough;
 
-Code.propTypes = {
+Strikethrough.propTypes = {
   editorState: PropTypes.shape({
     getCurrentInlineStyle: PropTypes.func,
   }).isRequired,

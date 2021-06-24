@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Button from "./Button";
 
-import IconQuote from "../../../../../assets/icons/editor/IconQuote";
+import IconQuote from "../../../../assets/icons/editor/IconQuote";
 
 function Quote({ editorState, setEditorState }) {
   return (

@@ -2,25 +2,26 @@ import React from "react";
 import PropTypes from "prop-types";
 import Button from "./Button";
 
-import IconItalic from "../../../../../assets/icons/editor/IconItalic";
+import IconUnordered from "../../../../assets/icons/editor/IconUnordered";
 
-function Italic({ editorState, setEditorState }) {
+function Unordered({ editorState, setEditorState }) {
   return (
     <Button
       editorState={editorState}
       setEditorState={setEditorState}
-      style="ITALIC"
-      name="Italic"
-      keys={["Ctrl", "I"]}
+      display="block"
+      style="unordered-list-item"
+      name="Unordered"
+      keys={["Ctrl", "*"]}
     >
-      <IconItalic />
+      <IconUnordered />
     </Button>
   );
 }
 
-export default Italic;
+export default Unordered;
 
-Italic.propTypes = {
+Unordered.propTypes = {
   editorState: PropTypes.shape({
     getCurrentInlineStyle: PropTypes.func,
   }).isRequired,

@@ -3,10 +3,10 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { EditorState, Modifier, SelectionState } from "draft-js";
 import Tooltip from "./Tooltip";
-import Modal from "../../../../modals/Modal";
-import SubmitBtn from "../../../../shared/buttons/Gradient";
+import Modal from "../../../modals/Modal";
+import SubmitBtn from "../../../shared/buttons/Gradient";
 
-import IconLink from "../../../../../assets/icons/editor/IconLink";
+import IconLink from "../../../../assets/icons/editor/IconLink";
 
 function Link({ editorState, setEditorState }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -82,7 +82,7 @@ function Link({ editorState, setEditorState }) {
         <IconLink strokeWidth={isOpen && 1.5} />
       </Button>
 
-      <Tooltip name="Link" keys={["Ctrl", ":"]} />
+      <Tooltip name="Link" />
 
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <Form onSubmit={handleSubmit}>

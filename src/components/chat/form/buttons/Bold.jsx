@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Button from "./Button";
 
-import IconBold from "../../../../../assets/icons/editor/IconBold";
+import IconBold from "../../../../assets/icons/editor/IconBold";
 
 function Bold({ editorState, setEditorState }) {
   return (

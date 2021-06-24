@@ -2,25 +2,26 @@ import React from "react";
 import PropTypes from "prop-types";
 import Button from "./Button";
 
-import IconStrike from "../../../../../assets/icons/editor/IconStrike";
+import IconOrdered from "../../../../assets/icons/editor/IconOrdered";
 
-function Strikethrough({ editorState, setEditorState }) {
+function Ordered({ editorState, setEditorState }) {
   return (
     <Button
       editorState={editorState}
       setEditorState={setEditorState}
-      style="STRIKETHROUGH"
-      name="Strikethrough"
-      keys={["Ctrl", "-"]}
+      display="block"
+      style="ordered-list-item"
+      name="Ordered"
+      keys={["Ctrl", "1"]}
     >
-      <IconStrike />
+      <IconOrdered />
     </Button>
   );
 }
 
-export default Strikethrough;
+export default Ordered;
 
-Strikethrough.propTypes = {
+Ordered.propTypes = {
   editorState: PropTypes.shape({
     getCurrentInlineStyle: PropTypes.func,
   }).isRequired,

@@ -10,14 +10,14 @@ import Quote from "./Quote";
 import Strikethrough from "./Strikethrough";
 import Unordered from "./Unordered";
 
-import IconChevron from "../../../../../assets/icons/general/IconChevron";
-import IconNotebook from "../../../../../assets/icons/editor/IconNotebook";
+import IconChevron from "../../../../assets/icons/general/IconChevron";
+import IconNotebook from "../../../../assets/icons/editor/IconNotebook";
 
 function Buttons({ editorState, setEditorState }) {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <Wrapper>
-      <Button onClick={() => setIsOpen(!isOpen)}>
+      <Button type="button" onClick={() => setIsOpen(!isOpen)}>
         <IconNotebook />
         <Icon $isOpen={isOpen}>
           <IconChevron />
@@ -74,6 +74,9 @@ const Button = styled.button`
 `;
 
 const Icon = styled.span`
+  position: relative;
+  top: ${(props) => (props.$isOpen ? "0" : "2px")};
+  transition: all 0.3s linear;
   transform: ${(props) => props.$isOpen && "rotate(-90deg)"};
 `;
 
