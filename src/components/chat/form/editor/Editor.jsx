@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import {
   ContentBlock,
+  ContentState,
   Editor,
   EditorState,
   Modifier,
@@ -116,6 +117,23 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
     if (state) setEditorState(state);
   };
 
+  const handlePastedText = (text) => {
+    if (RichUtils.getCurrentBlockType(editorState) !== "unstyled") {
+      // Insert text
+      const contentWithPaste = Modifier.replaceText(
+        editorState.getCurrentContent(),
+        editorState.getSelection(),
+        text
+      );
+
+      // Create state with the text
+      const stateWithPaste = EditorState.push(editorState, contentWithPaste);
+      setEditorState(stateWithPaste);
+      return true;
+    }
+    return false;
+  };
+
   // Allows the user to create nested lists
   const handleTab = (e) => {
     e.preventDefault(); // Prevents focus from going to another element
@@ -160,6 +178,7 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
         onTab={handleTab}
         onChange={onChange}
         blockStyleFn={customBlockFn}
+        handlePastedText={handlePastedText}
       />
     </Container>
   );
