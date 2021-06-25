@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import redraft from "redraft";
 import Timestamp from "./Timestamp";
 import More from "./More";
+import renderers from "./convert/renderers";
 
 function Message({ message, isFirst, setEditing }) {
   const [hovered, setHovered] = useState(false);
@@ -35,7 +37,7 @@ function Message({ message, isFirst, setEditing }) {
           <Timestamp timestamp={message.timestamp} isFirst />
         </Information>
 
-        <div>{message.text}</div>
+        <div>{redraft(JSON.parse(message.text), renderers)}</div>
         {(hovered || more) && (
           <More
             message={message}
@@ -58,7 +60,7 @@ function Message({ message, isFirst, setEditing }) {
           <Timestamp timestamp={message.timestamp} />
         </Time>
       )}
-      {message.text}
+      <div>{redraft(JSON.parse(message.text), renderers)}</div>
       {(hovered || more) && (
         <More message={message} setEditing={setEditing} setIsActive={setMore} />
       )}

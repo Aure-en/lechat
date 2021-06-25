@@ -25,6 +25,7 @@ function Link({ editorState, setEditorState }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    e.stopPropagation();
 
     const contentState = editorState.getCurrentContent();
     const selection = editorState.getSelection();
@@ -79,7 +80,7 @@ function Link({ editorState, setEditorState }) {
         data-tip="Test"
         data-for="Link"
       >
-        <IconLink strokeWidth={isOpen && 1.5} />
+        <IconLink strokeWidth={isOpen ? 1.5 : undefined} />
       </Button>
 
       <Tooltip name="Link" />
