@@ -61,4 +61,5 @@ const Row = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0 1rem 0.5rem 1rem;
+  margin-top: 0.5rem;
 `;

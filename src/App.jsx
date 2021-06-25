@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import styled from "styled-components";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import GlobalStyles from "./style/global/globalStyles";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -22,14 +23,20 @@ function App() {
     <Router>
       <ThemeProvider>
         <GlobalStyles />
-        <Switch>
-          <EntryRoute exact path="/login" component={Login} />
-          <EntryRoute exact path="/signup" component={SignUp} />
-          <PrivateRoute path="/" component={Dashboard} />
-        </Switch>
+        <Wrapper>
+          <Switch>
+            <EntryRoute exact path="/login" component={Login} />
+            <EntryRoute exact path="/signup" component={SignUp} />
+            <PrivateRoute path="/" component={Dashboard} />
+          </Switch>
+        </Wrapper>
       </ThemeProvider>
     </Router>
   );
 }
 
 export default App;
+
+const Wrapper = styled.div`
+  height: 100vh;
+`;

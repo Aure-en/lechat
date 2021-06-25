@@ -120,7 +120,22 @@ const GlobalStyles = createGlobalStyle`
   // Text Editor
   .public-DraftEditor-content {
     min-height: 5rem;
+    max-height: 15rem;
+    overflow: auto;
     padding: 1rem;
+    margin-right: 0.25rem; // Prevents scrollbar from sticking to the right
+  }
+
+  .public-DraftEditor-content::-webkit-scrollbar {
+    width: 0.4rem;
+  }
+  .public-DraftEditor-content::-webkit-scrollbar-track {
+    background: none;
+    margin: 0.5rem 0;
+  }
+  .public-DraftEditor-content::-webkit-scrollbar-thumb {
+    border-radius: 5rem;
+    background-color: ${(props) => props.theme.bg_sidebars};
   }
 
   .code {

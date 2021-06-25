@@ -92,4 +92,18 @@ Messages.defaultProps = {
 
 const Ul = styled.ul`
   padding: 0 1rem;
+  margin-right: 0.25rem; // Prevents scrollbar from sticking to the right
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 0.4rem;
+  }
+  &::-webkit-scrollbar-track {
+    background: none;
+    margin: 0.5rem 0;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5rem;
+    background-color: ${(props) => props.theme.bg_sidebars};
+  }
 `;

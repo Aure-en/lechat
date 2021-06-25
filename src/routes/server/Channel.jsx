@@ -40,4 +40,6 @@ const Container = styled.main`
   background: ${(props) => props.theme.bg_chat};
   margin-top: 1rem;
   border-radius: 1rem 1rem 0 0;
+  height: calc(100vh - 1rem); // margin-top
+  overflow: hidden;
 `;
