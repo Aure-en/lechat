@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
-import ReactDOM from "react-dom";
+import { createPortal } from "react-dom";
 import styled from "styled-components";
 
 import { ReactComponent as IconClose } from "../../assets/icons/general/close.svg";
@@ -11,7 +11,7 @@ function Modal({ isOpen, setIsOpen, children }) {
     <>
       {isOpen && (
         <>
-          {ReactDOM.createPortal(
+          {createPortal(
             <Wrapper
               onMouseDown={(e) => {
                 if (e.target.contains(ref.current)) setIsOpen(false);
@@ -55,6 +55,7 @@ const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   background: ${(props) => props.theme.modal_overlay};
+  z-index: 99;
 `;
 
 const Container = styled.div`
@@ -65,7 +66,7 @@ const Container = styled.div`
   transform: translate(-50%, -50%);
   background: ${(props) => props.theme.modal_bg};
   border: 1px solid ${(props) => props.theme.border_primary};
-  max-width: 30rem;
+  z-index: 100;
 `;
 
 const Content = styled.div`

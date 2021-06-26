@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { createPortal } from "react-dom";
 import useDropdown from "../../hooks/shared/useDropdown";
 import Delete from "./Delete";
 
@@ -38,22 +39,33 @@ function More({ message, setEditing, setIsActive }) {
         <IconDots />
       </Button>
 
+      {/* Menu must be positioned out of the chat container that has overflow: auto.
+      Otherwise, the menu on the last message may cause a scroll.
+      Because it is outside of the Container, it uses the container ref to be positioned properly. */}
       {isDropdownOpen && (
-        <Menu>
-          {message.author._id ===
-            JSON.parse(localStorage.getItem("user"))._id && (
-            <Option type="button" onClick={() => setEditing(message)}>
-              Edit Message
-            </Option>
+        <>
+          {createPortal(
+            <Menu
+              $top={ref.current.getBoundingClientRect().top}
+              $right={ref.current.getBoundingClientRect().left}
+            >
+              {message.author._id ===
+                JSON.parse(localStorage.getItem("user"))._id && (
+                <Option type="button" onClick={() => setEditing(message)}>
+                  Edit Message
+                </Option>
+              )}
+              <Option type="button" onClick={() => pin(message._id)}>
+                Pin Message
+              </Option>
+              {message.author._id ===
+                JSON.parse(localStorage.getItem("user"))._id && (
+                <Delete message={message} />
+              )}
+            </Menu>,
+            document.body.querySelector("#modal-root")
           )}
-          <Option type="button" onClick={() => pin(message._id)}>
-            Pin Message
-          </Option>
-          {message.author._id ===
-            JSON.parse(localStorage.getItem("user"))._id && (
-            <Delete message={message} />
-          )}
-        </Menu>
+        </>
       )}
     </Container>
   );
@@ -100,13 +112,13 @@ const Button = styled.button`
 
 const Menu = styled.div`
   position: absolute;
-  top: 0;
-  right: 2rem;
+  top: ${(props) => `${props.$top}px`};
+  right: ${(props) => `calc(-${props.$right}px + 1rem)`};
   padding: 0.25rem;
   display: flex;
   flex-direction: column;
   z-index: 10;
-  background: ${(props) => props.theme.menu_bg};
+  background: ${(props) => props.theme.more_bg};
   border: 1px solid ${(props) => props.theme.border};
   border-radius: 3px;
 `;
@@ -119,6 +131,6 @@ const Option = styled.button`
   white-space: nowrap;
 
   &:hover {
-    background: ${(props) => props.theme.menu_bg_hover};
+    background: ${(props) => props.theme.more_bg_hover};
   }
 `;

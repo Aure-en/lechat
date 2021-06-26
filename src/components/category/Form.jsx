@@ -33,9 +33,7 @@ function Form({ serverId, category }) {
         </Field>
 
         <Button>
-          <SubmitBtn type="submit">
-            {category ? "Update" : "Create"} Category
-          </SubmitBtn>
+          <SubmitBtn>{category ? "Update" : "Create"} Category</SubmitBtn>
         </Button>
       </FormContainer>
     </div>

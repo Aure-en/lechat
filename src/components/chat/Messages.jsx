@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Group from "./Group";
 
 function Messages({ messages, setEditing }) {
   const [ordered, setOrdered] = useState([]);
+  const ref = useRef(); // ref used to scroll to bottom
 
   // Helper function to compare dates
   const compareDates = (timestamp1, timestamp2) => {
@@ -18,6 +19,12 @@ function Messages({ messages, setEditing }) {
       return true;
     return false;
   };
+
+  // On new messages, scroll to bottom.
+  // TO-DO : Improve it so it only scrolls down on first render + when the user is already at the bottom.
+  useEffect(() => {
+    ref.current.scrollTop = ref.current.scrollHeight - ref.current.clientHeight;
+  }, [ordered]);
 
   // Group messages by author and time so that the author isn't displayed in front of every message.
   useEffect(() => {
@@ -62,7 +69,7 @@ function Messages({ messages, setEditing }) {
   }, [messages]);
 
   return (
-    <Ul>
+    <Ul ref={ref}>
       {ordered.map((messages) => (
         <Group key={messages._id} messages={messages} setEditing={setEditing} />
       ))}

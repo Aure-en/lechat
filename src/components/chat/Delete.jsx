@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Message from "./Content";
 import Modal from "../modals/Modal";
+import SubmitBtn from "../shared/buttons/Gradient";
 
 function Delete({ message }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,12 +36,12 @@ function Delete({ message }) {
             <p>Are you sure you want to delete this message ?</p>
           </Header>
 
-          <div>
+          <Content>
             <Message message={message} />
-          </div>
+          </Content>
 
           <Buttons>
-            <SubmitBtn type="submit">Delete Message</SubmitBtn>
+            <SubmitBtn>Delete Message</SubmitBtn>
           </Buttons>
         </Form>
       </Modal>
@@ -59,6 +60,15 @@ Delete.propTypes = {
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+`;
+
+const Content = styled.div`
+  position: relative;
+  display: grid;
+  grid-template: repeat(2, auto) / auto 1fr;
+  grid-column-gap: 1rem;
+  padding: 0 1rem;
+  width: 100%;
 `;
 
 const Header = styled.div`
@@ -89,5 +99,3 @@ const Button = styled.button`
     background: ${(props) => props.theme.more_bg_hover};
   }
 `;
-
-const SubmitBtn = styled.button``;
