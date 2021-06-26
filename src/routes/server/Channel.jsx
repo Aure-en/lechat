@@ -3,7 +3,7 @@ import { useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../../components/chat/Header";
 import Messages from "../../components/chat/Messages";
-import Form from "../../components/chat/Form";
+import Form from "../../components/chat/form/Form";
 import useMessage from "../../hooks/chat/useMessage";
 import useFetch from "../../hooks/shared/useFetch";
 

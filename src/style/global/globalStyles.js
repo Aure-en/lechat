@@ -124,6 +124,7 @@ const GlobalStyles = createGlobalStyle`
     overflow: auto;
     padding: 1rem;
     margin-right: 0.25rem; // Prevents scrollbar from sticking to the right
+    overflow-wrap: anywhere;
   }
 
   .public-DraftEditor-content::-webkit-scrollbar {

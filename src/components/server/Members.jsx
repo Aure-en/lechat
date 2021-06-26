@@ -5,7 +5,7 @@ import useFetch from "../../hooks/shared/useFetch";
 import IconChevron from "../../assets/icons/general/IconChevron";
 
 function Members({ serverId }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const { data: members } = useFetch(
     `${process.env.REACT_APP_URL}/servers/${serverId}/members`
   );
@@ -14,26 +14,32 @@ function Members({ serverId }) {
     <Container>
       <Button type="button" onClick={() => setIsOpen(!isOpen)}>
         <Heading>Members</Heading>
-        <IconChevron />
+        <Icon $isOpen={isOpen}>
+          <IconChevron />
+        </Icon>
       </Button>
-      <ul>
-        {members &&
-          members.map((member) => (
-            <Li key={member._id}>
-              {member.avatar ? (
-                <Icon
-                  src={`data:${member.avatar.contentType};base64,${Buffer.from(
-                    member.avatar.data
-                  ).toString("base64")}`}
-                  alt={member.username}
-                />
-              ) : (
-                <Default>{member.username[0]}</Default>
-              )}
-              {member.username}
-            </Li>
-          ))}
-      </ul>
+      {isOpen && (
+        <ul>
+          {members &&
+            members.map((member) => (
+              <Li key={member._id}>
+                {member.avatar ? (
+                  <Avatar
+                    src={`data:${
+                      member.avatar.contentType
+                    };base64,${Buffer.from(member.avatar.data).toString(
+                      "base64"
+                    )}`}
+                    alt={member.username}
+                  />
+                ) : (
+                  <Default>{member.username[0]}</Default>
+                )}
+                {member.username}
+              </Li>
+            ))}
+        </ul>
+      )}
     </Container>
   );
 }
@@ -65,7 +71,14 @@ const Li = styled.li`
   margin-bottom: 0.5rem;
 `;
 
-const Icon = styled.img`
+const Icon = styled.span`
+  position: relative;
+  top: ${(props) => (props.$isOpen ? "0" : "2px")};
+  transition: all 0.3s linear;
+  transform: ${(props) => !props.$isOpen && "rotate(90deg)"};
+`;
+
+const Avatar = styled.img`
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;

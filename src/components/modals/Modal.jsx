@@ -18,13 +18,15 @@ function Modal({ isOpen, setIsOpen, children }) {
               }}
             >
               <Container ref={ref}>
-                <CloseBtn type="button" onClick={() => setIsOpen(false)}>
-                  <IconClose />
-                </CloseBtn>
-                {children}
-                <BackBtn type="button" onClick={() => setIsOpen(false)}>
-                  ← Back
-                </BackBtn>
+                <Content>
+                  <CloseBtn type="button" onClick={() => setIsOpen(false)}>
+                    <IconClose />
+                  </CloseBtn>
+                  {children}
+                  <BackBtn type="button" onClick={() => setIsOpen(false)}>
+                    ← Back
+                  </BackBtn>
+                </Content>
               </Container>
             </Wrapper>,
             document.body.querySelector("#modal-root")
@@ -64,6 +66,9 @@ const Container = styled.div`
   background: ${(props) => props.theme.modal_bg};
   border: 1px solid ${(props) => props.theme.border_primary};
   max-width: 30rem;
+`;
+
+const Content = styled.div`
   padding: 3rem;
 `;
 

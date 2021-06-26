@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { EditorState, convertToRaw } from "draft-js";
+import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import decorator from "../../components/chat/form/editor/entities/decorator";
 
 function useForm(conversationId, message, setEditing, setMessages) {
@@ -12,7 +12,10 @@ function useForm(conversationId, message, setEditing, setMessages) {
 
   // If we want to edit a message, load its text.
   useEffect(() => {
-    message && setEditorState(message.text);
+    message &&
+      setEditorState(
+        EditorState.createWithContent(convertFromRaw(JSON.parse(message.text)))
+      );
   }, [message]);
 
   const handleSubmit = async (e) => {
@@ -38,6 +41,7 @@ function useForm(conversationId, message, setEditing, setMessages) {
                 },
                 text,
                 _id: message._id,
+                timestamp: message.timestamp,
               }
             : elem
         )

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import Form from "../components/chat/Form";
+import Form from "../components/chat/form/Form";
 import Messages from "../components/chat/Messages";
 import useMessage from "../hooks/chat/useMessage";
 

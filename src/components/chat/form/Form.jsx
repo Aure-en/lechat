@@ -2,10 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { convertToRaw } from "draft-js";
-import Editor from "./form/editor/Editor";
-import useForm from "../../hooks/chat/useForm";
-import Buttons from "./form/buttons/Buttons";
-import Send from "./form/buttons/Send";
+import Editor from "./editor/Editor";
+import useForm from "../../../hooks/chat/useForm";
+import Buttons from "./buttons/Buttons";
+import Send from "./buttons/Send";
 
 function Form({ conversationId, message, setEditing, setMessages }) {
   const {

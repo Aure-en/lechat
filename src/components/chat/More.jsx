@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import useDropdown from "../../hooks/shared/useDropdown";
+import Delete from "./Delete";
 
 import { ReactComponent as IconDots } from "../../assets/icons/general/dots.svg";
 
@@ -50,9 +51,7 @@ function More({ message, setEditing, setIsActive }) {
           </Option>
           {message.author._id ===
             JSON.parse(localStorage.getItem("user"))._id && (
-            <Option type="button" onClick={() => remove(message._id)}>
-              Delete Message
-            </Option>
+            <Delete message={message} />
           )}
         </Menu>
       )}

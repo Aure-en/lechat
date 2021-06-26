@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import redraft from "redraft";
+import renderers from "./convert/renderers";
 import Timestamp from "./Timestamp";
 import More from "./More";
-import renderers from "./convert/renderers";
+import Content from "./Content";
 
 function Message({ message, isFirst, setEditing }) {
   const [hovered, setHovered] = useState(false);
@@ -17,27 +18,8 @@ function Message({ message, isFirst, setEditing }) {
         onMouseLeave={() => setHovered(false)}
         $hovered={hovered}
       >
-        {/* Avatar */}
-        {message.author.avatar ? (
-          <Icon
-            src={`data:${
-              message.author.avatar.contentType
-            };base64,${Buffer.from(message.author.avatar.data).toString(
-              "base64"
-            )}`}
-            alt={message.author.username}
-          />
-        ) : (
-          <Default>{message.author.username[0]}</Default>
-        )}
+        <Content message={message} />
 
-        {/* Author and date */}
-        <Information>
-          {message.author.username}
-          <Timestamp timestamp={message.timestamp} isFirst />
-        </Information>
-
-        <div>{redraft(JSON.parse(message.text), renderers)}</div>
         {(hovered || more) && (
           <More
             message={message}

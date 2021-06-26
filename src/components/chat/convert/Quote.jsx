@@ -22,6 +22,7 @@ const Container = styled.div`
     height: 100%;
   }
 `;
+
 Code.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
