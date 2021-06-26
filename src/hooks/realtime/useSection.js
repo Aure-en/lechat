@@ -59,20 +59,20 @@ function useSection(url, section, categoryId) {
   // Listeners must be named to remove them and them only when the section unmounts.
   useEffect(() => {
     const insert = (document) => handleInsert(document);
-    socket.on("insert", insert);
-    return () => socket.off("insert", insert);
+    socket.on(`insert ${section}`, insert);
+    return () => socket.off(`insert ${section}`, insert);
   }, []);
 
   useEffect(() => {
     const update = (document) => handleUpdate(document);
-    socket.on("update", update);
-    return () => socket.off("update", update);
+    socket.on(`update ${section}`, update);
+    return () => socket.off(`update ${section}`, update);
   }, []);
 
   useEffect(() => {
     const remove = (document) => handleDelete(document);
-    socket.on("delete", remove);
-    return () => socket.off("delete", remove);
+    socket.on(`delete ${section}`, remove);
+    return () => socket.off(`delete ${section}`, remove);
   }, []);
 
   return {

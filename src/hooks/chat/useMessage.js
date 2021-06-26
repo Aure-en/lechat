@@ -54,24 +54,24 @@ function useMessage(url) {
   };
 
   useEffect(() => {
-    socket.on("insert", (document) => {
+    socket.on("insert message", (document) => {
       handleInsert(document);
     });
-    return () => socket.off("insert");
+    return () => socket.off("insert message");
   }, [messages]);
 
   useEffect(() => {
-    socket.on("update", (document) => {
+    socket.on("update message", (document) => {
       handleUpdate(document);
     });
-    return () => socket.off("update");
+    return () => socket.off("update message");
   }, [messages]);
 
   useEffect(() => {
-    socket.on("delete", (document) => {
+    socket.on("delete message", (document) => {
       handleDelete(document);
     });
-    return () => socket.off("delete");
+    return () => socket.off("delete message");
   }, [messages]);
 
   return {

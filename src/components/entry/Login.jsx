@@ -57,7 +57,9 @@ function Login() {
 export default Login;
 
 const Container = styled.div`
-  border: 1px solid ${(props) => props.theme.border_primary};
+  border: 1px solid ${(props) => props.theme.border};
+  background: ${(props) => props.theme.bg_chat};
+  width: 100vw;
   max-width: 30rem;
   padding: 3rem;
 `;

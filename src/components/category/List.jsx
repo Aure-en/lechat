@@ -81,6 +81,19 @@ const Name = styled.button`
   font-size: 0.875rem;
   font-weight: 400;
   color: ${(props) => props.theme.text_secondary};
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 0.4rem;
+  }
+  &::-webkit-scrollbar-track {
+    background: none;
+    margin: 0.5rem 0;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5rem;
+    background-color: ${(props) => props.theme.bg_sidebars};
+  }
 `;
 
 const Icon = styled.span`

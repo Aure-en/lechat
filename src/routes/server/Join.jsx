@@ -1,32 +1,15 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
+import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import useFetch from "../../hooks/shared/useFetch";
+import Form from "../../components/server/Join";
 
 function Join({ match }) {
   const { data: server } = useFetch(
     `${process.env.REACT_APP_URL}/servers/${match.params.serverId}`
   );
   const history = useHistory();
-
-  const join = async () => {
-    // Join server
-    await fetch(
-      `${process.env.REACT_APP_URL}/users/${
-        JSON.parse(localStorage.getItem("user"))._id
-      }/servers/${server._id}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    // Redirect to server page
-    history.push(`/servers/${server._id}`);
-  };
 
   useEffect(() => {
     // If the user is already in this server, redirects him to the server page.
@@ -41,12 +24,9 @@ function Join({ match }) {
     !JSON.parse(localStorage.getItem("user")).server.includes(server._id)
   ) {
     return (
-      <>
-        <div>Would you like the join the server {server.name} ?</div>
-        <button type="button" onClick={join}>
-          Join
-        </button>
-      </>
+      <Container>
+        <Form server={server} />
+      </Container>
     );
   }
 
@@ -62,3 +42,9 @@ Join.propTypes = {
     }),
   }).isRequired,
 };
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;

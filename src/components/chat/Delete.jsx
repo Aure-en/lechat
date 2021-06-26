@@ -69,6 +69,7 @@ const Content = styled.div`
   grid-column-gap: 1rem;
   padding: 0 1rem;
   width: 100%;
+  margin-bottom: 1.5rem;
 `;
 
 const Header = styled.div`

@@ -84,8 +84,10 @@ function SignUp() {
 export default SignUp;
 
 const Container = styled.div`
-  border: 1px solid ${(props) => props.theme.border_primary};
+  border: 1px solid ${(props) => props.theme.border};
+  background: ${(props) => props.theme.bg_chat};
   max-width: 30rem;
+  width: 100vw;
   padding: 3rem;
 `;
 
