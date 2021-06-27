@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-function Link({ onClick, children }) {
+function Border({ onClick, children }) {
   return (
     <Button type="button" onClick={onClick}>
       <span>{children}</span>
@@ -10,9 +10,9 @@ function Link({ onClick, children }) {
   );
 }
 
-export default Link;
+export default Border;
 
-Link.propTypes = {
+Border.propTypes = {
   onClick: PropTypes.func.isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),

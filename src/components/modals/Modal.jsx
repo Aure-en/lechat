@@ -65,7 +65,7 @@ const Container = styled.div`
   // Borders are a bit blurry on Chrome when using this.
   transform: translate(-50%, -50%);
   background: ${(props) => props.theme.modal_bg};
-  border: 1px solid ${(props) => props.theme.border_primary};
+  border: 1px solid ${(props) => props.theme.border};
   z-index: 100;
 `;
 

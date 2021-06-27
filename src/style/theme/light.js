@@ -3,6 +3,7 @@ const colors = {
   text_primary: "rgb(25, 25, 25)",
   text_secondary: "rgb(105, 105, 105)",
   text_tertiary: "rgb(35, 120, 140)",
+  text_quaternary: "rgb(92, 167, 181)",
   text_link: "rgb(40, 156, 184)",
   text_link_hover: "rgb(6, 105, 145)",
   error: "rgb(144, 37, 37)",
@@ -16,9 +17,10 @@ const colors = {
   bg_code: "rgb(236, 247, 250)", // Code in rich editor
 
   // Borders
-  border: "rgb(104, 153, 165)",
-  border_hover_primary: "rgb(224, 213, 202)",
+  border: "rgb(200, 200, 200)",
+  border_hover_primary: "rgb(104, 153, 165)",
   border_hover_secondary: "rgb(175, 175, 175)",
+  border_accent: "rgb(255, 204, 166)",
   border_quote: "rgb(205, 231, 239)", // Quote in rich editor
 
   // Input

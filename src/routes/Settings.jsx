@@ -65,6 +65,9 @@ export default Settings;
 const Container = styled.main`
   width: 100%;
   padding: 3rem;
+  background: ${(props) => props.theme.bg_chat};
+  margin-top: 1rem;
+  border-radius: 1rem 1rem 0 0;
 `;
 
 const Section = styled.section`
@@ -81,8 +84,8 @@ const Subheading = styled.h2`
   font-weight: 400;
   font-size: 0.75rem;
   text-transform: uppercase;
-  color: ${(props) => props.theme.text_secondary};
-  border-bottom: 1px solid ${(props) => props.theme.text_secondary};
+  color: ${(props) => props.theme.text_tertiary};
+  border-bottom: 1px solid ${(props) => props.theme.text_tertiary};
 `;
 
 const Field = styled.div`
