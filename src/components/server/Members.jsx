@@ -11,7 +11,7 @@ function Members({ serverId }) {
   );
 
   return (
-    <Container>
+    <div>
       <Button type="button" onClick={() => setIsOpen(!isOpen)}>
         <Heading>Members</Heading>
         <Icon $isOpen={isOpen}>
@@ -40,7 +40,7 @@ function Members({ serverId }) {
             ))}
         </ul>
       )}
-    </Container>
+    </div>
   );
 }
 
@@ -49,8 +49,6 @@ export default Members;
 Members.propTypes = {
   serverId: PropTypes.string.isRequired,
 };
-
-const Container = styled.div``;
 
 const Button = styled.button`
   display: flex;
