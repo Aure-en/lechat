@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../../components/chat/Header";
@@ -8,7 +8,7 @@ import useMessage from "../../hooks/chat/useMessage";
 import useFetch from "../../hooks/shared/useFetch";
 
 function Channel() {
-  const { channelId } = useRouteMatch(
+  const { serverId, channelId } = useRouteMatch(
     "/servers/:serverId/channels/:channelId"
   ).params;
   const { data: channel } = useFetch(
@@ -18,6 +18,13 @@ function Channel() {
   const { messages, setMessages } = useMessage(
     channelId && `${process.env.REACT_APP_URL}/channels/${channelId}/messages`
   );
+
+  // Store last visited channel.
+  useEffect(() => {
+    if (channel) {
+      localStorage.setItem(serverId, channelId);
+    }
+  }, [channel]);
 
   return (
     <Container>

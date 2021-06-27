@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Switch } from "react-router-dom";
@@ -9,6 +9,7 @@ import CategoryModal from "../../components/modals/server/Category";
 import Channel from "./Channel";
 import useFetch from "../../hooks/shared/useFetch";
 import Leave from "../../components/server/Leave";
+import Entry from "./Entry";
 
 function Server({ match }) {
   const { data: server } = useFetch(
@@ -28,8 +29,9 @@ function Server({ match }) {
           <PrivateRoute
             exact
             path="/servers/:serverId/channels/:channelId"
-            render={() => <Channel />}
+            component={Channel}
           />
+          <PrivateRoute exact path="/servers/:serverId" component={Entry} />
         </Switch>
       )}
 

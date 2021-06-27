@@ -68,6 +68,20 @@ function Join({ server }) {
 
 export default Join;
 
+Join.propTypes = {
+  server: PropTypes.shape({
+    name: PropTypes.string,
+    _id: PropTypes.string,
+    icon: PropTypes.shape({
+      contentType: PropTypes.string,
+      data: PropTypes.shape({
+        type: PropTypes.string,
+        data: PropTypes.arrayOf(PropTypes.number),
+      }),
+    }),
+  }).isRequired,
+};
+
 const Container = styled.div`
   border: 1px solid ${(props) => props.theme.border};
   background: ${(props) => props.theme.bg_chat};
