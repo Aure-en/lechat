@@ -25,7 +25,7 @@ function Pending() {
   };
 
   return (
-    <Container>
+    <Wrapper>
       <Button type="button" onClick={() => setIsOpen(!isOpen)}>
         <Icon $isOpen={isOpen}>
           <IconChevron />
@@ -34,57 +34,66 @@ function Pending() {
       </Button>
 
       {isOpen && (
-        <ul>
-          {friends &&
-            friends.map((request) => {
-              if (
-                request.sender._id !==
-                JSON.parse(localStorage.getItem("user"))._id
-              ) {
-                return (
-                  <Li key={request._id}>
-                    {request.sender.avatar ? (
-                      <Avatar
-                        src={`data:${
-                          request.sender.avatar.contentType
-                        };base64,${Buffer.from(
-                          request.sender.avatar.data
-                        ).toString("base64")}`}
-                        alt={request.sender.username}
-                      />
-                    ) : (
-                      <Default>{request.sender.username[0]}</Default>
-                    )}
-                    <div>{request.sender.username}</div>
-                    <Accept
-                      type="button"
-                      onClick={() => handleRequest(request._id, true)}
-                      data-tip="Accept"
-                    >
-                      <IconCheck />
-                    </Accept>
-                    <Decline
-                      type="button"
-                      onClick={() => handleRequest(request._id, false)}
-                      data-tip="Decline"
-                    >
-                      <IconClose />
-                    </Decline>
-                    <ReactTooltip delayShow={150} place="bottom" />
-                  </Li>
-                );
-              }
-            })}
-        </ul>
+        <Container>
+          {friends && friends.length > 0 ? (
+            <ul>
+              {friends.map((request) => {
+                if (
+                  request.sender._id !==
+                  JSON.parse(localStorage.getItem("user"))._id
+                ) {
+                  return (
+                    <Li key={request._id}>
+                      {request.sender.avatar ? (
+                        <Avatar
+                          src={`data:${
+                            request.sender.avatar.contentType
+                          };base64,${Buffer.from(
+                            request.sender.avatar.data
+                          ).toString("base64")}`}
+                          alt={request.sender.username}
+                        />
+                      ) : (
+                        <Default>{request.sender.username[0]}</Default>
+                      )}
+                      <div>{request.sender.username}</div>
+                      <Accept
+                        type="button"
+                        onClick={() => handleRequest(request._id, true)}
+                        data-tip="Accept"
+                      >
+                        <IconCheck />
+                      </Accept>
+                      <Decline
+                        type="button"
+                        onClick={() => handleRequest(request._id, false)}
+                        data-tip="Decline"
+                      >
+                        <IconClose />
+                      </Decline>
+                      <ReactTooltip delayShow={150} place="bottom" />
+                    </Li>
+                  );
+                }
+              })}
+            </ul>
+          ) : (
+            <div>You do not have any pending requests.</div>
+          )}
+        </Container>
       )}
-    </Container>
+    </Wrapper>
   );
 }
 
 export default Pending;
 
-const Container = styled.div`
+const Wrapper = styled.div`
   margin-bottom: 1rem;
+`;
+
+const Container = styled.div`
+  margin-left: 1.1rem;
 `;
 
 const Button = styled.button`
@@ -96,6 +105,7 @@ const Heading = styled.h3`
   text-transform: uppercase;
   color: ${(props) => props.theme.text_tertiary};
   margin-bottom: 0.5rem;
+  font-size: 0.875rem;
 `;
 
 const Icon = styled.span`
@@ -118,7 +128,7 @@ const Avatar = styled.img`
   height: 2rem;
   border-radius: 50%;
   object-fit: cover;
-  margin-right: 0.5rem;
+  margin-right: 0.2rem;
 `;
 
 const Default = styled.div`
@@ -130,7 +140,7 @@ const Default = styled.div`
   border-radius: 50%;
   background: ${(props) => props.theme.bg_button};
   color: ${(props) => props.theme.server_icon_text};
-  margin-right: 0.5rem;
+  margin-right: 0.2rem;
 `;
 
 const ButtonIcon = styled.button`

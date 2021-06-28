@@ -7,10 +7,7 @@ function Nav() {
 
   return (
     <Container>
-      <NavLink
-        to="/user/friends"
-        $active={location.pathname === "/user/friends"}
-      >
+      <NavLink to="/" $active={location.pathname === "/"}>
         Friends
       </NavLink>
       <NavLink

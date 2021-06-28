@@ -22,6 +22,7 @@ const colors = {
   border_hover_secondary: "rgb(175, 175, 175)",
   border_accent: "rgb(255, 204, 166)",
   border_quote: "rgb(205, 231, 239)", // Quote in rich editor
+  border_button: "rgb(154, 203, 214)", // More button and menus
 
   // Input
   input_border: "rgb(155, 155, 155)",

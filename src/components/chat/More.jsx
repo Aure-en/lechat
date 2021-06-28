@@ -11,16 +11,6 @@ function More({ message, setEditing, setIsActive }) {
   const ref = useRef();
   const { isDropdownOpen, setIsDropdownOpen } = useDropdown(ref);
 
-  const remove = async (id) => {
-    await fetch(`${process.env.REACT_APP_URL}/messages/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        "Content-Type": "application/json",
-      },
-    });
-  };
-
   const pin = async (id) => {
     // TO-DO: Fetch to pin message
   };
@@ -99,7 +89,7 @@ const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid ${(props) => props.theme.border};
+  border: 1px solid ${(props) => props.theme.border_button};
   border-radius: 3px;
   padding: 0.07rem 0.15rem;
   background: ${(props) => props.theme.more_bg};
@@ -114,12 +104,12 @@ const Menu = styled.div`
   position: absolute;
   top: ${(props) => `${props.$top}px`};
   right: ${(props) => `calc(-${props.$right}px + 1rem)`};
-  padding: 0.25rem;
+  padding: 0.25rem 0;
   display: flex;
   flex-direction: column;
   z-index: 10;
   background: ${(props) => props.theme.more_bg};
-  border: 1px solid ${(props) => props.theme.border};
+  border: 1px solid ${(props) => props.theme.border_button};
   border-radius: 3px;
 `;
 

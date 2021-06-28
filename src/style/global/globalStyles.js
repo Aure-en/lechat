@@ -86,6 +86,10 @@ const GlobalStyles = createGlobalStyle`
     cursor: pointer;
   }
 
+  strong {
+    font-weight: 500;
+  }
+
   button {
     font-family: 'Assistant', 'Trebuchet MS', sans-serif;
     background: none;

@@ -5,16 +5,14 @@ import PrivateRoute from "../types/PrivateRoute";
 import Friends from "../Friends";
 import Conversation from "../Conversation";
 import Sidebar from "../../components/home/Sidebar";
-import Nav from "../../components/home/Nav";
 
 function Home() {
   return (
     <Container>
       <Sidebar />
       <Content>
-        <Nav />
         <Switch>
-          <PrivateRoute exact path="/user/friends" component={Friends} />
+          <PrivateRoute exact path="/" component={Friends} />
           <PrivateRoute
             exact
             path="/conversations/:userId"
@@ -34,7 +32,7 @@ const Container = styled.div`
   width: 100%;
 `;
 
-const Content = styled.main`
+const Content = styled.div`
   background: ${(props) => props.theme.bg_chat};
   margin-top: 1rem;
   border-radius: 1rem 1rem 0 0;

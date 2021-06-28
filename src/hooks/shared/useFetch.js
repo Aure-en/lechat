@@ -19,7 +19,6 @@ function useFetch(url) {
         setError(json);
       } else {
         setData(json);
-        console.log(data);
       }
       setLoading(false);
     })();

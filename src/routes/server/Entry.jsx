@@ -50,7 +50,7 @@ function Entry() {
           (channel) => channel._id.toString() === localStorage.getItem(serverId)
         )
       ) {
-        history.push(
+        return history.push(
           `/servers/${serverId}/channels/${localStorage.getItem(serverId)}`
         );
       }

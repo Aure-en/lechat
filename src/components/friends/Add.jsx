@@ -19,8 +19,8 @@ function Add() {
           <Header>
             <Heading>Friend Request</Heading>
             <p>
-              Send a friend request by entering their email or username. Be
-              careful, it is cAsE sEnSiTiVe.
+              Send a friend request by entering the an email address or
+              username. Be careful, it is cAsE sEnSiTiVe.
             </p>
           </Header>
 
