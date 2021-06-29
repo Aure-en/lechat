@@ -7,6 +7,7 @@ import SidebarLeft from "../../components/server/sidebar/Left";
 import SidebarRight from "../../components/server/sidebar/Right";
 import CategoryModal from "../../components/modals/server/Category";
 import Channel from "./Channel";
+import Settings from "./Settings";
 import useFetch from "../../hooks/shared/useFetch";
 import Leave from "../../components/server/Leave";
 import Entry from "./Entry";
@@ -30,6 +31,11 @@ function Server({ match }) {
             exact
             path="/servers/:serverId/channels/:channelId"
             component={Channel}
+          />
+          <PrivateRoute
+            exact
+            path="/servers/:serverId/settings"
+            component={Settings}
           />
           <PrivateRoute exact path="/servers/:serverId" component={Entry} />
         </Switch>

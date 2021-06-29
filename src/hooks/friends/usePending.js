@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import socket from "../../socket/socket";
 
-function useFriend() {
+function usePending() {
   const [friendships, setFriendships] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
 
-  // Load current friends
+  // Load pending friends
   useEffect(() => {
     (async () => {
       if (!user) return;
       const res = await fetch(
-        `${process.env.REACT_APP_URL}/users/${user._id}/friends`,
+        `${process.env.REACT_APP_URL}/users/${user._id}/pending`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -23,11 +23,21 @@ function useFriend() {
   }, []);
 
   // Set up socket listeners
-  // No need to handle the insert change, as it only concerns pending friends.
-  const handleUpdate = (update) => {
-    setFriendships([...friendships, update.document]);
+  const handleInsert = (friendship) => {
+    setFriendships([...friendships, friendship.document]);
   };
 
+  // When a friendship document is updated,
+  // it means that the recipient has accepted the friend request.
+  const handleUpdate = (update) => {
+    setFriendships(
+      [...friendships].filter(
+        (friendship) => friendship._id !== update.document._id
+      )
+    );
+  };
+
+  // Since deletion is sent to everyone, checks if the user is related to the change.
   const handleDelete = (deleted) => {
     if (
       friendships.findIndex(
@@ -40,17 +50,19 @@ function useFriend() {
     }
   };
 
-  const updateFriend = (document) => handleUpdate(document);
-  const deleteFriend = (document) => handleDelete(document);
-
   useEffect(() => {
-    socket.on("update friend", updateFriend);
-    return () => socket.off("update friend", updateFriend);
+    socket.on("insert friend", handleInsert);
+    return () => socket.off("insert friend", handleInsert);
   }, [friendships]);
 
   useEffect(() => {
-    socket.on("delete friend", deleteFriend);
-    return () => socket.off("delete friend", deleteFriend);
+    socket.on("update friend", handleUpdate);
+    return () => socket.off("update friend", handleUpdate);
+  }, [friendships]);
+
+  useEffect(() => {
+    socket.on("delete friend", handleDelete);
+    return () => socket.off("delete friend", handleDelete);
   }, [friendships]);
 
   return {
@@ -58,4 +70,4 @@ function useFriend() {
   };
 }
 
-export default useFriend;
+export default usePending;

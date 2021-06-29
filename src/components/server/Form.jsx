@@ -15,8 +15,8 @@ function Form({ server }) {
         <Heading>{server ? "Update your server" : "Create a server"}</Heading>
         <p>
           {server
-            ? "Your server is where you and your friends hang out. Make yours and start talking. Give your new server a personality with a name and an icon. You can always change them later."
-            : "Give your server a fresh look by updating its name or icon."}
+            ? "Give your server a fresh look by updating its name or icon."
+            : "Your server is where you and your friends hang out. Make yours and start talking."}
         </p>
       </Header>
       <FormContainer onSubmit={handleSubmit}>

@@ -1,12 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import useFetch from "../../hooks/shared/useFetch";
+import useUpdate from "../../hooks/realtime/useServer";
 
 function About({ serverId }) {
-  const { data: server } = useFetch(
-    `${process.env.REACT_APP_URL}/servers/${serverId}`
-  );
+  const { server } = useUpdate(serverId);
 
   if (!server) return <></>;
 

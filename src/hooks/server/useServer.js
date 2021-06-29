@@ -29,16 +29,21 @@ function useServer(server) {
   };
 
   const update = async () => {
-    // Update the name
+    const formData = new FormData();
+    formData.append("name", name);
+
+    if (image) {
+      formData.append("image", image);
+    }
+
     const res = await fetch(
-      `${process.env.REACT_APP_URL}/servers/${server._id}/name`,
+      `${process.env.REACT_APP_URL}/servers/${server._id}`,
       {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name }),
+        body: formData,
       }
     );
 
@@ -47,20 +52,6 @@ function useServer(server) {
     // If there are errors, display them.
     if (json.errors) {
       setNameError(json.errors.filter((err) => err.param === "name")[0].msg);
-    }
-
-    // Update the image
-    if (image) {
-      const formData = new FormData();
-      formData.append("image", image);
-
-      await fetch(`${process.env.REACT_APP_URL}/servers/${server._id}/icon`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
-        body: formData,
-      });
     }
   };
 

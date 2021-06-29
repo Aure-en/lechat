@@ -2,12 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Form from "../../components/server/Form";
-import useFetch from "../../hooks/shared/useFetch";
+import useUpdate from "../../hooks/realtime/useServer";
 
 function Settings({ match }) {
-  const { data: server } = useFetch(
-    `${process.env.REACT_APP_URL}/servers/${match.params.serverId}`
-  );
+  const { server } = useUpdate(match.params.serverId);
 
   return (
     <Wrapper>
@@ -30,11 +28,10 @@ const Wrapper = styled.main`
   background: ${(props) => props.theme.bg_chat};
   margin-top: 1rem;
   border-radius: 1rem 1rem 0 0;
-  padding: 2rem;
+  padding: 2rem 3rem;
   display: flex;
-  justify-content: center;
 `;
 
 const Container = styled.div`
-  max-width: 50rem;
+  width: 100%;
 `;
