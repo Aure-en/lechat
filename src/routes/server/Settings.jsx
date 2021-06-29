@@ -25,7 +25,7 @@ Settings.propTypes = {
 };
 
 const Wrapper = styled.main`
-  background: ${(props) => props.theme.bg_chat};
+  background: ${(props) => props.theme.bg_secondary};
   margin-top: 1rem;
   border-radius: 1rem 1rem 0 0;
   padding: 2rem 3rem;

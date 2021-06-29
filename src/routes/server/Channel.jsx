@@ -44,7 +44,7 @@ export default Channel;
 const Container = styled.main`
   display: grid;
   grid-template-rows: auto 1fr auto;
-  background: ${(props) => props.theme.bg_chat};
+  background: ${(props) => props.theme.bg_secondary};
   margin-top: 1rem;
   border-radius: 1rem 1rem 0 0;
   height: calc(100vh - 1rem); // margin-top

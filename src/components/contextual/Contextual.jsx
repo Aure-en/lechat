@@ -55,4 +55,24 @@ const Container = styled.div`
   position: absolute;
   top: ${(props) => `${props.$position.y}px`};
   left: ${(props) => `${props.$position.x}px`};
+  background: ${(props) => props.theme.bg_secondary};
+  padding: 0.25rem 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 20;
+  background: ${(props) => props.theme.more_bg};
+  border: 1px solid ${(props) => props.theme.border_button};
+  border-radius: 3px;
+
+  & > * {
+    padding: 0.25rem 1rem;
+    width: 100%;
+    text-align: start;
+    font-size: 0.875rem;
+    white-space: nowrap;
+
+    &:hover {
+      background: ${(props) => props.theme.more_bg_hover};
+    }
+  }
 `;

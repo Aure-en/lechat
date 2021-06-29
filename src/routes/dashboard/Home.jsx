@@ -35,7 +35,7 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
-  background: ${(props) => props.theme.bg_chat};
+  background: ${(props) => props.theme.bg_secondary};
   margin-top: 1rem;
   border-radius: 1rem 1rem 0 0;
   margin-right: 1rem;

@@ -33,7 +33,7 @@ function Delete({ message }) {
         >
           <Header>
             <Heading>Delete Message</Heading>
-            <p>Are you sure you want to delete this message ?</p>
+            <p>Are you sure you want to delete this message?</p>
           </Header>
 
           <Content>

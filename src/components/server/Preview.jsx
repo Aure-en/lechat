@@ -81,7 +81,7 @@ const Banner = styled.div`
       `url(data:${props.$banner.contentType};base64,${Buffer.from(
         props.$banner.data
       ).toString("base64")})`};
-    border-bottom: 2px solid ${(props) => props.theme.bg_chat};
+    border-bottom: 2px solid ${(props) => props.theme.bg_secondary};
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -116,7 +116,7 @@ const Icon = styled.img`
   width: 5rem;
   height: 5rem;
   border-radius: 50%;
-  border: 2px solid ${(props) => props.theme.bg_chat};
+  border: 2px solid ${(props) => props.theme.bg_secondary};
   object-fit: cover;
 `;
 

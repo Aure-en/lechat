@@ -24,7 +24,7 @@ const Wrapper = styled.div`
   margin-top: 1rem;
   border-radius: 1rem 1rem 0 0;
   height: calc(100vh - 1rem);
-  background: ${(props) => props.theme.bg_chat};
+  background: ${(props) => props.theme.bg_secondary};
 `;
 
 const Container = styled.div`

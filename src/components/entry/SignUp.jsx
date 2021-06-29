@@ -85,7 +85,7 @@ export default SignUp;
 
 const Container = styled.div`
   border: 1px solid ${(props) => props.theme.border};
-  background: ${(props) => props.theme.bg_chat};
+  background: ${(props) => props.theme.bg_secondary};
   max-width: 30rem;
   width: 100vw;
   padding: 3rem;

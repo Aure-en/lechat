@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Menu from "./Menu";
+import Menu from "../../contextual/Server";
 
 function Server({ server }) {
   const ref = useRef();
@@ -24,7 +24,7 @@ function Server({ server }) {
         </Link>
       </Li>
 
-      <Menu outerRef={ref} />
+      <Menu server={server} outerRef={ref} />
     </>
   );
 }

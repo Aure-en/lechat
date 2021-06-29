@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Switch } from "react-router-dom";
@@ -9,7 +9,6 @@ import CategoryModal from "../../components/modals/server/Category";
 import Channel from "./Channel";
 import Settings from "./Settings";
 import useFetch from "../../hooks/shared/useFetch";
-import Leave from "../../components/server/Leave";
 import Entry from "./Entry";
 
 function Server({ match }) {

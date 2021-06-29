@@ -9,9 +9,9 @@ const colors = {
 
   // BG
   bg_primary: "rgb(236, 247, 250)",
+  bg_secondary: "rgb(255, 255, 255)", // Chat
   bg_sidebar: "rgb(104, 153, 165)", // Left-most sidebar
   bg_sidebars: "rgb(216, 239, 245)", // Left and right sidebars
-  bg_chat: "rgb(255, 255, 255)", // Chat
   bg_button: "rgb(144, 182, 191)",
   bg_code: "rgb(236, 247, 250)", // Code in rich editor
 

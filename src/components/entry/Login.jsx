@@ -58,7 +58,7 @@ export default Login;
 
 const Container = styled.div`
   border: 1px solid ${(props) => props.theme.border};
-  background: ${(props) => props.theme.bg_chat};
+  background: ${(props) => props.theme.bg_secondary};
   width: 100vw;
   max-width: 30rem;
   padding: 3rem;
