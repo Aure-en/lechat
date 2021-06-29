@@ -3,7 +3,7 @@ import { useRouteMatch, Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import ChannelModal from "../modals/server/Channel";
-import useSection from "../../hooks/realtime/useSection";
+import useSection from "../../hooks/realtime/server/useSection";
 
 function List({ serverId, categoryId }) {
   const { sections: channels } = useSection(

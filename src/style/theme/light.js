@@ -6,7 +6,6 @@ const colors = {
   text_quaternary: "rgb(92, 167, 181)",
   text_link: "rgb(40, 156, 184)",
   text_link_hover: "rgb(6, 105, 145)",
-  error: "rgb(144, 37, 37)",
 
   // BG
   bg_primary: "rgb(236, 247, 250)",
@@ -29,7 +28,7 @@ const colors = {
   input_border_active: "rgb(104, 153, 165)",
 
   // Modals
-  modal_overlay: "rgba(0, 0, 0, 0.3)",
+  modal_overlay: "rgba(148, 160, 165, 0.3)",
   modal_bg: "rgb(255, 255, 255)",
 
   // Chat
@@ -39,6 +38,8 @@ const colors = {
   more_bg_hover: "rgb(236, 247, 250)",
 
   send_bg: "rgb(234, 144, 77)",
+  send_bg_disabled: "rgb(255, 214, 183)",
+  send_bg_hover: "rgb(226, 126, 51)",
   send_text: "rgb(255, 255, 255)",
 
   // Text Editor buttons
@@ -47,6 +48,9 @@ const colors = {
   editor_text: "rgb(104, 153, 165)",
   editor_text_active: "rgb(12, 88, 107)",
   tooltip_key: "rgba(236, 247, 250, 0.9)",
+
+  // Errors
+  error: "rgb(179, 45, 45)",
 };
 
 export default colors;

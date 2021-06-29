@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Form from "../../components/server/Form";
-import useUpdate from "../../hooks/realtime/useServer";
+import useUpdate from "../../hooks/realtime/server/useServer";
 
 function Settings({ match }) {
   const { server } = useUpdate(match.params.serverId);

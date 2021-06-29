@@ -27,6 +27,11 @@ const Button = styled.button`
   padding: 0 1rem;
   border-radius: 3px;
   font-weight: 500;
-  background: ${(props) => props.theme.send_bg};
+  background: ${(props) =>
+    props.disabled ? props.theme.send_bg_disabled : props.theme.send_bg};
   color: ${(props) => props.theme.send_text};
+
+  &:hover {
+    background: ${(props) => !props.disabled && props.theme.send_bg_hover};
+  }
 `;

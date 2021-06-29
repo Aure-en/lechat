@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import useSection from "../../hooks/realtime/useSection";
+import useSection from "../../hooks/realtime/server/useSection";
 import Channels from "../channel/List";
 import ChannelModal from "../modals/server/Channel";
 import CategoryModal from "../modals/server/Category";

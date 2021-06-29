@@ -1,19 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import Server from "./Server";
+import Servers from "./servers/Servers";
 import Conversation from "./Conversation";
 import Create from "../modals/server/Server";
-import socket from "../../socket/socket";
 
 function Sidebar() {
   return (
     <Nav>
       <Conversation />
-      <Server />
+      <Servers />
       <Create />
-      {/* <button type="button" onClick={() => console.log(socket.listeners("insert"))}>
-        Listener
-      </button> */}
     </Nav>
   );
 }

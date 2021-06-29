@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import useUpdate from "../../hooks/realtime/useServer";
+import useUpdate from "../../hooks/realtime/server/useServer";
 
 function About({ serverId }) {
   const { server } = useUpdate(serverId);
@@ -42,7 +42,6 @@ const Container = styled.div`
 const Heading = styled.h2`
   font-family: "Assistant", sans-serif;
   font-size: 1.25rem;
-  text-transform: uppercase;
   margin: 1rem 0;
   font-weight: 300;
 `;

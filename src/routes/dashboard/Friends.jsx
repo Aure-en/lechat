@@ -23,4 +23,5 @@ export default Friends;
 const Container = styled.main`
   display: flex;
   flex-direction: column;
+  padding: 1rem 2rem;
 `;

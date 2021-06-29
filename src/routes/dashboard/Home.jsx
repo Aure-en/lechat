@@ -41,5 +41,4 @@ const Content = styled.div`
   margin-right: 1rem;
   display: flex;
   flex-direction: column;
-  padding: 1rem 2rem;
 `;

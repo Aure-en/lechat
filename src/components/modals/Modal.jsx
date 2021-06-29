@@ -14,7 +14,7 @@ function Modal({ isOpen, setIsOpen, children }) {
           {createPortal(
             <Wrapper
               onMouseDown={(e) => {
-                if (e.target.contains(ref.current)) setIsOpen(false);
+                if (ref && !ref.current.contains(e.target)) setIsOpen(false);
               }}
             >
               <Container ref={ref}>
