@@ -2,19 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import ReactTooltip from "react-tooltip";
-import useFetch from "../../hooks/shared/useFetch";
+import useFriend from "../../hooks/friends/useFriend";
 import More from "./More";
 import IconChevron from "../../assets/icons/general/IconChevron";
 import { ReactComponent as IconMessage } from "../../assets/icons/friend/message.svg";
 
 function All() {
   const [isOpen, setIsOpen] = useState(true);
-  const { data: friendships } = useFetch(
-    `${process.env.REACT_APP_URL}/users/${
-      JSON.parse(localStorage.getItem("user"))._id
-    }/friends`
-  );
   const [friends, setFriends] = useState();
+  const { friendships } = useFriend();
 
   // Get the user from the friendship who isn't the current one.
   useEffect(() => {
