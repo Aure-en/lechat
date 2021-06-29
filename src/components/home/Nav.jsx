@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import NavLink from "../shared/links/Underline";
 
 function Nav() {
@@ -8,12 +8,12 @@ function Nav() {
 
   return (
     <Container>
-      <NavLink to="/" $active={location.pathname === "/"}>
+      <NavLink to="/" active={location.pathname === "/"}>
         Friends
       </NavLink>
       <NavLink
         to="/user/servers"
-        $active={location.pathname === "/user/servers"}
+        active={location.pathname === "/user/servers"}
       >
         Servers
       </NavLink>

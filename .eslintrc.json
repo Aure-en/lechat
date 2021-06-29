@@ -20,5 +20,6 @@
         "react"
     ],
     "rules": {
+        "no-underscore-dangle": "off" // Because of MongoDB _id.
     }
 }

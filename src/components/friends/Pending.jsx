@@ -1,18 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import ReactTooltip from "react-tooltip";
-import useFetch from "../../hooks/shared/useFetch";
+import usePending from "../../hooks/friends/usePending";
 import IconChevron from "../../assets/icons/general/IconChevron";
 import { ReactComponent as IconCheck } from "../../assets/icons/friend/check.svg";
 import { ReactComponent as IconClose } from "../../assets/icons/general/close.svg";
 
 function Pending() {
   const [isOpen, setIsOpen] = useState(true);
-  const { data: friends } = useFetch(
-    `${process.env.REACT_APP_URL}/users/${
-      JSON.parse(localStorage.getItem("user"))._id
-    }/pending`
-  );
+  const { friendships: friends } = usePending();
 
   const handleRequest = async (requestId, isAccepting) => {
     await fetch(`${process.env.REACT_APP_URL}/friends/${requestId}`, {
@@ -39,7 +35,7 @@ function Pending() {
             <ul>
               {friends.map((request) => {
                 if (
-                  request.sender._id !==
+                  request.recipient._id.toString() ===
                   JSON.parse(localStorage.getItem("user"))._id
                 ) {
                   return (
