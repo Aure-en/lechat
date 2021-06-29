@@ -103,7 +103,8 @@ const GlobalStyles = createGlobalStyle`
     }
   }
 
-  input {
+  input,
+  textarea {
     font-family: 'Assistant', 'Trebuchet MS', sans-serif;
   
     &:focus {

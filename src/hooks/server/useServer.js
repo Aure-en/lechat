@@ -2,6 +2,7 @@ import { useState } from "react";
 
 function useServer(server) {
   const [name, setName] = useState((server && server.name) || "");
+  const [about, setAbout] = useState((server && server.about) || "");
   const [nameError, setNameError] = useState("");
   const [image, setImage] = useState();
 
@@ -10,6 +11,7 @@ function useServer(server) {
     // Create form data
     const formData = new FormData();
     formData.append("name", name);
+    formData.append("about", about);
     if (image) formData.append("image", image);
 
     // Submit the form
@@ -31,10 +33,8 @@ function useServer(server) {
   const update = async () => {
     const formData = new FormData();
     formData.append("name", name);
-
-    if (image) {
-      formData.append("image", image);
-    }
+    formData.append("about", about);
+    if (image) formData.append("image", image);
 
     const res = await fetch(
       `${process.env.REACT_APP_URL}/servers/${server._id}`,
@@ -75,6 +75,8 @@ function useServer(server) {
   return {
     name,
     setName,
+    about,
+    setAbout,
     nameError,
     setImage,
     handleSubmit,

@@ -1,12 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import TextareaAutosize from "react-textarea-autosize";
 import useServer from "../../hooks/server/useServer";
 import Upload from "../shared/form/Upload";
 import SubmitBtn from "../shared/buttons/Gradient";
 
 function Form({ server }) {
-  const { name, setName, nameError, setImage, handleSubmit } =
+  const { name, setName, about, setAbout, nameError, setImage, handleSubmit } =
     useServer(server);
 
   return (
@@ -37,6 +38,19 @@ function Form({ server }) {
             />
           </Label>
           {nameError && <Error>{nameError}</Error>}
+        </Field>
+
+        <Field>
+          <Label htmlFor="about">
+            Description
+            <Textarea
+              id="about"
+              name="about"
+              value={about}
+              onChange={(e) => setAbout(e.target.value)}
+              placeholder="Enter your server's description"
+            />
+          </Label>
         </Field>
 
         <Button>
@@ -101,6 +115,20 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
+  border: none;
+  border-bottom: 1px solid ${(props) => props.theme.input_border};
+  padding: 0.5rem 0 0.25rem 0;
+
+  &::placeholder {
+    color: ${(props) => props.theme.input_border};
+  }
+
+  &:focus {
+    border-bottom: 1px solid ${(props) => props.theme.input_border_active};
+  }
+`;
+
+const Textarea = styled(TextareaAutosize)`
   border: none;
   border-bottom: 1px solid ${(props) => props.theme.input_border};
   padding: 0.5rem 0 0.25rem 0;

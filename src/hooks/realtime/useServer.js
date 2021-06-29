@@ -22,7 +22,6 @@ function useUpdate(serverId) {
 
   // Set up socket listeners
   const handleUpdate = (updated) => {
-    console.log(server, updated);
     setServer(updated.document);
   };
 
