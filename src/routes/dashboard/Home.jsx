@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Switch } from "react-router-dom";
 import PrivateRoute from "../types/PrivateRoute";
-import Friends from "../Friends";
-import Servers from "../Servers";
+import Friends from "./Friends";
+import Servers from "./Servers";
 import Conversation from "../Conversation";
 import Sidebar from "../../components/home/Sidebar";
 

@@ -1,6 +1,6 @@
 import React from "react";
-import List from "../components/server/List";
-import Nav from "../components/home/Nav";
+import List from "../../components/server/List";
+import Nav from "../../components/home/Nav";
 
 function Servers() {
   return (

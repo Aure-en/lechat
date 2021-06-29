@@ -21,11 +21,7 @@ function About({ serverId }) {
         <Default>{server.name[0]}</Default>
       )}
       <Heading>{server.name}</Heading>
-      <Description>
-        {server.about}
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error quos
-        deserunt voluptatibus labore sit.
-      </Description>
+      <Description>{server.about}</Description>
     </Container>
   );
 }

@@ -2,6 +2,7 @@ import { useState } from "react";
 
 function useChannel(serverId, categoryId, channel) {
   const [name, setName] = useState((channel && channel.name) || "");
+  const [about, setAbout] = useState((channel && channel.about) || "");
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
@@ -27,9 +28,10 @@ function useChannel(serverId, categoryId, channel) {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, category: categoryId }),
+      body: JSON.stringify({ name, about, category: categoryId }),
     });
     const json = await res.json();
+    console.log(json);
 
     if (json.errors) {
       setError(json.errors.filter((err) => err.param === "name")[0].msg);
@@ -39,6 +41,8 @@ function useChannel(serverId, categoryId, channel) {
   return {
     name,
     setName,
+    about,
+    setAbout,
     error,
     handleSubmit,
   };
