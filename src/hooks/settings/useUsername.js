@@ -59,10 +59,6 @@ function useUsername() {
       if (passwordError.length > 0)
         setErrors({ ...errors, password: passwordError[0].msg });
     }
-
-    if (!json.errors) {
-      localStorage.setItem("user", JSON.stringify(json));
-    }
   };
 
   return {

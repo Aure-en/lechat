@@ -45,9 +45,6 @@ export default function useEmail() {
       }
     );
     const json = await res.json();
-    if (!json.errors) {
-      localStorage.setItem("user", JSON.stringify(json));
-    }
   };
 
   return {

@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import {
   ContentBlock,
-  convertToRaw,
   Editor,
   EditorState,
   Modifier,
@@ -15,9 +14,9 @@ import {
 import "draft-js/dist/Draft.css";
 
 function TextEditor({ editorState, setEditorState, onEnter }) {
+  const editorRef = useRef(); // Used to auto-focus on load.
   const onChange = (editorState) => {
     setEditorState(editorState);
-    // send(JSON.stringify(convertToRaw(editorState.getCurrentContent())));
   };
 
   const keyBindingFn = (e) => {
@@ -117,6 +116,8 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
     if (state) setEditorState(state);
   };
 
+  // Used to not create blocks on every single new line on paste
+  // when the user is pasting in a styled block.
   const handlePastedText = (text) => {
     if (RichUtils.getCurrentBlockType(editorState) !== "unstyled") {
       // Insert text
@@ -169,9 +170,15 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
     return "";
   };
 
+  // Autofocus the text editor on mount.
+  useEffect(() => {
+    editorRef.current.focus();
+  }, []);
+
   return (
     <Container>
       <Editor
+        ref={editorRef}
         editorState={editorState}
         keyBindingFn={keyBindingFn}
         handleKeyCommand={handleKeyCommand}

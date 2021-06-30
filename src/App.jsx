@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import GlobalStyles from "./style/global/globalStyles";
 import { ThemeProvider } from "./context/ThemeContext";
+import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./routes/types/PrivateRoute";
 import EntryRoute from "./routes/types/EntryRoute";
 import Login from "./routes/entry/Login";
@@ -23,13 +24,15 @@ function App() {
     <Router>
       <ThemeProvider>
         <GlobalStyles />
-        <Wrapper>
-          <Switch>
-            <EntryRoute exact path="/login" component={Login} />
-            <EntryRoute exact path="/signup" component={SignUp} />
-            <PrivateRoute path="/" component={Dashboard} />
-          </Switch>
-        </Wrapper>
+        <AuthProvider>
+          <Wrapper>
+            <Switch>
+              <EntryRoute exact path="/login" component={Login} />
+              <EntryRoute exact path="/signup" component={SignUp} />
+              <PrivateRoute path="/" component={Dashboard} />
+            </Switch>
+          </Wrapper>
+        </AuthProvider>
       </ThemeProvider>
     </Router>
   );

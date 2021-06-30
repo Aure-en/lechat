@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
+import { useAuth } from "../context/AuthContext";
 import Setting from "../components/modals/user/Setting";
 import Email from "../components/settings/Email";
 import Password from "../components/settings/Password";
@@ -8,7 +9,8 @@ import Avatar from "../components/settings/Avatar";
 import LogOut from "../components/settings/LogOut";
 
 function Settings() {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const { user } = useAuth();
+
   return (
     <Container>
       <Heading>User Settings</Heading>
