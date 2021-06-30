@@ -1,17 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import useFetch from "../../../hooks/shared/useFetch";
+import useServers from "../../../hooks/realtime/server/useServers";
 import Server from "./Server";
 
 function Servers() {
-  const { data: servers } = useFetch(
-    `${process.env.REACT_APP_URL}/users/${
-      JSON.parse(localStorage.getItem("user"))._id
-    }/servers`
-  );
+  const { servers } = useServers();
 
   return (
-    <Ul>{servers && servers.map((server) => <Server server={server} />)}</Ul>
+    <Ul>
+      {servers.map((server) => (
+        <Server server={server} />
+      ))}
+    </Ul>
   );
 }
 

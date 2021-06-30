@@ -1,38 +1,45 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "../../../context/AuthContext";
 import socket from "../../../socket/socket";
 
 function useServers() {
   const [servers, setServers] = useState([]);
+  const { user } = useAuth();
+
+  const getUserServers = async (userId) => {
+    const res = await fetch(
+      `${process.env.REACT_APP_URL}/users/${userId}/servers`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        },
+      }
+    );
+    const json = await res.json();
+    if (!json.error) setServers(json);
+  };
 
   // Load servers the user is in
   useEffect(() => {
-    (async () => {
-      const res = await fetch(
-        `${process.env.REACT_APP_URL}/users/${
-          JSON.parse(localStorage.getItem("user"))._id
-        }/servers`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-          },
-        }
-      );
-      const json = await res.json();
-      if (!json.error) setServers(json);
-    })();
+    getUserServers(user._id);
   }, []);
 
-  /* Set up socket listeners when:
-   * - The user joins a server.
-   * - The user leaves a server.
-   * - The server is updated by its administrator.
-   */
+  // Set up socket listener
+  const handleUpdate = (update) => {
+    if (!Object.keys(update.fields).includes("server")) return;
+    // Fetch servers and set the new ones
+    /* We could look at whether a server was added or removed in update.document
+     * However, we would still need to fetch the server name and icon from its _id.
+     * Since fetching data is needed anyway, I'll just fetch the whole servers.
+     */
 
-  const handleJoin = () => {};
+    getUserServers(user._id);
+  };
 
-  const handleLeave = () => {};
-
-  const handleUpdate = () => {};
+  useEffect(() => {
+    socket.on("account update", handleUpdate);
+    return () => socket.off("account update", handleUpdate);
+  }, [servers]);
 
   return { servers };
 }

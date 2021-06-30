@@ -1,12 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import Modal from "../Modal";
 import Button from "../../shared/buttons/Gradient";
 
 function Leave({ isOpen, setIsOpen, server }) {
   const history = useHistory();
+  const location = useLocation();
 
   const leave = async (serverId) => {
     // Leave server
@@ -23,8 +24,10 @@ function Leave({ isOpen, setIsOpen, server }) {
       }
     );
 
-    // Redirect to homepage
-    history.push("/");
+    // Redirect to homepage if we were in the server
+    if (location.pathname.match(new RegExp(`/servers/${serverId}`))) {
+      history.push("/");
+    }
   };
 
   return (
