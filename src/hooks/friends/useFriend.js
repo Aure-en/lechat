@@ -19,7 +19,6 @@ function useFriend() {
       );
       const json = await res.json();
       if (!json.error) setFriendships(json);
-      console.log(json);
     })();
   }, []);
 

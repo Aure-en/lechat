@@ -53,6 +53,16 @@ function useMessage(url) {
     }
   };
 
+  const handleUserUpdate = (user) => {
+    const updated = [...messages].map((message) => {
+      if (message.author._id.toString() === user.document._id.toString()) {
+        return { ...message, author: user.document };
+      }
+      return user;
+    });
+    setMessages(updated);
+  };
+
   useEffect(() => {
     socket.on("insert message", handleInsert);
     return () => socket.off("insert message", handleInsert);
@@ -66,6 +76,11 @@ function useMessage(url) {
   useEffect(() => {
     socket.on("delete message", handleDelete);
     return () => socket.off("delete message", handleDelete);
+  }, [messages]);
+
+  useEffect(() => {
+    socket.on("user update", handleUserUpdate);
+    return () => socket.off("user update", handleUserUpdate);
   }, [messages]);
 
   return {

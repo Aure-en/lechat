@@ -9,7 +9,8 @@ function Content({ message }) {
   return (
     <>
       {/* Avatar */}
-      {message.author.avatar ? (
+      {message.author.avatar &&
+      Object.keys(message.author.avatar).length > 0 ? (
         <Icon
           src={`data:${message.author.avatar.contentType};base64,${Buffer.from(
             message.author.avatar.data
