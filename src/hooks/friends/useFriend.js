@@ -19,6 +19,7 @@ function useFriend() {
       );
       const json = await res.json();
       if (!json.error) setFriendships(json);
+      console.log(json);
     })();
   }, []);
 
@@ -40,6 +41,22 @@ function useFriend() {
     }
   };
 
+  // When a friend updates their username / avatar,
+  const handleUserUpdate = (user) => {
+    const updated = [...friendships].map((friendship) => {
+      if (friendship.recipient._id.toString() === user.document._id.toString()) {
+        return { ...friendship, recipient: user.document };
+      }
+
+      if (friendship.sender._id.toString() === user.document._id.toString()) {
+        return { ...friendship, sender: user.document };
+      }
+      return friendship;
+    });
+
+    setFriendships(updated);
+  };
+
   useEffect(() => {
     socket.on("update friend", handleUpdate);
     return () => socket.off("update friend", handleUpdate);
@@ -48,6 +65,11 @@ function useFriend() {
   useEffect(() => {
     socket.on("delete friend", handleDelete);
     return () => socket.off("delete friend", handleDelete);
+  }, [friendships]);
+
+  useEffect(() => {
+    socket.on("user update", handleUserUpdate);
+    return () => socket.off("user update", handleUserUpdate);
   }, [friendships]);
 
   return {

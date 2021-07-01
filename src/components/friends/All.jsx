@@ -46,7 +46,8 @@ function All() {
                   {friends.map((friend) => (
                     <Li key={friend._id}>
                       <StyledLink to={`/conversations/${friend.friend._id}`}>
-                        {friend.friend.avatar ? (
+                        {friend.friend.avatar &&
+                        Object.keys(friend.friend.avatar).length > 0 ? (
                           <Avatar
                             src={`data:${
                               friend.friend.avatar.contentType
