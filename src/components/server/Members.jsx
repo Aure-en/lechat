@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import useFetch from "../../hooks/shared/useFetch";
 import IconChevron from "../../assets/icons/general/IconChevron";
+import useMembers from "../../hooks/realtime/server/useMembers";
 
 function Members({ serverId }) {
   const [isOpen, setIsOpen] = useState(true);
-  const { data: members } = useFetch(
-    `${process.env.REACT_APP_URL}/servers/${serverId}/members`
-  );
+  const { members } = useMembers(serverId);
 
   return (
     <div>
@@ -20,24 +18,21 @@ function Members({ serverId }) {
       </Button>
       {isOpen && (
         <ul>
-          {members &&
-            members.map((member) => (
-              <Li key={member._id}>
-                {member.avatar ? (
-                  <Avatar
-                    src={`data:${
-                      member.avatar.contentType
-                    };base64,${Buffer.from(member.avatar.data).toString(
-                      "base64"
-                    )}`}
-                    alt={member.username}
-                  />
-                ) : (
-                  <Default>{member.username[0]}</Default>
-                )}
-                {member.username}
-              </Li>
-            ))}
+          {members.map((member) => (
+            <Li key={member._id}>
+              {member.avatar ? (
+                <Avatar
+                  src={`data:${member.avatar.contentType};base64,${Buffer.from(
+                    member.avatar.data
+                  ).toString("base64")}`}
+                  alt={member.username}
+                />
+              ) : (
+                <Default>{member.username[0]}</Default>
+              )}
+              {member.username}
+            </Li>
+          ))}
         </ul>
       )}
     </div>
