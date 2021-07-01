@@ -31,7 +31,6 @@ function useChannel(serverId, categoryId, channel) {
       body: JSON.stringify({ name, about, category: categoryId }),
     });
     const json = await res.json();
-    console.log(json);
 
     if (json.errors) {
       setError(json.errors.filter((err) => err.param === "name")[0].msg);

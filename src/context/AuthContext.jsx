@@ -19,7 +19,6 @@ export function AuthProvider({ children }) {
 
   // Socket listeners to update the user data.
   const handleUpdate = (updated) => {
-    console.log("UPDATED", updated);
     setValue(updated.document);
   };
 

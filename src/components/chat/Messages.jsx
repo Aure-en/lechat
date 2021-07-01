@@ -64,7 +64,6 @@ function Messages({ messages, setEditing }) {
         });
       }
     });
-
     setOrdered(ordered);
   }, [messages]);
 

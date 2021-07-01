@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import socket from "../../../socket/socket";
 
-function useUpdate(serverId) {
+function useServer(serverId) {
   const [server, setServer] = useState();
 
   // Load existing server
@@ -35,4 +35,4 @@ function useUpdate(serverId) {
   };
 }
 
-export default useUpdate;
+export default useServer;

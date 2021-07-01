@@ -43,11 +43,11 @@ function useFriend() {
   // When a friend updates their username / avatar,
   const handleUserUpdate = (user) => {
     const updated = [...friendships].map((friendship) => {
-      if (friendship.recipient._id.toString() === user.document._id.toString()) {
+      if (friendship.recipient._id === user.document._id) {
         return { ...friendship, recipient: user.document };
       }
 
-      if (friendship.sender._id.toString() === user.document._id.toString()) {
+      if (friendship.sender._id === user.document._id) {
         return { ...friendship, sender: user.document };
       }
       return friendship;

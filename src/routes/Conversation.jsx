@@ -1,61 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Form from "../components/chat/form/Form";
 import Messages from "../components/chat/Messages";
+import useConversation from "../hooks/chat/useConversation";
 import useMessage from "../hooks/chat/useMessage";
 
 function Conversation({ match }) {
-  const [conversation, setConversation] = useState();
   const [editing, setEditing] = useState(false);
+  const { conversation } = useConversation(match.params.userId);
   const { messages, setMessages } = useMessage(
     conversation &&
       `${process.env.REACT_APP_URL}/conversations/${conversation._id}/messages`
   );
-
-  // Load conversation
-  useEffect(() => {
-    (async () => {
-      // Check conversation existence
-      const existRes = await fetch(
-        `${process.env.REACT_APP_URL}/conversations?members=${
-          match.params.userId
-        },${JSON.parse(localStorage.getItem("user"))._id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const exist = await existRes.json();
-      let conversation = exist;
-
-      // If the conversation does not exist, create it.
-      if (!exist) {
-        const createRes = await fetch(
-          `${process.env.REACT_APP_URL}/conversations`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              members: `["${match.params.userId}","${
-                JSON.parse(localStorage.getItem("user"))._id
-              }"]`,
-            }),
-          }
-        );
-        const create = await createRes.json();
-        conversation = create;
-      }
-
-      // Set the conversation.
-      setConversation(conversation);
-    })();
-  }, [match]);
 
   return (
     <>
@@ -67,7 +24,7 @@ function Conversation({ match }) {
               {
                 conversation.members.filter(
                   (member) =>
-                    member._id.toString !==
+                    member._id.toString() !==
                     JSON.parse(localStorage.getItem("user"))._id
                 )[0].username
               }

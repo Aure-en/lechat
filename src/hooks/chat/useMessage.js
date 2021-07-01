@@ -55,10 +55,10 @@ function useMessage(url) {
 
   const handleUserUpdate = (user) => {
     const updated = [...messages].map((message) => {
-      if (message.author._id.toString() === user.document._id.toString()) {
+      if (message.author._id === user.document._id) {
         return { ...message, author: user.document };
       }
-      return user;
+      return message;
     });
     setMessages(updated);
   };
