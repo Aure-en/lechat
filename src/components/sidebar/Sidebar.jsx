@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import ReactTooltip from "react-tooltip";
 import Servers from "./servers/Servers";
 import Conversation from "./Conversation";
 import Create from "../modals/server/Server";
@@ -7,9 +8,10 @@ import Create from "../modals/server/Server";
 function Sidebar() {
   return (
     <Nav>
-      <Conversation />
+      {/* <Conversation /> */}
       <Servers />
       <Create />
+      <ReactTooltip place="right" effect="solid" />
     </Nav>
   );
 }

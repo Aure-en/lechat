@@ -1,11 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import Profile from "./Profile";
+import Profile from "../user/Profile";
+import { useAuth } from "../../context/AuthContext";
 
 function Sidebar() {
+  const { user } = useAuth();
   return (
     <Container>
-      <Profile />
+      <Profile user={user} />
     </Container>
   );
 }

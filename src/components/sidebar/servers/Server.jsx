@@ -10,7 +10,12 @@ function Server({ server }) {
   return (
     <>
       <Li key={server._id}>
-        <Link to={`/servers/${server._id}`} ref={ref}>
+        <Link
+          to={`/servers/${server._id}`}
+          ref={ref}
+          data-tip={server.name}
+          data-offset="{'top': 16, 'right': 4}"
+        >
           {server.icon ? (
             <Icon
               src={`data:${server.icon.contentType};base64,${Buffer.from(

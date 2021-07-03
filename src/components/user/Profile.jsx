@@ -1,11 +1,11 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 
-function Profile() {
-  const user = JSON.parse(localStorage.getItem("user"));
+function Profile({ user }) {
   return (
     <Container>
-      {user.avatar ? (
+      {user.avatar && Object.keys(user.avatar).length > 0 ? (
         <Icon
           src={`data:${user.avatar.contentType};base64,${Buffer.from(
             user.avatar.data
@@ -21,6 +21,19 @@ function Profile() {
 }
 
 export default Profile;
+
+Profile.propTypes = {
+  user: PropTypes.shape({
+    avatar: PropTypes.shape({
+      contentType: PropTypes.string,
+      data: PropTypes.shape({
+        type: PropTypes.string,
+        data: PropTypes.arrayOf(PropTypes.number),
+      }),
+    }),
+    username: PropTypes.string,
+  }).isRequired,
+};
 
 const Container = styled.div`
   display: flex;

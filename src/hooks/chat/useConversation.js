@@ -50,7 +50,6 @@ function useConversation(userId) {
   const handleUpdate = (user) => {
     const updated = { ...conversation };
     updated.members = updated.members.map((member) => {
-      console.log(member._id === user.document._id)
       if (member._id === user.document._id) {
         return user.document;
       }

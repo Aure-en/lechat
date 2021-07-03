@@ -30,7 +30,7 @@ export default Home;
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 17.5rem 1fr 15rem;
+  grid-template-columns: 17.5rem 1fr 17.5rem;
   width: 100%;
 `;
 

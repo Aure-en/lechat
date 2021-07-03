@@ -44,7 +44,7 @@ const Button = styled.button`
   position: absolute;
   right: 2rem; // Padding
   color: ${(props) => props.theme.text_secondary};
-  transform: ${(props) => props.$isOpen && "rotate(90deg)"};
+  transform: ${(props) => !props.$isOpen && "rotate(90deg)"};
   transition: transform 0.3s linear;
 `;
 
