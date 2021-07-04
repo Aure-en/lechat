@@ -52,7 +52,9 @@ function Settings() {
         <Field>
           <div>
             <Information>Account Removal</Information>
-            <small>If you delete your account, you will not be able to recover it.</small>
+            <small>
+              If you delete your account, you will not be able to recover it.
+            </small>
           </div>
         </Field>
       </Section>

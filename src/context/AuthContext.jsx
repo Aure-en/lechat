@@ -9,17 +9,17 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [user, _setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
   // Set user and persist the new value in localStorage.
-  const setValue = (user) => {
-    setUser(user);
+  const setUser = (user) => {
+    _setUser(user);
     localStorage.setItem("user", JSON.stringify(user));
   };
 
   // Socket listeners to update the user data.
   const handleUpdate = (updated) => {
-    setValue(updated.document);
+    setUser(updated.document);
   };
 
   useEffect(() => {
@@ -29,6 +29,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     user,
+    setUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

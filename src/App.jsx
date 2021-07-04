@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch } from "react-router-dom";
 import GlobalStyles from "./style/global/globalStyles";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./context/AuthContext";
-import { ActivityProvider } from "./context/ActivityContext";
+import { UnreadProvider } from "./context/UnreadContext";
 import PrivateRoute from "./routes/types/PrivateRoute";
 import EntryRoute from "./routes/types/EntryRoute";
 import Login from "./routes/entry/Login";
@@ -26,7 +26,7 @@ function App() {
       <ThemeProvider>
         <GlobalStyles />
         <AuthProvider>
-          <ActivityProvider>
+          <UnreadProvider>
             <Wrapper>
               <Switch>
                 <EntryRoute exact path="/login" component={Login} />
@@ -34,7 +34,7 @@ function App() {
                 <PrivateRoute path="/" component={Dashboard} />
               </Switch>
             </Wrapper>
-          </ActivityProvider>
+          </UnreadProvider>
         </AuthProvider>
       </ThemeProvider>
     </Router>

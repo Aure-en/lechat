@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 function useSignUp() {
   const initial = {
@@ -11,6 +12,7 @@ function useSignUp() {
 
   const [values, setValues] = useState(initial);
   const [errors, setErrors] = useState({ ...initial, response: "" });
+  const { setUser } = useAuth();
   const history = useHistory();
 
   const handleInputChange = (e) => {
@@ -93,9 +95,23 @@ function useSignUp() {
     // If the user was created and logged-in properly, save the jwt and user inFormation.
     if (json.token) {
       localStorage.setItem("jwt", json.token);
-      localStorage.setItem("user", JSON.stringify(json.user));
-      history.push("/");
+      setUser(json.user);
     }
+
+    // Create document in the database to track the user's activity
+    await fetch(`${process.env.REACT_APP_URL}/activity`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${json.token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user: json.user._id,
+      }),
+    });
+
+    // Everything was done successfully.
+    history.push("/");
   };
 
   return {

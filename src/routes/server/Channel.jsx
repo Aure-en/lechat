@@ -19,9 +19,9 @@ function Channel() {
     channelId && `${process.env.REACT_APP_URL}/channels/${channelId}/messages`
   );
 
-  // Store last visited channel to redirect the user to it later.
   useEffect(() => {
     if (channel) {
+      // Store last visited channel to redirect the user to it later.
       localStorage.setItem(serverId, channelId);
     }
   }, [channel]);
