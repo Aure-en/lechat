@@ -2,18 +2,19 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import Button from "../shared/buttons/Gradient";
 
 function Join({ server }) {
   const history = useHistory();
+  const { user } = useAuth();
 
-  const join = async (e, id) => {
-    e.preventDefault();
+  const join = async (serverId) => {
     // Join server
     await fetch(
       `${process.env.REACT_APP_URL}/users/${
         JSON.parse(localStorage.getItem("user"))._id
-      }/servers/${id}`,
+      }/servers/${serverId}`,
       {
         method: "POST",
         headers: {
@@ -22,10 +23,45 @@ function Join({ server }) {
         },
       }
     );
+  };
 
-    // Redirect to server page
+  /* Update activity.
+   * For all server channels, timestamp is set up to the time of joining.
+   * Fetch all the server channels
+   * Loops over them to add the activity.
+   */
+  const setActivity = async (serverId) => {
+    const res = await fetch(
+      `${process.env.REACT_APP_URL}/servers/${serverId}/channels`
+    );
+
+    const json = await res.json();
+    const channels = json.map((channel) => channel._id);
+
+    await Promise.all(
+      channels.map((channel) =>
+        fetch(`${process.env.REACT_APP_URL}/activity/${user._id}/servers`, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${json.token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            server: serverId,
+            channel,
+          }),
+        })
+      )
+    );
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await join(server._id);
+    await setActivity(server._id);
     history.push(`/servers/${server._id}`);
   };
+
   return (
     <Container>
       <Header>
@@ -52,11 +88,7 @@ function Join({ server }) {
         </Description>
       </Content>
 
-      <Form
-        onSubmit={(e) => {
-          join(e, server._id);
-        }}
-      >
+      <Form onSubmit={handleSubmit}>
         <BackBtn type="button" onClick={() => history.push("/")}>
           ← Back
         </BackBtn>

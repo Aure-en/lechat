@@ -33,19 +33,8 @@ function useActivity() {
     return () => socket.off("activity update", handleUpdate);
   }, [activity]);
 
-  // Update the database when the user visits a room
-  const handleActivity = (room) => {
-    fetch(`${process.env.REACT_APP_URL}/activity/${user._id}/rooms/${room}`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-      },
-    });
-  };
-
   return {
     activity,
-    handleActivity,
   };
 }
 

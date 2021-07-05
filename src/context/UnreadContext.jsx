@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect, createContext } from "react";
 import { useLocation, useRouteMatch } from "react-router-dom";
 import PropTypes from "prop-types";
 import socket from "../socket/socket";
+import useActivity from "../hooks/chat/useActivity";
 
 const UnreadContext = createContext();
 
@@ -15,7 +16,18 @@ export function UnreadProvider({ children }) {
     servers: [],
     conversations: new Set([]),
   });
+  const { activity } = useActivity();
   const location = useLocation();
+
+  /**
+   * Fetch activity.
+   * For each room of activity, fetch the latest message timestamp.
+   * Compare the timestamp to the activity timestamp (=when the user last visited the room)
+   * Set up unread messages when the last visit timestamp < latest message timestamp. 
+   */
+  useEffect(() => {
+    console.log(activity);
+  }, []);
 
   // Socket listeners
   /* Update unread when a new message is sent in a followed room
