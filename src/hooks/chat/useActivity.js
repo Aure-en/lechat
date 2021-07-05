@@ -28,6 +28,35 @@ function useActivity() {
     setActivity(updated);
   };
 
+  // Update the activity document when the user leaves a channel
+  const updateChannelActivity = (serverId, channelId) => {
+    fetch(`${process.env.REACT_APP_URL}/activity/${user._id}/servers`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        server: serverId,
+        channel: channelId,
+      }),
+    });
+  };
+
+  // Update the activity document when the user leaves a conversation
+  const updateConversationActivity = (conversationId) => {
+    fetch(`${process.env.REACT_APP_URL}/activity/${user._id}/conversations`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        conversation: conversationId,
+      }),
+    });
+  };
+
   useEffect(() => {
     socket.on("activity update", handleUpdate);
     return () => socket.off("activity update", handleUpdate);
@@ -35,6 +64,8 @@ function useActivity() {
 
   return {
     activity,
+    updateChannelActivity,
+    updateConversationActivity,
   };
 }
 
