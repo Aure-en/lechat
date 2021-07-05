@@ -36,7 +36,9 @@ function useJoin(serverId) {
     const channels = json.map((channel) => channel._id);
 
     await Promise.all(
-      channels.map((channel) => updateChannelActivity(serverId, channel))
+      channels.map(
+        async (channel) => await updateChannelActivity(serverId, channel)
+      )
     );
   };
 

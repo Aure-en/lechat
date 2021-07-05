@@ -51,6 +51,7 @@ Join.propTypes = {
   server: PropTypes.shape({
     name: PropTypes.string,
     _id: PropTypes.string,
+    about: PropTypes.string,
     icon: PropTypes.shape({
       contentType: PropTypes.string,
       data: PropTypes.shape({

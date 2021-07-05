@@ -6,6 +6,7 @@ import Messages from "../../components/chat/Messages";
 import Form from "../../components/chat/form/Form";
 import useMessage from "../../hooks/chat/useMessage";
 import useFetch from "../../hooks/shared/useFetch";
+import useActivity from "../../hooks/chat/useActivity";
 
 function Channel() {
   const { serverId, channelId } = useRouteMatch(
@@ -18,6 +19,7 @@ function Channel() {
   const { messages, setMessages } = useMessage(
     channelId && `${process.env.REACT_APP_URL}/channels/${channelId}/messages`
   );
+  const { updateChannelActivity } = useActivity();
 
   useEffect(() => {
     if (channel) {
@@ -25,6 +27,15 @@ function Channel() {
       localStorage.setItem(serverId, channelId);
     }
   }, [channel]);
+
+  // On unmount, update the activity.
+  useEffect(() => {
+    return () => {
+      if (serverId && channelId) {
+        updateChannelActivity(serverId, channelId);
+      }
+    };
+  }, [channelId]);
 
   return (
     <Container>

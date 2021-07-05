@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Form from "../components/chat/form/Form";
 import Messages from "../components/chat/Messages";
 import useConversation from "../hooks/chat/useConversation";
 import useMessage from "../hooks/chat/useMessage";
+import useActivity from "../hooks/chat/useActivity";
 
 function Conversation({ match }) {
   const [editing, setEditing] = useState(false);
@@ -13,6 +14,12 @@ function Conversation({ match }) {
     conversation &&
       `${process.env.REACT_APP_URL}/conversations/${conversation._id}/messages`
   );
+  const { updateConversationActivity } = useActivity();
+
+  // On unmount, update the activity.
+  useEffect(() => {
+    () => conversation && updateConversationActivity(conversation._id);
+  }, [conversation]);
 
   return (
     <>

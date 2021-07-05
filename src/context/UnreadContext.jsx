@@ -27,7 +27,7 @@ export function UnreadProvider({ children }) {
    */
   useEffect(() => {
     console.log(activity);
-  }, []);
+  }, [activity]);
 
   // Socket listeners
   /* Update unread when a new message is sent in a followed room
