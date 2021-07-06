@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Profile from "../user/Profile";
+import Conversations from "../conversations/Conversations";
 import { useAuth } from "../../context/AuthContext";
 
 function Sidebar() {
@@ -8,6 +9,7 @@ function Sidebar() {
   return (
     <Container>
       <Profile user={user} />
+      <Conversations />
     </Container>
   );
 }

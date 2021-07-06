@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import ReactTooltip from "react-tooltip";
 import useFriend from "../../hooks/friends/useFriend";
 import More from "./More";
@@ -44,29 +45,7 @@ function All() {
               {friends.length > 0 ? (
                 <ul>
                   {friends.map((friend) => (
-                    <Li key={friend._id}>
-                      <StyledLink to={`/conversations/${friend.friend._id}`}>
-                        {friend.friend.avatar &&
-                        Object.keys(friend.friend.avatar).length > 0 ? (
-                          <Avatar
-                            src={`data:${
-                              friend.friend.avatar.contentType
-                            };base64,${Buffer.from(
-                              friend.friend.avatar.data
-                            ).toString("base64")}`}
-                            alt={friend.friend.username}
-                          />
-                        ) : (
-                          <Default>{friend.friend.username[0]}</Default>
-                        )}
-
-                        <div>{friend.friend.username}</div>
-                        <Buttons>
-                          <IconMessage data-tip="Message" />
-                        </Buttons>
-                      </StyledLink>
-                      <More friend={friend.friend} friendship={friend._id} />
-                    </Li>
+                    <Friend friendship={friend} key={friend._id} />
                   ))}
                 </ul>
               ) : (
@@ -80,6 +59,50 @@ function All() {
     </Wrapper>
   );
 }
+
+function Friend({ friendship }) {
+  return (
+    <Li>
+      <StyledLink to={`/conversations/${friendship.friend._id}`}>
+        {friendship.friend.avatar &&
+        Object.keys(friendship.friend.avatar).length > 0 ? (
+          <Avatar
+            src={`data:${
+              friendship.friend.avatar.contentType
+            };base64,${Buffer.from(friendship.friend.avatar.data).toString(
+              "base64"
+            )}`}
+            alt={friendship.friend.username}
+          />
+        ) : (
+          <Default>{friendship.friend.username[0]}</Default>
+        )}
+
+        <div>{friendship.friend.username}</div>
+        <Buttons>
+          <IconMessage data-tip="Message" />
+        </Buttons>
+      </StyledLink>
+      <More friend={friendship.friend} friendship={friendship._id} />
+    </Li>
+  );
+}
+
+Friend.propTypes = {
+  friendship: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    friend: PropTypes.shape({
+      username: PropTypes.string,
+      avatar: PropTypes.shape({
+        contentType: PropTypes.string,
+        data: PropTypes.shape({
+          type: PropTypes.string,
+          data: PropTypes.arrayOf(PropTypes.number),
+        }),
+      }),
+    }),
+  }).isRequired,
+};
 
 export default All;
 

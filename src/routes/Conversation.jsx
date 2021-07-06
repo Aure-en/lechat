@@ -3,9 +3,11 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Form from "../components/chat/form/Form";
 import Messages from "../components/chat/Messages";
+import { useAuth } from "../context/AuthContext";
 import useConversation from "../hooks/chat/useConversation";
 import useMessage from "../hooks/chat/useMessage";
 import useActivity from "../hooks/chat/useActivity";
+import Profile from "../components/user/Profile";
 
 function Conversation({ match }) {
   const [editing, setEditing] = useState(false);
@@ -14,6 +16,7 @@ function Conversation({ match }) {
     conversation &&
       `${process.env.REACT_APP_URL}/conversations/${conversation._id}/messages`
   );
+  const { user } = useAuth();
   const { updateConversationActivity } = useActivity();
 
   // On unmount, update the activity.
@@ -21,19 +24,17 @@ function Conversation({ match }) {
     () => conversation && updateConversationActivity(conversation._id);
   }, [conversation]);
 
-  return (
-    <>
-      {conversation && (
+  if (conversation) {
+    return (
+      <>
         <Container>
           <Header>
             <Heading>
               {/* Display username of the conversation member who isn't the current one */}
               {
-                conversation.members.filter(
-                  (member) =>
-                    member._id.toString() !==
-                    JSON.parse(localStorage.getItem("user"))._id
-                )[0].username
+                conversation.members.find(
+                  (member) => member._id.toString() !== user._id
+                ).username
               }
             </Heading>
           </Header>
@@ -46,9 +47,17 @@ function Conversation({ match }) {
             setMessages={setMessages}
           />
         </Container>
-      )}
-    </>
-  );
+
+        <Profile
+          user={conversation.members.find(
+            (member) => member._id.toString() !== user._id
+          )}
+        />
+      </>
+    );
+  }
+
+  return <></>;
 }
 
 export default Conversation;
@@ -60,7 +69,10 @@ Conversation.propTypes = {
 const Container = styled.main`
   display: grid;
   grid-template-rows: auto 1fr auto;
-  height: 100%;
+  background: ${(props) => props.theme.bg_secondary};
+  margin-top: 1rem;
+  border-radius: 1rem 1rem 0 0;
+  margin-right: 1rem;
 `;
 
 const Header = styled.header`

@@ -12,6 +12,8 @@ const colors = {
   bg_secondary: "rgb(255, 255, 255)", // Chat
   bg_sidebar: "rgb(104, 153, 165)", // Left-most sidebar
   bg_sidebars: "rgb(216, 239, 245)", // Left and right sidebars
+  bg_active: "rgb(212, 235, 241)", // Sidebar active
+  bg_hover: "rgb(226, 242, 247)", // Sidebar hover
   bg_button: "rgb(144, 182, 191)",
   bg_code: "rgb(236, 247, 250)", // Code in rich editor
 

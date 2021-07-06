@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import ReactTooltip from "react-tooltip";
 import usePending from "../../hooks/friends/usePending";
@@ -9,16 +10,6 @@ import { ReactComponent as IconClose } from "../../assets/icons/general/close.sv
 function Pending() {
   const [isOpen, setIsOpen] = useState(true);
   const { friendships: friends } = usePending();
-
-  const handleRequest = async (requestId, isAccepting) => {
-    await fetch(`${process.env.REACT_APP_URL}/friends/${requestId}`, {
-      method: isAccepting ? "PUT" : "DELETE",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        "Content-Type": "application/json",
-      },
-    });
-  };
 
   return (
     <Wrapper>
@@ -38,38 +29,7 @@ function Pending() {
                   request.recipient._id.toString() ===
                   JSON.parse(localStorage.getItem("user"))._id
                 ) {
-                  return (
-                    <Li key={request._id}>
-                      {request.sender.avatar ? (
-                        <Avatar
-                          src={`data:${
-                            request.sender.avatar.contentType
-                          };base64,${Buffer.from(
-                            request.sender.avatar.data
-                          ).toString("base64")}`}
-                          alt={request.sender.username}
-                        />
-                      ) : (
-                        <Default>{request.sender.username[0]}</Default>
-                      )}
-                      <div>{request.sender.username}</div>
-                      <Accept
-                        type="button"
-                        onClick={() => handleRequest(request._id, true)}
-                        data-tip="Accept"
-                      >
-                        <IconCheck />
-                      </Accept>
-                      <Decline
-                        type="button"
-                        onClick={() => handleRequest(request._id, false)}
-                        data-tip="Decline"
-                      >
-                        <IconClose />
-                      </Decline>
-                      <ReactTooltip delayShow={150} place="bottom" />
-                    </Li>
-                  );
+                  return <Request request={request} key={request._id} />;
                 }
               })}
             </ul>
@@ -81,6 +41,65 @@ function Pending() {
     </Wrapper>
   );
 }
+
+function Request({ request }) {
+  const handleRequest = async (requestId, isAccepting) => {
+    await fetch(`${process.env.REACT_APP_URL}/friends/${requestId}`, {
+      method: isAccepting ? "PUT" : "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
+  return (
+    <Li>
+      {request.sender.avatar ? (
+        <Avatar
+          src={`data:${request.sender.avatar.contentType};base64,${Buffer.from(
+            request.sender.avatar.data
+          ).toString("base64")}`}
+          alt={request.sender.username}
+        />
+      ) : (
+        <Default>{request.sender.username[0]}</Default>
+      )}
+      <div>{request.sender.username}</div>
+      <Accept
+        type="button"
+        onClick={() => handleRequest(request._id, true)}
+        data-tip="Accept"
+      >
+        <IconCheck />
+      </Accept>
+      <Decline
+        type="button"
+        onClick={() => handleRequest(request._id, false)}
+        data-tip="Decline"
+      >
+        <IconClose />
+      </Decline>
+      <ReactTooltip delayShow={150} place="bottom" />
+    </Li>
+  );
+}
+
+Request.propTypes = {
+  request: PropTypes.shape({
+    _id: PropTypes.string,
+    sender: PropTypes.shape({
+      username: PropTypes.string,
+      avatar: PropTypes.shape({
+        contentType: PropTypes.string,
+        data: PropTypes.shape({
+          type: PropTypes.string,
+          data: PropTypes.arrayOf(PropTypes.number),
+        }),
+      }),
+    }),
+  }).isRequired,
+};
 
 export default Pending;
 

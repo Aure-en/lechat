@@ -11,17 +11,15 @@ function Home() {
   return (
     <Container>
       <Sidebar />
-      <Content>
-        <Switch>
-          <PrivateRoute exact path="/" component={Friends} />
-          <PrivateRoute exact path="/user/servers" component={Servers} />
-          <PrivateRoute
-            exact
-            path="/conversations/:userId"
-            component={Conversation}
-          />
-        </Switch>
-      </Content>
+      <Switch>
+        <PrivateRoute exact path="/" component={Friends} />
+        <PrivateRoute exact path="/user/servers" component={Servers} />
+        <PrivateRoute
+          exact
+          path="/conversations/:userId"
+          component={Conversation}
+        />
+      </Switch>
     </Container>
   );
 }

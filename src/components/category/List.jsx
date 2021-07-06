@@ -40,7 +40,7 @@ function Li({ serverId, category }) {
   return (
     <li>
       <Category>
-        <Name type="button" onClick={() => setIsOpen(!isOpen)} >
+        <Name type="button" onClick={() => setIsOpen(!isOpen)}>
           <Icon $open={isOpen}>
             <IconChevron />
           </Icon>

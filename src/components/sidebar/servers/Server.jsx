@@ -1,8 +1,9 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
+import ReactTooltip from "react-tooltip";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Menu from "../../contextual/Server";
+import Menu from "./Menu";
 
 function Server({ server }) {
   const ref = useRef();
@@ -30,6 +31,8 @@ function Server({ server }) {
       </Li>
 
       <Menu server={server} outerRef={ref} />
+
+      <ReactTooltip place="right" effect="solid" />
     </>
   );
 }

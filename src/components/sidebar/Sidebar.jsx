@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import ReactTooltip from "react-tooltip";
 import Servers from "./servers/Servers";
 import Conversation from "./Conversation";
 import Create from "../modals/server/Server";
@@ -11,7 +10,6 @@ function Sidebar() {
       {/* <Conversation /> */}
       <Servers />
       <Create />
-      <ReactTooltip place="right" effect="solid" />
     </Nav>
   );
 }
@@ -23,5 +21,6 @@ const Nav = styled.nav`
   overflow-y: auto;
   background: ${(props) => props.theme.bg_sidebar};
   margin: 1rem;
+  margin-right: 0;
   border-radius: 1rem;
 `;

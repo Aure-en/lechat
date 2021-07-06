@@ -20,7 +20,7 @@ export function UnreadProvider({ children }) {
   const location = useLocation();
 
   /**
-   * Fetch activity.
+   * TO-DO: Fetch activity.
    * For each room of activity, fetch the latest message timestamp.
    * Compare the timestamp to the activity timestamp (=when the user last visited the room)
    * Set up unread messages when the last visit timestamp < latest message timestamp. 

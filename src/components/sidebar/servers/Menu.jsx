@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import Leave from "../modals/server/Leave";
-import Contextual from "./Contextual";
+import Leave from "../../modals/server/Leave";
+import Contextual from "../../contextual/Contextual";
 
 function Menu({ server, outerRef }) {
   const [isLeaveOpen, setIsLeaveOpen] = useState(false);
