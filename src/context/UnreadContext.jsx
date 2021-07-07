@@ -14,19 +14,123 @@ export function UnreadProvider({ children }) {
   // Tracks rooms that have unread messages (the latest message has a timestamp greater than the user's last visit)
   const [unread, setUnread] = useState({
     servers: [],
-    conversations: new Set([]),
+    conversations: [],
   });
   const { activity } = useActivity();
   const location = useLocation();
 
   /**
-   * TO-DO: Fetch activity.
-   * For each room of activity, fetch the latest message timestamp.
-   * Compare the timestamp to the activity timestamp (=when the user last visited the room)
-   * Set up unread messages when the last visit timestamp < latest message timestamp. 
+   * For each conversation, query the database to know
+   * how many messages were written since the last time the user was
+   * active in the room (=activity timestamp)
+   * @param {Array} conversations - array of objects { _id: {str}, timestamp: {int}}
+   * @returns {Array} unread - array of objects { _id: {str}, unread: {int}}
    */
+
+  const getConversationsUnread = async (conversations) => {
+    const unread = [];
+
+    const responses = await Promise.all(
+      conversations.map((conversation) =>
+        fetch(
+          `${process.env.REACT_APP_URL}/conversations/${conversation._id}/messages?after=${conversation.timestamp}`,
+          {
+            method: "HEAD",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+            },
+          }
+        )
+      )
+    );
+
+    responses.forEach((response, index) =>
+      unread.push({
+        _id: conversations[index]._id,
+        unread: +response.headers.get("X-Total-Count"),
+      })
+    );
+
+    return unread;
+  };
+
+  /**
+   * For each server channel, query the database to know
+   * how many messages were written since the last time the user was
+   * active in the channel.
+   * @param {Array} channels - array of objects { _id: {str}, timestamp: {int}}
+   * @returns {Array} unread - array of objects { _id: {str}, unread: {int}}
+   */
+
+  const getChannelsUnread = async (channels) => {
+    const unread = [];
+
+    const responses = await Promise.all(
+      channels.map((channel) =>
+        fetch(
+          `${process.env.REACT_APP_URL}/channels/${channel._id}/messages?after=${channel.timestamp}`,
+          {
+            method: "HEAD",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+            },
+          }
+        )
+      )
+    );
+
+    responses.forEach((response, index) =>
+      unread.push({
+        _id: channels[index]._id,
+        unread: +response.headers.get("X-Total-Count"),
+      })
+    );
+
+    return unread;
+  };
+
+  /**
+   * For each server, use the getChannelsUnread to get the number
+   * of unread messages in each channel.
+   * @param {Array} servers - array of objects { _id: {str}, channels: [{ _id: {str}, timestamp: {int}}]}
+   * @returns {Array} unread - array of objects { _id: {str}, channels:[{ _id: {str}, unread: {int}}]
+   */
+
+  const getServersUnread = async (servers) => {
+    const unread = await Promise.all(
+      servers.map(async (server) => {
+        return {
+          _id: server._id,
+          channels: await getChannelsUnread(server.channels),
+        };
+      })
+    );
+
+    return unread;
+  };
+
+  /**
+   * For each room of activity, query the database to know
+   * how many messages were written since the last time the user was
+   * active in the room.
+   */
+  const getUnread = async () => {
+    const unread = {
+      servers: [],
+      conversations: [],
+    };
+
+    unread.conversations = await getConversationsUnread(activity.conversations);
+    unread.servers = await getServersUnread(activity.servers);
+
+    console.log("UNREAD", unread);
+    setUnread(unread);
+  };
+
   useEffect(() => {
-    console.log(activity);
+    if (!activity) return;
+    console.log("ACTIVITY", activity);
+    getUnread();
   }, [activity]);
 
   // Socket listeners
@@ -38,52 +142,67 @@ export function UnreadProvider({ children }) {
 
   /**
    * If the new message was sent in a channel the user isn't currently on
-   * → Add the channel and server to the unread set.
+   * → Add the channel and server to the unread if they aren't here.
+   * → Increment the number of unread messages.
    * @param {string} message - New message that has been sent.
    */
   const handleChannel = (message) => {
+    // If I am currently on the channel the message was sent in
+    // → Return.
+
     if (
       message.channel &&
-      !new RegExp(`${location.pathname}`).test(
+      new RegExp(`${location.pathname}`).test(
         `/servers/${message.server}/channels/${message.channel}`
       )
-    ) {
+    )
+      return;
+
+    // Else, update the unread messages.
+    setUnread((prev) => {
+      const updated = { ...prev };
+
       // If the server isn't in the list of unread servers, adds it.
       if (
         !unread.servers.find(
           (server) => server._id === message.server.toString()
         )
       ) {
-        setUnread((prev) => {
-          const updated = { ...prev };
-          updated.servers.push({
-            _id: message.server,
-            channels: new Set([message.channel]),
-          });
-          return updated;
-        });
-
-        // Else, if the server is already in the list, update its channels.
-      } else {
-        setUnread((prev) => {
-          const updated = { ...prev };
-          updated.servers = updated.servers.map((server) => {
-            if (server._id === message.server.toString()) {
-              const copy = { ...server };
-              server.channels.add(message.channel);
-              return copy;
-            }
-            return server;
-          });
-          return updated;
+        updated.servers.push({
+          _id: message.server.toString(),
+          channels: [],
         });
       }
-    }
+
+      const server = updated.servers.find(
+        (server) => server._id === message.server.toString()
+      );
+
+      // If the channel isn't in the server's channel list, adds it.
+      if (
+        !server.channels.find(
+          (channel) => channel._id === message.channel.toString()
+        )
+      ) {
+        server.channels.push({
+          _id: message.channel.toString(),
+          unread: 0,
+        });
+      }
+
+      // Increment the channel's number of unread messages
+      const channel = server.channels.find(
+        (channel) => channel._id === message.channel.toString()
+      );
+      channel.unread += 1;
+
+      return updated;
+    });
   };
 
   /**
    * If the new message was sent in a private conversation the user isn't currently on
-   * → Add it to the unread set.
+   * → Increment its number of unread messages.
    * @param {string} message - New message that has been sent.
    */
   const handleConversation = async (message) => {
@@ -92,7 +211,7 @@ export function UnreadProvider({ children }) {
       if (!new RegExp(`${location.pathname}`).test("/conversations")) {
         setUnread((prev) => {
           const copy = { ...prev };
-          copy.conversations.add(message.conversation);
+          copy.conversations.push({ _id: message.conversation, unread: 0 });
           return copy;
         });
 
@@ -116,7 +235,11 @@ export function UnreadProvider({ children }) {
         if (!json.members.includes(current)) {
           setUnread((prev) => {
             const updated = { ...prev };
-            updated.conversations.add(message.conversation);
+            const conversation = updated.conversations.find(
+              (conversation) =>
+                conversation._id === message.conversation.toString()
+            );
+            conversation.unread += 1;
             return updated;
           });
         }
@@ -132,8 +255,8 @@ export function UnreadProvider({ children }) {
    */
   const handleUnread = (document) => {
     const message = document.document;
-    handleChannel(message);
-    handleConversation(message);
+    if (message.channel) handleChannel(message);
+    if (message.conversation) handleConversation(message);
   };
 
   useEffect(() => {

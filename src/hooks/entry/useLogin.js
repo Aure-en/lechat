@@ -20,12 +20,12 @@ function useLogin() {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrors(initial);
-
-    // Client-side validation
-    // Check that all fields are filled.
+  /**
+   * Client-side validation.
+   * Checks that all fields are filled.
+   * @returns {bool} - true if there are errors, false otherwise.
+   */
+  const hasErrors = () => {
     if (!values.identifier) {
       setErrors((prev) => {
         return { ...prev, identifier: "Email / Username must be specified" };
@@ -40,14 +40,20 @@ function useLogin() {
 
     // If there are errors, display them without submitting the form.
     let hasErrors = false;
-    for (const field of Object.keys(errors)) {
+    Object.keys(errors).forEach((field) => {
       if (errors[field]) {
         hasErrors = true;
-        break;
       }
-    }
+    });
 
-    if (hasErrors) return;
+    return hasErrors;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrors(initial);
+
+    if (hasErrors()) return;
 
     /* Submit the form
     - If login is successful, return { user, jwt: JWT }

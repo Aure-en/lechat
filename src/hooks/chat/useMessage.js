@@ -4,6 +4,8 @@ import socket from "../../socket/socket";
 function useMessage(url) {
   const [messages, setMessages] = useState([]);
 
+  // Checks the location to know if the current room is related to the change.
+
   // Load messages
   useEffect(() => {
     if (!url) return;
@@ -13,6 +15,7 @@ function useMessage(url) {
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
         },
       });
+      console.log(res.headers.get("X-Total-Count"));
       const json = await res.json();
       if (!json.error) setMessages(json);
     })();

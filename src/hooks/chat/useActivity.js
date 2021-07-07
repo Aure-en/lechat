@@ -29,7 +29,7 @@ function useActivity() {
   };
 
   // Update the activity document when the user leaves a channel
-  const updateChannelActivity = (serverId, channelId) => {
+  const updateChannelActivity = (user, serverId, channelId) => {
     fetch(`${process.env.REACT_APP_URL}/activity/${user._id}/servers`, {
       method: "PUT",
       headers: {
@@ -44,7 +44,7 @@ function useActivity() {
   };
 
   // Update the activity document when the user leaves a conversation
-  const updateConversationActivity = (conversationId) => {
+  const updateConversationActivity = (user, conversationId) => {
     fetch(`${process.env.REACT_APP_URL}/activity/${user._id}/conversations`, {
       method: "PUT",
       headers: {

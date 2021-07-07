@@ -8,10 +8,12 @@ import Timestamp from "../chat/Timestamp";
 import renderers from "../chat/convert/renderers";
 
 function Conversation({ conversation }) {
-  const { id } = useRouteMatch("/conversations/:id").params;
+  const id =
+    useRouteMatch("/conversations/:id") &&
+    useRouteMatch("/conversations/:id").params.id;
   const { user } = useAuth();
 
-  // Conversation member who is not me.
+  // Conversation member who is not the current user.
   const member = conversation.members.find((member) => member._id !== user._id);
 
   return (

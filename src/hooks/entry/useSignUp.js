@@ -23,13 +23,12 @@ function useSignUp() {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrors(initial);
-    // Client-side validation
-    // Check that all fields are filled.
-
-    let hasErrors = false;
+  /**
+   * Client-side validation.
+   * Checks that all fields are filled.
+   * @returns {bool} - true if there are errors, false otherwise.
+   */
+  const hasErrors = () => {
     Object.keys(values).map((value) => {
       if (!values[value]) {
         setErrors((prev) => {
@@ -43,12 +42,12 @@ function useSignUp() {
       }
     });
 
-    for (const field of Object.keys(errors)) {
+    let hasErrors = false;
+    Object.keys(errors).forEach((field) => {
       if (errors[field]) {
         hasErrors = true;
-        break;
       }
-    }
+    });
 
     // Check that password and confirmation have the same value
     if (values.password !== values.confirmation) {
@@ -59,7 +58,15 @@ function useSignUp() {
       hasErrors = true;
     }
     // If there are errors, display them without submitting the Form.
-    if (hasErrors) return;
+    return hasErrors;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrors(initial);
+
+    // If there are errors, display them without submitting the Form.
+    if (hasErrors()) return;
 
     /* Submit the Form
     - If SignUp is successful, return { user, jwt: JWT }

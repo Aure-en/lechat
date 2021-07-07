@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 function useRequest() {
   const [friend, setFriend] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const { user } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -12,10 +14,7 @@ function useRequest() {
 
     // Validation
     if (!friend) return setError("Friend must be specified");
-    if (
-      friend === JSON.parse(localStorage.getItem("user")).username ||
-      friend === JSON.parse(localStorage.getItem("user")).email
-    ) {
+    if (friend === user.username || friend === user.email) {
       return setError("You cannot send yourself a friend request.");
     }
 

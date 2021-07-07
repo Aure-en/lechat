@@ -7,6 +7,7 @@ import Form from "../../components/chat/form/Form";
 import useMessage from "../../hooks/chat/useMessage";
 import useFetch from "../../hooks/shared/useFetch";
 import useActivity from "../../hooks/chat/useActivity";
+import { useAuth } from "../../context/AuthContext";
 
 function Channel() {
   const { serverId, channelId } = useRouteMatch(
@@ -20,6 +21,7 @@ function Channel() {
     channelId && `${process.env.REACT_APP_URL}/channels/${channelId}/messages`
   );
   const { updateChannelActivity } = useActivity();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (channel) {
@@ -32,7 +34,7 @@ function Channel() {
   useEffect(() => {
     return () => {
       if (serverId && channelId) {
-        updateChannelActivity(serverId, channelId);
+        updateChannelActivity(user, serverId, channelId);
       }
     };
   }, [channelId]);

@@ -21,7 +21,7 @@ function Conversation({ match }) {
 
   // On unmount, update the activity.
   useEffect(() => {
-    () => conversation && updateConversationActivity(conversation._id);
+    () => conversation && updateConversationActivity(user, conversation._id);
   }, [conversation]);
 
   if (conversation) {
