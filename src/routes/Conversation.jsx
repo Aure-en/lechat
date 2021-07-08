@@ -19,9 +19,15 @@ function Conversation({ match }) {
   const { user } = useAuth();
   const { updateConversationActivity } = useActivity();
 
-  // On unmount, update the activity.
+  // On unmount or on close, update the activity
   useEffect(() => {
-    () => conversation && updateConversationActivity(user, conversation._id);
+    const updateActivity = () =>
+      conversation && updateConversationActivity(user, conversation._id);
+    window.addEventListener("unload", updateActivity);
+    return () => {
+      updateActivity();
+      window.removeEventListener("unload", updateActivity);
+    };
   }, [conversation]);
 
   if (conversation) {

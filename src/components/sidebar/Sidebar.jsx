@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import Servers from "./servers/Servers";
-import Conversation from "./Conversation";
+import Conversations from "./conversations/Conversations";
 import Create from "../modals/server/Server";
 
 function Sidebar() {
   return (
     <Nav>
-      {/* <Conversation /> */}
+      <Conversations />
       <Servers />
       <Create />
     </Nav>

@@ -9,13 +9,14 @@ function usePassword() {
   const [values, setValues] = useState(initial);
   const [errors, setErrors] = useState(initial);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrors(initial);
-
-    // Validation
-    // Check if all fields are specified
+  /**
+   * Client-side validation.
+   * @returns {boolean} - true if there are errors, false otherwise.
+   */
+  const hasErrors = () => {
     let hasErrors;
+
+    // Checks that all fields are specified
     Object.keys(values).map((key) => {
       if (!values[key]) {
         setErrors((prev) => {
@@ -42,9 +43,14 @@ function usePassword() {
       hasErrors = true;
     }
 
-    if (hasErrors) return;
+    return hasErrors;
+  };
 
-    // Update the password
+  /**
+   * Send the request to the server to update the password.
+   * @returns {string} - the response.
+   */
+  const updatePassword = async () => {
     const res = await fetch(
       `${process.env.REACT_APP_URL}/users/${
         JSON.parse(localStorage.getItem("user"))._id
@@ -63,6 +69,16 @@ function usePassword() {
       }
     );
     const json = await res.json();
+    return json;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrors(initial);
+
+    if (hasErrors()) return;
+
+    updatePassword();
   };
 
   return {

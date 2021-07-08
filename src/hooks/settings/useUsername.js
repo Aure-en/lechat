@@ -8,11 +8,12 @@ function useUsername() {
   const [values, setValues] = useState(initial);
   const [errors, setErrors] = useState(initial);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrors(initial);
-
-    // Validation
+  /**
+   * Client-side validation
+   * Checks that all fields are filled.
+   * @returns {boolean} - true if there are errors, false otherwise.
+   */
+  const hasErrors = () => {
     let hasErrors;
     Object.keys(values).map((key) => {
       if (!values[key]) {
@@ -28,9 +29,14 @@ function useUsername() {
       }
     });
 
-    if (hasErrors) return;
+    return hasErrors;
+  };
 
-    // Update the username
+  /**
+   * Send the request to the server to update the username.
+   * @returns {string} - the response.
+   */
+  const updateUsername = async () => {
     const res = await fetch(
       `${process.env.REACT_APP_URL}/users/${
         JSON.parse(localStorage.getItem("user"))._id
@@ -59,6 +65,17 @@ function useUsername() {
       if (passwordError.length > 0)
         setErrors({ ...errors, password: passwordError[0].msg });
     }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrors(initial);
+
+    // Validation
+    if (hasErrors()) return;
+
+    // Update the username
+    updateUsername();
   };
 
   return {

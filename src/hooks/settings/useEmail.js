@@ -8,12 +8,13 @@ export default function useEmail() {
   const [values, setValues] = useState(initial);
   const [errors, setErrors] = useState(initial);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrors(initial);
-
-    // Validation
+  /**
+   * Client-side validation
+   * @returns {boolean} - true if there are errors, false otherwise.
+   */
+  const hasErrors = () => {
     let hasErrors;
+
     Object.keys(values).map((key) => {
       if (!values[key]) {
         setErrors((prev) => {
@@ -28,13 +29,16 @@ export default function useEmail() {
       }
     });
 
-    if (hasErrors) return;
+    return hasErrors;
+  };
 
-    // Update the new email
+  /**
+   * Send the request to the server to update the email.
+   * @returns {string} - the response.
+   */
+  const updateEmail = async () => {
     const res = await fetch(
-      `${process.env.REACT_APP_URL}/users/${
-        JSON.parse(localStorage.getItem("user"))._id
-      }/email`,
+      `${process.env.REACT_APP_URL}/users/${JSON.parse(localStorage.getItem("user"))._id}/email`,
       {
         method: "PUT",
         headers: {
@@ -45,7 +49,17 @@ export default function useEmail() {
       }
     );
     const json = await res.json();
+    return json;
   };
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setErrors(initial);
+
+    // Validation
+    if (hasErrors()) return;
+    updateEmail();
+  }
 
   return {
     values,

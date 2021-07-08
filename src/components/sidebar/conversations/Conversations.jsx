@@ -1,18 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import useFetch from "../../hooks/shared/useFetch";
+import { useUnread } from "../../../context/UnreadContext";
 
 function Conversation() {
-  const { data: conversations, error } = useFetch(
-    `${process.env.REACT_APP_URL}/users/${
-      JSON.parse(localStorage.getItem("user"))._id
-    }/conversations`
-  );
+  const [conversations, setConversations] = useState([]);
+  const { unread } = useUnread();
+
+  useEffect(() => {
+    setConversations(
+      unread.conversations.filter((conversation) => conversation.unread > 0)
+    );
+    console.log(conversations);
+  }, [unread]);
 
   return (
     <Ul>
-      {conversations &&
+      {/* {conversations &&
         conversations.map((conversation) => {
           const friend = conversation.members.find(
             (user) => user._id !== JSON.parse(localStorage.getItem("user"))._id
@@ -36,7 +40,7 @@ function Conversation() {
               </Link>
             </li>
           );
-        })}
+        })} */}
     </Ul>
   );
 }

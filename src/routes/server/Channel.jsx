@@ -30,12 +30,14 @@ function Channel() {
     }
   }, [channel]);
 
-  // On unmount, update the activity.
+  // On unmount or on close, update the activity.
   useEffect(() => {
+    const updateActivity = () =>
+      serverId && channelId && updateChannelActivity(user, serverId, channelId);
+    window.addEventListener("unload", updateActivity);
     return () => {
-      if (serverId && channelId) {
-        updateChannelActivity(user, serverId, channelId);
-      }
+      updateActivity();
+      window.removeEventListener("unload", updateActivity);
     };
   }, [channelId]);
 

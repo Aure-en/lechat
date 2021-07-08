@@ -20,6 +20,33 @@ export function UnreadProvider({ children }) {
   const location = useLocation();
 
   /**
+   * For each conversation, send a request to receive their members.
+   * @param {Array} conversations
+   */
+  const getConversationsMembers = async (conversations) => {
+    const responses = await Promise.all(
+      conversations.map((conversation) =>
+        fetch(
+          `${process.env.REACT_APP_URL}/conversations/${conversation._id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+            },
+          }
+        )
+      )
+    );
+
+    const jsons = await Promise.all(
+      responses.map((response) => response.json())
+    );
+
+    const members = jsons.map((json) => json.members);
+
+    return members;
+  };
+
+  /**
    * For each conversation, query the database to know
    * how many messages were written since the last time the user was
    * active in the room (=activity timestamp)
@@ -44,10 +71,13 @@ export function UnreadProvider({ children }) {
       )
     );
 
+    const members = await getConversationsMembers(conversations);
+
     responses.forEach((response, index) =>
       unread.push({
         _id: conversations[index]._id,
         unread: +response.headers.get("X-Total-Count"),
+        members: members[index],
       })
     );
 
@@ -205,46 +235,61 @@ export function UnreadProvider({ children }) {
    * → Increment its number of unread messages.
    * @param {string} message - New message that has been sent.
    */
+
+  // Get the conversation the user is currently on.
+  const current =
+    useRouteMatch("/conversations/:conversationId") &&
+    useRouteMatch("/conversations/:conversationId").params.conversationId;
+
   const handleConversation = async (message) => {
-    if (message.conversation) {
-      // If the user is not in a conversation, add to unread.
-      if (!new RegExp(`${location.pathname}`).test("/conversations")) {
-        setUnread((prev) => {
-          const copy = { ...prev };
-          copy.conversations.push({ _id: message.conversation, unread: 0 });
-          return copy;
-        });
-
-        // Else, check that he isn't on the current conversation.
-      } else {
-        const current = useRouteMatch("/conversations/:conversationId").params
-          .conversationId;
-
-        // Fetch the current conversation to check if it is the one
-        // the user is currently in.
-        const res = await fetch(
-          `${process.env.REACT_APP_URL}/conversations/${message.conversation}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-            },
-          }
-        );
-
-        const json = await res.json();
-        if (!json.members.includes(current)) {
-          setUnread((prev) => {
-            const updated = { ...prev };
-            const conversation = updated.conversations.find(
-              (conversation) =>
-                conversation._id === message.conversation.toString()
-            );
-            conversation.unread += 1;
-            return updated;
-          });
-        }
+    // Fetch the conversation to get its informations.
+    const response = await fetch(
+      `${process.env.REACT_APP_URL}/conversations/${message.conversation}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        },
       }
-    }
+    );
+
+    const conversation = await response.json();
+
+    // If the user is already in the conversation, returns.
+    if (
+      conversation.members.find(
+        (member) => member._id.toString() === conversation._id
+      )
+    )
+      return;
+
+    // Otherwise, update the unread conversations' list.
+
+    setUnread((prev) => {
+      const updated = { ...prev };
+
+      // If the conversation isn't in the list, add it.
+      if (
+        !updated.conversations.find(
+          (conversation) => conversation._id === message.conversation.toString()
+        )
+      ) {
+        const newConversation = {
+          _id: message.conversation,
+          unread: 0,
+          members: conversation.members,
+        };
+        updated.push(newConversation);
+      }
+
+      // Increment the number of unread of the conversation
+      const conversationWithUnread = updated.conversations.find(
+        (conversation) => conversation._id === message.conversation.toString()
+      );
+
+      conversationWithUnread.unread += 1;
+
+      return updated;
+    });
   };
 
   /**
