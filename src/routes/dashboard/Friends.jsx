@@ -33,4 +33,5 @@ const Container = styled.main`
   display: flex;
   flex-direction: column;
   padding: 1rem 2rem;
+  height: calc(100vh - 1rem);
 `;

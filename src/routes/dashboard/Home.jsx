@@ -31,12 +31,3 @@ const Container = styled.div`
   grid-template-columns: 17.5rem 1fr 17.5rem;
   width: 100%;
 `;
-
-const Content = styled.div`
-  background: ${(props) => props.theme.bg_secondary};
-  margin-top: 1rem;
-  border-radius: 1rem 1rem 0 0;
-  margin-right: 1rem;
-  display: flex;
-  flex-direction: column;
-`;

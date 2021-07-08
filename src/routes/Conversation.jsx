@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Form from "../components/chat/form/Form";
 import Messages from "../components/chat/Messages";
 import { useAuth } from "../context/AuthContext";
+import { useUnread } from "../context/UnreadContext";
 import useConversation from "../hooks/chat/useConversation";
 import useMessage from "../hooks/chat/useMessage";
 import useActivity from "../hooks/chat/useActivity";
@@ -18,6 +19,12 @@ function Conversation({ match }) {
   );
   const { user } = useAuth();
   const { updateConversationActivity } = useActivity();
+  const { handleReadConversation } = useUnread();
+
+  // On mount, set the conversation as read.
+  useEffect(() => {
+    conversation && handleReadConversation(conversation._id);
+  }, [conversation]);
 
   // On unmount or on close, update the activity
   useEffect(() => {
@@ -79,6 +86,7 @@ const Container = styled.main`
   margin-top: 1rem;
   border-radius: 1rem 1rem 0 0;
   margin-right: 1rem;
+  height: calc(100vh - 1rem);
 `;
 
 const Header = styled.header`

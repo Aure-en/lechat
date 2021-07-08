@@ -152,15 +152,11 @@ export function UnreadProvider({ children }) {
 
     unread.conversations = await getConversationsUnread(activity.conversations);
     unread.servers = await getServersUnread(activity.servers);
-
-    console.log("UNREAD", unread);
     setUnread(unread);
   };
 
   useEffect(() => {
-    if (!activity) return;
-    console.log("ACTIVITY", activity);
-    getUnread();
+    if (activity && !unread) getUnread();
   }, [activity]);
 
   // Socket listeners
@@ -256,9 +252,7 @@ export function UnreadProvider({ children }) {
 
     // If the user is already in the conversation, returns.
     if (
-      conversation.members.find(
-        (member) => member._id.toString() === conversation._id
-      )
+      conversation.members.find((member) => member._id.toString() === current)
     )
       return;
 
@@ -304,49 +298,42 @@ export function UnreadProvider({ children }) {
     if (message.conversation) handleConversation(message);
   };
 
-  useEffect(() => {
-    socket.on("insert message", handleUnread);
-    return () => socket.off("insert message", handleUnread);
-  });
-
-  /** Remove the channel from the server's list of unread channels.
-   * If removing this channel makes the server's list of unread channels,
-   * → Remove the server from the unread list of servers.
-   * @param {string} server
-   * @param {string} channel
+  /**
+   * Set the channel's number of unread messages to 0.
+   * @param {string} serverId
+   * @param {string} channelId
    */
-  const handleReadChannel = (server, channel) => {
+  const handleReadChannel = (serverId, channelId) => {
     setUnread((prev) => {
       const updated = { ...prev };
-      const readServer = updated.servers.find(
-        (serv) => server === serv._id.toString()
+      const server = updated.servers.find((server) => server._id === serverId);
+      const channel = server.channels.find(
+        (channel) => channel._id === channelId
       );
-
-      // Remove the channel from the list
-      readServer.channels.delete(channel);
-
-      // If the list becomes empty, remove the server from unreads.
-      if (readServer.channels.length === 0) {
-        updated.servers = updated.servers.filter(
-          (serv) => server !== serv._id.toString()
-        );
-      }
-
+      if (channel) channel.unread = 0;
       return updated;
     });
   };
 
   /**
-   * Remove the conversation id from the list of unread conversations.
-   * @param {string} conversation
+   * Set the conversation's number of unread messages to 0.
+   * @param {string} conversationId
    */
-  const handleReadConversation = (conversation) => {
+  const handleReadConversation = (conversationId) => {
     setUnread((prev) => {
       const updated = { ...prev };
-      updated.conversations.delete(conversation);
+      const conversation = updated.conversations.find(
+        (conversation) => conversation._id.toString() === conversationId
+      );
+      if (conversation) conversation.unread = 0;
       return updated;
     });
   };
+
+  useEffect(() => {
+    socket.on("insert message", handleUnread);
+    return () => socket.off("insert message", handleUnread);
+  });
 
   const value = {
     unread,
