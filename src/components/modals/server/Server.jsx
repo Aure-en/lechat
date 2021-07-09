@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import ReactTooltip from "react-tooltip";
 import Create from "../../server/Form";
 import Modal from "../Modal";
 import IconPlus from "../../../assets/icons/general/IconPlus";
@@ -9,13 +10,21 @@ function Server() {
 
   return (
     <>
-      <Button type="button" onClick={() => setIsOpen(true)}>
+      <Button
+        type="button"
+        onClick={() => setIsOpen(true)}
+        data-tip="Create Server"
+        data-offset="{'top': 16, 'right': 4}"
+        data-for="create-server"
+      >
         <IconPlus size={36} strokeWidth={0.5} />
       </Button>
 
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <Create setIsOpen={setIsOpen} />
       </Modal>
+
+      <ReactTooltip place="right" effect="solid" id="create-server" />
     </>
   );
 }
@@ -23,6 +32,7 @@ function Server() {
 export default Server;
 
 const Button = styled.button`
+  position: relative; // For the nav arrow :before.
   display: flex;
   justify-content: center;
   align-items: center;

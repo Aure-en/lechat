@@ -38,5 +38,4 @@ const Time = styled.time`
   color: ${(props) => props.theme.text_secondary};
   font-size: 0.75rem;
   font-weight: 300;
-  margin-left: 0.5rem;
 `;

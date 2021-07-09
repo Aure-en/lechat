@@ -208,5 +208,5 @@ TextEditor.defaultProps = {
 };
 
 const Container = styled.div`
-  min-height: 5rem;
+  min-height: 7rem; // Avoid size change on inserting a new styled block.
 `;

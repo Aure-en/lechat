@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import ReactTooltip from "react-tooltip";
 import useFriend from "../../hooks/friends/useFriend";
 import More from "./More";
 import IconChevron from "../../assets/icons/general/IconChevron";
@@ -55,7 +54,6 @@ function All() {
           )}
         </Container>
       )}
-      <ReactTooltip />
     </Wrapper>
   );
 }
@@ -80,7 +78,7 @@ function Friend({ friendship }) {
 
         <div>{friendship.friend.username}</div>
         <Buttons>
-          <IconMessage data-tip="Message" />
+          <IconMessage data-tip="Message" data-for="message" />
         </Buttons>
       </StyledLink>
       <More friend={friendship.friend} friendship={friendship._id} />

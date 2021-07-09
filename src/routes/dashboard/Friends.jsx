@@ -27,11 +27,11 @@ const Wrapper = styled.div`
   margin-right: 1rem;
   display: flex;
   flex-direction: column;
+  height: calc(100vh - 1rem);
 `;
 
 const Container = styled.main`
   display: flex;
   flex-direction: column;
   padding: 1rem 2rem;
-  height: calc(100vh - 1rem);
 `;

@@ -156,7 +156,13 @@ export function UnreadProvider({ children }) {
   };
 
   useEffect(() => {
-    if (activity && !unread) getUnread();
+    // If unread isn't set up yet, set it up.
+    if (
+      activity &&
+      unread.servers.length === 0 &&
+      unread.conversations.length === 0
+    )
+      getUnread();
   }, [activity]);
 
   // Socket listeners

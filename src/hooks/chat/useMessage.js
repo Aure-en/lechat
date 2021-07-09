@@ -17,7 +17,7 @@ function useMessage(url) {
       });
       console.log(res.headers.get("X-Total-Count"));
       const json = await res.json();
-      if (!json.error) setMessages(json);
+      if (!json.error) setMessages(json.sort((a, b) => a.timestamp - b.timestamp));
     })();
   }, [url]);
 

@@ -16,6 +16,7 @@ function Server({ server }) {
           ref={ref}
           data-tip={server.name}
           data-offset="{'top': 16, 'right': 4}"
+          data-for="server"
         >
           {server.icon ? (
             <Icon
@@ -32,7 +33,7 @@ function Server({ server }) {
 
       <Menu server={server} outerRef={ref} />
 
-      <ReactTooltip place="right" effect="solid" />
+      <ReactTooltip place="right" effect="solid" id="server" />
     </>
   );
 }
@@ -54,22 +55,17 @@ Server.propTypes = {
 };
 
 const Li = styled.li`
+  position: relative;
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  overflow: hidden;
-
-  &:hover img {
-    transform: scale(1.05);
-    filter: blur(0);
-  }
 `;
 
 const Icon = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s linear;
+  border-radius: 50%;
 `;
 
 const Default = styled.div`
@@ -81,4 +77,5 @@ const Default = styled.div`
   background: ${(props) => props.theme.bg_button};
   color: ${(props) => props.theme.server_icon_text};
   font-size: 1.5rem;
+  border-radius: 50%;
 `;

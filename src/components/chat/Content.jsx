@@ -56,6 +56,10 @@ const Information = styled.div`
   display: flex;
   align-items: baseline;
   font-weight: 400;
+
+  & > *:last-child {
+    margin-left: 0.5rem;
+  }
 `;
 
 const Icon = styled.img`

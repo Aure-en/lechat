@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Link, useRouteMatch } from "react-router-dom";
 import redraft from "redraft";
 import { useAuth } from "../../context/AuthContext";
+import { useUnread } from "../../context/UnreadContext";
 import Timestamp from "../chat/Timestamp";
 import renderers from "../chat/convert/renderers";
 
@@ -12,9 +13,16 @@ function Conversation({ conversation }) {
     useRouteMatch("/conversations/:id") &&
     useRouteMatch("/conversations/:id").params.id;
   const { user } = useAuth();
+  const { unread } = useUnread();
 
   // Conversation member who is not the current user.
   const member = conversation.members.find((member) => member._id !== user._id);
+
+  // Number of unread messages
+  const conversationUnread = unread.conversations.find(
+    (conv) => conversation._id === conv._id
+  );
+  const numberUnread = conversationUnread && conversationUnread.unread;
 
   return (
     <li>
@@ -33,14 +41,19 @@ function Conversation({ conversation }) {
           <Default>{member.username[0]}</Default>
         )}
 
-        <Center>
+        <div>
           <div>{member.username}</div>
           <Text>
             {redraft(JSON.parse(conversation.message.text), renderers)}
           </Text>
-        </Center>
+        </div>
 
-        <Timestamp timestamp={conversation.message.timestamp} />
+        <Left>
+          <Timestamp timestamp={conversation.message.timestamp} />
+          {numberUnread > 0 && (
+            <Unread>{numberUnread > 9 ? "9+" : numberUnread}</Unread>
+          )}
+        </Left>
       </StyledLink>
     </li>
   );
@@ -97,8 +110,6 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const Center = styled.div``;
-
 const Text = styled.div`
   & > * {
     overflow: hidden;
@@ -113,4 +124,23 @@ const Text = styled.div`
     color: ${(props) => props.theme.text_secondary};
     line-height: 1;
   }
+`;
+
+const Left = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Unread = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 400;
+  width: 1rem;
+  height: 1rem;
+  background: ${(props) => props.theme.send_bg};
+  color: ${(props) => props.theme.bg_secondary};
 `;
