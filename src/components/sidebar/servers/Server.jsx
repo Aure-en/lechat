@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
-import ReactTooltip from "react-tooltip";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Menu from "./Menu";
@@ -15,8 +14,8 @@ function Server({ server }) {
           to={`/servers/${server._id}`}
           ref={ref}
           data-tip={server.name}
-          data-offset="{'top': 16, 'right': 4}"
-          data-for="server"
+          data-offset="{'top': 16, 'right': -10}"
+          data-for="nav-servers"
         >
           {server.icon ? (
             <Icon
@@ -32,8 +31,6 @@ function Server({ server }) {
       </Li>
 
       <Menu server={server} outerRef={ref} />
-
-      <ReactTooltip place="right" effect="solid" id="server" />
     </>
   );
 }

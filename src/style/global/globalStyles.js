@@ -97,6 +97,7 @@ const GlobalStyles = createGlobalStyle`
     cursor: pointer;
     padding: 0;
     font-weight: 300;
+    color: inherit;
 
     &:focus {
       outline: 1px solid transparent;

@@ -6,7 +6,6 @@ import Email from "../components/settings/Email";
 import Password from "../components/settings/Password";
 import Username from "../components/settings/Username";
 import Avatar from "../components/settings/Avatar";
-import LogOut from "../components/settings/LogOut";
 
 function Settings() {
   const { user } = useAuth();
@@ -47,7 +46,7 @@ function Settings() {
         </Field>
       </Section>
 
-      <Section>
+      {/* <Section>
         <Subheading>Deactivate Account</Subheading>
         <Field>
           <div>
@@ -57,9 +56,7 @@ function Settings() {
             </small>
           </div>
         </Field>
-      </Section>
-
-      <LogOut />
+      </Section> */}
     </Container>
   );
 }
@@ -67,11 +64,10 @@ function Settings() {
 export default Settings;
 
 const Container = styled.main`
-  width: 100%;
   padding: 3rem;
   background: ${(props) => props.theme.bg_secondary};
-  margin-top: 1rem;
-  border-radius: 1rem 1rem 0 0;
+  margin: 1rem;
+  border-radius: 1rem;
 `;
 
 const Section = styled.section`
