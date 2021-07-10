@@ -1,8 +1,10 @@
 import { useHistory } from "react-router-dom";
 import useActivity from "../chat/useActivity";
+import { useAuth } from "../../context/AuthContext";
 
 function useJoin(serverId) {
   const history = useHistory();
+  const { user } = useAuth();
   const { updateChannelActivity } = useActivity();
 
   const join = async (serverId) => {
@@ -36,8 +38,8 @@ function useJoin(serverId) {
     const channels = json.map((channel) => channel._id);
 
     await Promise.all(
-      channels.map(
-        async (channel) => await updateChannelActivity(serverId, channel)
+      channels.map(async (channel) =>
+        updateChannelActivity(user, serverId, channel)
       )
     );
   };

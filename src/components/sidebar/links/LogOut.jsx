@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import ReactTooltip from "react-tooltip";
 import { useHistory } from "react-router-dom";
 import { ReactComponent as IconLogOut } from "../../../assets/icons/nav/logout.svg";
 
@@ -9,7 +8,7 @@ function LogOut() {
 
   const handleLogOut = () => {
     localStorage.clear();
-    history.push("/login");
+    history.push("/auth/login");
   };
 
   return (

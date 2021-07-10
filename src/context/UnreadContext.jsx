@@ -11,6 +11,8 @@ export function useUnread() {
 }
 
 export function UnreadProvider({ children }) {
+  // Check that unread messages have been loaded.
+  const [isSet, setIsSet] = useState(false);
   // Tracks rooms that have unread messages (the latest message has a timestamp greater than the user's last visit)
   const [unread, setUnread] = useState({
     servers: [],
@@ -153,16 +155,12 @@ export function UnreadProvider({ children }) {
     unread.conversations = await getConversationsUnread(activity.conversations);
     unread.servers = await getServersUnread(activity.servers);
     setUnread(unread);
+    setIsSet(true);
   };
 
   useEffect(() => {
     // If unread isn't set up yet, set it up.
-    if (
-      activity &&
-      unread.servers.length === 0 &&
-      unread.conversations.length === 0
-    )
-      getUnread();
+    if (activity && !isSet) getUnread();
   }, [activity]);
 
   // Socket listeners
