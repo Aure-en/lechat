@@ -41,7 +41,7 @@ const Nav = styled.nav`
   margin: 1rem;
   margin-right: 0;
   border-radius: 1rem;
-  color: ${(props) => props.theme.bg_sidebars};
+  color: ${(props) => props.theme.sidebar_button};
   transform-style: preserve-3d; // For transform: translateZ on side-panel.
   z-index: 5;
 `;
@@ -66,7 +66,7 @@ const Content = styled.div`
     top: 50%;
     left: calc(-1rem - 1px);
     border: 8px solid transparent;
-    border-left: 8px solid ${(props) => props.theme.bg_sidebars};
+    border-left: 8px solid ${(props) => props.theme.bg_primary};
     transform: translateY(-50%);
   }
 `;

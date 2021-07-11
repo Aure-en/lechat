@@ -6,8 +6,8 @@ function Theme() {
   const { theme, changeTheme } = useTheme();
   return (
     <Button type="button" onClick={changeTheme}>
-      <Letter $selected={theme === "light"}>L</Letter> <Line $theme={theme} />{" "}
-      <Letter $selected={theme === "dark"}>D</Letter>
+      <Letter $theme="light">L</Letter> <Line $theme={theme} />{" "}
+      <Letter $theme="dark">D</Letter>
     </Button>
   );
 }
@@ -21,7 +21,7 @@ const Button = styled.button`
 
 const Letter = styled.span`
   color: ${(props) =>
-    props.$selected ? props.theme.send_bg : props.theme.text_tertiary};
+    props.$theme === "light" ? props.theme.send_bg : props.theme.text_tertiary};
   font-size: 1rem;
 `;
 
@@ -34,15 +34,7 @@ const Line = styled.span`
   background: linear-gradient(
     to right,
     ${(props) =>
-      `${
-        props.$theme === "dark"
-          ? props.theme.bg_sidebar
-          : props.theme.border_accent
-      } 0%, ${
-        props.$theme === "dark"
-          ? props.theme.border_accent
-          : props.theme.bg_sidebar
-      } 100%`}
+      `${props.theme.bg_primary} 0%, ${props.theme.border_accent} 100%`}
   );
 
   &:before,

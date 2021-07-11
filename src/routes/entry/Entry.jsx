@@ -1,15 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import { Switch, Link, useLocation } from "react-router-dom";
+import { useTheme } from "../../context/ThemeContext";
 import EntryRoute from "../types/EntryRoute";
 import SignUp from "./SignUp";
 import Login from "./Login";
 
 function Entry() {
   const location = useLocation();
+  const { theme } = useTheme(); // Change the background image
 
   return (
-    <Container>
+    <Container $theme={theme}>
       <Content>
         <Header>
           {location.pathname === "/auth/login" ? (
@@ -49,7 +51,10 @@ const Container = styled.div`
   height: 100%;
   display: grid;
   grid-template-columns: 1fr 2fr;
-  background: url("https://firebasestorage.googleapis.com/v0/b/aurelie-nguyen.appspot.com/o/lechat%2F869v2.png?alt=media&token=6a310bf7-62fd-41e6-94c5-0e13b3dd821a");
+  background: url(${(props) =>
+    props.$theme === "light"
+      ? "https://firebasestorage.googleapis.com/v0/b/aurelie-nguyen.appspot.com/o/lechat%2F869v2.png?alt=media&token=6a310bf7-62fd-41e6-94c5-0e13b3dd821a"
+      : "https://firebasestorage.googleapis.com/v0/b/aurelie-nguyen.appspot.com/o/lechat%2F435928.png?alt=media&token=15e58dbc-2f72-4149-a581-6a2f2f1f5144"});
   background-size: cover;
 `;
 
@@ -72,6 +77,7 @@ const Header = styled.header`
 
   & > a {
     color: ${(props) => props.theme.text_tertiary};
+    padding: 0.3rem 0.6rem;
 
     &:hover {
       text-decoration: underline;
@@ -79,7 +85,7 @@ const Header = styled.header`
   }
 
   & > span {
-    background: ${(props) => props.theme.bg_sidebars};
+    background: ${(props) => props.theme.bg_primary};
     padding: 0.3rem 0.6rem;
     border-radius: 3px;
     color: ${(props) => props.theme.text_secondary};

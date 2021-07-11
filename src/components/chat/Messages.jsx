@@ -110,6 +110,6 @@ const Ul = styled.ul`
   }
   &::-webkit-scrollbar-thumb {
     border-radius: 5rem;
-    background-color: ${(props) => props.theme.bg_sidebars};
+    background-color: ${(props) => props.theme.bg_primary};
   }
 `;

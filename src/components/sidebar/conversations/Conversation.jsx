@@ -92,7 +92,7 @@ const Default = styled.div`
   width: 100%;
   height: 100%;
   background: ${(props) => props.theme.bg_button};
-  color: ${(props) => props.theme.server_icon_text};
+  color: ${(props) => props.theme.text_primary};
   font-size: 1.5rem;
   border-radius: 50%;
 `;

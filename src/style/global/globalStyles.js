@@ -106,7 +106,9 @@ const GlobalStyles = createGlobalStyle`
 
   input,
   textarea {
+    color: ${({ theme }) => theme.text_primary};
     font-family: 'Assistant', 'Trebuchet MS', sans-serif;
+    background: transparent;
   
     &:focus {
       outline: 1px solid transparent;
@@ -142,7 +144,7 @@ const GlobalStyles = createGlobalStyle`
   }
   .public-DraftEditor-content::-webkit-scrollbar-thumb {
     border-radius: 5rem;
-    background-color: ${(props) => props.theme.bg_sidebars};
+    background-color: ${(props) => props.theme.bg_primary};
   }
 
   .code {

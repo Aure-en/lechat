@@ -54,7 +54,7 @@ Form.defaultProps = {
 };
 
 const FormContainer = styled.form`
-  border-top: 1px solid ${(props) => props.theme.bg_sidebars};
+  border-top: 1px solid ${(props) => props.theme.bg_primary};
 `;
 
 const Row = styled.div`

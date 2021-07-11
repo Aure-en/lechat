@@ -42,7 +42,7 @@ const Container = styled(Link)`
     background: linear-gradient(
       to right,
       ${(props) =>
-        `${props.theme.bg_sidebars} 0%, ${props.theme.border_accent} 100%`}
+        `${props.theme.bg_primary} 0%, ${props.theme.border_accent} 100%`}
     );
     transition: width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   }

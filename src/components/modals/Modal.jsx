@@ -85,9 +85,18 @@ const Button = styled.button`
 const CloseBtn = styled(Button)`
   top: 1.5rem;
   right: 1.5rem;
+
+  &:hover {
+    color: ${(props) => props.theme.text_tertiary};
+  }
 `;
 
 const BackBtn = styled(Button)`
   bottom: 3.65rem;
   left: 3rem;
+
+  &:hover {
+    color: ${(props) => props.theme.text_tertiary};
+    text-decoration: underline;
+  }
 `;
