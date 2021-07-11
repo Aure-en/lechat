@@ -1,14 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 import Setting from "../components/modals/user/Setting";
 import Email from "../components/settings/Email";
 import Password from "../components/settings/Password";
 import Username from "../components/settings/Username";
 import Avatar from "../components/settings/Avatar";
+import Theme from "../components/settings/Theme";
 
 function Settings() {
   const { user } = useAuth();
+  const { theme } = useTheme();
 
   return (
     <Container>
@@ -46,17 +49,14 @@ function Settings() {
         </Field>
       </Section>
 
-      {/* <Section>
-        <Subheading>Deactivate Account</Subheading>
+      <Section>
+        <Subheading>Appearance</Subheading>
         <Field>
-          <div>
-            <Information>Account Removal</Information>
-            <small>
-              If you delete your account, you will not be able to recover it.
-            </small>
-          </div>
+          <Information>Theme</Information>
+          <div>{theme === "light" ? "Light" : "Dark"}</div>
+          <Theme />
         </Field>
-      </Section> */}
+      </Section>
     </Container>
   );
 }

@@ -114,7 +114,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   h1, h2 {
-    font-family: 'Assistant', 'Trebuchet MS', sans-serif;
+    font-family: 'Playfair Display', 'Assistant', 'Trebuchet MS', sans-serif;
     font-weight: initial;
   }
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import socket from "../../socket/socket";
 
 function useLogin() {
@@ -11,6 +12,7 @@ function useLogin() {
   const [values, setValues] = useState(initial);
   const [errors, setErrors] = useState({ ...initial, response: "" });
   const history = useHistory();
+  const { setUser } = useAuth();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -86,9 +88,9 @@ function useLogin() {
     }
 
     // If the user was logged-in properly, save the jwt and user information.
-    if (json.token) {
+    if (json.user && json.token) {
       localStorage.setItem("jwt", json.token);
-      localStorage.setItem("user", JSON.stringify(json.user));
+      setUser(json.user);
       socket.emit("authentification", JSON.stringify(json.user));
       history.push("/");
     }

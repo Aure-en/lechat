@@ -7,7 +7,7 @@ import ReactTooltip from "react-tooltip";
 function Conversation({ conversation, friend }) {
   return (
     <>
-      <Li key={conversation._id}>
+      <Li>
         <Link
           to={`/conversations/${friend._id}`}
           data-tip={friend.username}
@@ -66,7 +66,8 @@ const Number = styled.span`
   position: absolute;
   right: 0;
   bottom: 0;
-  background: ${(props) => props.theme.bg_sidebars};
+  background: ${(props) => props.theme.send_bg};
+  color: ${(props) => props.theme.bg_secondary};
   border-radius: 50%;
   width: 1rem;
   height: 1rem;
@@ -74,6 +75,7 @@ const Number = styled.span`
   align-items: center;
   justify-content: center;
   font-size: 0.75rem;
+  font-weight: 400;
 `;
 
 const Avatar = styled.img`
@@ -81,7 +83,6 @@ const Avatar = styled.img`
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
-  border: 1px solid ${(props) => props.theme.bg_sidebars};
 `;
 
 const Default = styled.div`
@@ -94,5 +95,4 @@ const Default = styled.div`
   color: ${(props) => props.theme.server_icon_text};
   font-size: 1.5rem;
   border-radius: 50%;
-  border: 1px solid ${(props) => props.theme.bg_sidebars};
 `;

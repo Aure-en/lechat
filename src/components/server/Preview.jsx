@@ -28,11 +28,7 @@ function Preview({ server }) {
         )}
         <Content>
           <Heading>{server.name}</Heading>
-          <Description>
-            {server.about}
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Error quos
-            deserunt voluptatibus labore sit.
-          </Description>
+          <Description>{server.about}</Description>
         </Content>
       </Container>
     </Link>
@@ -111,7 +107,9 @@ const Description = styled.p`
 
 const Icon = styled.img`
   position: absolute;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   top: 3rem; // Half of banner height
   width: 5rem;
   height: 5rem;

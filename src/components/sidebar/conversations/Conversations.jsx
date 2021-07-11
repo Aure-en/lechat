@@ -9,6 +9,7 @@ import { ReactComponent as IconChat } from "../../../assets/icons/nav/chat.svg";
 function Conversations() {
   const ref = useRef(); // For dropdown
   const [conversations, setConversations] = useState([]);
+  const [number, setNumber] = useState(0);
   const { isDropdownOpen, setIsDropdownOpen } = useDropdown(ref);
   const { unread } = useUnread();
 
@@ -16,13 +17,17 @@ function Conversations() {
     setConversations(
       unread.conversations.filter((conversation) => conversation.unread > 0)
     );
-    console.log("CONVERSATIONS UNREAD", unread.conversations);
-    console.log("CONVERSATIONS", conversations);
   }, [unread]);
+
+  useEffect(() => {
+    setNumber(
+      conversations.reduce((sum, conversation) => sum + conversation.unread, 0)
+    );
+  }, [conversations]);
 
   return (
     <Container $position={conversations.length > 0} ref={ref}>
-      <button
+      <Button
         type="button"
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         data-tip="Conversations"
@@ -30,7 +35,8 @@ function Conversations() {
         data-offset={"{'top': 16, 'right': -15}"}
       >
         <IconChat />
-      </button>
+        {number > 0 && <Number>{number > 9 ? "9+" : number}</Number>}
+      </Button>
 
       {isDropdownOpen && (
         <>
@@ -42,7 +48,11 @@ function Conversations() {
                     user._id !== JSON.parse(localStorage.getItem("user"))._id
                 );
                 return (
-                  <Conversation conversation={conversation} friend={friend} />
+                  <Conversation
+                    key={conversation._id}
+                    conversation={conversation}
+                    friend={friend}
+                  />
                 );
               })}
             </Ul>
@@ -79,6 +89,7 @@ const Ul = styled.ul`
   background: ${(props) => props.theme.bg_secondary};
   min-width: 5rem;
   padding: 0.75rem 0;
+  padding-left: 1rem; // Compensate the extra 1rem overlapping with navbar.
 
   // Put the panel under the sidebar
   transform: translateZ(-10px);
@@ -110,4 +121,24 @@ const Ul = styled.ul`
     border-radius: 5rem;
     background-color: ${(props) => props.theme.bg_sidebar};
   }
+`;
+
+const Button = styled.button`
+  position: relative;
+`;
+
+const Number = styled.span`
+  position: absolute;
+  right: -0.25rem;
+  bottom: 0;
+  background: ${(props) => props.theme.send_bg};
+  color: ${(props) => props.theme.bg_secondary};
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 400;
 `;

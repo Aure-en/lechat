@@ -76,7 +76,11 @@ function Conversation({ match }) {
 export default Conversation;
 
 Conversation.propTypes = {
-  match: PropTypes.shape.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      userId: PropTypes.string,
+    }),
+  }).isRequired,
 };
 
 const Container = styled.main`
