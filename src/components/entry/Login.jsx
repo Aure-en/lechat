@@ -8,77 +8,57 @@ function Login() {
   const { values, errors, handleInputChange, handleSubmit } = useLogin();
 
   return (
-    <Container>
-      <Header>
-        <Heading>Welcome back</Heading>
-        <div>We are delighted to see you again!</div>
-      </Header>
-      <Form onSubmit={handleSubmit}>
-        <Field>
-          <Label htmlFor="identifier">
-            Email / Username
-            <Input
-              type="text"
-              id="identifier"
-              name="identifier"
-              value={values.identifier}
-              onChange={handleInputChange}
-              placeholder="Enter your email or username"
-            />
-          </Label>
-          {errors.identifier && <Error>{errors.identifier}</Error>}
-        </Field>
+    <Form onSubmit={handleSubmit}>
+      <Field>
+        <Label htmlFor="identifier">
+          Email / Username
+          <Input
+            type="text"
+            id="identifier"
+            name="identifier"
+            value={values.identifier}
+            onChange={handleInputChange}
+            placeholder="Enter your email or username"
+          />
+        </Label>
+        {errors.identifier && <Error>{errors.identifier}</Error>}
+      </Field>
 
-        <Field>
-          <Label htmlFor="password">
-            Password
-            <Input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Enter your password"
-              value={values.password}
-              onChange={handleInputChange}
-            />
-          </Label>
-          {errors.password && <Error>{errors.password}</Error>}
-        </Field>
+      <Field>
+        <Label htmlFor="password">
+          Password
+          <Input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            value={values.password}
+            onChange={handleInputChange}
+          />
+        </Label>
+        {errors.password && <Error>{errors.password}</Error>}
+      </Field>
 
-        <Button>Submit</Button>
-        {errors.response && <Error>{errors.response}</Error>}
-      </Form>
-      <Small>
-        Not a member yet? <StyledLink to="/signup">Sign up now.</StyledLink>
-      </Small>
-    </Container>
+      <Bottom>
+        <div>
+          <Button>Log In</Button>
+          {errors.response && <Error>{errors.response}</Error>}
+        </div>
+        <Small>
+          Not a member yet? <Link to="/signup">Sign up now.</Link>
+        </Small>
+      </Bottom>
+    </Form>
   );
 }
 
 export default Login;
 
-const Container = styled.div`
-  border: 1px solid ${(props) => props.theme.border};
-  background: ${(props) => props.theme.bg_secondary};
-  width: 100vw;
-  max-width: 30rem;
-  padding: 3rem;
-`;
-
-const Header = styled.div`
-  text-align: center;
-  margin-bottom: 2rem;
-`;
-
-const Heading = styled.h2`
-  font-family: "Playfair Display", sans-serif;
-  font-size: 2rem;
-  line-height: 2.75rem;
-  margin: 0;
-`;
-
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  flex: 1;
+  max-width: 60%;
 `;
 
 const Field = styled.div`
@@ -115,12 +95,19 @@ const Error = styled.div`
 const Small = styled.small`
   display: block;
   font-size: 0.825rem;
-  margin-top: 1rem;
   color: ${(props) => props.theme.text_secondary};
 `;
 
-const StyledLink = styled(Link)`
-  &:hover {
-    color: ${(props) => props.theme.text_primary};
+const Bottom = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  & a {
+    color: ${(props) => props.theme.text_tertiary};
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 `;

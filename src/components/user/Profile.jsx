@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 function Profile({ user }) {
+  if (!user) return <></>;
+
   return (
     <Container>
       {user.avatar && Object.keys(user.avatar).length > 0 ? (

@@ -1,11 +1,9 @@
 import { useHistory } from "react-router-dom";
 import useActivity from "../chat/useActivity";
-import { useAuth } from "../../context/AuthContext";
 
 function useJoin(serverId) {
   const history = useHistory();
   const { updateChannelActivity } = useActivity();
-  const { user } = useAuth();
 
   const join = async (serverId) => {
     // Join server
@@ -39,7 +37,7 @@ function useJoin(serverId) {
 
     await Promise.all(
       channels.map(
-        async (channel) => await updateChannelActivity(user, serverId, channel)
+        async (channel) => await updateChannelActivity(serverId, channel)
       )
     );
   };

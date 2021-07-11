@@ -7,8 +7,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { UnreadProvider } from "./context/UnreadContext";
 import PrivateRoute from "./routes/types/PrivateRoute";
 import EntryRoute from "./routes/types/EntryRoute";
-import Login from "./routes/entry/Login";
-import SignUp from "./routes/entry/SignUp";
+import Entry from "./routes/entry/Entry";
 import Dashboard from "./routes/dashboard/Dashboard";
 import socket from "./socket/socket";
 
@@ -29,8 +28,7 @@ function App() {
           <UnreadProvider>
             <Wrapper>
               <Switch>
-                <EntryRoute exact path="/login" component={Login} />
-                <EntryRoute exact path="/signup" component={SignUp} />
+                <EntryRoute path="/auth" component={Entry} />
                 <PrivateRoute path="/" component={Dashboard} />
               </Switch>
             </Wrapper>

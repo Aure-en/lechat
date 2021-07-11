@@ -27,7 +27,7 @@ function Servers() {
         <Container>
           <Ul>
             {servers.map((server) => (
-              <Server server={server} />
+              <Server server={server} key={server._id} />
             ))}
           </Ul>
 
