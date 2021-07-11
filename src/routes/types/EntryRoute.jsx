@@ -1,8 +1,8 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
-// User can only access those routes if they are logged in.
-function PrivateRoute({ component: Component, ...rest }) {
+// User can only access those routes if they aren't logged in.
+function EntryRoute({ component: Component, ...rest }) {
   const currentUser = {
     user: localStorage.getItem("user"),
     jwt: localStorage.getItem("jwt"),
@@ -18,4 +18,4 @@ function PrivateRoute({ component: Component, ...rest }) {
   );
 }
 
-export default PrivateRoute;
+export default EntryRoute;
