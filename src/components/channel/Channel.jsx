@@ -1,10 +1,15 @@
-import React, { useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouteMatch, Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { useUnread } from "../../context/UnreadContext";
 import Menu from "./Menu";
 
 function Channel({ serverId, categoryId, channel }) {
+  // Different display if channel contains unread message.
+  const [hasUnread, setHasUnread] = useState(false);
+  const { unread } = useUnread();
+
   // To know if the channel is currently active.
   const current =
     useRouteMatch("/servers/:serverId/channels/:channelId") &&
@@ -13,8 +18,28 @@ function Channel({ serverId, categoryId, channel }) {
   // For contextual menu
   const ref = useRef();
 
+  useEffect(() => {
+    if (!unread) return;
+    const unreadServer = unread.servers.find(
+      (server) => server._id === serverId
+    );
+
+    if (!unreadServer) return;
+    const unreadChannel = unreadServer.channels.find(
+      (chan) => chan._id === channel._id
+    );
+
+    if (!unreadChannel) return;
+    setHasUnread(unreadChannel.unread > 0);
+  }, [unread]);
+
   return (
-    <Li key={channel._id} $current={current === channel._id} ref={ref}>
+    <Li
+      key={channel._id}
+      $current={current === channel._id}
+      $unread={hasUnread}
+      ref={ref}
+    >
       <StyledLink to={`/servers/${serverId}/channels/${channel._id}`}>
         {channel.name}
       </StyledLink>
@@ -43,10 +68,17 @@ const Li = styled.li`
   display: flex;
   justify-content: space-between;
   padding: 0.25rem 0;
-  font-weight: ${(props) => props.$current && 400};
+  border-radius: 3px;
+  background: ${(props) => props.$current && props.theme.bg_active};
+  font-weight: ${(props) => props.$unread && 400};
+  margin-bottom: 0.15rem;
 
   & > *:first-child {
     flex: 1;
+  }
+
+  &:hover {
+    background: ${(props) => !props.$current && props.theme.bg_hover};
   }
 `;
 

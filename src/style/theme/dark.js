@@ -2,7 +2,8 @@ const colors = {
   // Font
   text_primary: "rgb(200, 200, 200)",
   text_secondary: "rgb(164, 167, 177)",
-  text_tertiary: "rgb(152, 132, 120)",
+  text_tertiary: "rgb(150, 142, 137)",
+  text_tertiary_hover: "rgb(202, 184, 174)",
   text_quaternary: "rgb(152, 132, 120)",
   text_link: "rgb(40, 156, 184)",
   text_link_hover: "rgb(6, 105, 145)",

@@ -8,6 +8,7 @@ import useMessage from "../../hooks/chat/useMessage";
 import useFetch from "../../hooks/shared/useFetch";
 import useActivity from "../../hooks/chat/useActivity";
 import { useAuth } from "../../context/AuthContext";
+import { useUnread } from "../../context/UnreadContext";
 
 function Channel() {
   const { serverId, channelId } = useRouteMatch(
@@ -21,12 +22,15 @@ function Channel() {
     channelId && `${process.env.REACT_APP_URL}/channels/${channelId}/messages`
   );
   const { updateChannelActivity } = useActivity();
+  const { handleReadChannel } = useUnread();
   const { user } = useAuth();
 
   useEffect(() => {
     if (channel) {
       // Store last visited channel to redirect the user to it later.
       localStorage.setItem(serverId, channelId);
+      // Set the channel as read
+      handleReadChannel(serverId, channelId);
     }
   }, [channel]);
 
@@ -34,10 +38,10 @@ function Channel() {
   useEffect(() => {
     const updateActivity = () =>
       serverId && channelId && updateChannelActivity(user, serverId, channelId);
-    window.addEventListener("unload", updateActivity);
+    window.addEventListener("onbeforeunload", updateActivity);
     return () => {
       updateActivity();
-      window.removeEventListener("unload", updateActivity);
+      window.removeEventListener("onbeforeunload", updateActivity);
     };
   }, [channelId]);
 

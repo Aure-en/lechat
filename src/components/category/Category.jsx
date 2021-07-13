@@ -80,24 +80,17 @@ const Name = styled.button`
   text-transform: uppercase;
   font-size: 0.875rem;
   font-weight: 400;
-  color: ${(props) => props.theme.text_secondary};
+  color: ${(props) => props.theme.text_tertiary};
   overflow: auto;
 
-  &::-webkit-scrollbar {
-    width: 0.4rem;
-  }
-  &::-webkit-scrollbar-track {
-    background: none;
-    margin: 0.5rem 0;
-  }
-  &::-webkit-scrollbar-thumb {
-    border-radius: 5rem;
-    background-color: ${(props) => props.theme.bg_primary};
+  &:hover {
+    color: ${(props) => props.theme.text_tertiary_hover};
   }
 `;
 
 const Icon = styled.span`
   line-height: 0;
+  color: ${(props) => props.theme.text_secondary};
   transform: ${(props) => !props.$open && "rotate(-90deg)"};
   transition: transform 0.3s linear;
 `;

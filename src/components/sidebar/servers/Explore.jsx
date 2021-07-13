@@ -1,6 +1,6 @@
 import React from "react";
 import NavLink from "../links/NavLink";
-import IconCompass from "../../../assets/icons/nav/Compass";
+import { ReactComponent as IconCompass } from "../../../assets/icons/nav/compass.svg";
 
 function Explore() {
   return (

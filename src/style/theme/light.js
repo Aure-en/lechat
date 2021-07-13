@@ -3,6 +3,7 @@ const colors = {
   text_primary: "rgb(25, 25, 25)",
   text_secondary: "rgb(105, 105, 105)",
   text_tertiary: "rgb(35, 120, 140)",
+  text_tertiary_hover: "rgb(6, 56, 68)",
   text_quaternary: "rgb(92, 167, 181)",
   text_link: "rgb(40, 156, 184)",
   text_link_hover: "rgb(6, 105, 145)",

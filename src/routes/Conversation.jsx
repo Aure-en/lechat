@@ -30,10 +30,10 @@ function Conversation({ match }) {
   useEffect(() => {
     const updateActivity = () =>
       conversation && updateConversationActivity(user, conversation._id);
-    window.addEventListener("unload", updateActivity);
+    window.addEventListener("onbeforeunload", updateActivity);
     return () => {
       updateActivity();
-      window.removeEventListener("unload", updateActivity);
+      window.removeEventListener("onbeforeunload", updateActivity);
     };
   }, [conversation]);
 
