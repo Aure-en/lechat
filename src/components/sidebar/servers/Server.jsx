@@ -1,11 +1,29 @@
-import React, { useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Menu from "./Menu";
+import { useUnread } from "../../../context/UnreadContext";
 
 function Server({ server }) {
+  // Different display if server contains unread messages.
+  const [hasUnread, setHasUnread] = useState(false);
+  const { unread } = useUnread();
   const ref = useRef();
+
+  // Check if the server has any unread messages.
+  useEffect(() => {
+    if (!unread) return;
+    const unreadServer = unread.servers.find((serv) => serv._id === server._id);
+
+    if (!unreadServer) return;
+
+    // Returns true if there are any channels with unread messages.
+    const hasUnread = unreadServer.channels.some(
+      (channel) => channel.unread > 0
+    );
+    setHasUnread(hasUnread);
+  }, [unread]);
 
   return (
     <>
@@ -14,7 +32,7 @@ function Server({ server }) {
           to={`/servers/${server._id}`}
           ref={ref}
           data-tip={server.name}
-          data-offset="{'right': -10}"
+          data-offset="{'top': 16, 'right': -10}"
           data-for="nav-servers"
         >
           {server.icon ? (
@@ -27,6 +45,7 @@ function Server({ server }) {
           ) : (
             <Default>{server.name[0]}</Default>
           )}
+          {hasUnread && <Dot />}
         </Link>
       </Li>
 
@@ -75,4 +94,16 @@ const Default = styled.div`
   color: ${(props) => props.theme.text_primary};
   font-size: 1.5rem;
   border-radius: 50%;
+`;
+
+const Dot = styled.span`
+  display: inline-block;
+  position: absolute;
+  width: 0.75rem;
+  height: 0.75rem;
+  background: ${(props) => props.theme.bg_primary};
+  border: 1px solid ${(props) => props.theme.bg_sidebar};
+  border-radius: 50%;
+  bottom: 1px;
+  right: 1px;
 `;

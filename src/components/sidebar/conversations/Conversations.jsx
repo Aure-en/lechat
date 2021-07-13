@@ -14,6 +14,7 @@ function Conversations() {
   const { unread } = useUnread();
 
   useEffect(() => {
+    if (!unread) return;
     setConversations(
       unread.conversations.filter((conversation) => conversation.unread > 0)
     );
