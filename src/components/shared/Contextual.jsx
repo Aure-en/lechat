@@ -9,7 +9,11 @@ function Contextual({ outerRef, ignoreRef, children }) {
 
   const handleContextMenu = (e) => {
     // If we right-click on a children with a distinct contextual menu, return.
-    if (ignoreRef && ignoreRef.current.contains(e.target)) {
+    if (
+      ignoreRef &&
+      ignoreRef.current &&
+      ignoreRef.current.contains(e.target)
+    ) {
       return setIsOpen(false);
     }
 

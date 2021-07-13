@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Form from "../../category/Form";
-import Modal from "../Modal";
+import Form from "./Form";
+import Modal from "../shared/Modal";
 
 function Category({ isOpen, setIsOpen, serverId, category }) {
   return (

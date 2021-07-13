@@ -4,7 +4,7 @@ import ReactTooltip from "react-tooltip";
 import Server from "./Server";
 import useDropdown from "../../../hooks/shared/useDropdown";
 import useServers from "../../../hooks/realtime/server/useServers";
-import Create from "../../modals/server/Server";
+import Create from "../../server/Modal";
 import Explore from "./Explore";
 import { ReactComponent as IconServers } from "../../../assets/icons/nav/grid.svg";
 

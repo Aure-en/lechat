@@ -1,7 +1,8 @@
 import { useState } from "react";
 
-function useCategory(serverId, category) {
-  const [name, setName] = useState((category && category.name) || "");
+function useCreate(serverId, categoryId, channel) {
+  const [name, setName] = useState((channel && channel.name) || "");
+  const [about, setAbout] = useState((channel && channel.about) || "");
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
@@ -14,12 +15,12 @@ function useCategory(serverId, category) {
       return;
     }
 
-    // Save the category (create or update it)
-    const url = category
-      ? `${process.env.REACT_APP_URL}/categories/${category._id}`
-      : `${process.env.REACT_APP_URL}/servers/${serverId}/categories`;
+    // Save the channel (create or update it)
+    const url = channel
+      ? `${process.env.REACT_APP_URL}/channels/${channel._id}`
+      : `${process.env.REACT_APP_URL}/servers/${serverId}/categories/${categoryId}/channels`;
 
-    const method = category ? "PUT" : "POST";
+    const method = channel ? "PUT" : "POST";
 
     const res = await fetch(url, {
       method,
@@ -27,7 +28,7 @@ function useCategory(serverId, category) {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name }),
+      body: JSON.stringify({ name, about, category: categoryId }),
     });
     const json = await res.json();
 
@@ -39,9 +40,11 @@ function useCategory(serverId, category) {
   return {
     name,
     setName,
+    about,
+    setAbout,
     error,
     handleSubmit,
   };
 }
 
-export default useCategory;
+export default useCreate;

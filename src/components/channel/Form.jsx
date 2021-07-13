@@ -2,11 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import TextareaAutosize from "react-textarea-autosize";
-import useChannel from "../../hooks/server/useChannel";
+import useCreate from "../../hooks/server/channel/useCreate";
 import SubmitBtn from "../shared/buttons/Gradient";
 
 function Form({ serverId, categoryId, channel }) {
-  const { name, setName, about, setAbout, error, handleSubmit } = useChannel(
+  const { name, setName, about, setAbout, error, handleSubmit } = useCreate(
     serverId,
     categoryId,
     channel

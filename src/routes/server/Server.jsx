@@ -5,7 +5,6 @@ import { Switch } from "react-router-dom";
 import PrivateRoute from "../types/PrivateRoute";
 import SidebarLeft from "../../components/server/sidebar/Left";
 import SidebarRight from "../../components/server/sidebar/Right";
-import CategoryModal from "../../components/modals/server/Category";
 import Channel from "./Channel";
 import Settings from "./Settings";
 import useFetch from "../../hooks/shared/useFetch";
@@ -20,8 +19,6 @@ function Server({ match }) {
     <Container>
       {/* Left sidebar */}
       <SidebarLeft serverId={match.params.serverId} />
-      {/* <CategoryModal serverId={match.params.serverId} />
-      <Leave serverId={match.params.serverId} /> */}
 
       {/* Main */}
       {server && (

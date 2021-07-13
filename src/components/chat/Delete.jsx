@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Message from "./Content";
-import Modal from "../modals/Modal";
+import Modal from "../shared/Modal";
 import SubmitBtn from "../shared/buttons/Gradient";
 
 function Delete({ message }) {

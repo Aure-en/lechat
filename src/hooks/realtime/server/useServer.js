@@ -25,6 +25,7 @@ function useServer(serverId) {
     setServer(updated.document);
   };
 
+  // Update the display when the server's settings are updated.
   useEffect(() => {
     socket.on("update server", handleUpdate);
     return () => socket.off("update server", handleUpdate);

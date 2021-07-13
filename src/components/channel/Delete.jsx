@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import Modal from "../modals/Modal";
+import Modal from "../shared/Modal";
 import SubmitBtn from "../shared/buttons/Gradient";
-import useDelete from "../../hooks/server/channels/useDelete";
+import useDelete from "../../hooks/server/channel/useDelete";
 
 function Delete({ isOpen, setIsOpen, serverId, channel }) {
   const { error, handleSubmit } = useDelete(channel._id, serverId);

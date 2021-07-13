@@ -1,43 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { useLocation, useHistory } from "react-router-dom";
-import Modal from "../Modal";
-import Button from "../../shared/buttons/Gradient";
+import Modal from "../shared/Modal";
+import Button from "../shared/buttons/Gradient";
+import useLeave from "../../hooks/server/useLeave";
 
 function Leave({ isOpen, setIsOpen, server }) {
-  const history = useHistory();
-  const location = useLocation();
-
-  const leave = async (serverId) => {
-    // Leave server
-    await fetch(
-      `${process.env.REACT_APP_URL}/users/${
-        JSON.parse(localStorage.getItem("user"))._id
-      }/servers/${serverId}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    // Redirect to homepage if we were in the server
-    if (location.pathname.match(new RegExp(`/servers/${serverId}`))) {
-      history.push("/");
-    }
-  };
+  const { handleSubmit } = useLeave(server._id);
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-      <Form
-        onSubmit={(e) => {
-          e.preventDefault();
-          leave(server._id);
-        }}
-      >
+      <Form onSubmit={handleSubmit}>
         <Header>
           <Heading>Leave Server</Heading>
           <p>

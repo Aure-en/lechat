@@ -3,7 +3,7 @@ import styled from "styled-components";
 import useRequest from "../../hooks/friends/useRequest";
 import Button from "../shared/buttons/Accent";
 import SubmitBtn from "../shared/buttons/Gradient";
-import Modal from "../modals/Modal";
+import Modal from "../shared/Modal";
 
 function Add() {
   const [isOpen, setIsOpen] = useState(false);

@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import Modal from "../modals/Modal";
+import Modal from "../shared/Modal";
 import SubmitBtn from "../shared/buttons/Gradient";
-import useDelete from "../../hooks/server/categories/useDelete";
+import useDelete from "../../hooks/server/category/useDelete";
 
 function Delete({ isOpen, setIsOpen, category }) {
   const { error, handleSubmit } = useDelete(category._id);
@@ -33,7 +33,6 @@ export default Delete;
 Delete.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
-  serverId: PropTypes.string.isRequired,
   category: PropTypes.shape({
     _id: PropTypes.string,
     name: PropTypes.string,

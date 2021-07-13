@@ -1,14 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import useCategory from "../../hooks/server/useCategory";
+import useCreate from "../../hooks/server/category/useCreate";
 import SubmitBtn from "../shared/buttons/Gradient";
 
 function Form({ serverId, category }) {
-  const { name, setName, error, handleSubmit } = useCategory(
-    serverId,
-    category
-  );
+  const { name, setName, error, handleSubmit } = useCreate(serverId, category);
 
   return (
     <div>

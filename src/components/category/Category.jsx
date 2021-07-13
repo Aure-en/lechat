@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import ChannelModal from "../modals/server/Channel";
+import Modal from "../channel/Modal";
 import Menu from "./Menu";
 import Channels from "../channel/List";
 
@@ -40,7 +40,7 @@ function Category({ serverId, category }) {
         </div>
       )}
 
-      <ChannelModal
+      <Modal
         isOpen={isUpdateOpen}
         setIsOpen={setIsUpdateOpen}
         serverId={serverId}

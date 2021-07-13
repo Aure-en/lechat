@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
-import Setting from "../components/modals/user/Setting";
+import Setting from "../components/user/Setting";
 import Email from "../components/settings/Email";
 import Password from "../components/settings/Password";
 import Username from "../components/settings/Username";

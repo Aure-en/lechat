@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import Contextual from "../contextual/Contextual";
-import Category from "../modals/server/Category";
+import Contextual from "../shared/Contextual";
+import Category from "./Modal";
 import Delete from "./Delete";
 
 function Menu({ serverId, category, outerRef, ignoreRef }) {

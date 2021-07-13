@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { EditorState, Modifier, SelectionState } from "draft-js";
 import Tooltip from "./Tooltip";
-import Modal from "../../../modals/Modal";
+import Modal from "../../../shared/Modal";
 import SubmitBtn from "../../../shared/buttons/Gradient";
 
 import IconLink from "../../../../assets/icons/editor/IconLink";

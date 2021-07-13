@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Create from "../../server/Form";
-import Modal from "../Modal";
-import IconPlus from "../../../assets/icons/general/IconPlus";
+import Create from "./Form";
+import Modal from "../shared/Modal";
+import IconPlus from "../../assets/icons/general/IconPlus";
 
 function Server() {
   const [isOpen, setIsOpen] = useState(false);

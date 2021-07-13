@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Form from "../../channel/Form";
-import Modal from "../Modal";
+import Form from "./Form";
+import Modal from "../shared/Modal";
 
 function Channel({ isOpen, setIsOpen, serverId, categoryId, channel }) {
   return (
