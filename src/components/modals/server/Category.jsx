@@ -1,26 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Form from "../../category/Form";
 import Modal from "../Modal";
 
-function Category({ serverId, category }) {
-  const [isOpen, setIsOpen] = useState(false);
+function Category({ isOpen, setIsOpen, serverId, category }) {
   return (
-    <>
-      <button type="button" onClick={() => setIsOpen(true)}>
-        {category ? "Update" : "Create"} Category
-      </button>
-
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-        <Form serverId={serverId} category={category} />
-      </Modal>
-    </>
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+      <Form serverId={serverId} category={category} />
+    </Modal>
   );
 }
 
 export default Category;
 
 Category.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
   serverId: PropTypes.string.isRequired,
   category: PropTypes.shape({
     name: PropTypes.string,

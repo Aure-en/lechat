@@ -125,6 +125,17 @@ const Ul = styled.ul`
 
 const Button = styled.button`
   position: relative;
+
+  &:hover:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: calc(-1rem - 1px);
+    border: 8px solid transparent;
+    border-left: 8px solid ${(props) => props.theme.sidebar_button};
+    transform: translateY(-50%);
+  }
 `;
 
 const Number = styled.span`

@@ -14,7 +14,7 @@ function Server({ server }) {
           to={`/servers/${server._id}`}
           ref={ref}
           data-tip={server.name}
-          data-offset="{'top': 16, 'right': -10}"
+          data-offset="{'right': -10}"
           data-for="nav-servers"
         >
           {server.icon ? (

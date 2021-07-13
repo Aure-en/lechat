@@ -14,7 +14,7 @@ function Servers() {
   const { servers } = useServers();
   return (
     <div ref={ref}>
-      <button
+      <Button
         type="button"
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         data-tip="Servers"
@@ -22,7 +22,7 @@ function Servers() {
         data-offset={"{'top': 16, 'right': -15}"}
       >
         <IconServers />
-      </button>
+      </Button>
       {isDropdownOpen && (
         <Container>
           <Ul>
@@ -106,4 +106,19 @@ const Bottom = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const Button = styled.button`
+  position: relative;
+
+  &:hover:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: calc(-1rem - 1px);
+    border: 8px solid transparent;
+    border-left: 8px solid ${(props) => props.theme.sidebar_button};
+    transform: translateY(-50%);
+  }
 `;

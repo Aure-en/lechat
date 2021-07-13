@@ -3,11 +3,17 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { createPortal } from "react-dom";
 
-function Contextual({ outerRef, children }) {
+function Contextual({ outerRef, ignoreRef, children }) {
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const handleContextMenu = (e) => {
+    // If we right-click on a children with a distinct contextual menu, return.
+    if (ignoreRef && ignoreRef.current.contains(e.target)) {
+      return setIsOpen(false);
+    }
+
+    // Open the menu at mouse's coordinates.
     if (outerRef && outerRef.current.contains(e.target)) {
       e.preventDefault();
       setPosition({ x: e.clientX, y: e.clientY });
@@ -45,14 +51,26 @@ function Contextual({ outerRef, children }) {
 export default Contextual;
 
 Contextual.propTypes = {
+  // outerRef : element on which a right-click makes the contextual menu appears.
   outerRef: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
   ]).isRequired,
+
+  // ignoreRef : children that are ignored by the right-click.
+  ignoreRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]),
+
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]).isRequired,
+};
+
+Contextual.defaultProps = {
+  ignoreRef: undefined,
 };
 
 const Container = styled.div`

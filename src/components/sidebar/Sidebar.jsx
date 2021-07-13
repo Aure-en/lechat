@@ -66,7 +66,7 @@ const Content = styled.div`
     top: 50%;
     left: calc(-1rem - 1px);
     border: 8px solid transparent;
-    border-left: 8px solid ${(props) => props.theme.bg_primary};
+    border-left: 8px solid ${(props) => props.theme.sidebar_button};
     transform: translateY(-50%);
   }
 `;
