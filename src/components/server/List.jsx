@@ -14,8 +14,8 @@ function List() {
     <Ul>
       {user &&
         user.server.map((server) => (
-          <li>
-            <Preview key={server._id} server={server} />
+          <li key={server._id}>
+            <Preview server={server} join={false} />
           </li>
         ))}
     </Ul>

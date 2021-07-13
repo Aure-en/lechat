@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Switch } from "react-router-dom";
 import PrivateRoute from "../types/PrivateRoute";
 import Home from "./Home";
+import Explore from "./Explore";
 import Server from "../server/Server";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Join from "../server/Join";
@@ -13,6 +14,7 @@ function Dashboard() {
     <Container>
       <Sidebar />
       <Switch>
+        <PrivateRoute exact path="/explore" component={Explore} />
         <PrivateRoute path="/servers/:serverId" component={Server} />
         <PrivateRoute exact path="/join/:serverId" component={Join} />
         <PrivateRoute exact path="/settings" component={UserSettings} />

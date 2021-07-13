@@ -1,6 +1,6 @@
 const colors = {
   // Font
-  text_primary: "rgb(180, 180, 180)",
+  text_primary: "rgb(200, 200, 200)",
   text_secondary: "rgb(164, 167, 177)",
   text_tertiary: "rgb(152, 132, 120)",
   text_quaternary: "rgb(152, 132, 120)",
@@ -15,6 +15,7 @@ const colors = {
   bg_hover: "rgb(29, 37, 45)", // Sidebar hover
   bg_button: "rgb(39, 54, 68)", // Buttons, default icons
   bg_code: "rgb(45, 54, 64)", // Code in rich editor
+  bg_card: "rgb(38, 47, 58)", // Server preview cards
 
   // Borders
   border: "rgb(152, 132, 120)",

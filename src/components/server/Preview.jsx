@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-function Preview({ server }) {
+function Preview({ server, join }) {
   const [hovered, setHovered] = useState(false);
 
   return (
     <Link
-      to={`/servers/${server._id}`}
+      to={join ? `/join/${server._id}` : `/servers/${server._id}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -50,6 +50,11 @@ Preview.propTypes = {
       }),
     }),
   }).isRequired,
+  join: PropTypes.bool,
+};
+
+Preview.defaultProps = {
+  join: true,
 };
 
 const Container = styled.div`
@@ -60,6 +65,7 @@ const Container = styled.div`
   border: 1px solid ${(props) => props.theme.bg_sidebar};
   border-radius: 1rem;
   overflow: hidden;
+  background: ${(props) => props.theme.bg_card};
 `;
 
 const Banner = styled.div`
@@ -67,17 +73,18 @@ const Banner = styled.div`
   height: 6rem;
   border-radius: 1rem 1rem 0 0;
   margin-bottom: 2rem;
+  border-bottom: 2px solid ${(props) => props.theme.bg_secondary};
   overflow: hidden;
 
   & > div {
     width: 100%;
     height: 100%;
     background: ${(props) =>
-      props.$banner &&
-      `url(data:${props.$banner.contentType};base64,${Buffer.from(
-        props.$banner.data
-      ).toString("base64")})`};
-    border-bottom: 2px solid ${(props) => props.theme.bg_secondary};
+      props.$banner
+        ? `url(data:${props.$banner.contentType};base64,${Buffer.from(
+            props.$banner.data
+          ).toString("base64")})`
+        : `${props.theme.bg_sidebar}`};
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -95,7 +102,7 @@ const Content = styled.div`
 const Heading = styled.h2`
   font-family: "Assistant", sans-serif;
   font-size: 1.25rem;
-  margin: 1rem 0;
+  margin: 1rem 0 0.5rem 0;
   font-weight: 300;
   text-align: center;
 `;

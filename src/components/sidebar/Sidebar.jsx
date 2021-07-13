@@ -64,7 +64,7 @@ const Content = styled.div`
     display: inline-block;
     position: absolute;
     top: 50%;
-    left: calc(-1rem - 1px);
+    left: calc(-1rem);
     border: 8px solid transparent;
     border-left: 8px solid ${(props) => props.theme.sidebar_button};
     transform: translateY(-50%);
