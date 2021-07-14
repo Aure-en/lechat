@@ -28,25 +28,21 @@ function useLogin() {
    * @returns {bool} - true if there are errors, false otherwise.
    */
   const hasErrors = () => {
+    let hasErrors;
+
     if (!values.identifier) {
       setErrors((prev) => {
         return { ...prev, identifier: "Email / Username must be specified" };
       });
+      hasErrors = true;
     }
 
     if (!values.password) {
       setErrors((prev) => {
-        return { ...prev, identifier: "Password must be specified" };
+        return { ...prev, password: "Password must be specified" };
       });
+      hasErrors = false;
     }
-
-    // If there are errors, display them without submitting the form.
-    let hasErrors = false;
-    Object.keys(errors).forEach((field) => {
-      if (errors[field]) {
-        hasErrors = true;
-      }
-    });
 
     return hasErrors;
   };
@@ -78,9 +74,14 @@ function useLogin() {
   const displayErrors = (errors) => {
     errors.map((error) =>
       setErrors((prev) => {
+        let toBeDisplayed;
+        if (error.msg === "Incorrect password.") {
+          toBeDisplayed = { password: error.msg };
+        } else if (error.msg === "Incorrect username/email.")
+          toBeDisplayed = { identifier: error.msg };
         return {
           ...prev,
-          [error.param]: error.msg,
+          ...toBeDisplayed,
         };
       })
     );

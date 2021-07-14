@@ -3,7 +3,6 @@ import { useLocation, useRouteMatch } from "react-router-dom";
 import PropTypes from "prop-types";
 import socket from "../socket/socket";
 import useActivity from "../hooks/chat/useActivity";
-import { useAuth } from "./AuthContext";
 
 const UnreadContext = createContext();
 
@@ -13,10 +12,7 @@ export function useUnread() {
 
 export function UnreadProvider({ children }) {
   // Tracks rooms that have unread messages (the latest message has a timestamp greater than the user's last visit)
-  const [unread, setUnread] = useState({
-    servers: [],
-    conversations: [],
-  });
+  const [unread, setUnread] = useState();
   const { activity } = useActivity();
   const location = useLocation();
 
@@ -158,12 +154,7 @@ export function UnreadProvider({ children }) {
 
   useEffect(() => {
     // If unread isn't set up yet, set it up.
-    if (
-      activity &&
-      unread.servers.length === 0 &&
-      unread.conversations.length === 0
-    )
-      getUnread();
+    if (activity && !unread) getUnread();
   }, [activity]);
 
   // Socket listeners

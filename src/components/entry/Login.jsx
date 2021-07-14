@@ -45,7 +45,7 @@ function Login() {
           {errors.response && <Error>{errors.response}</Error>}
         </div>
         <Small>
-          Not a member yet? <Link to="/signup">Sign up now.</Link>
+          Not a member yet? <Link to="/auth/signup">Sign up now.</Link>
         </Small>
       </Bottom>
     </Form>

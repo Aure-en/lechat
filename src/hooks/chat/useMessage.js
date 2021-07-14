@@ -4,8 +4,6 @@ import socket from "../../socket/socket";
 function useMessage(url) {
   const [messages, setMessages] = useState([]);
 
-  // Checks the location to know if the current room is related to the change.
-
   // Load messages
   useEffect(() => {
     if (!url) return;
@@ -24,6 +22,8 @@ function useMessage(url) {
 
   // Set up socket listeners
   const handleInsert = (newMessage) => {
+    // Checks the location to know if the current room is related to the change.
+    console.log(newMessage.document);
     setMessages([...messages, newMessage.document]);
   };
 

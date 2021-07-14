@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Link, useRouteMatch } from "react-router-dom";
@@ -14,15 +14,18 @@ function Conversation({ conversation }) {
     useRouteMatch("/conversations/:id").params.id;
   const { user } = useAuth();
   const { unread } = useUnread();
+  const [unreadNumber, setUnreadNumber] = useState(0);
 
-  // Conversation member who is not the current user.
   const member = conversation.members.find((member) => member._id !== user._id);
 
-  // Number of unread messages
-  const conversationUnread = unread.conversations.find(
-    (conv) => conversation._id === conv._id
-  );
-  const numberUnread = conversationUnread && conversationUnread.unread;
+  useEffect(() => {
+    if (!unread) return;
+    const conversationUnread = unread.conversations.find(
+      (conv) => conversation._id === conv._id
+    );
+    const number = conversationUnread && conversationUnread.unread;
+    setUnreadNumber(number);
+  }, [unread]);
 
   return (
     <li>
@@ -50,8 +53,8 @@ function Conversation({ conversation }) {
 
         <Left>
           <Timestamp timestamp={conversation.message.timestamp} />
-          {numberUnread > 0 && (
-            <Unread>{numberUnread > 9 ? "9+" : numberUnread}</Unread>
+          {unreadNumber > 0 && (
+            <Unread>{unreadNumber > 9 ? "9+" : unreadNumber}</Unread>
           )}
         </Left>
       </StyledLink>

@@ -71,7 +71,7 @@ function SignUp() {
 
         <Small>
           Do you already have an account? Please use the{" "}
-          <Link to="/login">login form.</Link>
+          <Link to="/auth/login">login form.</Link>
         </Small>
       </Bottom>
     </Form>
@@ -122,6 +122,7 @@ const Small = styled.small`
   display: block;
   font-size: 0.825rem;
   color: ${(props) => props.theme.text_secondary};
+  max-width: 50%;
 `;
 
 const Bottom = styled.div`
