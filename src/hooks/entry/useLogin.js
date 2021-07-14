@@ -51,17 +51,10 @@ function useLogin() {
     return hasErrors;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrors(initial);
-
-    if (hasErrors()) return;
-
-    /* Submit the form
-    - If login is successful, return { user, jwt: JWT }
-    - If login failed, return { errors: [] }
-    */
-
+  /** Send the form to the server.
+   * @returns {object} json containing the user's information or errors.
+   */
+  const send = async () => {
     const response = await fetch(`${process.env.REACT_APP_URL}/auth/login`, {
       method: "POST",
       headers: {
@@ -75,23 +68,51 @@ function useLogin() {
 
     const json = await response.json();
 
-    // If there are form errors, display them.
+    return json;
+  };
+
+  /**
+   * Display the errors if there are any
+   * @param {Array} - contains errors to display.
+   */
+  const displayErrors = (errors) => {
+    errors.map((error) =>
+      setErrors((prev) => {
+        return {
+          ...prev,
+          [error.param]: error.msg,
+        };
+      })
+    );
+  };
+
+  /**
+   * Saves the token and user.
+   * @param {string} token
+   * @param {object} user
+   */
+  const authentify = (token, user) => {
+    localStorage.setItem("jwt", token);
+    setUser(user);
+    socket.emit("authentification", JSON.stringify(user));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrors(initial);
+
+    if (hasErrors()) return;
+    const json = await send();
+
     if (json.errors) {
-      json.errors.map((error) =>
-        setErrors((prev) => {
-          return {
-            ...prev,
-            [error.param]: error.msg,
-          };
-        })
-      );
+      return displayErrors(json.errors);
     }
 
     // If the user was logged-in properly, save the jwt and user information.
     if (json.user && json.token) {
-      localStorage.setItem("jwt", json.token);
-      setUser(json.user);
-      socket.emit("authentification", JSON.stringify(json.user));
+      authentify(json.token, json.user);
+
+      // Everything was done properly, redirects the user to their dashboard.
       history.push("/");
     }
   };

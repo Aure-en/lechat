@@ -2,13 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import TextareaAutosize from "react-textarea-autosize";
-import useServer from "../../hooks/server/useServer";
+import useCreate from "../../hooks/server/server/useCreate";
 import Upload from "../shared/form/Upload";
 import SubmitBtn from "../shared/buttons/Gradient";
 
 function Form({ server }) {
   const { name, setName, about, setAbout, nameError, setImage, handleSubmit } =
-    useServer(server);
+    useCreate(server);
 
   return (
     <div>

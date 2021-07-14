@@ -41,6 +41,24 @@ function useServers() {
     return () => socket.off("account update", handleUpdate);
   }, [servers]);
 
+  /**
+   * When a server is updated, updates the servers list.
+   * @param {object} updated
+   */
+  const handleServerUpdate = (updated) => {
+    setServers((prev) =>
+      [...prev].map((server) =>
+        server._id === updated.document._id ? updated.document : server
+      )
+    );
+  };
+
+  // Update the display when the server's settings are updated.
+  useEffect(() => {
+    socket.on("update server", handleServerUpdate);
+    return () => socket.off("update server", handleServerUpdate);
+  }, [servers]);
+
   return { servers };
 }
 

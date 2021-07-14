@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import useSection from "../../hooks/realtime/server/useSection";
+import useSection from "../../hooks/server/server/useSection";
 import Channel from "./Channel";
 
 function List({ serverId, categoryId }) {

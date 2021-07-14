@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-import useJoin from "../../hooks/server/useJoin";
+import useJoin from "../../hooks/server/server/useJoin";
 import Button from "../shared/buttons/Gradient";
 
 function Join({ server }) {

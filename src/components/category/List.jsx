@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import useSection from "../../hooks/realtime/server/useSection";
+import useSection from "../../hooks/server/server/useSection";
 import Category from "./Category";
 
 function List({ serverId }) {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function useServer(server) {
+function useCreate(server) {
   const [name, setName] = useState((server && server.name) || "");
   const [about, setAbout] = useState((server && server.about) || "");
   const [nameError, setNameError] = useState("");
@@ -83,4 +83,4 @@ function useServer(server) {
   };
 }
 
-export default useServer;
+export default useCreate;

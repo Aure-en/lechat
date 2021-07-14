@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Modal from "../shared/Modal";
 import Button from "../shared/buttons/Gradient";
-import useLeave from "../../hooks/server/useLeave";
+import useLeave from "../../hooks/server/server/useLeave";
 
 function Leave({ isOpen, setIsOpen, server }) {
   const { handleSubmit } = useLeave(server._id);

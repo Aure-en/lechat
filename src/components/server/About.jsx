@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import useUpdate from "../../hooks/realtime/server/useServer";
+import useServer from "../../hooks/server/server/useServer";
 
 function About({ serverId }) {
-  const { server } = useUpdate(serverId);
+  const { server } = useServer(serverId);
 
   if (!server) return <></>;
 

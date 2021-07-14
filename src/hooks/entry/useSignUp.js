@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import socket from "../../socket/socket";
 
 function useSignUp() {
   const initial = {
@@ -61,18 +62,12 @@ function useSignUp() {
     return hasErrors;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrors(initial);
-
-    // If there are errors, display them without submitting the Form.
-    if (hasErrors()) return;
-
-    /* Submit the Form
-    - If SignUp is successful, return { user, jwt: JWT }
-    - If SignUp failed, return { errors: [] }
-    */
-
+  /** Send the form to the server.
+   * @returns {object} - json containing the user's information or errors.
+   *   - If SignUp is successful, return { user, jwt }
+   *   - If SignUp failed, return { errors: [] }
+   */
+  const send = async () => {
     const response = await fetch(`${process.env.REACT_APP_URL}/auth/signup`, {
       method: "POST",
       headers: {
@@ -86,39 +81,74 @@ function useSignUp() {
     });
 
     const json = await response.json();
+    return json;
+  };
 
-    // If there are Form errors, display them.
-    if (json.errors) {
-      json.errors.map((error) =>
-        setErrors((prev) => {
-          return {
-            ...prev,
-            [error.param]: error.msg,
-          };
-        })
-      );
-    }
+  /**
+   * Display the errors if there are any
+   * @param {Array} - contains errors to display.
+   */
+  const displayErrors = (errors) => {
+    errors.map((error) =>
+      setErrors((prev) => {
+        return {
+          ...prev,
+          [error.param]: error.msg,
+        };
+      })
+    );
+  };
 
-    // If the user was created and logged-in properly, save the jwt and user inFormation.
-    if (json.token) {
-      localStorage.setItem("jwt", json.token);
-      setUser(json.user);
-    }
-
-    // Create document in the database to track the user's activity
+  /**
+   * Send a request to the server to create a document
+   * tracking the user's activity.
+   */
+  const setActivity = async (token, user) => {
     await fetch(`${process.env.REACT_APP_URL}/activity`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${json.token}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user: json.user._id,
+        user: user._id,
       }),
     });
+  };
 
-    // Everything was done successfully.
-    history.push("/");
+  /**
+   * Saves the token and user.
+   * @param {string} token
+   * @param {object} user
+   */
+  const authentify = (token, user) => {
+    localStorage.setItem("jwt", token);
+    setUser(user);
+    socket.emit("authentification", JSON.stringify(user));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrors(initial);
+
+    // If there are errors, display them without submitting the Form.
+    if (hasErrors()) return;
+    const json = await send();
+
+    // If there are errors, display them.
+    if (json.errors) {
+      displayErrors(json.errors);
+    }
+
+    // If the user was created and logged-in properly
+    // - Save the jwt and user information.
+    // - Create a document to track the user's activity
+    // - Once everything is done, redirects the user to their dashboard.
+    if (json.user && json.token) {
+      authentify(json.token, json.user);
+      await setActivity(json.token, json.user);
+      history.push("/");
+    }
   };
 
   return {

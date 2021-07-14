@@ -6,7 +6,7 @@ import { useUnread } from "../../context/UnreadContext";
 import Menu from "./Menu";
 
 function Channel({ serverId, categoryId, channel }) {
-  // Different display if channel contains unread message.
+  // Different display if channel contains unread messages.
   const [hasUnread, setHasUnread] = useState(false);
   const { unread } = useUnread();
 

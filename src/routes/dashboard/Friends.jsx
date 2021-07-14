@@ -34,4 +34,18 @@ const Container = styled.main`
   display: flex;
   flex-direction: column;
   padding: 1rem 2rem;
+  margin-right: 0.25rem; // Makes the scrollbar not stick to the right.
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 0.4rem;
+  }
+  &::-webkit-scrollbar-track {
+    background: none;
+    margin: 0.5rem 0;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5rem;
+    background-color: ${(props) => props.theme.bg_sidebar};
+  }
 `;
