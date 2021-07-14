@@ -14,8 +14,7 @@ function Conversation({ match }) {
   const [editing, setEditing] = useState(false);
   const { conversation } = useConversation(match.params.userId);
   const { messages, setMessages } = useMessage(
-    conversation &&
-      `${process.env.REACT_APP_URL}/conversations/${conversation._id}/messages`
+    conversation && { conversation: conversation._id }
   );
   const { user } = useAuth();
   const { updateConversationActivity } = useActivity();

@@ -19,7 +19,7 @@ function Channel() {
   );
   const [editing, setEditing] = useState();
   const { messages, setMessages } = useMessage(
-    channelId && `${process.env.REACT_APP_URL}/channels/${channelId}/messages`
+    channelId && { channel: channelId }
   );
   const { updateChannelActivity } = useActivity();
   const { handleReadChannel } = useUnread();

@@ -1,8 +1,32 @@
 import { useState, useEffect } from "react";
 import socket from "../../socket/socket";
 
-function useMessage(url) {
+/**
+ * Fetch the messages from a certain conversation / server channel.
+ * Update them in real time with socket listeners.
+ * @param {object} location. Either :
+ * - { conversation: {string} id }
+ * - { channel: {string} id }
+ */
+function useMessage(location) {
+  const [url, setUrl] = useState("");
   const [messages, setMessages] = useState([]);
+
+  // Set up endpoint url
+  useEffect(() => {
+    if (!location) return;
+    if (location.conversation) {
+      setUrl(
+        `${process.env.REACT_APP_URL}/conversations/${location.conversation}/messages`
+      );
+    }
+
+    if (location.channel) {
+      setUrl(
+        `${process.env.REACT_APP_URL}/channels/${location.channel}/messages`
+      );
+    }
+  }, [location]);
 
   // Load messages
   useEffect(() => {
@@ -22,9 +46,17 @@ function useMessage(url) {
 
   // Set up socket listeners
   const handleInsert = (newMessage) => {
+    const message = newMessage.document;
+
     // Checks the location to know if the current room is related to the change.
-    console.log(newMessage.document);
-    setMessages([...messages, newMessage.document]);
+    // If it is, add the message.
+    if (
+      (location.conversation &&
+        message.conversation === location.conversation) ||
+      (location.channel && message.channel === location.channel)
+    ) {
+      setMessages([...messages, newMessage.document]);
+    }
   };
 
   const handleUpdate = (updated) => {
