@@ -21,7 +21,7 @@ Channel.propTypes = {
     _id: PropTypes.string,
   }),
   isOpen: PropTypes.bool.isRequired,
-  setIsOpen: PropTypes.bool.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
 };
 
 Channel.defaultProps = {

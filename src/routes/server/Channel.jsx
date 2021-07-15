@@ -62,7 +62,7 @@ export default Channel;
 
 const Container = styled.main`
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto 1fr auto 1rem;
   background: ${(props) => props.theme.bg_secondary};
   margin-top: 1rem;
   border-radius: 1rem 1rem 0 0;
