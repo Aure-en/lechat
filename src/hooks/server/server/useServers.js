@@ -26,7 +26,7 @@ function useServers() {
 
   // Set up socket listener
   const handleUpdate = (update) => {
-    if (!Object.keys(update.fields).includes("server")) return;
+    if (!Object.keys(update.fields).find((key) => /server/.test(key))) return;
     // Fetch servers and set the new ones
     /* We could look at whether a server was added or removed in update.document
      * However, we would still need to fetch the server name and icon from its _id.

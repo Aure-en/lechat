@@ -187,7 +187,6 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
         blockStyleFn={customBlockFn}
         handlePastedText={handlePastedText}
       />
-      {/* <button type="button" onClick={() => console.log(convertToRaw(editorState.getCurrentContent()))}>content</button> */}
     </Container>
   );
 }

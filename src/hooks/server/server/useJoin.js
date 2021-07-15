@@ -1,6 +1,7 @@
 import { useHistory } from "react-router-dom";
 import useActivity from "../../chat/useActivity";
 import { useAuth } from "../../../context/AuthContext";
+import socket from "../../../socket/socket";
 
 function useJoin(serverId) {
   const history = useHistory();
@@ -48,6 +49,10 @@ function useJoin(serverId) {
     e.preventDefault();
     await join(serverId);
     await setActivity(serverId);
+    socket.emit("join", {
+      location: serverId,
+      users: [user._id],
+    });
     history.push(`/servers/${serverId}`);
   };
 

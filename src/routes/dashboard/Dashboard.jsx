@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Switch } from "react-router-dom";
 import PrivateRoute from "../types/PrivateRoute";
@@ -8,8 +8,17 @@ import Server from "../server/Server";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Join from "../server/Join";
 import UserSettings from "../Settings";
+import socket from "../../socket/socket";
 
 function Dashboard() {
+  useEffect(() => {
+    socket.on("connect", () => {
+      if (localStorage.getItem("user")) {
+        socket.emit("authentification", localStorage.getItem("user"));
+      }
+    });
+  }, []);
+
   return (
     <Container>
       <Sidebar />

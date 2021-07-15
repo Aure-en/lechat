@@ -305,7 +305,10 @@ export function UnreadProvider({ children }) {
     setUnread((prev) => {
       if (!prev || prev.servers.length === 0) return;
       const updated = { ...prev };
+
       const server = updated.servers.find((server) => server._id === serverId);
+      if (!server) return;
+
       const channel = server.channels.find(
         (channel) => channel._id === channelId
       );

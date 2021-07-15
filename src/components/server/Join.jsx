@@ -28,11 +28,7 @@ function Join({ server }) {
         )}
 
         <Name>{server.name}</Name>
-        <Description>
-          {server.about}
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Error quos
-          deserunt voluptatibus labore sit.
-        </Description>
+        <Description>{server.about}</Description>
       </Content>
 
       <Form onSubmit={handleSubmit}>

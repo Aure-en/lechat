@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { useAuth } from "../../../context/AuthContext";
+import socket from "../../../socket/socket";
 
 function useCreate(server) {
   const [name, setName] = useState((server && server.name) || "");
   const [about, setAbout] = useState((server && server.about) || "");
   const [nameError, setNameError] = useState("");
   const [image, setImage] = useState();
+  const { user } = useAuth();
 
   // Helper functions
   const create = async () => {
@@ -28,6 +31,8 @@ function useCreate(server) {
     if (json.errors) {
       setNameError(json.errors.filter((err) => err.param === "name")[0].msg);
     }
+
+    return json;
   };
 
   const update = async () => {
@@ -66,7 +71,11 @@ function useCreate(server) {
 
     // Submit the form
     if (!server) {
-      create();
+      const newServer = await create();
+      socket.emit("join", {
+        location: newServer._id,
+        users: [user._id],
+      });
     } else {
       update();
     }

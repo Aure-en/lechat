@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import socket from "../../socket/socket";
 import { useAuth } from "../../context/AuthContext";
 import useActivity from "./useActivity";
+import socket from "../../socket/socket";
 
 function useConversation(userId) {
   const [conversation, setConversation] = useState();
@@ -60,9 +60,19 @@ function useConversation(userId) {
         conversation = await create();
 
         // Update the member's activity to insert the conversation
-        conversation.members.forEach((member) =>
-          updateConversationActivity(member, conversation._id)
+        // Make them join the conversation's socket room.
+        await Promise.all(
+          conversation.members.map((member) => {
+            updateConversationActivity(member, conversation._id);
+          })
         );
+
+        console.log(conversation);
+
+        socket.emit("join", {
+          location: conversation._id,
+          users: conversation.members,
+        });
       }
 
       // Set the conversation.
