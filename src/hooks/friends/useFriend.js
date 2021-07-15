@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
 import socket from "../../socket/socket";
 
 function useFriend() {
   const [friendships, setFriendships] = useState([]);
-  const user = JSON.parse(localStorage.getItem("user"));
+  const { user } = useAuth();
 
   // Load current friends
   useEffect(() => {

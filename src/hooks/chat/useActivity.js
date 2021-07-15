@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import socket from "../../socket/socket";
 import { useAuth } from "../../context/AuthContext";
+import socket from "../../socket/socket";
 
 function useActivity() {
   const [activity, setActivity] = useState();
