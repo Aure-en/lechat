@@ -67,11 +67,9 @@ function useConversation(userId) {
           })
         );
 
-        console.log(conversation);
-
         socket.emit("join", {
           location: conversation._id,
-          users: conversation.members,
+          users: conversation.members.map((member) => member._id),
         });
       }
 
