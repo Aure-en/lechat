@@ -1,14 +1,48 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
+import { useAuth } from "../../context/AuthContext";
 import decorator from "../../components/chat/form/editor/entities/decorator";
+import socket from "../../socket/socket";
 
-function useForm(conversationId, message, setEditing, setMessages) {
+function useForm(location, message, setEditing, setMessages) {
   // editorState contains the typed text with rich edition.
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(decorator)
   );
-  const location = useLocation();
+  const [url, setUrl] = useState("");
+  const { user } = useAuth();
+
+  /**
+   * Helper function to determine if anything is written.
+   * @params {object} editorState
+   * @returns {boolean} true if the editor is empty, false otherwise.
+   */
+  const isEmpty = (editorState) => {
+    const content = convertToRaw(editorState.getCurrentContent());
+    if (content.blocks.length === 1 && !content.blocks[0].text) return true;
+  };
+
+  // Set up the URL depending on the location and whether or not we are updating a message
+  useEffect(() => {
+    // If we are editing a message
+    if (message) {
+      return setUrl(`${process.env.REACT_APP_URL}/messages/${message._id}`);
+    }
+
+    // If we are writing in a private conversation
+    if (location.conversation) {
+      return setUrl(
+        `${process.env.REACT_APP_URL}/conversations/${location.conversation}/messages`
+      );
+    }
+
+    // If we are writing in a public server
+    if (location.server && location.channel) {
+      return setUrl(
+        `${process.env.REACT_APP_URL}/servers/${location.server}/channels/${location.channel}/messages`
+      );
+    }
+  }, [location]);
 
   // If we want to edit a message, load its text.
   useEffect(() => {
@@ -17,6 +51,17 @@ function useForm(conversationId, message, setEditing, setMessages) {
         EditorState.createWithContent(convertFromRaw(JSON.parse(message.text)))
       );
   }, [message]);
+
+  // Send an event when the user starts / stops typing.
+  useEffect(() => {
+    socket.emit("typing", {
+      location: location.conversation
+        ? location.conversation
+        : location.channel,
+      user: user.username,
+      typing: !isEmpty(editorState),
+    });
+  }, [editorState]);
 
   const handleSubmit = async (e) => {
     e && e.preventDefault();
@@ -49,17 +94,8 @@ function useForm(conversationId, message, setEditing, setMessages) {
     }
 
     // Save the message in the database (create or update)
-    // -- TO-DO -- Find a cleaner way to get the request URL.
-    const url = message
-      ? `${process.env.REACT_APP_URL}/messages/${message._id}`
-      : location.pathname.includes("servers")
-      ? `${process.env.REACT_APP_URL}${location.pathname}/messages`
-      : `${process.env.REACT_APP_URL}/conversations/${conversationId}/messages`;
-
-    const method = message ? "PUT" : "POST";
-
     await fetch(url, {
-      method,
+      method: message ? "PUT" : "POST",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
         "Content-Type": "application/json",

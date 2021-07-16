@@ -7,12 +7,12 @@ import useForm from "../../../hooks/chat/useForm";
 import Buttons from "./buttons/Buttons";
 import Send from "./buttons/Send";
 
-function Form({ conversationId, message, setEditing, setMessages }) {
+function Form({ location, message, setEditing, setMessages }) {
   const {
     editorState: text,
     setEditorState: setText,
     handleSubmit,
-  } = useForm(conversationId, message, setEditing, setMessages);
+  } = useForm(location, message, setEditing, setMessages);
   return (
     <FormContainer onSubmit={handleSubmit}>
       <Editor
@@ -43,12 +43,15 @@ Form.propTypes = {
   }),
   setEditing: PropTypes.func,
   setMessages: PropTypes.func,
-  conversationId: PropTypes.string,
+  location: PropTypes.shape({
+    server: PropTypes.string,
+    channel: PropTypes.string,
+    conversation: PropTypes.string,
+  }).isRequired,
 };
 
 Form.defaultProps = {
   message: undefined,
-  conversationId: undefined,
   setEditing: () => {},
   setMessages: () => {},
 };
@@ -60,6 +63,6 @@ const FormContainer = styled.form`
 const Row = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 0 1rem 0.5rem 1rem;
+  padding: 0 1rem;
   margin-top: 0.5rem;
 `;

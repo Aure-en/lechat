@@ -24,10 +24,10 @@ function useTyping(location) {
     if (location !== data.location) return;
 
     // If the user is typing, add them to the list of users who are currently typing.
-    if (location.typing) {
+    if (data.typing) {
       setTyping((prev) => {
         const copy = new Set(JSON.parse(JSON.stringify([...prev])));
-        copy.add(location.user);
+        copy.add(data.user);
         return copy;
       });
 
@@ -35,7 +35,7 @@ function useTyping(location) {
     } else {
       setTyping((prev) => {
         const copy = new Set(JSON.parse(JSON.stringify([...prev])));
-        copy.remove(location.user);
+        copy.delete(data.user);
         return copy;
       });
     }

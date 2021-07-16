@@ -53,7 +53,7 @@ function Conversation({ match }) {
 
           <Messages messages={messages} setEditing={setEditing} />
           <Form
-            conversationId={conversation._id}
+            location={{ conversation: conversation._id }}
             message={editing}
             setEditing={setEditing}
             setMessages={setMessages}

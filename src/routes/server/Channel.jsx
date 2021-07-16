@@ -9,6 +9,7 @@ import useFetch from "../../hooks/shared/useFetch";
 import useActivity from "../../hooks/chat/useActivity";
 import { useAuth } from "../../context/AuthContext";
 import { useUnread } from "../../context/UnreadContext";
+import Typing from "../../components/chat/Typing";
 
 function Channel() {
   const { serverId, channelId } = useRouteMatch(
@@ -49,11 +50,17 @@ function Channel() {
     <Container>
       {channel && <Header name={channel.name} description={channel.about} />}
       <Messages messages={messages} setEditing={setEditing} />
-      <Form
-        message={editing}
-        setEditing={setEditing}
-        setMessages={setMessages}
-      />
+      {serverId && channelId && (
+        <>
+          <Form
+            location={{ server: serverId, channel: channelId }}
+            message={editing}
+            setEditing={setEditing}
+            setMessages={setMessages}
+          />
+          <Typing location={channelId} />
+        </>
+      )}
     </Container>
   );
 }
@@ -62,7 +69,7 @@ export default Channel;
 
 const Container = styled.main`
   display: grid;
-  grid-template-rows: auto 1fr auto 1rem;
+  grid-template-rows: auto 1fr auto 1.25rem;
   background: ${(props) => props.theme.bg_secondary};
   margin-top: 1rem;
   border-radius: 1rem 1rem 0 0;
