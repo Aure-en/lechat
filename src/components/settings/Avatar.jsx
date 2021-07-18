@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useAuth } from "../../context/AuthContext";
 import Upload from "../shared/form/Upload";
 
 function Avatar() {
-  const [image, setImage] = useState();
   const { user } = useAuth();
 
-  const handleChange = async () => {
+  const handleChange = async (image) => {
     const formData = new FormData();
     formData.append("image", image);
 
@@ -19,12 +18,7 @@ function Avatar() {
     });
   };
 
-  useEffect(() => {
-    if (!image) return;
-    handleChange(image);
-  }, [image]);
-
-  return <Upload previous={user.avatar} send={setImage} />;
+  return <Upload id="user-avatar" previous={user.avatar} send={handleChange} />;
 }
 
 export default Avatar;

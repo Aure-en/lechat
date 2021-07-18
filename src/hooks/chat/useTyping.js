@@ -21,6 +21,7 @@ function useTyping(location) {
    * }
    */
   const handleTyping = (data) => {
+    console.log(data);
     if (location !== data.location) return;
 
     // If the user is typing, add them to the list of users who are currently typing.

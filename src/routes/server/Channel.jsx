@@ -71,16 +71,10 @@ function Channel() {
 
   // Join / leave the channel socket room
   useEffect(() => {
-    socket.emit("join", {
-      location: channelId,
-      users: [user._id],
-    });
-
-    return () =>
-      socket.emit("leave", {
-        location: channelId,
-        users: [user._id],
-      });
+    if (channelId) {
+      socket.emit("join room", channelId);
+    }
+    return () => socket.emit("leave room");
   }, [channelId]);
 
   return (

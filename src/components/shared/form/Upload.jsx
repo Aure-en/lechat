@@ -1,19 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import { ReactComponent as IconUpload } from "../../../assets/icons/general/upload.svg";
 
-function Upload({ previous, send }) {
-  const [image, setImage] = useState();
+function Upload({ id, previous, send }) {
   const [preview, setPreview] = useState();
 
-  useEffect(() => {
-    send(image);
-  }, [image]);
-
   return (
-    <Label htmlFor="image" $previous={previous} $preview={preview}>
+    <Label htmlFor={`image-${id}`} $previous={previous} $preview={preview}>
       {!preview && !previous && (
         <>
           <IconUpload />
@@ -22,10 +17,10 @@ function Upload({ previous, send }) {
       )}
       <Input
         type="file"
-        id="image"
-        name="image"
+        id={`image-${id}`}
+        name={`image-${id}`}
         onChange={(e) => {
-          setImage(e.target.files[0]);
+          send(e.target.files[0]);
           setPreview(URL.createObjectURL(e.target.files[0]));
         }}
       />
@@ -43,6 +38,8 @@ Upload.propTypes = {
       data: PropTypes.arrayOf(PropTypes.number),
     }),
   }),
+  // To identify the input when there are several on the same page
+  id: PropTypes.string.isRequired,
   send: PropTypes.func.isRequired,
 };
 

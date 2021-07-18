@@ -35,17 +35,9 @@ function Conversation({ match }) {
   // Join / leave the channel socket room
   useEffect(() => {
     if (conversation) {
-      socket.emit("join", {
-        location: conversation._id,
-        users: [user._id],
-      });
+      socket.emit("join room", conversation._id);
     }
-
-    return () =>
-      socket.emit("leave", {
-        location: conversation._id,
-        users: [user._id],
-      });
+    return () => socket.emit("leave room");
   }, [conversation]);
 
   // On close, update the activity
@@ -57,7 +49,7 @@ function Conversation({ match }) {
       });
       const headers = {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        "Content-Type": "application/json",
+        type: "application/json",
       };
       const blob = new Blob([body], headers);
       navigator.sendBeacon(

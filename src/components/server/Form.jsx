@@ -22,7 +22,11 @@ function Form({ server }) {
       </Header>
       <FormContainer onSubmit={handleSubmit}>
         <Field>
-          <Upload previous={server && server.icon} send={setImage} />
+          <Upload
+            id={server ? "server-update" : "server-create"}
+            previous={server && server.icon}
+            send={setImage}
+          />
         </Field>
 
         <Field>
