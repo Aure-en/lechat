@@ -6,10 +6,11 @@ import Messages from "../../components/chat/Messages";
 import Form from "../../components/chat/form/Form";
 import useMessage from "../../hooks/chat/useMessage";
 import useFetch from "../../hooks/shared/useFetch";
-import useActivity from "../../hooks/chat/useActivity";
 import { useAuth } from "../../context/AuthContext";
 import { useUnread } from "../../context/UnreadContext";
+import useActivity from "../../hooks/chat/useActivity";
 import Typing from "../../components/chat/Typing";
+import socket from "../../socket/socket";
 
 function Channel() {
   const { serverId, channelId } = useRouteMatch(
@@ -22,6 +23,7 @@ function Channel() {
   const { messages, setMessages } = useMessage(
     channelId && { channel: channelId }
   );
+
   const { updateChannelActivity } = useActivity();
   const { handleReadChannel } = useUnread();
   const { user } = useAuth();
@@ -35,15 +37,50 @@ function Channel() {
     }
   }, [channel]);
 
-  // On unmount or on close, update the activity.
+  // On unmount, update the activity.
   useEffect(() => {
-    const updateActivity = () =>
+    return () =>
       serverId && channelId && updateChannelActivity(user, serverId, channelId);
-    window.addEventListener("onbeforeunload", updateActivity);
+  }, [channelId]);
+
+  // On close, update the activity.
+  useEffect(() => {
+    const updateActivity = () => {
+      if (!serverId || !channelId) return;
+      const body = JSON.stringify({
+        server: serverId,
+        channel: channelId,
+      });
+      const headers = {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        type: "application/json",
+      };
+      const blob = new Blob([body], headers);
+      navigator.sendBeacon(
+        `${process.env.REACT_APP_URL}/activity/${user._id}/servers`,
+        blob
+      );
+    };
+
+    document.addEventListener("visibilitychange", updateActivity);
     return () => {
       updateActivity();
-      window.removeEventListener("onbeforeunload", updateActivity);
+      document.removeEventListener("visibilitychange", updateActivity);
     };
+  }, [channelId]);
+
+  // Join / leave the channel socket room
+  useEffect(() => {
+    socket.emit("join", {
+      location: channelId,
+      users: [user._id],
+    });
+
+    return () =>
+      socket.emit("leave", {
+        location: channelId,
+        users: [user._id],
+      });
   }, [channelId]);
 
   return (

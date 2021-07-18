@@ -1,13 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
+import socket from "../../../socket/socket";
 import { ReactComponent as IconLogOut } from "../../../assets/icons/nav/logout.svg";
 
 function LogOut() {
   const history = useHistory();
+  const { user } = useAuth();
 
   const handleLogOut = () => {
     localStorage.clear();
+    socket.emit("deauthentication", JSON.stringify(user));
     history.push("/auth/login");
   };
 

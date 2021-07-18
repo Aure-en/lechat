@@ -17,6 +17,20 @@ export function AuthProvider({ children }) {
     localStorage.setItem("user", JSON.stringify(user));
   };
 
+  // Socket listeners to handle authentication
+  const handleConnect = () => {
+    if (user) {
+      socket.emit("authentication", JSON.stringify(user));
+    }
+  };
+
+  useEffect(() => {
+    socket.on("connect", handleConnect);
+    return () => {
+      socket.off("connect", handleConnect);
+    };
+  }, []);
+
   // Socket listeners to update the user data.
   const handleUpdate = (updated) => {
     setUser(updated.document);

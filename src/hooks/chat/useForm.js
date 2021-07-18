@@ -63,6 +63,22 @@ function useForm(location, message, setEditing, setMessages) {
     });
   }, [editorState]);
 
+  /**
+   * When the user leaves the channel / conversation,
+   * to remove him from the typing users list
+   * if he was currently typing.
+   */
+  useEffect(() => {
+    return () =>
+      socket.emit("typing", {
+        location: location.conversation
+          ? location.conversation
+          : location.channel,
+        user: user.username,
+        typing: false,
+      });
+  }, [location]);
+
   const handleSubmit = async (e) => {
     e && e.preventDefault();
 

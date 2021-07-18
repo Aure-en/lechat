@@ -9,6 +9,7 @@ import useConversation from "../hooks/chat/useConversation";
 import useMessage from "../hooks/chat/useMessage";
 import useActivity from "../hooks/chat/useActivity";
 import Profile from "../components/user/Profile";
+import socket from "../socket/socket";
 
 function Conversation({ match }) {
   const [editing, setEditing] = useState(false);
@@ -17,22 +18,58 @@ function Conversation({ match }) {
     conversation && { conversation: conversation._id }
   );
   const { user } = useAuth();
-  const { updateConversationActivity } = useActivity();
   const { handleReadConversation } = useUnread();
+  const { updateConversationActivity } = useActivity();
 
   // On mount, set the conversation as read.
   useEffect(() => {
     conversation && handleReadConversation(conversation._id);
   }, [conversation]);
 
-  // On unmount or on close, update the activity
+  // On unmount, update the activity
   useEffect(() => {
-    const updateActivity = () =>
+    return () =>
       conversation && updateConversationActivity(user, conversation._id);
-    window.addEventListener("onbeforeunload", updateActivity);
+  }, [conversation]);
+
+  // Join / leave the channel socket room
+  useEffect(() => {
+    if (conversation) {
+      socket.emit("join", {
+        location: conversation._id,
+        users: [user._id],
+      });
+    }
+
+    return () =>
+      socket.emit("leave", {
+        location: conversation._id,
+        users: [user._id],
+      });
+  }, [conversation]);
+
+  // On close, update the activity
+  useEffect(() => {
+    const updateActivity = () => {
+      if (!conversation) return;
+      const body = JSON.stringify({
+        conversation: conversation._id,
+      });
+      const headers = {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        "Content-Type": "application/json",
+      };
+      const blob = new Blob([body], headers);
+      navigator.sendBeacon(
+        `${process.env.REACT_APP_URL}/activity/${user._id}/conversations`,
+        blob
+      );
+    };
+
+    document.addEventListener("visibilitychange", updateActivity);
     return () => {
       updateActivity();
-      window.removeEventListener("onbeforeunload", updateActivity);
+      document.removeEventListener("visibilitychange", updateActivity);
     };
   }, [conversation]);
 

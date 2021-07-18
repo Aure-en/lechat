@@ -26,6 +26,7 @@ function useActivity() {
   // Set up socket listener to update activity
   const handleUpdate = (updated) => {
     setActivity(updated);
+    console.log(updated);
   };
 
   // Update the activity document when the user leaves a channel
