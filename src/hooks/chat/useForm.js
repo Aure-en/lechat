@@ -9,6 +9,7 @@ function useForm(location, message, setEditing, setMessages) {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(decorator)
   );
+  const [files, setFiles] = useState([]);
   const [url, setUrl] = useState("");
   const { user } = useAuth();
 
@@ -46,10 +47,11 @@ function useForm(location, message, setEditing, setMessages) {
 
   // If we want to edit a message, load its text.
   useEffect(() => {
-    message &&
+    if (message) {
       setEditorState(
         EditorState.createWithContent(convertFromRaw(JSON.parse(message.text)))
       );
+    }
   }, [message]);
 
   // Send an event when the user starts / stops typing.
@@ -130,6 +132,8 @@ function useForm(location, message, setEditing, setMessages) {
   return {
     editorState,
     setEditorState,
+    files,
+    setFiles,
     handleSubmit,
   };
 }

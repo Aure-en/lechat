@@ -13,7 +13,7 @@ import {
 } from "draft-js";
 import "draft-js/dist/Draft.css";
 
-function TextEditor({ editorState, setEditorState, onEnter }) {
+function TextEditor({ editorState, setEditorState, onEnter, setFiles }) {
   const editorRef = useRef(); // Used to auto-focus on load.
   const onChange = (editorState) => {
     setEditorState(editorState);
@@ -162,18 +162,23 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
     }
   };
 
+  // Files drag and drop
+  const handleDroppedFiles = (selection, files) => {
+    setFiles((prev) => [...prev, ...files]);
+  };
+
   // Sets up custom blocks (quote, code)
-  const customBlockFn = (contentBlock) => {
+  function customBlockFn(contentBlock) {
     const type = contentBlock.getType();
     if (type === "code-block") return "code";
     if (type === "blockquote") return "quote";
     return "";
-  };
+  }
 
-  // Autofocus the text editor on mount.
+  // Autofocus the text editor
   useEffect(() => {
     editorRef.current.focus();
-  }, []);
+  }, [editorState]);
 
   return (
     <Container>
@@ -186,6 +191,7 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
         onChange={onChange}
         blockStyleFn={customBlockFn}
         handlePastedText={handlePastedText}
+        handleDroppedFiles={handleDroppedFiles}
       />
     </Container>
   );
@@ -200,10 +206,12 @@ TextEditor.propTypes = {
     getSelection: PropTypes.func,
   }).isRequired,
   setEditorState: PropTypes.func.isRequired,
+  setFiles: PropTypes.func,
 };
 
 TextEditor.defaultProps = {
   onEnter: undefined,
+  setFiles: undefined,
 };
 
 const Container = styled.div`

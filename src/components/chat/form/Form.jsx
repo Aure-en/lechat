@@ -5,21 +5,27 @@ import { convertToRaw } from "draft-js";
 import Editor from "./editor/Editor";
 import useForm from "../../../hooks/chat/useForm";
 import Buttons from "./buttons/Buttons";
+import Files from "./Files";
 import Send from "./buttons/Send";
 
 function Form({ location, message, setEditing, setMessages }) {
   const {
     editorState: text,
     setEditorState: setText,
+    files,
+    setFiles,
     handleSubmit,
   } = useForm(location, message, setEditing, setMessages);
+
   return (
     <FormContainer onSubmit={handleSubmit}>
       <Editor
         editorState={text}
         setEditorState={setText}
         onEnter={handleSubmit}
+        setFiles={setFiles}
       />
+      <Files files={files} />
       <Row>
         <Buttons editorState={text} setEditorState={setText} />
         <Send

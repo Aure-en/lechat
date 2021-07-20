@@ -49,4 +49,5 @@ const Heading = styled.h1`
 const Ul = styled.ul`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-gap: 2rem;
 `;

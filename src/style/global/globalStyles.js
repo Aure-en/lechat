@@ -127,7 +127,7 @@ const GlobalStyles = createGlobalStyle`
 
   // Text Editor
   .public-DraftEditor-content {
-    min-height: 5rem;
+    min-height: 7rem;
     max-height: 15rem;
     overflow: auto;
     padding: 1rem;
