@@ -13,7 +13,7 @@ const init = () => {
       </AuthProvider>
     </Router>
   );
-}
+};
 
 test("Renders properly", () => {
   init();
@@ -43,8 +43,6 @@ test("All fields must be filled before submitting", () => {
   userEvent.click(button);
   
   // Check that error messages appeared.
-  screen.debug();
-
   const fields = ["username", "email", "password", "confirmation"];
 
   fields.forEach((field) => {

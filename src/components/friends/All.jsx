@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { useAuth } from "../../context/AuthContext";
 import useFriend from "../../hooks/friends/useFriend";
 import More from "./More";
 import IconChevron from "../../assets/icons/general/IconChevron";
@@ -11,6 +12,7 @@ function All() {
   const [isOpen, setIsOpen] = useState(true);
   const [friends, setFriends] = useState();
   const { friendships } = useFriend();
+  const { user } = useAuth();
 
   // Get the user from the friendship who isn't the current one.
   useEffect(() => {
@@ -19,7 +21,7 @@ function All() {
     friendships.forEach((friendship) =>
       friends.push({
         friend:
-          friendship.sender._id === JSON.parse(localStorage.getItem("user"))._id
+          friendship.sender._id === user._id
             ? friendship.recipient
             : friendship.sender,
         _id: friendship._id, // Necessary to delete the friendship
