@@ -30,8 +30,11 @@ function useSignUp() {
    * @returns {bool} - true if there are errors, false otherwise.
    */
   const hasErrors = () => {
+    let hasErrors;
+
     Object.keys(values).map((value) => {
       if (!values[value]) {
+        hasErrors = true;
         setErrors((prev) => {
           return {
             ...prev,
@@ -43,13 +46,6 @@ function useSignUp() {
       }
     });
 
-    let hasErrors = false;
-    Object.keys(errors).forEach((field) => {
-      if (errors[field]) {
-        hasErrors = true;
-      }
-    });
-
     // Check that password and confirmation have the same value
     if (values.password !== values.confirmation) {
       setErrors({
@@ -58,6 +54,7 @@ function useSignUp() {
       });
       hasErrors = true;
     }
+
     // If there are errors, display them without submitting the Form.
     return hasErrors;
   };

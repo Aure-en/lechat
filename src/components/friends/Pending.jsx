@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import ReactTooltip from "react-tooltip";
+import { useAuth } from "../../context/AuthContext";
 import usePending from "../../hooks/friends/usePending";
 import IconChevron from "../../assets/icons/general/IconChevron";
 import { ReactComponent as IconCheck } from "../../assets/icons/friend/check.svg";
@@ -10,6 +11,7 @@ import { ReactComponent as IconClose } from "../../assets/icons/general/close.sv
 function Pending() {
   const [isOpen, setIsOpen] = useState(true);
   const { friendships: friends } = usePending();
+  const { user } = useAuth();
 
   return (
     <Wrapper>
@@ -25,10 +27,7 @@ function Pending() {
           {friends && friends.length > 0 ? (
             <ul>
               {friends.map((request) => {
-                if (
-                  request.recipient._id.toString() ===
-                  JSON.parse(localStorage.getItem("user"))._id
-                ) {
+                if (request.recipient._id.toString() === user._id) {
                   return <Request request={request} key={request._id} />;
                 }
               })}

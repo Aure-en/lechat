@@ -1,6 +1,5 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { BrowserRouter as Router } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import All from "../../components/friends/All";
@@ -38,25 +37,22 @@ test("Renders an user's friends when he has any", () => {
           _id: "1",
           username: "Sender",
           email: "sender@gmail.com",
-          __v: 0,
         },
         recipient: {
           _id: "2",
           username: "Recipient",
           email: "recipient@gmail.com",
-          __v: 0,
         },
-        __v: 0,
       },
     ],
   });
 
+  // User is needed to compare the friendship's members to the user.
   useAuth.mockReturnValue({
     user: {
       _id: "1",
       username: "Sender",
       email: "sender@gmail.com",
-      __v: 0,
     },
   });
 

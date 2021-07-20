@@ -25,7 +25,7 @@ test("Renders properly", () => {
   const password = screen.getByLabelText(/password/i);
   expect(password).toBeInTheDocument();
 
-  const button = screen.getByRole('button', {name: /log in/i });
+  const button = screen.getByRole('button', { name: /log in/i });
   expect(button).toBeInTheDocument();
 });
 
@@ -34,7 +34,7 @@ describe("Validation", () => {
     init();
 
     // Submit the form without entering an username
-    const button = screen.getByRole('button', {name: /log in/i });
+    const button = screen.getByRole('button', { name: /log in/i });
     userEvent.click(button);
 
     // Check that an error message appeared.
@@ -46,7 +46,7 @@ describe("Validation", () => {
     init();
 
     // Submit the form without entering a password
-    const button = screen.getByRole('button', {name: /log in/i });
+    const button = screen.getByRole('button', { name: /log in/i });
     userEvent.click(button);
 
     // Check that an error message appeared.

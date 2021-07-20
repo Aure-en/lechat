@@ -41,7 +41,7 @@ function useLogin() {
       setErrors((prev) => {
         return { ...prev, password: "Password must be specified" };
       });
-      hasErrors = false;
+      hasErrors = true;
     }
 
     return hasErrors;

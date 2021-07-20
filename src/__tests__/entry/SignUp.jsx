@@ -41,7 +41,7 @@ test("All fields must be filled before submitting", () => {
   // Submit the form without entering anything.
   const button = screen.getByRole('button', {name: /sign up/i });
   userEvent.click(button);
-  
+
   // Check that error messages appeared.
   const fields = ["username", "email", "password", "confirmation"];
 

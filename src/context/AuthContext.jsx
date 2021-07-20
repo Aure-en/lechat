@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect, createContext } from "react";
 import PropTypes from "prop-types";
 import socket from "../socket/socket";
 
-export const AuthContext = createContext();
+const AuthContext = createContext();
 
 export function useAuth() {
   return useContext(AuthContext);
