@@ -22,9 +22,7 @@ function Username() {
               value={values.username}
               placeholder="New username"
               onChange={(e) =>
-                setValues((prev) => {
-                  return { ...prev, username: e.target.value };
-                })
+                setValues({ ...values, username: e.target.value })
               }
             />
           </Label>
@@ -40,9 +38,7 @@ function Username() {
               value={values.password}
               placeholder="Current password"
               onChange={(e) =>
-                setValues((prev) => {
-                  return { ...prev, password: e.target.value };
-                })
+                setValues({ ...values, password: e.target.value })
               }
             />
           </Label>

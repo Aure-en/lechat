@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 function useUsername() {
   const initial = {
@@ -7,6 +8,7 @@ function useUsername() {
   };
   const [values, setValues] = useState(initial);
   const [errors, setErrors] = useState(initial);
+  const { user } = useAuth();
 
   /**
    * Client-side validation
@@ -28,7 +30,6 @@ function useUsername() {
         hasErrors = true;
       }
     });
-
     return hasErrors;
   };
 
@@ -38,9 +39,7 @@ function useUsername() {
    */
   const updateUsername = async () => {
     const res = await fetch(
-      `${process.env.REACT_APP_URL}/users/${
-        JSON.parse(localStorage.getItem("user"))._id
-      }/username`,
+      `${process.env.REACT_APP_URL}/users/${user._id}/username`,
       {
         method: "PUT",
         headers: {
@@ -57,13 +56,13 @@ function useUsername() {
         err.param.match(/username/i)
       );
       if (usernameError.length > 0)
-        setErrors({ ...errors, username: usernameError[0].msg });
+        setErrors((prev) => ({ ...prev, username: usernameError[0].msg }));
 
       const passwordError = json.errors.filter((err) =>
         err.param.match(/password/i)
       );
       if (passwordError.length > 0)
-        setErrors({ ...errors, password: passwordError[0].msg });
+        setErrors((prev) => ({ ...prev, password: passwordError[0].msg }));
     }
   };
 
