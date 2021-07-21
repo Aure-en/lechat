@@ -45,7 +45,7 @@ function Server({ server }) {
           ) : (
             <Default>{server.name[0]}</Default>
           )}
-          {hasUnread && <Dot />}
+          {hasUnread && <Dot aria-label="unread" />}
         </Link>
       </Li>
 

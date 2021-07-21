@@ -1,7 +1,5 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
-import userEvent from "@testing-library/user-event";
 import { BrowserRouter as Router } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import usePending from "../../hooks/friends/usePending";
