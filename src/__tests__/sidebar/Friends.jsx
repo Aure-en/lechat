@@ -22,7 +22,7 @@ describe("Displays the number of pending friends requests", () => {
       user: {
         _id: "0",
         username: "Recipient",
-        email: "recipient@gmail.com",
+        email: "recipient@email.com",
       },
     });
   });
@@ -46,12 +46,12 @@ describe("Displays the number of pending friends requests", () => {
         sender: {
           _id: `${i}`,
           username: `Sender-${i}`,
-          email: `sender-${i}@gmail.com`,
+          email: `sender-${i}@email.com`,
         },
         recipient: {
           _id: "0",
           username: "Recipient",
-          email: "recipient@gmail.com",
+          email: "recipient@email.com",
         },
       });
     }
@@ -75,12 +75,12 @@ describe("Displays the number of pending friends requests", () => {
         sender: {
           _id: `${i}`,
           username: `Sender-${i}`,
-          email: `sender-${i}@gmail.com`,
+          email: `sender-${i}@email.com`,
         },
         recipient: {
           _id: "0",
           username: "Recipient",
-          email: "recipient@gmail.com",
+          email: "recipient@email.com",
         },
       });
     }

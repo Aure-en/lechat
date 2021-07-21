@@ -28,7 +28,7 @@ test("A special message is displayed when the user has no new messages", () => {
     user: {
       _id: "0",
       username: "User",
-      email: "user@gmail.com",
+      email: "user@email.com",
     },
   });
   useUnread.mockReturnValue({
@@ -61,7 +61,7 @@ describe("Renders new messages list", () => {
       user: {
         _id: "0",
         username: "User",
-        email: "user@gmail.com",
+        email: "user@email.com",
       },
     });
 

@@ -30,7 +30,7 @@ describe("Renders servers list", () => {
       user: {
         _id: "0",
         username: "User",
-        email: "user@gmail.com",
+        email: "user@email.com",
       },
     });
 

@@ -143,7 +143,7 @@ describe("Request results", () => {
           Promise.resolve({
             _id: "2",
             username: "Random",
-            email: "random@gmail.com",
+            email: "random@email.com",
           }),
       })
     );
@@ -159,12 +159,12 @@ describe("Request results", () => {
               sender: {
                 _id: "1",
                 username: "User",
-                email: "user@gmail.com",
+                email: "user@email.com",
               },
               recipient: {
                 _id: "2",
                 username: "Random",
-                email: "random@gmail.com",
+                email: "random@email.com",
               },
             },
           ]),

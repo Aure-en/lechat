@@ -38,12 +38,12 @@ describe("Renders properly", () => {
           sender: {
             _id: "1",
             username: "Sender",
-            email: "sender@gmail.com",
+            email: "sender@email.com",
           },
           recipient: {
             _id: "2",
             username: "Recipient",
-            email: "recipient@gmail.com",
+            email: "recipient@email.com",
           },
         },
       ],
@@ -54,7 +54,7 @@ describe("Renders properly", () => {
       user: {
         _id: "2",
         username: "Recipient",
-        email: "recipient@gmail.com",
+        email: "recipient@email.com",
       },
     });
 

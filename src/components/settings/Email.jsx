@@ -23,11 +23,7 @@ function Email() {
               name="email"
               value={values.email}
               placeholder="New email address"
-              onChange={(e) =>
-                setValues((prev) => {
-                  return { ...prev, email: e.target.value };
-                })
-              }
+              onChange={(e) => setValues({ ...values, email: e.target.value })}
             />
           </Label>
           {errors.email && <Error>{errors.email}</Error>}
@@ -42,9 +38,7 @@ function Email() {
               value={values.password}
               placeholder="Current password"
               onChange={(e) =>
-                setValues((prev) => {
-                  return { ...prev, password: e.target.value };
-                })
+                setValues({ ...values, password: e.target.value })
               }
             />
           </Label>

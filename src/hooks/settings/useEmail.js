@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 export default function useEmail() {
   const initial = {
@@ -7,6 +8,7 @@ export default function useEmail() {
   };
   const [values, setValues] = useState(initial);
   const [errors, setErrors] = useState(initial);
+  const { user } = useAuth();
 
   /**
    * Client-side validation
@@ -34,11 +36,11 @@ export default function useEmail() {
 
   /**
    * Send the request to the server to update the email.
-   * @returns {string} - the response.
+   * @returns {object} - the response.
    */
   const updateEmail = async () => {
     const res = await fetch(
-      `${process.env.REACT_APP_URL}/users/${JSON.parse(localStorage.getItem("user"))._id}/email`,
+      `${process.env.REACT_APP_URL}/users/${user._id}/email`,
       {
         method: "PUT",
         headers: {
@@ -49,6 +51,21 @@ export default function useEmail() {
       }
     );
     const json = await res.json();
+
+    if (json.errors) {
+      const emailError = json.errors.find((err) => err.param.match(/email/i));
+      if (emailError) {
+        setErrors((prev) => ({ ...prev, email: emailError.msg }));
+      }
+
+      const passwordError = json.errors.find((err) =>
+        err.param.match(/password/i)
+      );
+      if (passwordError) {
+        setErrors((prev) => ({ ...prev, password: passwordError.msg }));
+      }
+    }
+
     return json;
   };
 

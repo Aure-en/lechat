@@ -36,12 +36,12 @@ test("Renders an user's friends when he has any", () => {
         sender: {
           _id: "1",
           username: "Sender",
-          email: "sender@gmail.com",
+          email: "sender@email.com",
         },
         recipient: {
           _id: "2",
           username: "Recipient",
-          email: "recipient@gmail.com",
+          email: "recipient@email.com",
         },
       },
     ],
@@ -52,7 +52,7 @@ test("Renders an user's friends when he has any", () => {
     user: {
       _id: "1",
       username: "Sender",
-      email: "sender@gmail.com",
+      email: "sender@email.com",
     },
   });
 
