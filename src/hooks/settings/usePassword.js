@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 function usePassword() {
   const initial = {
@@ -8,6 +9,7 @@ function usePassword() {
   };
   const [values, setValues] = useState(initial);
   const [errors, setErrors] = useState(initial);
+  const { user } = useAuth();
 
   /**
    * Client-side validation.
@@ -52,9 +54,7 @@ function usePassword() {
    */
   const updatePassword = async () => {
     const res = await fetch(
-      `${process.env.REACT_APP_URL}/users/${
-        JSON.parse(localStorage.getItem("user"))._id
-      }/password`,
+      `${process.env.REACT_APP_URL}/users/${user._id}/password`,
       {
         method: "PUT",
         headers: {
@@ -69,6 +69,12 @@ function usePassword() {
       }
     );
     const json = await res.json();
+
+    if (json.errors) {
+      const error = json.errors.find((err) => err.param.match(/password/i));
+      if (error) setErrors((prev) => ({ ...prev, current: error.msg }));
+    }
+
     return json;
   };
 
@@ -77,7 +83,6 @@ function usePassword() {
     setErrors(initial);
 
     if (hasErrors()) return;
-
     updatePassword();
   };
 

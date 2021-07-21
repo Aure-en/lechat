@@ -22,9 +22,7 @@ function Password() {
               placeholder="Current password"
               value={values.current}
               onChange={(e) =>
-                setValues((prev) => {
-                  return { ...prev, current: e.target.value };
-                })
+                setValues({ ...values, current: e.target.value })
               }
             />
           </Label>
@@ -39,11 +37,7 @@ function Password() {
               name="new_password"
               placeholder="New password"
               value={values.password}
-              onChange={(e) =>
-                setValues((prev) => {
-                  return { ...prev, new: e.target.value };
-                })
-              }
+              onChange={(e) => setValues({ ...values, new: e.target.value })}
             />
           </Label>
           {errors.new && <Error>{errors.new}</Error>}
@@ -58,9 +52,7 @@ function Password() {
               placeholder="Confirm new password"
               value={values.confirmation}
               onChange={(e) =>
-                setValues((prev) => {
-                  return { ...prev, confirmation: e.target.value };
-                })
+                setValues({ ...values, confirmation: e.target.value })
               }
             />
           </Label>
