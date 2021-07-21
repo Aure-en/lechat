@@ -24,7 +24,7 @@ function Conversation({ conversation, friend }) {
           ) : (
             <Default>{friend.username[0]}</Default>
           )}
-          <Number>
+          <Number aria-label="unread">
             {conversation.unread > 9 ? "9+" : conversation.unread}
           </Number>
         </Link>
