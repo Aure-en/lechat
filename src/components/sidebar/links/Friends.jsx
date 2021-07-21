@@ -2,16 +2,23 @@ import React from "react";
 import styled from "styled-components";
 import NavLink from "./NavLink";
 import usePending from "../../../hooks/friends/usePending";
+import { useAuth } from "../../../context/AuthContext";
 import { ReactComponent as IconFriends } from "../../../assets/icons/nav/users.svg";
 
 function Friends() {
   const { friendships } = usePending();
+  const { user } = useAuth();
+
+  const incoming = [...friendships].filter(
+    (friendship) => friendship.recipient._id.toString() === user._id
+  );
+
   return (
     <NavLink to="/" tip="Friends">
       <Container>
         <IconFriends />
-        {friendships.length > 0 && (
-          <Number>{friendships.length > 9 ? "9+" : friendships.length}</Number>
+        {incoming.length > 0 && (
+          <Number>{incoming.length > 9 ? "9+" : incoming.length}</Number>
         )}
       </Container>
     </NavLink>

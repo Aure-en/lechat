@@ -10,11 +10,9 @@ jest.mock("../../context/AuthContext");
 
 const init = () => {
   render(
-    <>
-      <Router>
-        <Pending />
-      </Router>
-    </>
+    <Router>
+      <Pending />
+    </Router>
   );
 };
 

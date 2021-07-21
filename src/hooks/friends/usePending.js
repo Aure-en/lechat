@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import socket from "../../socket/socket";
+import { useAuth } from "../../context/AuthContext";
 
 function usePending() {
   const [friendships, setFriendships] = useState([]);
-  const user = JSON.parse(localStorage.getItem("user"));
+  const { user } = useAuth();
 
   // Load pending friends
   useEffect(() => {
