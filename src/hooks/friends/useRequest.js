@@ -14,6 +14,7 @@ function useRequest() {
 
     // Validation
     if (!friend) return setError("Friend must be specified");
+
     if (friend === user.username || friend === user.email) {
       return setError("You cannot send yourself a friend request.");
     }
@@ -40,6 +41,7 @@ function useRequest() {
     );
     const json = await res.json();
     if (json.error) return setError(json.error);
+
     return setSuccess("Friend request successfully sent.");
   };
 

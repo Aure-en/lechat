@@ -31,7 +31,7 @@ test("Renders properly", () => {
   const confirmation = screen.getByLabelText(/password confirmation/i);
   expect(confirmation).toBeInTheDocument();
 
-  const button = screen.getByRole('button', {name: /sign up/i });
+  const button = screen.getByRole("button", { name: /sign up/i });
   expect(button).toBeInTheDocument();
 });
 
@@ -39,13 +39,15 @@ test("All fields must be filled before submitting", () => {
   init();
 
   // Submit the form without entering anything.
-  const button = screen.getByRole('button', {name: /sign up/i });
+  const button = screen.getByRole("button", { name: /sign up/i });
   userEvent.click(button);
 
   // Check that error messages appeared.
   const fields = ["username", "email", "password", "confirmation"];
 
   fields.forEach((field) => {
-    expect(screen.getByText(new RegExp(`${field} must be specified`, 'i'))).toBeInTheDocument();
-  })
-})
+    expect(
+      screen.getByText(new RegExp(`${field} must be specified`, "i"))
+    ).toBeInTheDocument();
+  });
+});
