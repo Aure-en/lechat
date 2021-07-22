@@ -60,7 +60,6 @@ describe("Requests results", () => {
 
     const passwordInput = screen.getByPlaceholderText(/password/i);
     userEvent.type(passwordInput, "Password");
-    screen.debug();
   });
 
   test("Error is displayed if the email is already taken", async () => {

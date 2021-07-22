@@ -82,7 +82,6 @@ describe("Renders new messages list", () => {
 
   test("An indicator displays the number of unread messages per conversation", () => {
     init();
-    screen.debug();
     const unread = document.querySelector("[aria-label='unread']");
     expect(unread.textContent).toBe(`${conversation.unread}`);
   });
