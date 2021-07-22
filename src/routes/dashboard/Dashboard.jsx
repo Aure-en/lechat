@@ -10,7 +10,6 @@ import Join from "../server/Join";
 import UserSettings from "../Settings";
 
 function Dashboard() {
-
   return (
     <Container>
       <Sidebar />

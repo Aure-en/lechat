@@ -39,6 +39,7 @@ function Channel({ serverId, categoryId, channel }) {
       $current={current === channel._id}
       $unread={hasUnread}
       ref={ref}
+      aria-label={hasUnread ? "unread" : ""}
     >
       <StyledLink to={`/servers/${serverId}/channels/${channel._id}`}>
         {channel.name}
