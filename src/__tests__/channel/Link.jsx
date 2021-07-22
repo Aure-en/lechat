@@ -1,6 +1,5 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { BrowserRouter as Router } from "react-router-dom";
 import { useUnread } from "../../context/UnreadContext";
 import Channel from "../../components/channel/Channel";
@@ -17,7 +16,6 @@ const category = {
 
 const channel = {
   name: "Channel",
-  about: "About",
   _id: "3",
 };
 
