@@ -178,7 +178,7 @@ function TextEditor({ editorState, setEditorState, onEnter, setFiles }) {
   // Autofocus the text editor
   useEffect(() => {
     editorRef.current.focus();
-  }, [editorState]);
+  }, []);
 
   return (
     <Container>
