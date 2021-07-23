@@ -130,7 +130,3 @@ const Default = styled(Icon)`
   color: ${(props) => props.theme.server_icon_text};
   font-size: 1.5rem;
 `;
-
-const Button = styled.div`
-  align-self: flex-end;
-`;
