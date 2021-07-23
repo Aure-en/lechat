@@ -1,21 +1,19 @@
 import React from "react";
 import styled from "styled-components";
 import useFetch from "../../hooks/shared/useFetch";
+import { useAuth } from "../../context/AuthContext";
 import Preview from "./Preview";
 
 function List() {
-  const { data: user } = useFetch(
-    `${process.env.REACT_APP_URL}/users/${
-      JSON.parse(localStorage.getItem("user"))._id
-    }`
-  );
+  const { user } = useAuth();
+  const { data } = useFetch(`${process.env.REACT_APP_URL}/users/${user._id}`);
 
   return (
     <Ul>
-      {user &&
-        user.server.map((server) => (
-          <li>
-            <Preview key={server._id} server={server} join={false} />
+      {data &&
+        data.server.map((server) => (
+          <li key={server._id}>
+            <Preview server={server} join={false} />
           </li>
         ))}
     </Ul>
