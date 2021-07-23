@@ -10,20 +10,20 @@ function Explore() {
     `${process.env.REACT_APP_URL}/servers?sort_by=members&order=desc`
   );
 
-  if (!servers) {
-    return <></>;
-  }
-
   return (
     <Container>
       <Heading>Featured Servers</Heading>
 
       <Ul>
-        {servers.map((server) => (
-          <li key={server._id}>
-            <Preview server={server} join={!user.server.includes(server._id)} />
-          </li>
-        ))}
+        {servers &&
+          servers.map((server) => (
+            <li key={server._id}>
+              <Preview
+                server={server}
+                join={!user.server.includes(server._id)}
+              />
+            </li>
+          ))}
       </Ul>
     </Container>
   );
