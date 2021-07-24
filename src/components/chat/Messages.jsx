@@ -65,6 +65,8 @@ function Messages({ messages, setEditing }) {
       }
     });
     setOrdered(ordered);
+
+    console.log(messages);
   }, [messages]);
 
   return (

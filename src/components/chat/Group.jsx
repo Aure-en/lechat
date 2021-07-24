@@ -6,16 +6,14 @@ import Message from "./Message";
 function Group({ messages, setEditing }) {
   return (
     <Li>
-      {messages.messages.map(function (message, index) {
-        return (
-          <Message
-            key={message._id}
-            message={message}
-            isFirst={index === 0}
-            setEditing={setEditing}
-          />
-        );
-      })}
+      {messages.messages.map((message, index) => (
+        <Message
+          key={message._id}
+          message={message}
+          isFirst={index === 0}
+          setEditing={setEditing}
+        />
+      ))}
     </Li>
   );
 }
