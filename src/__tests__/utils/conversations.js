@@ -11,12 +11,10 @@ for (let i = 1; i < 3; i += 1) {
 }
 
 export const conversations = [
-  [
-    {
-      members,
-      _id: "1",
-    },
-  ],
+  {
+    members,
+    _id: "1",
+  },
 ];
 
 export const messages = [
@@ -30,6 +28,7 @@ export const messages = [
         ).getCurrentContent()
       )
     ),
+    content: "Message",
     timestamp: Date.now(),
     _id: "1",
   },

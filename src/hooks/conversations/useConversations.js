@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 function useConversations() {
   const [conversations, setConversations] = useState([]);
   const [withMessage, setWithMessage] = useState([]);
+  const { user } = useAuth();
 
   // Load conversations
   const getConversations = async () => {
     const res = await fetch(
-      `${process.env.REACT_APP_URL}/users/${
-        JSON.parse(localStorage.getItem("user"))._id
-      }/conversations`,
+      `${process.env.REACT_APP_URL}/users/${user._id}/conversations`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
