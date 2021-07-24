@@ -5,60 +5,53 @@ export const author = {
   username: "User",
 };
 
-export const messagesOrdered = {
+export const ordered = {
   author,
   timestamp: Date.now(),
-  messages: [
-    {
-      _id: "1",
-      author,
-      text: JSON.stringify(
-        convertToRaw(
-          EditorState.createWithContent(
-            ContentState.createFromText("1")
-          ).getCurrentContent()
-        )
-      ),
-      content: "1",
-      timestamp: Date.now(),
-      server: "1",
-      channel: "2",
-      reaction: [],
-    },
-    {
-      _id: "2",
-      author,
-      text: JSON.stringify(
-        convertToRaw(
-          EditorState.createWithContent(
-            ContentState.createFromText("2")
-          ).getCurrentContent()
-        )
-      ),
-      content: "2",
-      timestamp: Date.now() + 1,
-      server: "1",
-      channel: "2",
-      reaction: [],
-    },
-    {
-      _id: "3",
-      author,
-      text: JSON.stringify(
-        convertToRaw(
-          EditorState.createWithContent(
-            ContentState.createFromText("3")
-          ).getCurrentContent()
-        )
-      ),
-      content: "3",
-      timestamp: Date.now() + 2,
-      server: "1",
-      channel: "2",
-      reaction: [],
-    },
-  ],
-  _id: "1",
+  messages: [],
 };
 
-export const unordered = {};
+for (let i = 1; i < 4; i += 1) {
+  const message = {
+    _id: `${i}`,
+    author,
+    text: JSON.stringify(
+      convertToRaw(
+        EditorState.createWithContent(
+          ContentState.createFromText(`${i}`)
+        ).getCurrentContent()
+      )
+    ),
+    content: `${i}`,
+    timestamp: Date.now() + i,
+    server: "1",
+    channel: "2",
+    reaction: [],
+  };
+  ordered.messages.push(message);
+}
+
+export const unordered = [];
+
+for (let i = 1; i < 4; i += 1) {
+  const message = {
+    _id: `${i}`,
+    author: {
+      _id: author._id,
+      username: author.username,
+    },
+    text: JSON.stringify(
+      convertToRaw(
+        EditorState.createWithContent(
+          ContentState.createFromText(`${i}`)
+        ).getCurrentContent()
+      )
+    ),
+    content: `${i}`,
+    timestamp: Date.now() + i,
+    server: "1",
+    channel: "2",
+    reaction: [],
+  };
+  unordered.push(message);
+}

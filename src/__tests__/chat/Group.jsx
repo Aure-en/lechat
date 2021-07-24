@@ -2,13 +2,13 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import Group from "../../components/chat/Group";
-import { author, messagesOrdered as messages } from "./messages";
+import { author, ordered } from "./messages";
 
 describe("Messages are rendered", () => {
   beforeEach(() => {
     render(
       <Router>
-        <Group messages={messages} setEditing={() => {}} />
+        <Group messages={ordered} setEditing={() => {}} />
       </Router>
     );
   });
@@ -24,7 +24,7 @@ describe("Messages are rendered", () => {
   });
 
   test("All messages in the group are rendered", () => {
-    messages.messages.forEach((message) => {
+    ordered.messages.forEach((message) => {
       const content = screen.getByText(message.content);
       expect(content).toBeInTheDocument();
     });
