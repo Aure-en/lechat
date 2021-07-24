@@ -1,0 +1,55 @@
+import { ContentState, EditorState, convertToRaw } from "draft-js";
+
+const members = [];
+
+for (let i = 1; i < 3; i += 1) {
+  const user = {
+    _id: `${i}`,
+    username: `User ${i}`,
+  };
+  members.push(user);
+}
+
+export const conversations = [
+  [
+    {
+      members,
+      _id: "1",
+    },
+  ],
+];
+
+export const messages = [
+  {
+    author: members[0],
+    conversation: "1",
+    text: JSON.stringify(
+      convertToRaw(
+        EditorState.createWithContent(
+          ContentState.createFromText("Message")
+        ).getCurrentContent()
+      )
+    ),
+    timestamp: Date.now(),
+    _id: "1",
+  },
+];
+
+export const conversation = {
+  members,
+  message: {
+    author: members[0],
+    conversation: "1",
+    text: JSON.stringify(
+      convertToRaw(
+        EditorState.createWithContent(
+          ContentState.createFromText("Message")
+        ).getCurrentContent()
+      )
+    ),
+    content: "Message",
+    timestamp: Date.now(),
+    _id: "1",
+  },
+  _id: "1",
+};

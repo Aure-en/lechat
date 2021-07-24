@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import Messages from "../../components/chat/Messages";
-import { author, unordered } from "./messages";
+import { author, unordered } from "../utils/messages";
 
 describe("It orders messages by author and display them", () => {
   beforeEach(() =>

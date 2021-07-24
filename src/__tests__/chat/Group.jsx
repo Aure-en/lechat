@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import Group from "../../components/chat/Group";
-import { author, ordered } from "./messages";
+import { author, ordered } from "../utils/messages";
 
 describe("Messages are rendered", () => {
   beforeEach(() => {
