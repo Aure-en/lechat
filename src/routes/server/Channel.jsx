@@ -33,7 +33,7 @@ function Channel() {
       // Store last visited channel to redirect the user to it later.
       localStorage.setItem(serverId, channelId);
       // Set the channel as read
-      handleReadChannel(serverId, channelId);
+      setTimeout(() => handleReadChannel(serverId, channelId), 3000);
     }
   }, [channel]);
 

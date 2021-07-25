@@ -152,6 +152,32 @@ export function UnreadProvider({ children }) {
     setUnread(unread);
   };
 
+  const getRoomUnread = (location) => {
+    if (!unread) return;
+    if (location.server && location.channel) {
+      const unreadServer = unread.servers.find(
+        (server) => server._id === location.server
+      );
+      if (!unreadServer) return;
+
+      const unreadChannel = unreadServer.channels.find(
+        (chan) => chan._id === location.channel
+      );
+      if (!unreadChannel) return;
+
+      return unreadChannel.unread;
+    }
+
+    if (location.conversation) {
+      const unreadConversation = unread.conversations.find(
+        (conversation) => conversation._id === location.conversation
+      );
+      if (!unreadConversation) return;
+
+      return unreadConversation.unread;
+    }
+  };
+
   useEffect(() => {
     // If unread isn't set up yet, set it up.
     if (activity && !unread) getUnread();
@@ -340,6 +366,7 @@ export function UnreadProvider({ children }) {
 
   const value = {
     unread,
+    getRoomUnread,
     handleReadChannel,
     handleReadConversation,
   };

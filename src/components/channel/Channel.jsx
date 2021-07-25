@@ -8,7 +8,7 @@ import Menu from "./Menu";
 function Channel({ serverId, categoryId, channel }) {
   // Different display if channel contains unread messages.
   const [hasUnread, setHasUnread] = useState(false);
-  const { unread } = useUnread();
+  const { unread, getRoomUnread } = useUnread();
 
   // To know if the channel is currently active.
   const current =
@@ -19,18 +19,8 @@ function Channel({ serverId, categoryId, channel }) {
   const ref = useRef();
 
   useEffect(() => {
-    if (!unread) return;
-    const unreadServer = unread.servers.find(
-      (server) => server._id === serverId
-    );
-
-    if (!unreadServer) return;
-    const unreadChannel = unreadServer.channels.find(
-      (chan) => chan._id === channel._id
-    );
-
-    if (!unreadChannel) return;
-    setHasUnread(unreadChannel.unread > 0);
+    const unread = getRoomUnread({ server: serverId, channel: channel._id });
+    setHasUnread(unread > 0);
   }, [unread]);
 
   return (

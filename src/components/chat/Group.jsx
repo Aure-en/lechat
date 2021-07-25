@@ -2,17 +2,21 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Message from "./Message";
+import New from "./New";
 
 function Group({ messages, setEditing }) {
   return (
     <Li>
       {messages.messages.map((message, index) => (
-        <Message
-          key={message._id}
-          message={message}
-          isFirst={index === 0}
-          setEditing={setEditing}
-        />
+        <>
+          {message.unread && <New />}
+          <Message
+            key={message._id}
+            message={message}
+            isFirst={index === 0}
+            setEditing={setEditing}
+          />
+        </>
       ))}
     </Li>
   );
