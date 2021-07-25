@@ -5,8 +5,7 @@ function useCreate(serverId, categoryId, channel) {
   const [about, setAbout] = useState((channel && channel.about) || "");
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async () => {
     setError("");
 
     // Validation
@@ -34,7 +33,9 @@ function useCreate(serverId, categoryId, channel) {
 
     if (json.errors) {
       setError(json.errors.filter((err) => err.param === "name")[0].msg);
+      return false;
     }
+    return true;
   };
 
   return {
@@ -43,7 +44,7 @@ function useCreate(serverId, categoryId, channel) {
     about,
     setAbout,
     error,
-    handleSubmit,
+    onSubmit,
   };
 }
 

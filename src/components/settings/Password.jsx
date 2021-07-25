@@ -1,10 +1,17 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import usePassword from "../../hooks/settings/usePassword";
 import SubmitBtn from "../shared/buttons/Gradient";
 
-function Password() {
-  const { values, setValues, errors, handleSubmit } = usePassword();
+function Password({ setIsOpen }) {
+  const { values, setValues, errors, onSubmit } = usePassword();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const result = await onSubmit();
+    if (result) setIsOpen(false);
+  };
 
   return (
     <div>
@@ -68,6 +75,14 @@ function Password() {
 }
 
 export default Password;
+
+Password.propTypes = {
+  setIsOpen: PropTypes.func,
+};
+
+Password.defaultProps = {
+  setIsOpen: () => {},
+};
 
 const Header = styled.div`
   text-align: center;

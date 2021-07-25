@@ -1,10 +1,18 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import useEmail from "../../hooks/settings/useEmail";
 import SubmitBtn from "../shared/buttons/Gradient";
 
-function Email() {
-  const { values, setValues, errors, handleSubmit } = useEmail();
+function Email({ setIsOpen }) {
+  const { values, setValues, errors, onSubmit } = useEmail();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const result = await onSubmit();
+    if (result) setIsOpen(false);
+  };
+
   return (
     <div>
       <Header>
@@ -54,6 +62,14 @@ function Email() {
 }
 
 export default Email;
+
+Email.propTypes = {
+  setIsOpen: PropTypes.func,
+};
+
+Email.defaultProps = {
+  setIsOpen: () => {},
+};
 
 const Header = styled.div`
   text-align: center;

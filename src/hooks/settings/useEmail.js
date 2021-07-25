@@ -51,7 +51,16 @@ export default function useEmail() {
       }
     );
     const json = await res.json();
+    return json;
+  };
 
+  /**
+   * After the request is sent to the server, display errors if there are any.
+   * If everything went well, return true. Else, return false.
+   * @param {json} json
+   * @returns {boolean}
+   */
+  const handleResult = (json) => {
     if (json.errors) {
       const emailError = json.errors.find((err) => err.param.match(/email/i));
       if (emailError) {
@@ -64,24 +73,25 @@ export default function useEmail() {
       if (passwordError) {
         setErrors((prev) => ({ ...prev, password: passwordError.msg }));
       }
+      return false;
     }
-
-    return json;
+    return true;
   };
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  const onSubmit = async () => {
     setErrors(initial);
 
     // Validation
     if (hasErrors()) return;
-    updateEmail();
-  }
+    const json = await updateEmail();
+    const result = handleResult(json);
+    return result;
+  };
 
   return {
     values,
     setValues,
     errors,
-    handleSubmit,
+    onSubmit,
   };
 }

@@ -4,8 +4,7 @@ function useCreate(serverId, category) {
   const [name, setName] = useState((category && category.name) || "");
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async () => {
     setError("");
 
     // Validation
@@ -33,14 +32,16 @@ function useCreate(serverId, category) {
 
     if (json.errors) {
       setError(json.errors.filter((err) => err.param === "name")[0].msg);
+      return false;
     }
+    return true;
   };
 
   return {
     name,
     setName,
     error,
-    handleSubmit,
+    onSubmit,
   };
 }
 

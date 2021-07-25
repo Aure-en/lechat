@@ -5,12 +5,18 @@ import TextareaAutosize from "react-textarea-autosize";
 import useCreate from "../../hooks/server/channel/useCreate";
 import SubmitBtn from "../shared/buttons/Gradient";
 
-function Form({ serverId, categoryId, channel }) {
-  const { name, setName, about, setAbout, error, handleSubmit } = useCreate(
+function Form({ serverId, categoryId, channel, setIsOpen }) {
+  const { name, setName, about, setAbout, error, onSubmit } = useCreate(
     serverId,
     categoryId,
     channel
   );
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const result = await onSubmit();
+    if (result) setIsOpen(false);
+  };
 
   return (
     <div>
@@ -66,10 +72,12 @@ Form.propTypes = {
     name: PropTypes.string,
     _id: PropTypes.string,
   }),
+  setIsOpen: PropTypes.func,
 };
 
 Form.defaultProps = {
   channel: undefined,
+  setIsOpen: () => {},
 };
 
 const Header = styled.div`

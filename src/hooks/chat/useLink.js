@@ -41,12 +41,10 @@ function useLink(editorState, setEditorState) {
     return hasErrors;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const onSubmit = () => {
     setErrors(initial);
 
-    if (hasErrors()) return;
+    if (hasErrors()) return false;
 
     const contentState = editorState.getCurrentContent();
     const selection = editorState.getSelection();
@@ -90,13 +88,15 @@ function useLink(editorState, setEditorState) {
 
     // Update state
     setEditorState(stateWithFocus);
+
+    return true;
   };
 
   return {
     values,
     errors,
     handleInputChange,
-    handleSubmit,
+    onSubmit,
   };
 }
 

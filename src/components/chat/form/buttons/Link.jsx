@@ -11,10 +11,21 @@ import IconLink from "../../../../assets/icons/editor/IconLink";
 function Link({ editorState, setEditorState }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { values, errors, handleInputChange, handleSubmit } = useLink(
+  const { values, errors, handleInputChange, onSubmit } = useLink(
     editorState,
     setEditorState
   );
+
+  /**
+   * Insert the link. If it went well, close the modal.
+   * @param {*} e
+   */
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const result = onSubmit();
+    if (result) setIsOpen(false);
+  };
 
   return (
     <>

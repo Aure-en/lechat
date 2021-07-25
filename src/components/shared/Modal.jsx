@@ -22,7 +22,7 @@ function Modal({ isOpen, setIsOpen, children }) {
                   <CloseBtn type="button" onClick={() => setIsOpen(false)}>
                     <IconClose />
                   </CloseBtn>
-                  {children}
+                  {React.cloneElement(children, { setIsOpen })}
                   <BackBtn type="button" onClick={() => setIsOpen(false)}>
                     ← Back
                   </BackBtn>

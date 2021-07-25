@@ -1,10 +1,17 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import useUsername from "../../hooks/settings/useUsername";
 import SubmitBtn from "../shared/buttons/Gradient";
 
-function Username() {
-  const { values, setValues, errors, handleSubmit } = useUsername();
+function Username({ setIsOpen }) {
+  const { values, setValues, errors, onSubmit } = useUsername();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const result = await onSubmit();
+    if (result) setIsOpen(false);
+  };
 
   return (
     <div>
@@ -54,6 +61,14 @@ function Username() {
 }
 
 export default Username;
+
+Username.propTypes = {
+  setIsOpen: PropTypes.func,
+};
+
+Username.defaultProps = {
+  setIsOpen: () => {},
+};
 
 const Header = styled.div`
   text-align: center;

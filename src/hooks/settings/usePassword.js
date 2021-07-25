@@ -69,28 +69,38 @@ function usePassword() {
       }
     );
     const json = await res.json();
-
-    if (json.errors) {
-      const error = json.errors.find((err) => err.param.match(/password/i));
-      if (error) setErrors((prev) => ({ ...prev, current: error.msg }));
-    }
-
     return json;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  /**
+   * After the request is sent to the server, display errors if there are any.
+   * If everything went well, return true. Else, return false.
+   * @param {json} json
+   * @returns {boolean}
+   */
+  const handleResult = (json) => {
+    if (json.errors) {
+      const error = json.errors.find((err) => err.param.match(/password/i));
+      if (error) setErrors((prev) => ({ ...prev, current: error.msg }));
+      return false;
+    }
+    return true;
+  };
+
+  const onSubmit = async () => {
     setErrors(initial);
 
     if (hasErrors()) return;
-    updatePassword();
+    const json = await updatePassword();
+    const result = handleResult(json);
+    return result;
   };
 
   return {
     values,
     setValues,
     errors,
-    handleSubmit,
+    onSubmit,
   };
 }
 

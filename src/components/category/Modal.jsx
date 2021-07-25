@@ -6,7 +6,7 @@ import Modal from "../shared/Modal";
 function Category({ isOpen, setIsOpen, serverId, category }) {
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-      <Form serverId={serverId} category={category} />
+      <Form serverId={serverId} category={category} setIsOpen={setIsOpen} />
     </Modal>
   );
 }

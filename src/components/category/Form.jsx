@@ -4,8 +4,14 @@ import styled from "styled-components";
 import useCreate from "../../hooks/server/category/useCreate";
 import SubmitBtn from "../shared/buttons/Gradient";
 
-function Form({ serverId, category }) {
-  const { name, setName, error, handleSubmit } = useCreate(serverId, category);
+function Form({ serverId, category, setIsOpen }) {
+  const { name, setName, error, onSubmit } = useCreate(serverId, category);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const result = await onSubmit();
+    if (result) setIsOpen(false);
+  };
 
   return (
     <div>
@@ -45,10 +51,12 @@ Form.propTypes = {
     name: PropTypes.string,
     _id: PropTypes.string,
   }),
+  setIsOpen: PropTypes.func,
 };
 
 Form.defaultProps = {
   category: undefined,
+  setIsOpen: () => {},
 };
 
 const Header = styled.div`

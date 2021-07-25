@@ -6,7 +6,12 @@ import Modal from "../shared/Modal";
 function Channel({ isOpen, setIsOpen, serverId, categoryId, channel }) {
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-      <Form serverId={serverId} categoryId={categoryId} channel={channel} />
+      <Form
+        serverId={serverId}
+        categoryId={categoryId}
+        channel={channel}
+        setIsOpen={setIsOpen}
+      />
     </Modal>
   );
 }

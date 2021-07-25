@@ -50,7 +50,16 @@ function useUsername() {
       }
     );
     const json = await res.json();
+    return json;
+  };
 
+  /**
+   * After the request is sent to the server, display errors if there are any.
+   * If everything went well, return true. Else, return false.
+   * @param {json} json
+   * @returns {boolean}
+   */
+  const handleResult = (json) => {
     if (json.errors) {
       const usernameError = json.errors.filter((err) =>
         err.param.match(/username/i)
@@ -63,25 +72,32 @@ function useUsername() {
       );
       if (passwordError.length > 0)
         setErrors((prev) => ({ ...prev, password: passwordError[0].msg }));
+      return false;
     }
+    return true;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  /**
+   * Submit the form.
+   * @returns {boolean} - true if everything went well, false otherwise.
+   */
+  const onSubmit = async () => {
     setErrors(initial);
 
     // Validation
-    if (hasErrors()) return;
+    if (hasErrors()) return false;
 
     // Update the username
-    updateUsername();
+    const json = await updateUsername();
+    const result = handleResult(json);
+    return result;
   };
 
   return {
     values,
     setValues,
     errors,
-    handleSubmit,
+    onSubmit,
   };
 }
 
