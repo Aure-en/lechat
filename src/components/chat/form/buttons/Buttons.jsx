@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Bold from "./Bold";
+import Underline from "./Underline";
 import Code from "./Code";
 import Italic from "./Italic";
 import Link from "./Link";
@@ -27,6 +28,10 @@ function Buttons({ editorState, setEditorState }) {
       {isOpen && (
         <Container>
           <Bold editorState={editorState} setEditorState={setEditorState} />
+          <Underline
+            editorState={editorState}
+            setEditorState={setEditorState}
+          />
           <Italic editorState={editorState} setEditorState={setEditorState} />
           <Strikethrough
             editorState={editorState}
