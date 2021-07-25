@@ -42,7 +42,10 @@ function Message({ message, isFirst, setEditing }) {
           <Timestamp timestamp={message.timestamp} />
         </Time>
       )}
-      <div>{redraft(JSON.parse(message.text), renderers)}</div>
+      <div>
+        {redraft(JSON.parse(message.text), renderers)}
+        {message.edited && <Edited>(edited)</Edited>}
+      </div>
       {(hovered || more) && (
         <More message={message} setEditing={setEditing} setIsActive={setMore} />
       )}
@@ -86,35 +89,6 @@ const First = styled.div`
   padding: 0 1rem;
 `;
 
-const Information = styled.div`
-  display: flex;
-  align-items: baseline;
-  font-weight: 400;
-`;
-
-const Icon = styled.img`
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  object-fit: cover;
-  grid-row: 1 / -1;
-  margin-top: 3px;
-`;
-
-const Default = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  grid-row: 1 / -1;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  background: ${(props) => props.theme.bg_button};
-  color: ${(props) => props.theme.server_icon_text};
-  font-size: 1.5rem;
-  margin-top: 5px;
-`;
-
 const Container = styled.div`
   position: relative;
   padding-left: ${(props) =>
@@ -127,4 +101,10 @@ const Container = styled.div`
 const Time = styled.span`
   position: absolute;
   left: 1.25rem;
+`;
+
+const Edited = styled.small`
+  margin-left: 0.25rem;
+  font-size: 0.75rem;
+  color: ${(props) => props.theme.text_secondary};
 `;

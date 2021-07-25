@@ -27,7 +27,10 @@ function Content({ message }) {
         <Timestamp timestamp={message.timestamp} isFirst />
       </Information>
 
-      <div>{redraft(JSON.parse(message.text), renderers)}</div>
+      <div>
+        {redraft(JSON.parse(message.text), renderers)}
+        {message.edited && <Edited>(edited)</Edited>}
+      </div>
     </>
   );
 }
@@ -83,4 +86,10 @@ const Default = styled.div`
   color: ${(props) => props.theme.server_icon_text};
   font-size: 1.5rem;
   margin-top: 5px;
+`;
+
+const Edited = styled.small`
+  font-size: 0.75rem;
+  margin-left: .25rem;
+  color: ${(props) => props.theme.text_secondary};
 `;

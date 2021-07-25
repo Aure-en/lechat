@@ -39,7 +39,7 @@ const renderers = {
    * Note that children are an array of blocks with same styling,
    */
   blocks: {
-    unstyled: (children) => children.map((child) => <p>{child}</p>),
+    unstyled: (children) => children.map((child) => <>{child}</>),
     blockquote: (children) => <Quote>{addBreaklines(children)}</Quote>,
     // You can also access the original keys of the blocks
     "code-block": (children, { keys }) => (
