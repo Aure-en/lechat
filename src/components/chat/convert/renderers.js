@@ -9,6 +9,7 @@ import Unordered from "./Unordered";
 import Ordered from "./Ordered";
 import Quote from "./Quote";
 import Link from "./Link";
+import Spoiler from "./Spoiler";
 
 // just a helper to add a <br /> after a block
 const addBreaklines = (children) => children.map((child) => [child, <br />]);
@@ -31,6 +32,7 @@ const renderers = {
     STRIKETHROUGH: (children, { key }) => (
       <Strikethrough key={key}>{children}</Strikethrough>
     ),
+    SPOILER: (children, { key }) => <Spoiler key={key}>{children}</Spoiler>,
   },
   /**
    * Blocks receive children and depth

@@ -72,6 +72,8 @@ const Li = styled.li`
   border-radius: 3px;
   background: ${(props) => props.$current && props.theme.bg_active};
   font-weight: ${(props) => props.$unread && 400};
+  color: ${(props) =>
+    props.$unread ? props.theme.text_primary : props.theme.text_secondary};
   margin-bottom: 0.15rem;
 
   & > *:first-child {

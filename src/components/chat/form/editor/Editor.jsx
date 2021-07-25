@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useContext } from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
+import styled, { ThemeContext } from "styled-components";
 import {
   ContentBlock,
   Editor,
@@ -18,6 +18,7 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
   const onChange = (editorState) => {
     setEditorState(editorState);
   };
+  const themeContext = useContext(ThemeContext); // To style customStyleMap
 
   const keyBindingFn = (e) => {
     const { hasCommandModifier } = KeyBindingUtil;
@@ -39,6 +40,11 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
     // Cmd + ^ 🠒 Code
     if (e.keyCode === 219 && hasCommandModifier(e)) {
       return "code-block";
+    }
+
+    // Cmd + ? 🠒 Spoiler
+    if (e.keyCode === 188 && hasCommandModifier(e)) {
+      return "spoiler";
     }
 
     // Ctrl + Enter 🠒 Jump to a new line if we are in a styled block
@@ -81,6 +87,10 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
     if (command === "block-newline") {
       setEditorState(RichUtils.insertSoftNewline(editorState));
       return "handled";
+    }
+
+    if (command === "spoiler") {
+      setEditorState(RichUtils.toggleInlineStyle(editorState, "SPOILER"));
     }
 
     if (command === "new-block") {
@@ -170,6 +180,13 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
     return "";
   }
 
+  // Sets up custom inline styles (spoiler)
+  const customStyleMap = {
+    SPOILER: {
+      backgroundColor: themeContext.bg_primary,
+    },
+  };
+
   // Autofocus the text editor
   useEffect(() => {
     editorRef.current.focus();
@@ -185,6 +202,7 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
         onTab={handleTab}
         onChange={onChange}
         blockStyleFn={customBlockFn}
+        customStyleMap={customStyleMap}
         handlePastedText={handlePastedText}
       />
     </Container>

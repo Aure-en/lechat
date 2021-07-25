@@ -3,13 +3,14 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Bold from "./Bold";
 import Underline from "./Underline";
-import Code from "./Code";
 import Italic from "./Italic";
-import Link from "./Link";
-import Ordered from "./Ordered";
-import Quote from "./Quote";
 import Strikethrough from "./Strikethrough";
+import Spoiler from "./Spoiler";
+import Link from "./Link";
+import Code from "./Code";
+import Ordered from "./Ordered";
 import Unordered from "./Unordered";
+import Quote from "./Quote";
 
 import IconChevron from "../../../../assets/icons/general/IconChevron";
 import IconNotebook from "../../../../assets/icons/editor/IconNotebook";
@@ -37,6 +38,7 @@ function Buttons({ editorState, setEditorState }) {
             editorState={editorState}
             setEditorState={setEditorState}
           />
+          <Spoiler editorState={editorState} setEditorState={setEditorState} />
           <Link editorState={editorState} setEditorState={setEditorState} />
           <Code editorState={editorState} setEditorState={setEditorState} />
           <Ordered editorState={editorState} setEditorState={setEditorState} />
