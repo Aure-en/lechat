@@ -13,7 +13,7 @@ import {
 } from "draft-js";
 import "draft-js/dist/Draft.css";
 
-function TextEditor({ editorState, setEditorState, onEnter, setFiles }) {
+function TextEditor({ editorState, setEditorState, onEnter }) {
   const editorRef = useRef(); // Used to auto-focus on load.
   const onChange = (editorState) => {
     setEditorState(editorState);
@@ -162,11 +162,6 @@ function TextEditor({ editorState, setEditorState, onEnter, setFiles }) {
     }
   };
 
-  // Files drag and drop
-  const handleDroppedFiles = (selection, files) => {
-    setFiles((prev) => [...prev, ...files]);
-  };
-
   // Sets up custom blocks (quote, code)
   function customBlockFn(contentBlock) {
     const type = contentBlock.getType();
@@ -191,7 +186,6 @@ function TextEditor({ editorState, setEditorState, onEnter, setFiles }) {
         onChange={onChange}
         blockStyleFn={customBlockFn}
         handlePastedText={handlePastedText}
-        handleDroppedFiles={handleDroppedFiles}
       />
     </Container>
   );
@@ -206,12 +200,10 @@ TextEditor.propTypes = {
     getSelection: PropTypes.func,
   }).isRequired,
   setEditorState: PropTypes.func.isRequired,
-  setFiles: PropTypes.func,
 };
 
 TextEditor.defaultProps = {
   onEnter: undefined,
-  setFiles: undefined,
 };
 
 const Container = styled.div`

@@ -1,75 +1,20 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { EditorState, Modifier, SelectionState } from "draft-js";
 import Tooltip from "./Tooltip";
 import Modal from "../../../shared/Modal";
 import SubmitBtn from "../../../shared/buttons/Gradient";
+import useLink from "../../../../hooks/chat/useLink";
 
 import IconLink from "../../../../assets/icons/editor/IconLink";
 
 function Link({ editorState, setEditorState }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [values, setValues] = useState({
-    text: "",
-    url: "",
-  });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setValues({
-      ...values,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const contentState = editorState.getCurrentContent();
-    const selection = editorState.getSelection();
-
-    // Insert text
-    const contentWithText = Modifier.replaceText(
-      contentState,
-      selection,
-      values.text
-    );
-
-    // Create link entity
-    const contentWithEntity = contentWithText.createEntity(
-      "LINK",
-      "MUTABLE",
-      values.url
-    );
-    const entityKey = contentWithEntity.getLastCreatedEntityKey();
-
-    // Select text
-    let selectionState = SelectionState.createEmpty();
-    selectionState = selectionState.merge({
-      anchorKey: selection.getAnchorKey(),
-      anchorOffset: selection.getAnchorOffset(),
-      focusKey: selection.getAnchorKey(),
-      focusOffset: selection.getAnchorOffset() + values.text.length,
-    });
-
-    // Apply link entity to text
-    const contentWithLink = Modifier.applyEntity(
-      contentWithEntity,
-      selectionState,
-      entityKey
-    );
-
-    // Create state with the entity
-    const stateWithLink = EditorState.push(editorState, contentWithLink);
-
-    // Move focus to the end (after the newly inserted text)
-    const stateWithFocus = EditorState.moveFocusToEnd(stateWithLink);
-
-    // Update state
-    setEditorState(stateWithFocus);
-  };
+  const { values, errors, handleInputChange, handleSubmit } = useLink(
+    editorState,
+    setEditorState
+  );
 
   return (
     <>
@@ -101,6 +46,7 @@ function Link({ editorState, setEditorState }) {
                 onChange={handleInputChange}
               />
             </Label>
+            {errors.text && <Error>{errors.text}</Error>}
           </Field>
 
           <Field>
@@ -115,6 +61,7 @@ function Link({ editorState, setEditorState }) {
                 onChange={handleInputChange}
               />
             </Label>
+            {errors.url && <Error>{errors.url}</Error>}
           </Field>
 
           <Submit>
@@ -197,4 +144,9 @@ const Input = styled.input`
 const Submit = styled.div`
   display: flex;
   justify-content: flex-end;
+`;
+
+const Error = styled.div`
+  color: ${(props) => props.theme.error};
+  font-size: 0.825rem;
 `;
