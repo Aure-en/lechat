@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useContext } from "react";
 import PropTypes from "prop-types";
 import styled, { ThemeContext } from "styled-components";
+import { useLocation } from "react-router-dom";
 import {
   ContentBlock,
   Editor,
@@ -19,6 +20,7 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
     setEditorState(editorState);
   };
   const themeContext = useContext(ThemeContext); // To style customStyleMap
+  const location = useLocation();
 
   const keyBindingFn = (e) => {
     const { hasCommandModifier } = KeyBindingUtil;
@@ -190,7 +192,7 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
   // Autofocus the text editor
   useEffect(() => {
     editorRef.current.focus();
-  }, []);
+  }, [location]);
 
   return (
     <Container>
