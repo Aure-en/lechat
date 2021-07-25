@@ -15,7 +15,7 @@ const Indicator = styled.div`
   font-weight: 400;
 
   &:after {
-    content: "TEST";
+    content: "New";
     padding-right: 4px;
     line-height: 0;
     border: 0.5rem solid ${(props) => props.theme.send_bg};

@@ -9,6 +9,7 @@ import useConversation from "../hooks/chat/useConversation";
 import useMessage from "../hooks/chat/useMessage";
 import useActivity from "../hooks/chat/useActivity";
 import Profile from "../components/user/Profile";
+import Typing from "../components/chat/Typing";
 import socket from "../socket/socket";
 
 function Conversation({ match }) {
@@ -23,7 +24,8 @@ function Conversation({ match }) {
 
   // On mount, set the conversation as read.
   useEffect(() => {
-    conversation && handleReadConversation(conversation._id);
+    if (conversation)
+      setTimeout(() => handleReadConversation(conversation._id), 3000);
   }, [conversation]);
 
   // On unmount, update the activity
@@ -87,6 +89,7 @@ function Conversation({ match }) {
             setEditing={setEditing}
             setMessages={setMessages}
           />
+          <Typing location={conversation._id} />
         </Container>
 
         <Profile
@@ -113,7 +116,7 @@ Conversation.propTypes = {
 
 const Container = styled.main`
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto 1fr auto 1.25rem;
   background: ${(props) => props.theme.bg_secondary};
   margin-top: 1rem;
   border-radius: 1rem 1rem 0 0;

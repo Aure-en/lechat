@@ -95,7 +95,7 @@ function useLogin() {
   const authentify = (token, user) => {
     localStorage.setItem("jwt", token);
     setUser(user);
-    socket.emit("authentification", JSON.stringify(user));
+    socket.emit("authentication", JSON.stringify(user));
   };
 
   const handleSubmit = async (e) => {
