@@ -64,10 +64,14 @@ function Settings() {
 export default Settings;
 
 const Container = styled.main`
-  padding: 3rem;
   background: ${(props) => props.theme.bg_secondary};
   margin: 1rem;
   border-radius: 1rem;
+  padding: 3rem 2rem;
+
+  @media all and (min-width: 576px) {
+    padding: 3rem;
+  }
 `;
 
 const Section = styled.section`

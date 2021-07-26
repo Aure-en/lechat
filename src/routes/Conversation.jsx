@@ -5,8 +5,9 @@ import Form from "../components/chat/form/Form";
 import Messages from "../components/chat/Messages";
 import Profile from "../components/user/Profile";
 import Typing from "../components/chat/Typing";
-import useConversation from "../hooks/conversations/useConversation";
 import { useAuth } from "../context/AuthContext";
+import useConversation from "../hooks/conversations/useConversation";
+import useWindowSize from "../hooks/shared/useWindowSize";
 
 function Conversation({ match }) {
   const { user } = useAuth();
@@ -18,6 +19,7 @@ function Conversation({ match }) {
     setMessages,
     messagesRef,
   } = useConversation(match.params.userId);
+  const windowSize = useWindowSize();
 
   if (conversation) {
     return (
@@ -48,11 +50,13 @@ function Conversation({ match }) {
           <Typing location={conversation._id} />
         </Container>
 
-        <Profile
-          user={conversation.members.find(
-            (member) => member._id.toString() !== user._id
-          )}
-        />
+        {windowSize.width > 1400 && (
+          <Profile
+            user={conversation.members.find(
+              (member) => member._id.toString() !== user._id
+            )}
+          />
+        )}
       </>
     );
   }

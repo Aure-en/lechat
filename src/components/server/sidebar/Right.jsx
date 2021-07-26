@@ -18,5 +18,6 @@ Right.propTypes = {
 };
 
 const Container = styled.div`
-  padding: 2rem;
+  padding: 2rem 2rem 2rem 1rem;
+  width: 17.5rem;
 `;

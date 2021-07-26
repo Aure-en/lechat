@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import OpenRight from "../shared/sidebar/OpenRight";
 import IconChevron from "../../assets/icons/general/IconChevron";
 
 function Header({ name, description }) {
@@ -15,10 +16,19 @@ function Header({ name, description }) {
 
   return (
     <Container>
-      <Button type="button" onClick={() => setIsOpen(!isOpen)} $isOpen={isOpen}>
-        <IconChevron />
-      </Button>
-      <Heading>{name}</Heading>
+      <Content>
+        <Heading>{name}</Heading>
+        <Icons>
+          <OpenRight />
+          <Button
+            type="button"
+            onClick={() => setIsOpen(!isOpen)}
+            $isOpen={isOpen}
+          >
+            <IconChevron />
+          </Button>
+        </Icons>
+      </Content>
       {isOpen && <Description>{description}</Description>}
     </Container>
   );
@@ -36,12 +46,23 @@ Header.defaultProps = {
 };
 
 const Container = styled.header`
-  position: relative;
   padding: 2rem 2rem 1rem 2rem;
 `;
 
+const Content = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Icons = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: ${(props) => props.theme.text_tertiary};
+`;
+
 const Button = styled.button`
-  position: absolute;
   right: 2rem; // Padding
   color: ${(props) => props.theme.text_secondary};
   transform: ${(props) => !props.$isOpen && "rotate(90deg)"};

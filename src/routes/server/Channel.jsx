@@ -47,8 +47,9 @@ const Container = styled.main`
   display: grid;
   grid-template-rows: auto 1fr auto 1.25rem;
   background: ${(props) => props.theme.bg_secondary};
-  margin-top: 1rem;
+  margin: 1rem 1rem 0 1rem;
   border-radius: 1rem 1rem 0 0;
   height: calc(100vh - 1rem); // margin-top
   overflow: hidden;
+  flex: 1;
 `;

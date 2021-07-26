@@ -5,18 +5,20 @@ import { Switch } from "react-router-dom";
 import PrivateRoute from "../types/PrivateRoute";
 import SidebarLeft from "../../components/server/sidebar/Left";
 import SidebarRight from "../../components/server/sidebar/Right";
+import { useRight } from "../../context/sidebars/RightContext";
 import Channel from "./Channel";
 import Settings from "./Settings";
 import useFetch from "../../hooks/shared/useFetch";
 import Entry from "./Entry";
 
 function Server({ match }) {
+  const { isOpen } = useRight();
   const { data: server } = useFetch(
     `${process.env.REACT_APP_URL}/servers/${match.params.serverId}`
   );
 
   return (
-    <Container>
+    <Container $isRightOpen={isOpen}>
       {/* Left sidebar */}
       <SidebarLeft serverId={match.params.serverId} />
 
@@ -38,7 +40,7 @@ function Server({ match }) {
       )}
 
       {/* Right sidebar */}
-      <SidebarRight serverId={match.params.serverId} />
+      {isOpen && <SidebarRight serverId={match.params.serverId} />}
     </Container>
   );
 }
@@ -55,7 +57,6 @@ Server.propTypes = {
 };
 
 const Container = styled.div`
-  display: grid;
-  grid-template-columns: 17.5rem 1fr 17.5rem;
+  display: flex;
   width: 100%;
 `;

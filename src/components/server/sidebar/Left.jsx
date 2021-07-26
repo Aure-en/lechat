@@ -32,5 +32,6 @@ Left.propTypes = {
 const Container = styled.div`
   display: grid;
   grid-template-rows: auto 1fr;
-  padding: 1rem;
+  padding: 1rem 0 1rem 1rem;
+  width: 17.5rem;
 `;

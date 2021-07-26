@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Switch } from "react-router-dom";
 import PrivateRoute from "../types/PrivateRoute";
+import { RightProvider } from "../../context/sidebars/RightContext";
 import Home from "./Home";
 import Explore from "./Explore";
 import Server from "../server/Server";
@@ -13,13 +14,15 @@ function Dashboard() {
   return (
     <Container>
       <Sidebar />
-      <Switch>
-        <PrivateRoute exact path="/explore" component={Explore} />
-        <PrivateRoute path="/servers/:serverId" component={Server} />
-        <PrivateRoute exact path="/join/:serverId" component={Join} />
-        <PrivateRoute exact path="/settings" component={UserSettings} />
-        <PrivateRoute path="/" component={Home} />
-      </Switch>
+      <RightProvider>
+        <Switch>
+          <PrivateRoute exact path="/explore" component={Explore} />
+          <PrivateRoute path="/servers/:serverId" component={Server} />
+          <PrivateRoute exact path="/join/:serverId" component={Join} />
+          <PrivateRoute exact path="/settings" component={UserSettings} />
+          <PrivateRoute path="/" component={Home} />
+        </Switch>
+      </RightProvider>
     </Container>
   );
 }
