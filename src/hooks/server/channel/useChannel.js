@@ -83,7 +83,6 @@ function useChannel() {
         // useMessage will then fetch messages with a key < the latest key.
         // and add them to the messages array.
         setLastMessageId(messages[0]._id);
-        console.log(messages[0]._id);
       }
     };
 
