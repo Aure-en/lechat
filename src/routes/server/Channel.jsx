@@ -21,7 +21,11 @@ function Channel() {
   return (
     <Container>
       {channel && <Header name={channel.name} description={channel.about} />}
-      <Messages messages={messages} setEditing={setEditing} messagesRef={messagesRef} />
+      <Messages
+        messages={messages}
+        setEditing={setEditing}
+        messagesRef={messagesRef}
+      />
       {serverId && channelId && (
         <>
           <Form

@@ -1,71 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Form from "../components/chat/form/Form";
 import Messages from "../components/chat/Messages";
-import { useAuth } from "../context/AuthContext";
-import { useUnread } from "../context/UnreadContext";
-import useConversation from "../hooks/chat/useConversation";
-import useMessage from "../hooks/chat/useMessage";
-import useActivity from "../hooks/chat/useActivity";
 import Profile from "../components/user/Profile";
 import Typing from "../components/chat/Typing";
-import socket from "../socket/socket";
+import useConversation from "../hooks/conversations/useConversation";
+import { useAuth } from "../context/AuthContext";
 
 function Conversation({ match }) {
-  const [editing, setEditing] = useState(false);
-  const { conversation } = useConversation(match.params.userId);
-  const { messages, setMessages } = useMessage(
-    conversation && { conversation: conversation._id }
-  );
   const { user } = useAuth();
-  const { handleReadConversation } = useUnread();
-  const { updateConversationActivity } = useActivity();
-
-  // On mount, set the conversation as read.
-  useEffect(() => {
-    if (conversation)
-      setTimeout(() => handleReadConversation(conversation._id), 3000);
-  }, [conversation]);
-
-  // On unmount, update the activity
-  useEffect(() => {
-    return () =>
-      conversation && updateConversationActivity(user, conversation._id);
-  }, [conversation]);
-
-  // Join / leave the channel socket room
-  useEffect(() => {
-    if (conversation) {
-      socket.emit("join room", conversation._id);
-    }
-    return () => socket.emit("leave room");
-  }, [conversation]);
-
-  // On close, update the activity
-  useEffect(() => {
-    const updateActivity = () => {
-      if (!conversation) return;
-      const body = JSON.stringify({
-        conversation: conversation._id,
-      });
-      const headers = {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        type: "application/json",
-      };
-      const blob = new Blob([body], headers);
-      navigator.sendBeacon(
-        `${process.env.REACT_APP_URL}/activity/${user._id}/conversations`,
-        blob
-      );
-    };
-
-    document.addEventListener("visibilitychange", updateActivity);
-    return () => {
-      updateActivity();
-      document.removeEventListener("visibilitychange", updateActivity);
-    };
-  }, [conversation]);
+  const {
+    editing,
+    setEditing,
+    conversation,
+    messages,
+    setMessages,
+    messagesRef,
+  } = useConversation(match.params.userId);
 
   if (conversation) {
     return (
@@ -82,7 +34,11 @@ function Conversation({ match }) {
             </Heading>
           </Header>
 
-          <Messages messages={messages} setEditing={setEditing} />
+          <Messages
+            messages={messages}
+            setEditing={setEditing}
+            messagesRef={messagesRef}
+          />
           <Form
             location={{ conversation: conversation._id }}
             message={editing}

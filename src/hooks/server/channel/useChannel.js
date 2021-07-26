@@ -75,7 +75,7 @@ function useChannel() {
 
   // On scroll, load more messages
   useEffect(() => {
-    if (!messagesRef) return;
+    if (!messagesRef || !messagesRef.current) return;
     const getPreviousMessages = () => {
       // If we scrolled to the top of the messages container, load more messages.
       if (messagesRef.current.scrollTop <= 0) {
@@ -87,8 +87,6 @@ function useChannel() {
     };
 
     messagesRef.current.addEventListener("scroll", getPreviousMessages);
-    return () =>
-      messagesRef && messagesRef.current.removeEventListener("scroll", getPreviousMessages);
   }, [messages, messagesRef]);
 
   // Join / leave the channel socket room
