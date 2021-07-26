@@ -58,7 +58,10 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   flex: 1;
-  max-width: 60%;
+
+  @media all and (min-width: 768px) {
+    max-width: 60%;
+  }
 `;
 
 const Field = styled.div`

@@ -4,6 +4,8 @@ import { useTheme } from "../../context/ThemeContext";
 
 function Theme() {
   const { theme, changeTheme } = useTheme();
+
+  console.log(theme);
   return (
     <Button type="button" onClick={changeTheme}>
       <Letter $theme="light">L</Letter> <Line $theme={theme} />{" "}

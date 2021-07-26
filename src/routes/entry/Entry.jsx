@@ -49,13 +49,20 @@ export default Entry;
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  background: url(${(props) =>
-    props.$theme === "light"
-      ? "https://firebasestorage.googleapis.com/v0/b/aurelie-nguyen.appspot.com/o/lechat%2F869v2.png?alt=media&token=6a310bf7-62fd-41e6-94c5-0e13b3dd821a"
-      : "https://firebasestorage.googleapis.com/v0/b/aurelie-nguyen.appspot.com/o/lechat%2F435928.png?alt=media&token=15e58dbc-2f72-4149-a581-6a2f2f1f5144"});
-  background-size: cover;
+
+  @media all and (min-width: 768px) {
+    display: grid;
+    grid-template-columns: 0.5fr 2fr;
+    background: url(${(props) =>
+      props.$theme === "light"
+        ? "https://firebasestorage.googleapis.com/v0/b/aurelie-nguyen.appspot.com/o/lechat%2F869v2.png?alt=media&token=6a310bf7-62fd-41e6-94c5-0e13b3dd821a"
+        : "https://firebasestorage.googleapis.com/v0/b/aurelie-nguyen.appspot.com/o/lechat%2F435928.png?alt=media&token=15e58dbc-2f72-4149-a581-6a2f2f1f5144"});
+    background-size: cover;
+  }
+
+  @media all and (min-width: 992px) {
+    grid-template-columns: 1fr 2fr;
+  }
 `;
 
 const Content = styled.div`
@@ -63,8 +70,14 @@ const Content = styled.div`
   grid-column: 2;
   border-radius: 1rem 0 0 1rem;
   grid-template-rows: min-content auto min-content;
-  padding: 5rem;
+  padding: 1rem;
   background: ${(props) => props.theme.bg_secondary};
+  height: 100%;
+
+  @media all and (min-width: 768px) {
+    padding: 5rem;
+    justify-content: initial;
+  }
 `;
 
 const Header = styled.header`
