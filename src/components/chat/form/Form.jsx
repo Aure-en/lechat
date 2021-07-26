@@ -59,6 +59,7 @@ Form.defaultProps = {
 
 const FormContainer = styled.form`
   border-top: 1px solid ${(props) => props.theme.bg_primary};
+  word-break: break-all; // Prevent horizontal scrollbar
 `;
 
 const Row = styled.div`

@@ -125,7 +125,7 @@ function useForm(location, message, setEditing, setMessages) {
       setEditing(false);
     }
 
-    setEditorState(EditorState.createEmpty(decorator));
+    setEditorState(() => EditorState.createEmpty(decorator));
   };
 
   return {

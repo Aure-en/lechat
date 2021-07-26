@@ -8,11 +8,14 @@ function New() {
 export default New;
 
 const Indicator = styled.div`
+  position: relative;
+  top: -0.5rem;
   display: flex;
   color: ${(props) => props.theme.bg_secondary};
   text-transform: uppercase;
   font-size: 0.75rem;
   font-weight: 400;
+  height: 0;
 
   &:after {
     content: "New";

@@ -16,9 +16,27 @@ import "draft-js/dist/Draft.css";
 
 function TextEditor({ editorState, setEditorState, onEnter }) {
   const editorRef = useRef(); // Used to auto-focus on load.
+
   const onChange = (editorState) => {
-    setEditorState(editorState);
+    const currentContentTextLength = editorState
+      .getCurrentContent()
+      .getPlainText().length;
+    const newContentTextLength = editorState
+      .getCurrentContent()
+      .getPlainText().length;
+
+    if (currentContentTextLength === 1 && newContentTextLength === 1) {
+      /**
+       * Issue: After the first message sent, when typing in draft, the cursor moves back
+       * to the beginning after typing the first character.
+       * 🠒 Workaround: Force the selection to go to the end after typing the first character.
+       */
+      setEditorState(EditorState.moveFocusToEnd(editorState));
+    } else {
+      setEditorState(editorState);
+    }
   };
+
   const themeContext = useContext(ThemeContext); // To style customStyleMap
   const location = useLocation();
 
