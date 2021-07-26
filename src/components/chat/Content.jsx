@@ -52,6 +52,7 @@ Content.propTypes = {
         }),
       }),
     }),
+    edited: PropTypes.bool,
   }).isRequired,
 };
 
@@ -90,6 +91,6 @@ const Default = styled.div`
 
 const Edited = styled.small`
   font-size: 0.75rem;
-  margin-left: .25rem;
+  margin-left: 0.25rem;
   color: ${(props) => props.theme.text_secondary};
 `;

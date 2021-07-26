@@ -89,7 +89,6 @@ function useOrder(messages) {
       }
     });
     setOrdered(ordered);
-    console.log(ordered);
   }, [messages]);
 
   return { ordered };

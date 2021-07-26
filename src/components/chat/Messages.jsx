@@ -1,18 +1,14 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Group from "./Group";
 import useOrder from "../../hooks/chat/useOrder";
+import useScroll from "../../hooks/chat/useScroll";
 
 function Messages({ messages, setEditing }) {
   const { ordered } = useOrder(messages);
   const ref = useRef(); // ref used to scroll to bottom
-
-  // On new messages, scroll to bottom.
-  // TO-DO : Improve it so it only scrolls down on first render + when the user is already at the bottom.
-  useEffect(() => {
-    ref.current.scrollTop = ref.current.scrollHeight - ref.current.clientHeight;
-  }, [ordered]);
+  useScroll(ordered, ref); // handle scrolling
 
   return (
     <Ul ref={ref}>
