@@ -1,86 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { useRouteMatch } from "react-router-dom";
+import React from "react";
 import styled from "styled-components";
 import Header from "../../components/chat/Header";
 import Messages from "../../components/chat/Messages";
 import Form from "../../components/chat/form/Form";
-import useMessage from "../../hooks/chat/useMessage";
-import useFetch from "../../hooks/shared/useFetch";
-import { useAuth } from "../../context/AuthContext";
-import { useUnread } from "../../context/UnreadContext";
-import useActivity from "../../hooks/chat/useActivity";
 import Typing from "../../components/chat/Typing";
-import socket from "../../socket/socket";
+import useChannel from "../../hooks/server/channel/useChannel";
 
 function Channel() {
-  const { serverId, channelId } = useRouteMatch(
-    "/servers/:serverId/channels/:channelId"
-  ).params;
-  const { data: channel } = useFetch(
-    `${process.env.REACT_APP_URL}/channels/${channelId}`
-  );
-  const [editing, setEditing] = useState();
-  const { messages, setMessages } = useMessage(
-    channelId && { channel: channelId }
-  );
-
-  const { updateChannelActivity } = useActivity();
-  const { handleReadChannel } = useUnread();
-  const { user } = useAuth();
-
-  useEffect(() => {
-    if (channel) {
-      // Store last visited channel to redirect the user to it later.
-      localStorage.setItem(serverId, channelId);
-      // Set the channel as read
-      setTimeout(() => handleReadChannel(serverId, channelId), 3000);
-    }
-  }, [channel]);
-
-  // On unmount, update the activity.
-  useEffect(() => {
-    return () =>
-      serverId && channelId && updateChannelActivity(user, serverId, channelId);
-  }, [channelId]);
-
-  // On close, update the activity.
-  useEffect(() => {
-    const updateActivity = () => {
-      if (!serverId || !channelId) return;
-      const body = JSON.stringify({
-        server: serverId,
-        channel: channelId,
-      });
-      const headers = {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        type: "application/json",
-      };
-      const blob = new Blob([body], headers);
-      navigator.sendBeacon(
-        `${process.env.REACT_APP_URL}/activity/${user._id}/servers`,
-        blob
-      );
-    };
-
-    document.addEventListener("visibilitychange", updateActivity);
-    return () => {
-      updateActivity();
-      document.removeEventListener("visibilitychange", updateActivity);
-    };
-  }, [channelId]);
-
-  // Join / leave the channel socket room
-  useEffect(() => {
-    if (channelId) {
-      socket.emit("join room", channelId);
-    }
-    return () => socket.emit("leave room");
-  }, [channelId]);
+  const {
+    editing,
+    setEditing,
+    messages,
+    setMessages,
+    serverId,
+    channelId,
+    channel,
+    messagesRef,
+  } = useChannel();
 
   return (
     <Container>
       {channel && <Header name={channel.name} description={channel.about} />}
-      <Messages messages={messages} setEditing={setEditing} />
+      <Messages messages={messages} setEditing={setEditing} messagesRef={messagesRef} />
       {serverId && channelId && (
         <>
           <Form

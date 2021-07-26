@@ -36,9 +36,12 @@ function useOrder(messages) {
 
   // Group messages by author and time so that the author isn't displayed in front of every message.
   useEffect(() => {
-    if (messages.length < 1) return;
     const ordered = [];
     let unordered = [...messages];
+
+    if (messages.length < 1) {
+      return setOrdered([]);
+    }
 
     // Get unread messages
     const location = getLocation(messages);

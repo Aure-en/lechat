@@ -9,6 +9,9 @@ function useScroll(messages, ref) {
 
   // Sets up automatical scrolling
   useEffect(() => {
+    console.log("REF", ref);
+    if (!ref) return;
+    
     // After the messages' first render, scroll to the bottom of the container.
     if (!ref.current.scrollTop && isFirst && messages.length > 0) {
       ref.current.scrollTop =
@@ -24,7 +27,7 @@ function useScroll(messages, ref) {
       ref.current.scrollTop =
         ref.current.scrollHeight - ref.current.clientHeight;
     }
-  }, [messages]);
+  }, [messages, ref]);
 }
 
 export default useScroll;

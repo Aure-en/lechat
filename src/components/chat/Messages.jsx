@@ -5,13 +5,12 @@ import Group from "./Group";
 import useOrder from "../../hooks/chat/useOrder";
 import useScroll from "../../hooks/chat/useScroll";
 
-function Messages({ messages, setEditing }) {
+function Messages({ messages, setEditing, messagesRef }) {
   const { ordered } = useOrder(messages);
-  const ref = useRef(); // ref used to scroll to bottom
-  useScroll(ordered, ref); // handle scrolling
+  useScroll(ordered, messagesRef); // handle scrolling
 
   return (
-    <Ul ref={ref}>
+    <Ul ref={messagesRef}>
       {ordered.map((messages) => (
         <Group key={messages._id} messages={messages} setEditing={setEditing} />
       ))}

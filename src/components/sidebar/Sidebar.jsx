@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import ReactTooltip from "react-tooltip";
-import { ContentState, EditorState, convertToRaw } from "draft-js";
 import Conversations from "./conversations/Conversations";
 import Home from "./links/Home";
 import Friends from "./links/Friends";

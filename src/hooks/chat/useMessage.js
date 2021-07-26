@@ -8,7 +8,7 @@ import socket from "../../socket/socket";
  * - { conversation: {string} id }
  * - { channel: {string} id }
  */
-function useMessage(location) {
+function useMessage(location, lastMessageId) {
   const [url, setUrl] = useState("");
   const [messages, setMessages] = useState([]);
 
@@ -38,11 +38,35 @@ function useMessage(location) {
         },
       });
       const json = await res.json();
-      if (!json.error) {
-        setMessages(json.sort((a, b) => a.timestamp - b.timestamp));
+
+      // Append the fetched messages to the array
+      if (
+        !json.error &&
+        json.length !== 0 &&
+        !messages.find((message) => message._id === json[0]._id)
+      ) {
+        setMessages((prev) =>
+          json.sort((a, b) => a.timestamp - b.timestamp).concat([...prev])
+        );
       }
     })();
   }, [url]);
+
+  // When lastMessageId changes, load previous messages.
+  useEffect(() => {
+    if (!lastMessageId) return;
+    if (location.conversation) {
+      setUrl(
+        `${process.env.REACT_APP_URL}/conversations/${location.conversation}/messages?last_key=${lastMessageId}`
+      );
+    }
+
+    if (location.channel) {
+      setUrl(
+        `${process.env.REACT_APP_URL}/channels/${location.channel}/messages?last_key=${lastMessageId}`
+      );
+    }
+  }, [lastMessageId]);
 
   // Set up socket listeners
   const handleInsert = (newMessage) => {
@@ -84,7 +108,7 @@ function useMessage(location) {
       -1
     ) {
       setMessages((prev) =>
-        prev.filter((message) => message._id !== deleted.document._id)
+        [...prev].filter((message) => message._id !== deleted.document._id)
       );
     }
   };
