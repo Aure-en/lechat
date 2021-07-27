@@ -3,12 +3,14 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Switch } from "react-router-dom";
 import PrivateRoute from "../types/PrivateRoute";
+import { useRight } from "../../context/sidebars/RightContext";
+import useWindowSize from "../../hooks/shared/useWindowSize";
+import useFetch from "../../hooks/shared/useFetch";
 import SidebarLeft from "../../components/server/sidebar/Left";
 import SidebarRight from "../../components/server/sidebar/Right";
-import { useRight } from "../../context/sidebars/RightContext";
 import Channel from "./Channel";
 import Settings from "./Settings";
-import useFetch from "../../hooks/shared/useFetch";
+
 import Entry from "./Entry";
 
 function Server({ match }) {
@@ -16,11 +18,14 @@ function Server({ match }) {
   const { data: server } = useFetch(
     `${process.env.REACT_APP_URL}/servers/${match.params.serverId}`
   );
+  const windowSize = useWindowSize();
 
   return (
     <Container $isRightOpen={isOpen}>
       {/* Left sidebar */}
-      <SidebarLeft serverId={match.params.serverId} />
+      {windowSize.width > 768 && (
+        <SidebarLeft serverId={match.params.serverId} />
+      )}
 
       {/* Main */}
       {server && (

@@ -3,17 +3,23 @@ import styled from "styled-components";
 import { Switch } from "react-router-dom";
 import PrivateRoute from "../types/PrivateRoute";
 import { RightProvider } from "../../context/sidebars/RightContext";
+import useWindowSize from "../../hooks/shared/useWindowSize";
 import Home from "./Home";
 import Explore from "./Explore";
 import Server from "../server/Server";
 import Sidebar from "../../components/sidebar/Sidebar";
+import Mobile from "../../components/sidebar/mobile/Mobile";
 import Join from "../server/Join";
 import UserSettings from "../Settings";
 
 function Dashboard() {
+  const windowSize = useWindowSize();
+
   return (
     <Container>
-      <Sidebar />
+      {/* Different sidebar depending on the window size */}
+      {windowSize.width < 768 && <Mobile />}
+      {windowSize.width > 768 && <Sidebar />}
       <RightProvider>
         <Switch>
           <PrivateRoute exact path="/explore" component={Explore} />
@@ -30,7 +36,10 @@ function Dashboard() {
 export default Dashboard;
 
 const Container = styled.div`
-  display: grid;
-  grid-template-columns: auto 1fr;
   height: 100%;
+
+  @media all and (min-width: 768px) {
+    display: grid;
+    grid-template-columns: auto 1fr;
+  }
 `;

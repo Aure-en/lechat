@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useUnread } from "../../../context/UnreadContext";
-import { useAuth } from "../../../context/AuthContext";
 import useDropdown from "../../../hooks/shared/useDropdown";
-import Conversation from "./Conversation";
+import List from "./List";
 import Empty from "./Empty";
 import { ReactComponent as IconChat } from "../../../assets/icons/nav/chat.svg";
 
@@ -13,7 +12,6 @@ function Conversations() {
   const [number, setNumber] = useState(0);
   const { isDropdownOpen, setIsDropdownOpen } = useDropdown(ref);
   const { unread } = useUnread();
-  const { user } = useAuth();
 
   useEffect(() => {
     if (!unread) return;
@@ -45,18 +43,7 @@ function Conversations() {
         <>
           {conversations.length > 0 ? (
             <Ul>
-              {conversations.map((conversation) => {
-                const friend = conversation.members.find(
-                  (member) => member._id !== user._id
-                );
-                return (
-                  <Conversation
-                    key={conversation._id}
-                    conversation={conversation}
-                    friend={friend}
-                  />
-                );
-              })}
+              <List conversations={conversations} />
             </Ul>
           ) : (
             <Empty close={setIsDropdownOpen} />

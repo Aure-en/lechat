@@ -6,13 +6,6 @@ import IconChevron from "../../assets/icons/general/IconChevron";
 
 function Header({ name, description }) {
   const [isOpen, setIsOpen] = useState(false);
-  if (!description) {
-    return (
-      <Container>
-        <Heading>{name}</Heading>
-      </Container>
-    );
-  }
 
   return (
     <Container>
@@ -20,13 +13,15 @@ function Header({ name, description }) {
         <Heading>{name}</Heading>
         <Icons>
           <OpenRight />
-          <Button
-            type="button"
-            onClick={() => setIsOpen(!isOpen)}
-            $isOpen={isOpen}
-          >
-            <IconChevron />
-          </Button>
+          {description && (
+            <Button
+              type="button"
+              onClick={() => setIsOpen(!isOpen)}
+              $isOpen={isOpen}
+            >
+              <IconChevron />
+            </Button>
+          )}
         </Icons>
       </Content>
       {isOpen && <Description>{description}</Description>}

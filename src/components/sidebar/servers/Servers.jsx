@@ -6,6 +6,7 @@ import useDropdown from "../../../hooks/shared/useDropdown";
 import useServers from "../../../hooks/server/server/useServers";
 import Create from "../../server/Modal";
 import Explore from "./Explore";
+import List from "./List";
 import { ReactComponent as IconServers } from "../../../assets/icons/nav/grid.svg";
 
 function Servers() {
@@ -26,9 +27,7 @@ function Servers() {
       {isDropdownOpen && (
         <Container>
           <Ul>
-            {servers.map((server) => (
-              <Server server={server} key={server._id} />
-            ))}
+            <List servers={servers} />
           </Ul>
 
           <ReactTooltip id="nav-servers" effect="solid" place="right" />

@@ -7,6 +7,7 @@ import { ReactComponent as IconClose } from "../../assets/icons/general/close.sv
 
 function Modal({ isOpen, setIsOpen, children }) {
   const ref = useRef();
+
   return (
     <>
       {isOpen && (
@@ -23,6 +24,7 @@ function Modal({ isOpen, setIsOpen, children }) {
                     <IconClose />
                   </CloseBtn>
                   {React.cloneElement(children, { setIsOpen })}
+
                   <BackBtn type="button" onClick={() => setIsOpen(false)}>
                     ← Back
                   </BackBtn>
@@ -67,6 +69,11 @@ const Container = styled.div`
   background: ${(props) => props.theme.modal_bg};
   border: 1px solid ${(props) => props.theme.border};
   z-index: 100;
+  width: 90%;
+
+  @media all and (min-width: 576px) {
+    width: initial;
+  }
 `;
 
 const Content = styled.div`

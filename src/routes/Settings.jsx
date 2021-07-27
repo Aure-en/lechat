@@ -65,12 +65,12 @@ export default Settings;
 
 const Container = styled.main`
   background: ${(props) => props.theme.bg_secondary};
-  margin: 1rem;
   border-radius: 1rem;
-  padding: 3rem 2rem;
+  padding: 3rem 1rem;
 
   @media all and (min-width: 576px) {
     padding: 3rem;
+    margin: 1rem;
   }
 `;
 

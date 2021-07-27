@@ -6,11 +6,14 @@ import Friends from "./Friends";
 import Servers from "./Servers";
 import Conversation from "../Conversation";
 import Sidebar from "../../components/home/Sidebar";
+import useWindowSize from "../../hooks/shared/useWindowSize";
 
 function Home() {
+  const windowSize = useWindowSize();
+
   return (
     <Container>
-      <Sidebar />
+      {windowSize.width > 768 && <Sidebar />}
       <Switch>
         <PrivateRoute exact path="/" component={Friends} />
         <PrivateRoute exact path="/user/servers" component={Servers} />
@@ -27,9 +30,12 @@ function Home() {
 export default Home;
 
 const Container = styled.div`
-  display: grid;
   width: 100%;
-  grid-template-columns: 17.5rem 1fr;
+
+  @media all and (min-width: 768px) {
+    display: grid;
+    grid-template-columns: 17.5rem 1fr;
+  }
 
   @media all and (min-width: 1400px) {
     grid-template-columns: 17.5rem 1fr 17.5rem;

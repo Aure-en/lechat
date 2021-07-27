@@ -6,6 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 
 function Sidebar() {
   const { user } = useAuth();
+
   return (
     <Container>
       <Profile user={user} />

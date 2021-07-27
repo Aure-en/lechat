@@ -78,10 +78,16 @@ const Container = styled.main`
   display: grid;
   grid-template-rows: auto 1fr auto 1.25rem;
   background: ${(props) => props.theme.bg_secondary};
-  margin-top: 1rem;
-  border-radius: 1rem 1rem 0 0;
-  margin-right: 1rem;
-  height: calc(100vh - 1rem);
+  border-radius: 1rem;
+  height: 100vh; // margin-top
+  overflow: hidden;
+  flex: 1;
+
+  @media all and (min-width: 768px) {
+    margin: 1rem 1rem 0 1rem;
+    height: calc(100vh - 1rem); // margin-top
+    border-radius: 1rem 1rem 0 0;
+  }
 `;
 
 const Header = styled.header`
