@@ -9,7 +9,7 @@ function Members({ serverId }) {
   const { members } = useMembers(serverId);
 
   return (
-    <div>
+    <Container>
       <Button type="button" onClick={() => setIsOpen(!isOpen)}>
         <Heading>Members</Heading>
         <Icon $isOpen={isOpen}>
@@ -35,7 +35,7 @@ function Members({ serverId }) {
           ))}
         </ul>
       )}
-    </div>
+    </Container>
   );
 }
 
@@ -44,6 +44,31 @@ export default Members;
 Members.propTypes = {
   serverId: PropTypes.string.isRequired,
 };
+
+const Container = styled.div`
+  overflow-y: auto;
+  border-radius: 1rem 0 0 1rem;
+  width: 15rem;
+  padding: 1rem 0.8rem 1rem 1rem;
+  margin-right: 0.2rem; // Space between scroll bar and window
+
+  &::-webkit-scrollbar {
+    width: 0.4rem;
+  }
+  &::-webkit-scrollbar-track {
+    background: none;
+    margin: 3.5rem 0 0.25rem 0;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5rem;
+    background-color: ${(props) => props.theme.bg_sidebar};
+  }
+
+  @media all and (min-width: 768px) {
+    width: 17.5rem;
+    padding: 2rem 2rem 2rem 1rem;
+  }
+`;
 
 const Button = styled.button`
   display: flex;

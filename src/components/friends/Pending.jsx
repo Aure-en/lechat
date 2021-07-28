@@ -6,7 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 import usePending from "../../hooks/friends/usePending";
 import IconChevron from "../../assets/icons/general/IconChevron";
 import { ReactComponent as IconCheck } from "../../assets/icons/friend/check.svg";
-import { ReactComponent as IconClose } from "../../assets/icons/general/close.svg";
+import IconClose from "../../assets/icons/general/IconClose";
 
 function Pending() {
   const [isOpen, setIsOpen] = useState(true);

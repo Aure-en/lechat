@@ -1,22 +1,20 @@
 import React from "react";
-import styled from "styled-components";
 import { Switch, Route } from "react-router-dom";
 import Server from "../../server/sidebar/Left";
+import Conversations from "../../home/Sidebar";
 
 function Right() {
   return (
-    <Container>
+    <div>
       <Switch>
         <Route
           path="/servers/:serverId"
           render={({ match }) => <Server serverId={match.params.serverId} />}
         />
+        <Route path="/" component={Conversations} />
       </Switch>
-    </Container>
+    </div>
   );
 }
 
 export default Right;
-
-const Container = styled.div`
-`;

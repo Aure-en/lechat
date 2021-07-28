@@ -37,8 +37,7 @@ const Container = styled.div`
   z-index: 2;
   padding: 1rem;
   border-radius: 0 1rem 1rem 0;
-  border: 1px solid ${(props) => props.theme.bg_sidebar};
-  border-left: 0;
+  border-right: 1px solid ${(props) => props.theme.bg_sidebar};
   width: 15rem;
 
   @media all and (min-width: 768px) {

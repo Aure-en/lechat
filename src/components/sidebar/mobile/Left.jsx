@@ -41,8 +41,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid ${(props) => props.theme.bg_sidebar};
-  border-left: none;
+  border-right: 1px solid ${(props) => props.theme.bg_sidebar};
   background: ${(props) => props.theme.bg_secondary};
   color: ${(props) => props.theme.text_tertiary};
   min-width: 4rem;

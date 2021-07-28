@@ -2,8 +2,7 @@ import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
-
-import { ReactComponent as IconClose } from "../../assets/icons/general/close.svg";
+import IconClose from "../../assets/icons/general/IconClose";
 
 function Modal({ isOpen, setIsOpen, children }) {
   const ref = useRef();

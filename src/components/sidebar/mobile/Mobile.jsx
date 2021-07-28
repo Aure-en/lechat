@@ -1,18 +1,37 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import Left from "./Left";
 import Right from "./Right";
 import Nav from "./Nav";
+import Open from "./Open";
+import useDropdown from "../../../hooks/shared/useDropdown";
 
 function Mobile() {
+  const ref = useRef(); // For dropdown
+  const { isDropdownOpen, setIsDropdownOpen } = useDropdown(ref);
+  const [isContentOpen, setIsContentOpen] = useState(true);
+
+  const open = () => {
+    setIsDropdownOpen(true);
+    setIsContentOpen(true);
+  };
+
   return (
-    <Container>
-      <Content>
-        <Left />
-        <Right />
-      </Content>
-      <Nav />
-    </Container>
+    <>
+      <Open open={open} />
+
+      {isDropdownOpen && (
+        <Container ref={ref}>
+          {isContentOpen && (
+            <Content>
+              <Left />
+              <Right />
+            </Content>
+          )}
+          <Nav close={setIsDropdownOpen} setIsContentOpen={setIsContentOpen} />
+        </Container>
+      )}
+    </>
   );
 }
 

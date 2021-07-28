@@ -41,7 +41,11 @@ Header.defaultProps = {
 };
 
 const Container = styled.header`
-  padding: 2rem 2rem 1rem 2rem;
+  padding: 1.15rem 1rem 1rem 4rem;
+
+  @media all and (min-width: 768px) {
+    padding: 2rem 2rem 1rem 2rem;
+  }
 `;
 
 const Content = styled.div`

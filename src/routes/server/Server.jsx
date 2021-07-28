@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Switch } from "react-router-dom";
@@ -10,15 +10,19 @@ import SidebarLeft from "../../components/server/sidebar/Left";
 import SidebarRight from "../../components/server/sidebar/Right";
 import Channel from "./Channel";
 import Settings from "./Settings";
-
 import Entry from "./Entry";
 
 function Server({ match }) {
-  const { isOpen } = useRight();
+  const { isOpen, setIsOpen } = useRight();
   const { data: server } = useFetch(
     `${process.env.REACT_APP_URL}/servers/${match.params.serverId}`
   );
   const windowSize = useWindowSize();
+
+  // Save latest visited server
+  useEffect(() => {
+    if (server) localStorage.setItem("server", server._id);
+  }, [server]);
 
   return (
     <Container $isRightOpen={isOpen}>
@@ -45,7 +49,12 @@ function Server({ match }) {
       )}
 
       {/* Right sidebar */}
-      {isOpen && <SidebarRight serverId={match.params.serverId} />}
+      {isOpen && (
+        <SidebarRight
+          serverId={match.params.serverId}
+          close={() => setIsOpen(false)}
+        />
+      )}
     </Container>
   );
 }

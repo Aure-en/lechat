@@ -66,7 +66,7 @@ export default Settings;
 const Container = styled.main`
   background: ${(props) => props.theme.bg_secondary};
   border-radius: 1rem;
-  padding: 3rem 1rem;
+  padding: 1.25rem 1rem;
 
   @media all and (min-width: 576px) {
     padding: 3rem;
@@ -81,6 +81,11 @@ const Section = styled.section`
 const Heading = styled.h1`
   font-size: 2rem;
   margin-bottom: 3rem;
+  text-align: center;
+
+  @media all and (min-width: 768px) {
+    text-align: left;
+  }
 `;
 
 const Subheading = styled.h2`

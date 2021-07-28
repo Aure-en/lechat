@@ -24,5 +24,14 @@ export default List;
 
 const Ul = styled.ul`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 1fr;
+
+  @media all and (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media all and (min-width: 1400px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
 `;
