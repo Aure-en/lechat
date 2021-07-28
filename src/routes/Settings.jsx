@@ -67,6 +67,7 @@ const Container = styled.main`
   background: ${(props) => props.theme.bg_secondary};
   border-radius: 1rem;
   padding: 1.25rem 1rem;
+  height: 100%;
 
   @media all and (min-width: 576px) {
     padding: 3rem;

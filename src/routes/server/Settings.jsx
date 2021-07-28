@@ -26,10 +26,13 @@ Settings.propTypes = {
 
 const Wrapper = styled.main`
   background: ${(props) => props.theme.bg_secondary};
-  margin-top: 1rem;
-  border-radius: 1rem 1rem 0 0;
-  padding: 2rem 3rem;
-  display: flex;
+  border-radius: 1rem;
+  padding: 3rem 1rem 1.25rem 1rem;
+
+  @media all and (min-width: 576px) {
+    padding: 3rem;
+    margin: 1rem;
+  }
 `;
 
 const Container = styled.div`

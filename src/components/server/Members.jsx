@@ -47,7 +47,6 @@ Members.propTypes = {
 
 const Container = styled.div`
   overflow-y: auto;
-  border-radius: 1rem 0 0 1rem;
   width: 15rem;
   padding: 1rem 0.8rem 1rem 1rem;
   margin-right: 0.2rem; // Space between scroll bar and window

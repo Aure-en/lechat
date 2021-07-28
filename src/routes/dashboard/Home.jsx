@@ -9,7 +9,7 @@ import Sidebar from "../../components/home/Sidebar";
 import useWindowSize from "../../hooks/shared/useWindowSize";
 
 function Home() {
-  const windowSize = useWindowSize();
+  const { windowSize } = useWindowSize();
 
   return (
     <Container>

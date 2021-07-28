@@ -7,7 +7,7 @@ import useWindowSize from "../../hooks/shared/useWindowSize";
 
 function Sidebar() {
   const { user } = useAuth();
-  const windowSize = useWindowSize();
+  const { windowSize } = useWindowSize();
 
   return (
     <Container>
@@ -29,10 +29,8 @@ const Container = styled.div`
   width: 15rem;
 
   @media all and (min-width: 768px) {
-    padding: 1rem 0 1rem 1rem;
     border-radius: 0;
     border: none;
     width: 17.5rem;
-    padding: 1rem 2rem;
   }
 `;

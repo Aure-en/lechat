@@ -6,7 +6,7 @@ import useWindowSize from "../../../hooks/shared/useWindowSize";
 import IconClose from "../../../assets/icons/general/IconClose";
 
 function Right({ serverId, close }) {
-  const windowSize = useWindowSize();
+  const { windowSize } = useWindowSize();
 
   return (
     <Container>
@@ -35,11 +35,14 @@ const Container = styled.div`
   display: grid;
   grid-template-rows: 1fr min-content;
   height: 100%;
+  border-radius: 1rem 0 0 1rem;
+  border-left: 1px solid ${(props) => props.theme.bg_sidebar};
 
   @media all and (min-width: 768px) {
     position: relative;
     right: initial;
     max-height: 100vh;
+    border-left: 0;
   }
 `;
 

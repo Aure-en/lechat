@@ -9,7 +9,6 @@ import useFetch from "../../hooks/shared/useFetch";
 import SidebarLeft from "../../components/server/sidebar/Left";
 import SidebarRight from "../../components/server/sidebar/Right";
 import Channel from "./Channel";
-import Settings from "./Settings";
 import Entry from "./Entry";
 
 function Server({ match }) {
@@ -17,7 +16,7 @@ function Server({ match }) {
   const { data: server } = useFetch(
     `${process.env.REACT_APP_URL}/servers/${match.params.serverId}`
   );
-  const windowSize = useWindowSize();
+  const { windowSize } = useWindowSize();
 
   // Save latest visited server
   useEffect(() => {
@@ -38,11 +37,6 @@ function Server({ match }) {
             exact
             path="/servers/:serverId/channels/:channelId"
             component={Channel}
-          />
-          <PrivateRoute
-            exact
-            path="/servers/:serverId/settings"
-            component={Settings}
           />
           <PrivateRoute exact path="/servers/:serverId" component={Entry} />
         </Switch>
@@ -72,5 +66,6 @@ Server.propTypes = {
 
 const Container = styled.div`
   display: flex;
+  height: 100%;
   width: 100%;
 `;

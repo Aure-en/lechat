@@ -19,7 +19,7 @@ function Conversation({ match }) {
     setMessages,
     messagesRef,
   } = useConversation(match.params.userId);
-  const windowSize = useWindowSize();
+  const { windowSize } = useWindowSize();
 
   if (conversation) {
     return (
@@ -92,7 +92,11 @@ const Container = styled.main`
 
 const Header = styled.header`
   position: relative;
-  padding: 2rem 2rem 1rem 2rem;
+  padding: 1.5rem 1rem 1rem 4rem;
+
+  @media all and (min-width: 768px) {
+    padding: 2rem 2rem 1rem 2rem;
+  }
 `;
 
 const Heading = styled.h1`

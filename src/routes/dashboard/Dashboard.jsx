@@ -11,9 +11,10 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Mobile from "../../components/sidebar/mobile/Mobile";
 import Join from "../server/Join";
 import UserSettings from "../Settings";
+import Settings from "../server/Settings";
 
 function Dashboard() {
-  const windowSize = useWindowSize();
+  const { windowSize } = useWindowSize();
 
   return (
     <Container>
@@ -23,6 +24,11 @@ function Dashboard() {
       <RightProvider>
         <Switch>
           <PrivateRoute exact path="/explore" component={Explore} />
+          <PrivateRoute
+            exact
+            path="/servers/:serverId/settings"
+            component={Settings}
+          />
           <PrivateRoute path="/servers/:serverId" component={Server} />
           <PrivateRoute exact path="/join/:serverId" component={Join} />
           <PrivateRoute exact path="/settings" component={UserSettings} />
