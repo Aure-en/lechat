@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Group from "./Group";
 import useOrder from "../../hooks/chat/useOrder";
-import useScroll from "../../hooks/chat/useScroll2";
+import useScroll from "../../hooks/chat/useScroll";
 
 function Messages({ messages, setEditing, messagesRef }) {
   const { ordered } = useOrder(messages);
