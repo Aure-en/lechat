@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useRouteMatch } from "react-router-dom";
 import Header from "../../components/chat/Header";
 import Messages from "../../components/chat/Messages";
 import Form from "../../components/chat/form/Form";
@@ -7,16 +8,11 @@ import Typing from "../../components/chat/Typing";
 import useChannel from "../../hooks/server/channel/useChannel";
 
 function Channel() {
-  const {
-    editing,
-    setEditing,
-    messages,
-    setMessages,
-    serverId,
-    channelId,
-    channel,
-    messagesRef,
-  } = useChannel();
+  const { serverId, channelId } = useRouteMatch(
+    "/servers/:serverId/channels/:channelId"
+  ).params;
+  const { editing, setEditing, messages, setMessages, channel, messagesRef } =
+    useChannel(serverId, channelId);
 
   return (
     <Container>

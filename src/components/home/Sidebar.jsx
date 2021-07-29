@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import Profile from "../user/Profile";
-import Conversations from "../conversations/Conversations";
 import { useAuth } from "../../context/AuthContext";
 import useWindowSize from "../../hooks/shared/useWindowSize";
+import Profile from "../user/Profile";
+import Conversations from "../conversations/Conversations";
 
 function Sidebar() {
   const { user } = useAuth();

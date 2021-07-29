@@ -9,63 +9,53 @@ import socket from "../../socket/socket";
  * - { channel: {string} id }
  */
 function useMessage(location, lastMessageId) {
-  const [url, setUrl] = useState("");
   const [messages, setMessages] = useState([]);
 
-  // Set up endpoint url
-  useEffect(() => {
-    if (!location) return;
+  // Helper function to get the endpoint linked to the room
+  const setUrl = (location, lastMessageId) => {
     if (location.conversation) {
-      setUrl(
-        `${process.env.REACT_APP_URL}/conversations/${location.conversation}/messages`
-      );
+      return `${process.env.REACT_APP_URL}/conversations/${
+        location.conversation
+      }/messages${lastMessageId ? `?last_key=${lastMessageId}` : ""}`;
     }
 
     if (location.channel) {
-      setUrl(
-        `${process.env.REACT_APP_URL}/channels/${location.channel}/messages`
-      );
+      return `${process.env.REACT_APP_URL}/channels/${
+        location.channel
+      }/messages${lastMessageId ? `?last_key=${lastMessageId}` : ""}`;
     }
-  }, [location]);
+  };
 
-  // Load messages
+  const getMessages = async (url) => {
+    const res = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    });
+    const json = await res.json();
+    return json;
+  };
+
+  // Load messages after entering a room
   useEffect(() => {
-    if (!url) return;
     (async () => {
-      const res = await fetch(url, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
-      });
-      const json = await res.json();
-
-      // Append the fetched messages to the array
-      if (
-        !json.error &&
-        json.length !== 0 &&
-        !messages.find((message) => message._id === json[0]._id)
-      ) {
-        setMessages((prev) =>
-          json.sort((a, b) => a.timestamp - b.timestamp).concat([...prev])
-        );
-      }
+      const url = setUrl(location);
+      const messages = await getMessages(url);
+      setMessages(messages.sort((a, b) => a.timestamp - b.timestamp));
     })();
-  }, [url]);
+  }, [location.conversation, location.server, location.channel]);
 
   // When lastMessageId changes, load previous messages.
   useEffect(() => {
     if (!lastMessageId) return;
-    if (location.conversation) {
-      setUrl(
-        `${process.env.REACT_APP_URL}/conversations/${location.conversation}/messages?last_key=${lastMessageId}`
-      );
-    }
-
-    if (location.channel) {
-      setUrl(
-        `${process.env.REACT_APP_URL}/channels/${location.channel}/messages?last_key=${lastMessageId}`
-      );
-    }
+    (async () => {
+      const url = setUrl(location, lastMessageId);
+      const messages = await getMessages(url);
+      setMessages((prev) => [
+        ...messages.sort((a, b) => a.timestamp - b.timestamp),
+        ...prev,
+      ]);
+    })();
   }, [lastMessageId]);
 
   // Set up socket listeners

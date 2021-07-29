@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useRouteMatch } from "react-router-dom";
+
 import useMessage from "../../chat/useMessage";
 import useFetch from "../../shared/useFetch";
 import { useAuth } from "../../../context/AuthContext";
@@ -7,16 +7,22 @@ import { useUnread } from "../../../context/UnreadContext";
 import useActivity from "../../chat/useActivity";
 import socket from "../../../socket/socket";
 
-function useChannel() {
+function useChannel(serverId, channelId) {
   // Props for messages form
   const [editing, setEditing] = useState();
   // Used to load more messages
-  const [lastMessageId, setLastMessageId] = useState("");
+  const [lastMessageId, _setLastMessageId] = useState("");
+
+  // Using a ref and storing the lastMessageId state value in a ref
+  // So that the event listener can use the updated value.
+  const lastMessageIdRef = useRef(lastMessageId);
+
+  const setLastMessageId = (id) => {
+    lastMessageIdRef.current = id;
+    _setLastMessageId(id);
+  };
 
   // Get channel informations & messages
-  const { serverId, channelId } = useRouteMatch(
-    "/servers/:serverId/channels/:channelId"
-  ).params;
   const { data: channel } = useFetch(
     `${process.env.REACT_APP_URL}/channels/${channelId}`
   );
@@ -77,24 +83,33 @@ function useChannel() {
   useEffect(() => {
     if (!messagesRef || !messagesRef.current) return;
     const getPreviousMessages = () => {
+      console.log(channelId, messages);
       // If we scrolled to the top of the messages container, load more messages.
-      if (messagesRef.current.scrollTop <= 0) {
+      if (messagesRef.current.scrollTop <= 0 && messages.length > 1) {
         // Tells useMessage the key of the latest message we loaded
         // useMessage will then fetch messages with a key < the latest key.
         // and add them to the messages array.
-        setLastMessageId(messages[0]._id);
+        if (
+          !lastMessageIdRef.current ||
+          messages[0]._id < lastMessageIdRef.current
+        ) {
+          setLastMessageId(messages[0]._id);
+        }
       }
     };
 
     messagesRef.current.addEventListener("scroll", getPreviousMessages);
-  }, [messages, messagesRef]);
+    return () => {
+      messagesRef.current.removeEventListener("scroll", getPreviousMessages);
+    };
+  }, [messages, messagesRef, channelId]);
 
   // Join / leave the channel socket room
   useEffect(() => {
     if (channelId) {
       socket.emit("join room", channelId);
     }
-    return () => socket.emit("leave room");
+    return () => socket.emit("leave room", channelId);
   }, [channelId]);
 
   return {
@@ -102,8 +117,6 @@ function useChannel() {
     setEditing,
     messages,
     setMessages,
-    serverId,
-    channelId,
     channel,
     messagesRef,
   };

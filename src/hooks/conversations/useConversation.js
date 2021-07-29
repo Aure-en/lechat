@@ -10,13 +10,22 @@ function useConversation(id) {
   // For messages form
   const [editing, setEditing] = useState(false);
   // Used to load more messages
-  const [lastMessageId, setLastMessageId] = useState("");
+  const [lastMessageId, _setLastMessageId] = useState("");
+
+  // Using a ref and storing the lastMessageId state value in a ref
+  // So that the event listener can use the updated value.
+  const lastMessageIdRef = useRef(lastMessageId);
+
+  const setLastMessageId = (id) => {
+    lastMessageIdRef.current = id;
+    _setLastMessageId(id);
+  };
 
   // Get conversation and its messages
   const { conversation } = useLoadConversation(id);
   const { messages, setMessages } = useMessage(
-    conversation && { conversation: conversation._id },
-    conversation && lastMessageId
+    { conversation: conversation && conversation._id },
+    lastMessageId
   );
 
   // User activity
@@ -80,7 +89,12 @@ function useConversation(id) {
         // Tells useMessage the key of the latest message we loaded
         // useMessage will then fetch messages with a key < the latest key.
         // and add them to the messages array.
-        setLastMessageId(messages[0]._id);
+        if (
+          !lastMessageIdRef.current ||
+          messages[0]._id < lastMessageIdRef.current
+        ) {
+          setLastMessageId(messages[0]._id);
+        }
       }
     };
 
