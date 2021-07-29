@@ -83,7 +83,6 @@ function useChannel(serverId, channelId) {
   useEffect(() => {
     if (!messagesRef || !messagesRef.current) return;
     const getPreviousMessages = () => {
-      console.log(channelId, messages);
       // If we scrolled to the top of the messages container, load more messages.
       if (messagesRef.current.scrollTop <= 0 && messages.length > 1) {
         // Tells useMessage the key of the latest message we loaded

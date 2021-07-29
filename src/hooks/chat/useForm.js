@@ -90,26 +90,6 @@ function useForm(location, message, setEditing, setMessages) {
 
     const text = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
 
-    // Update the messages displayed without waiting for the dabatase on update
-    // Cannot do that with adding message unless I set an _id myself.
-    if (message) {
-      setMessages((prev) =>
-        [...prev].map((elem) =>
-          elem._id.toString() === message._id
-            ? {
-                author: {
-                  username: JSON.parse(localStorage.getItem("user")).username,
-                  _id: JSON.parse(localStorage.getItem("user"))._id,
-                },
-                text,
-                _id: message._id,
-                timestamp: message.timestamp,
-              }
-            : elem
-        )
-      );
-    }
-
     // Save the message in the database (create or update)
     await fetch(url, {
       method: message ? "PUT" : "POST",

@@ -18,28 +18,38 @@ function useScroll(messages, ref) {
   useEffect(() => {
     if (!ref) return;
 
+    // If we loaded more message, keep the user at the same scroll position.
+    if (currentHeight.current !== ref.current.scrollHeight) {
+      ref.current.scrollTop = ref.current.scrollHeight - ref.current.scrollTop;
+      currentHeight.current = ref.current.scrollHeight;
+    }
+
+    // Afterwards, only scroll at the bottom on new message if the user is already at the bottom.
+    // (If he's scrolling to see previous messages, don't make him scroll back to the bottom automatically)
+    if (
+      ref.current.scrollHeight - ref.current.clientHeight <
+      ref.current.scrollTop + 500
+    ) {
+      ref.current.scrollTop =
+        ref.current.scrollHeight - ref.current.clientHeight;
+    }
+
     // After the messages' first render, scroll to the bottom of the container.
     if (!ref.current.scrollTop && isFirst && messages.length > 0) {
       ref.current.scrollTop =
         ref.current.scrollHeight - ref.current.clientHeight;
       setIsFirst(false);
     }
-
-    // If we loaded more message, keep the user at the same scroll position.
-    if (currentHeight.current !== ref.current.scrollHeight) {
-      ref.current.scrollTop = ref.current.scrollHeight - currentHeight.current;
-      currentHeight.current = ref.current.scrollHeight;
-    }
-
-    // Afterwards, only scroll at the bottom on new message if the user is already at the bottom.
-    // (If he's scrolling to see previous messages, don't make him scroll back to the bottom automatically)
-    const totalScroll = ref.current.scrollHeight - ref.current.clientHeight;
-    const currentScroll = ref.current.scrollTop;
-    if (totalScroll < currentScroll + 500) {
-      ref.current.scrollTop =
-        ref.current.scrollHeight - ref.current.clientHeight;
-    }
   }, [messages, ref]);
+
+  useEffect(() => {
+    const display = () => {
+      console.log("CURRENT SCROLL", ref.current.scrollTop);
+      console.log("FULL HEIGHT", ref.current.scrollHeight);
+      console.log("COMPONENT HEIGHT", ref.current.clientHeight);
+    };
+    ref.current.addEventListener("scroll", display);
+  }, []);
 }
 
 export default useScroll;
