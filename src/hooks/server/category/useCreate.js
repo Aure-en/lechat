@@ -30,10 +30,18 @@ function useCreate(serverId, category) {
     });
     const json = await res.json();
 
+    // Validation errors
     if (json.errors) {
       setError(json.errors.filter((err) => err.param === "name")[0].msg);
       return false;
     }
+
+    // Permission error
+    if (json.error) {
+      setError(json.error);
+      return false;
+    }
+
     return true;
   };
 

@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { usePermission } from "../../context/PermissionContext";
+import { useAuth } from "../../context/AuthContext";
 import Modal from "../channel/Modal";
 import Menu from "./Menu";
 import Channels from "../channel/List";
@@ -10,11 +12,16 @@ import IconPlus from "../../assets/icons/general/IconPlus";
 
 function Category({ serverId, category }) {
   const [areChannelsOpen, setAreChannelsOpen] = useState(true);
-  const [isUpdateOpen, setIsUpdateOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   // For contextual menu
   const outerRef = useRef();
   const ignoreRef = useRef();
+
+  // Used to check if the user has the permission
+  // to see the create button
+  const { sections } = usePermission();
+  const { user } = useAuth();
 
   return (
     <li ref={outerRef}>
@@ -29,9 +36,11 @@ function Category({ serverId, category }) {
           {category.name}
         </Name>
 
-        <button type="button" onClick={() => setIsUpdateOpen(true)}>
-          <IconPlus />
-        </button>
+        {sections.includes(user._id) && (
+          <button type="button" onClick={() => setIsFormOpen(true)}>
+            <IconPlus />
+          </button>
+        )}
       </Container>
 
       {areChannelsOpen && (
@@ -40,12 +49,14 @@ function Category({ serverId, category }) {
         </div>
       )}
 
-      <Modal
-        isOpen={isUpdateOpen}
-        setIsOpen={setIsUpdateOpen}
-        serverId={serverId}
-        categoryId={category._id}
-      />
+      {sections.includes(user._id) && (
+        <Modal
+          isOpen={isFormOpen}
+          setIsOpen={setIsFormOpen}
+          serverId={serverId}
+          categoryId={category._id}
+        />
+      )}
 
       <Menu
         serverId={serverId}

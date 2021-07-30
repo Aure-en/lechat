@@ -31,10 +31,18 @@ function useCreate(serverId, categoryId, channel) {
     });
     const json = await res.json();
 
+    // Validation
     if (json.errors) {
       setError(json.errors.filter((err) => err.param === "name")[0].msg);
       return false;
     }
+
+    // Permission
+    if (json.error) {
+      setError(json.error);
+      return false;
+    }
+
     return true;
   };
 

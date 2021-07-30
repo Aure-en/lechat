@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { usePermission } from "../../context/PermissionContext";
+import { useAuth } from "../../context/AuthContext";
 import Contextual from "../shared/Contextual";
 import Channel from "./Modal";
 import Delete from "./Delete";
@@ -9,43 +11,52 @@ function Menu({ serverId, categoryId, channel, outerRef }) {
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
+  // Used to check if the user has the permission
+  // to see the CUD channels buttons
+  const { sections } = usePermission();
+  const { user } = useAuth();
+
   return (
     <>
-      <Contextual outerRef={outerRef}>
-        <button type="button" onClick={() => setIsCreateOpen(true)}>
-          Create Channel
-        </button>
-        <button type="button" onClick={() => setIsUpdateOpen(true)}>
-          Update Channel
-        </button>
-        <button type="button" onClick={() => setIsDeleteOpen(true)}>
-          Delete Channel
-        </button>
-      </Contextual>
+      {sections.includes(user._id) && (
+        <>
+          <Contextual outerRef={outerRef}>
+            <button type="button" onClick={() => setIsCreateOpen(true)}>
+              Create Channel
+            </button>
+            <button type="button" onClick={() => setIsUpdateOpen(true)}>
+              Update Channel
+            </button>
+            <button type="button" onClick={() => setIsDeleteOpen(true)}>
+              Delete Channel
+            </button>
+          </Contextual>
 
-      {/* Create Channel */}
-      <Channel
-        isOpen={isCreateOpen}
-        setIsOpen={setIsCreateOpen}
-        serverId={serverId}
-        categoryId={categoryId}
-      />
+          {/* Create Channel */}
+          <Channel
+            isOpen={isCreateOpen}
+            setIsOpen={setIsCreateOpen}
+            serverId={serverId}
+            categoryId={categoryId}
+          />
 
-      {/* Update Channel */}
-      <Channel
-        isOpen={isUpdateOpen}
-        setIsOpen={setIsUpdateOpen}
-        serverId={serverId}
-        categoryId={categoryId}
-        channel={channel}
-      />
+          {/* Update Channel */}
+          <Channel
+            isOpen={isUpdateOpen}
+            setIsOpen={setIsUpdateOpen}
+            serverId={serverId}
+            categoryId={categoryId}
+            channel={channel}
+          />
 
-      <Delete
-        isOpen={isDeleteOpen}
-        setIsOpen={setIsDeleteOpen}
-        serverId={serverId}
-        channel={channel}
-      />
+          <Delete
+            isOpen={isDeleteOpen}
+            setIsOpen={setIsDeleteOpen}
+            serverId={serverId}
+            channel={channel}
+          />
+        </>
+      )}
     </>
   );
 }
