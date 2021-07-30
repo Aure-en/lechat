@@ -1,14 +1,14 @@
 import React, { useContext, useState, useEffect, createContext } from "react";
 import PropTypes from "prop-types";
-import useWindowSize from "../../hooks/shared/useWindowSize";
+import useWindowSize from "../hooks/shared/useWindowSize";
 
-const RightContext = createContext();
+const SidebarContext = createContext();
 
-export function useRight() {
-  return useContext(RightContext);
+export function useSidebar() {
+  return useContext(SidebarContext);
 }
 
-export function RightProvider({ children }) {
+export function SidebarProvider({ children }) {
   const [isOpen, setIsOpen] = useState(false);
   const { windowSize, previous } = useWindowSize();
 
@@ -30,19 +30,19 @@ export function RightProvider({ children }) {
   };
 
   return (
-    <RightContext.Provider value={value}>{children}</RightContext.Provider>
+    <SidebarContext.Provider value={value}>{children}</SidebarContext.Provider>
   );
 }
 
-export default RightContext;
+export default SidebarContext;
 
-RightProvider.propTypes = {
+SidebarProvider.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
 };
 
-RightProvider.defaultProps = {
+SidebarProvider.defaultProps = {
   children: <></>,
 };

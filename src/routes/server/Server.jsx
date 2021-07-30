@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Switch } from "react-router-dom";
 import PrivateRoute from "../types/PrivateRoute";
-import { useRight } from "../../context/sidebars/RightContext";
+import { useSidebar } from "../../context/SidebarContext";
 import useWindowSize from "../../hooks/shared/useWindowSize";
 import useFetch from "../../hooks/shared/useFetch";
 import SidebarLeft from "../../components/server/sidebar/Left";
@@ -12,7 +12,7 @@ import Channel from "./Channel";
 import Entry from "./Entry";
 
 function Server({ match }) {
-  const { isOpen, setIsOpen } = useRight();
+  const { isOpen, setIsOpen } = useSidebar();
   const { data: server } = useFetch(
     `${process.env.REACT_APP_URL}/servers/${match.params.serverId}`
   );

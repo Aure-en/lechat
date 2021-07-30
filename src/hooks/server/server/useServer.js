@@ -16,6 +16,7 @@ function useServer(serverId) {
         }
       );
       const json = await res.json();
+      console.log(json);
       if (!json.error) setServer(json);
     })();
   }, [serverId]);

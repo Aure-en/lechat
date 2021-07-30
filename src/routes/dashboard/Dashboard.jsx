@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Switch } from "react-router-dom";
 import PrivateRoute from "../types/PrivateRoute";
-import { RightProvider } from "../../context/sidebars/RightContext";
+import { SidebarProvider } from "../../context/SidebarContext";
 import useWindowSize from "../../hooks/shared/useWindowSize";
 import Home from "./Home";
 import Explore from "./Explore";
@@ -21,7 +21,7 @@ function Dashboard() {
       {/* Different sidebar depending on the window size */}
       {windowSize.width < 768 && <Mobile />}
       {windowSize.width > 768 && <Sidebar />}
-      <RightProvider>
+      <SidebarProvider>
         <Switch>
           <PrivateRoute exact path="/explore" component={Explore} />
           <PrivateRoute
@@ -34,7 +34,7 @@ function Dashboard() {
           <PrivateRoute exact path="/settings" component={UserSettings} />
           <PrivateRoute path="/" component={Home} />
         </Switch>
-      </RightProvider>
+      </SidebarProvider>
     </Container>
   );
 }

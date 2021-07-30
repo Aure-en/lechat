@@ -16,6 +16,7 @@ const Indicator = styled.div`
   font-size: 0.75rem;
   font-weight: 400;
   height: 0;
+  z-index: 3; // Puts it above messages
 
   &:after {
     content: "New";
