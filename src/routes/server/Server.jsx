@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Switch } from "react-router-dom";
 import PrivateRoute from "../types/PrivateRoute";
 import { useSidebar } from "../../context/SidebarContext";
+import { PermissionProvider } from "../../context/PermissionContext";
 import useWindowSize from "../../hooks/shared/useWindowSize";
 import useFetch from "../../hooks/shared/useFetch";
 import SidebarLeft from "../../components/server/sidebar/Left";
@@ -24,32 +25,34 @@ function Server({ match }) {
   }, [server]);
 
   return (
-    <Container $isRightOpen={isOpen}>
-      {/* Left sidebar */}
-      {windowSize.width > 768 && (
-        <SidebarLeft serverId={match.params.serverId} />
-      )}
+    <PermissionProvider serverId={match.params.serverId}>
+      <Container $isRightOpen={isOpen}>
+        {/* Left sidebar */}
+        {windowSize.width > 768 && (
+          <SidebarLeft serverId={match.params.serverId} />
+        )}
 
-      {/* Main */}
-      {server && (
-        <Switch>
-          <PrivateRoute
-            exact
-            path="/servers/:serverId/channels/:channelId"
-            component={Channel}
+        {/* Main */}
+        {server && (
+          <Switch>
+            <PrivateRoute
+              exact
+              path="/servers/:serverId/channels/:channelId"
+              component={Channel}
+            />
+            <PrivateRoute exact path="/servers/:serverId" component={Entry} />
+          </Switch>
+        )}
+
+        {/* Right sidebar */}
+        {isOpen && (
+          <SidebarRight
+            serverId={match.params.serverId}
+            close={() => setIsOpen(false)}
           />
-          <PrivateRoute exact path="/servers/:serverId" component={Entry} />
-        </Switch>
-      )}
-
-      {/* Right sidebar */}
-      {isOpen && (
-        <SidebarRight
-          serverId={match.params.serverId}
-          close={() => setIsOpen(false)}
-        />
-      )}
-    </Container>
+        )}
+      </Container>
+    </PermissionProvider>
   );
 }
 

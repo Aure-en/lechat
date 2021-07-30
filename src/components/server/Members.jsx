@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import IconChevron from "../../assets/icons/general/IconChevron";
+import { usePermission } from "../../context/PermissionContext";
 import useMembers from "../../hooks/server/server/useMembers";
+import { ReactComponent as IconCrown } from "../../assets/icons/server/crown.svg";
 
 function Members({ serverId }) {
   const [isOpen, setIsOpen] = useState(true);
   const { members } = useMembers(serverId);
+  const { server } = usePermission();
 
   return (
     <Container>
@@ -31,6 +34,11 @@ function Members({ serverId }) {
                 <Default>{member.username[0]}</Default>
               )}
               {member.username}
+              {server.includes(member._id) && (
+                <Crown aria-label="Server Owner">
+                  <IconCrown />
+                </Crown>
+              )}
             </Li>
           ))}
         </ul>
@@ -113,4 +121,11 @@ const Default = styled.div`
   background: ${(props) => props.theme.bg_button};
   color: ${(props) => props.theme.server_icon_text};
   margin-right: 0.5rem;
+`;
+
+const Crown = styled.span`
+  display: flex;
+  align-items: flex-end;
+  margin-left: 0.5rem;
+  color: ${(props) => props.theme.send_bg};
 `;

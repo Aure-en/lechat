@@ -9,23 +9,28 @@ export function usePermission() {
 }
 
 export function PermissionProvider({ serverId, children }) {
+  // List of users who can update / delete the whole server.
+  // For now, it is only the server owner.
+  const [server, setServer] = useState([]);
   // List of users who can create / update / delete channels and categories
   const [sections, setSections] = useState([]);
   // List of users who can delete other users' messages
   const [messages, setMessages] = useState([]);
 
   // Load the server informations
-  const { server } = useServer(serverId);
+  const { server: informations } = useServer(serverId);
 
   // Set up permissions
   // For now, only the owner has all permissions.
   useEffect(() => {
-    if (!server) return;
-    setSections([server.admin]);
-    setMessages([server.admin]);
-  }, [server]);
+    if (!informations) return;
+    setServer([informations.admin]);
+    setSections([informations.admin]);
+    setMessages([informations.admin]);
+  }, [informations]);
 
   const value = {
+    server,
     sections,
     messages,
   };

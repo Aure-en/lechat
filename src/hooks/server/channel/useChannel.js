@@ -99,7 +99,9 @@ function useChannel(serverId, channelId) {
 
     messagesRef.current.addEventListener("scroll", getPreviousMessages);
     return () => {
-      messagesRef.current.removeEventListener("scroll", getPreviousMessages);
+      if (messagesRef && messagesRef.current) {
+        messagesRef.current.removeEventListener("scroll", getPreviousMessages);
+      }
     };
   }, [messages, messagesRef, channelId]);
 
