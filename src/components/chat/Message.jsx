@@ -11,6 +11,7 @@ function Message({ message, isFirst, setEditing }) {
   const [hovered, setHovered] = useState(false);
   const [more, setMore] = useState(false);
 
+  // First message displays the author's avatar, username and timestamp.
   if (isFirst) {
     return (
       <First
@@ -30,6 +31,7 @@ function Message({ message, isFirst, setEditing }) {
       </First>
     );
   }
+
   return (
     <Container
       onMouseEnter={() => setHovered(true)}
@@ -70,6 +72,7 @@ Message.propTypes = {
         }),
       }),
     }),
+    edited: PropTypes.bool,
   }).isRequired,
   isFirst: PropTypes.bool,
   setEditing: PropTypes.func,

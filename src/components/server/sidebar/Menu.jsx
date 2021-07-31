@@ -1,24 +1,35 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { usePermission } from "../../../context/PermissionContext";
+import { useAuth } from "../../../context/AuthContext";
 import Category from "../../category/Modal";
 import Contextual from "../../shared/Contextual";
 
 function Menu({ serverId, ignoreRef, outerRef }) {
   const [isLeaveOpen, setIsLeaveOpen] = useState(false);
 
+  // Used to check if the user has the permission
+  // to see the Create Category button
+  const { sections } = usePermission();
+  const { user } = useAuth();
+
   return (
     <>
-      <Contextual outerRef={outerRef} ignoreRef={ignoreRef}>
-        <button type="button" onClick={() => setIsLeaveOpen(true)}>
-          Create Category
-        </button>
-      </Contextual>
+      {sections.includes(user._id) && (
+        <>
+          <Contextual outerRef={outerRef} ignoreRef={ignoreRef}>
+            <button type="button" onClick={() => setIsLeaveOpen(true)}>
+              Create Category
+            </button>
+          </Contextual>
 
-      <Category
-        isOpen={isLeaveOpen}
-        setIsOpen={setIsLeaveOpen}
-        serverId={serverId}
-      />
+          <Category
+            isOpen={isLeaveOpen}
+            setIsOpen={setIsLeaveOpen}
+            serverId={serverId}
+          />
+        </>
+      )}
     </>
   );
 }

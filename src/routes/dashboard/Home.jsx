@@ -2,11 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import { Switch } from "react-router-dom";
 import PrivateRoute from "../types/PrivateRoute";
+import { PermissionProvider } from "../../context/PermissionContext";
+import useWindowSize from "../../hooks/shared/useWindowSize";
 import Friends from "./Friends";
 import Servers from "./Servers";
 import Conversation from "../Conversation";
 import Sidebar from "../../components/home/Sidebar";
-import useWindowSize from "../../hooks/shared/useWindowSize";
 
 function Home() {
   const { windowSize } = useWindowSize();
@@ -17,11 +18,13 @@ function Home() {
       <Switch>
         <PrivateRoute exact path="/" component={Friends} />
         <PrivateRoute exact path="/user/servers" component={Servers} />
-        <PrivateRoute
-          exact
-          path="/conversations/:userId"
-          component={Conversation}
-        />
+        <PermissionProvider>
+          <PrivateRoute
+            exact
+            path="/conversations/:userId"
+            component={Conversation}
+          />
+        </PermissionProvider>
       </Switch>
     </Container>
   );

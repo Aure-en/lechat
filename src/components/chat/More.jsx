@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { createPortal } from "react-dom";
+import { usePermission } from "../../context/PermissionContext";
+import { useAuth } from "../../context/AuthContext";
 import useDropdown from "../../hooks/shared/useDropdown";
 import Delete from "./Delete";
 
@@ -11,9 +13,12 @@ function More({ message, setEditing, setIsActive }) {
   const ref = useRef();
   const { isDropdownOpen, setIsDropdownOpen } = useDropdown(ref);
 
-  const pin = async (id) => {
-    // TO-DO: Fetch to pin message
-  };
+  // Used to check if the user has the permission
+  // to:
+  //   - Delete the message (=user is either the author or has server permissions)
+  //   - Edit the message (=user is the author)
+  const { messages } = usePermission();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (isDropdownOpen) {
@@ -22,6 +27,14 @@ function More({ message, setEditing, setIsActive }) {
       setIsActive(false);
     }
   }, [isDropdownOpen]);
+
+  const pin = (id) => {};
+
+  /* Menu only opens if the user can access any of the following options (pinning, editing, deleting a message...) */
+
+  if (message.author._id !== user._id && !messages.includes(user._id)) {
+    return <></>;
+  }
 
   return (
     <Container ref={ref}>
@@ -39,19 +52,20 @@ function More({ message, setEditing, setIsActive }) {
               $top={ref.current.getBoundingClientRect().top}
               $right={ref.current.getBoundingClientRect().left}
             >
-              {message.author._id ===
-                JSON.parse(localStorage.getItem("user"))._id && (
+              {message.author._id === user._id && (
                 <Option type="button" onClick={() => setEditing(message)}>
                   Edit Message
                 </Option>
               )}
-              <Option type="button" onClick={() => pin(message._id)}>
-                Pin Message
-              </Option>
-              {message.author._id ===
-                JSON.parse(localStorage.getItem("user"))._id && (
-                <Delete message={message} />
+
+              {messages.includes(user._id) && (
+                <Option type="button" onClick={() => pin(message._id)}>
+                  Pin Message
+                </Option>
               )}
+
+              {(message.author._id === user._id ||
+                messages.includes(user._id)) && <Delete message={message} />}
             </Menu>,
             document.body.querySelector("#modal-root")
           )}
@@ -66,6 +80,9 @@ export default More;
 More.propTypes = {
   message: PropTypes.shape({
     _id: PropTypes.string,
+    author: PropTypes.shape({
+      _id: PropTypes.string,
+    }),
   }).isRequired,
   setEditing: PropTypes.func,
   setIsActive: PropTypes.func,
