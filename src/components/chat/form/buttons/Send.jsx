@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { ReactComponent as IconSend } from "../../../../assets/icons/editor/send.svg";
 
 function Send({ onEnter, disabled }) {
   return (
@@ -24,12 +23,14 @@ Send.defaultProps = {
 };
 
 const Button = styled.button`
-  padding: 0 1rem;
+  padding: 0.4rem 1rem;
   border-radius: 3px;
   font-weight: 500;
   background: ${(props) =>
     props.disabled ? props.theme.send_bg_disabled : props.theme.send_bg};
   color: ${(props) => props.theme.send_text};
+  word-break: keep-all;
+  align-self: center;
 
   &:hover {
     background: ${(props) => !props.disabled && props.theme.send_bg_hover};

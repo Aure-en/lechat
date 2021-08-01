@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { Transition } from "react-transition-group";
 import Bold from "./Bold";
 import Underline from "./Underline";
 import Italic from "./Italic";
@@ -16,7 +17,7 @@ import IconChevron from "../../../../assets/icons/general/IconChevron";
 import IconNotebook from "../../../../assets/icons/editor/IconNotebook";
 
 function Buttons({ editorState, setEditorState }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   return (
     <Wrapper>
       <Button type="button" onClick={() => setIsOpen(!isOpen)}>
@@ -26,29 +27,37 @@ function Buttons({ editorState, setEditorState }) {
         </Icon>
       </Button>
 
-      {isOpen && (
-        <Container>
-          <Bold editorState={editorState} setEditorState={setEditorState} />
-          <Underline
-            editorState={editorState}
-            setEditorState={setEditorState}
-          />
-          <Italic editorState={editorState} setEditorState={setEditorState} />
-          <Strikethrough
-            editorState={editorState}
-            setEditorState={setEditorState}
-          />
-          <Spoiler editorState={editorState} setEditorState={setEditorState} />
-          <Link editorState={editorState} setEditorState={setEditorState} />
-          <Code editorState={editorState} setEditorState={setEditorState} />
-          <Ordered editorState={editorState} setEditorState={setEditorState} />
-          <Unordered
-            editorState={editorState}
-            setEditorState={setEditorState}
-          />
-          <Quote editorState={editorState} setEditorState={setEditorState} />
-        </Container>
-      )}
+      <Transition in={isOpen} timeout={100}>
+        {(state) => (
+          <Container $state={state}>
+            <Bold editorState={editorState} setEditorState={setEditorState} />
+            <Underline
+              editorState={editorState}
+              setEditorState={setEditorState}
+            />
+            <Italic editorState={editorState} setEditorState={setEditorState} />
+            <Strikethrough
+              editorState={editorState}
+              setEditorState={setEditorState}
+            />
+            <Spoiler
+              editorState={editorState}
+              setEditorState={setEditorState}
+            />
+            <Link editorState={editorState} setEditorState={setEditorState} />
+            <Code editorState={editorState} setEditorState={setEditorState} />
+            <Ordered
+              editorState={editorState}
+              setEditorState={setEditorState}
+            />
+            <Unordered
+              editorState={editorState}
+              setEditorState={setEditorState}
+            />
+            <Quote editorState={editorState} setEditorState={setEditorState} />
+          </Container>
+        )}
+      </Transition>
     </Wrapper>
   );
 }
@@ -61,8 +70,14 @@ const Wrapper = styled.div`
 `;
 
 const Container = styled.div`
-  display: flex;
+  display: ${(props) => (props.$state === "exited" ? "none" : "flex")};
+  transform: translateX(
+    ${(props) => (props.$state === "entered" ? "0" : "-5%")}
+  );
+  opacity: ${(props) => (props.$state === "entered" ? "1" : "0")};
+  transition: all 0.3s linear;
   align-items: center;
+  flex-wrap: wrap;
 
   & > button {
     margin-right: 0.25rem;
@@ -78,6 +93,8 @@ const Button = styled.button`
   align-items: center;
   min-height: 2rem; // Fixing min height to avoid "jump" when other buttons appear (might be a tad taller)
   color: ${(props) => props.theme.editor_text};
+  background: ${(props) => props.theme.bg_secondary};
+  z-index: 2;
 `;
 
 const Icon = styled.span`

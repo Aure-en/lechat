@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
 import ReactTooltip from "react-tooltip";
-import Server from "./Server";
 import useDropdown from "../../../hooks/shared/useDropdown";
 import useServers from "../../../hooks/server/server/useServers";
 import Create from "../../server/Modal";

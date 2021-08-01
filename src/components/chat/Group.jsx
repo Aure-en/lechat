@@ -4,6 +4,9 @@ import styled from "styled-components";
 import Message from "./Message";
 import New from "./New";
 
+/**
+ * Group of messages written by the same author at around the same timestamp.
+ */
 function Group({ messages, setEditing }) {
   return (
     <Li>
