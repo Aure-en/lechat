@@ -11,24 +11,22 @@ function Channel() {
   const { serverId, channelId } = useRouteMatch(
     "/servers/:serverId/channels/:channelId"
   ).params;
-  const { editing, setEditing, messages, setMessages, channel, messagesRef } =
-    useChannel(serverId, channelId);
+  const { editing, setEditing, channel } = useChannel(serverId, channelId);
 
   return (
     <Container>
       {channel && <Header name={channel.name} description={channel.about} />}
       <Messages
-        messages={messages}
+        location={{ server: serverId, channel: channelId }}
         setEditing={setEditing}
-        messagesRef={messagesRef}
       />
+
       {serverId && channelId && (
         <>
           <Form
             location={{ server: serverId, channel: channelId }}
             message={editing}
             setEditing={setEditing}
-            setMessages={setMessages}
           />
           <Typing location={channelId} />
         </>

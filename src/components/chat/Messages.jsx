@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Group from "./Group";
-import useOrder from "../../hooks/chat/useOrder";
+import useMessage from "../../hooks/chat/useMessage";
+import useIntersection from "../../hooks/shared/useIntersection";
 import useScroll from "../../hooks/chat/useScroll";
 
-function Messages({ messages, setEditing, messagesRef }) {
-  const { ordered } = useOrder(messages);
-  useScroll(ordered, messagesRef); // handle scrolling
+function Messages({ location, setEditing }) {
+  const { ordered, getPrevious } = useMessage(location);
+  const containerRef = useRef();
+  const triggerRef = useRef();
+  useIntersection(containerRef, triggerRef, getPrevious);
+  useScroll(ordered, containerRef);
 
   return (
-    <Ul ref={messagesRef}>
+    <Ul ref={containerRef}>
+      <div ref={triggerRef} />
       {ordered.map((messages) => (
         <Group key={messages._id} messages={messages} setEditing={setEditing} />
       ))}
@@ -21,16 +26,11 @@ function Messages({ messages, setEditing, messagesRef }) {
 export default Messages;
 
 Messages.propTypes = {
-  messages: PropTypes.arrayOf(
-    PropTypes.shape({
-      author: PropTypes.shape({
-        username: PropTypes.string,
-        _id: PropTypes.string,
-      }),
-      text: PropTypes.string,
-      _id: PropTypes.string,
-    })
-  ).isRequired,
+  location: PropTypes.shape({
+    conversation: PropTypes.string,
+    server: PropTypes.string,
+    channel: PropTypes.string,
+  }).isRequired,
   setEditing: PropTypes.func,
 };
 

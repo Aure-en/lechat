@@ -25,7 +25,7 @@ function useScroll(messages, ref) {
 
   /* After the messages' first render:
    * - Scroll to the bottom of the container.
-   * - Set up refs
+   * - Set up ref
    */
 
   useEffect(() => {

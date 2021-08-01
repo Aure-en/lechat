@@ -4,7 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import decorator from "../../components/chat/form/editor/entities/decorator";
 import socket from "../../socket/socket";
 
-function useForm(location, message, setEditing, setMessages) {
+function useForm(location, message, setEditing) {
   // editorState contains the typed text with rich edition.
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(decorator)

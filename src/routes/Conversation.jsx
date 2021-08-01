@@ -11,14 +11,9 @@ import useWindowSize from "../hooks/shared/useWindowSize";
 
 function Conversation({ match }) {
   const { user } = useAuth();
-  const {
-    editing,
-    setEditing,
-    conversation,
-    messages,
-    setMessages,
-    messagesRef,
-  } = useConversation(match.params.userId);
+  const { editing, setEditing, conversation } = useConversation(
+    match.params.userId
+  );
   const { windowSize } = useWindowSize();
 
   if (conversation) {
@@ -37,16 +32,16 @@ function Conversation({ match }) {
           </Header>
 
           <Messages
-            messages={messages}
+            location={{ conversation: conversation._id }}
             setEditing={setEditing}
-            messagesRef={messagesRef}
           />
+
           <Form
             location={{ conversation: conversation._id }}
             message={editing}
             setEditing={setEditing}
-            setMessages={setMessages}
           />
+
           <Typing location={conversation._id} />
         </Container>
 
