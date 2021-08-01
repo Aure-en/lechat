@@ -39,7 +39,6 @@ const init = () => {
   });
 
   useAuth.mockReturnValue({ user: { _id: "4" } });
-
   usePermission.mockReturnValue({ sections: [] });
 
   render(

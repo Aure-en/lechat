@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { BrowserRouter as Router } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { usePermission } from "../../context/PermissionContext";
-import Menu from "../../components/channel/Menu";
+import Menu from "../../components/category/Menu";
 
 // -- SETUP --
 jest.mock("../../context/AuthContext");
@@ -14,7 +14,6 @@ jest.mock("../../context/PermissionContext");
  * Generate:
  * - Server
  * - Category
- * - Channel
  * - User
  */
 const create = () => {
@@ -26,20 +25,14 @@ const create = () => {
     _id: "2",
   };
 
-  const channel = {
-    name: "Channel",
-    _id: "3",
-  };
-
   const user = {
     name: "User",
-    _id: "4",
+    _id: "3",
   };
 
   return {
     server,
     category,
-    channel,
     user,
   };
 };
@@ -54,29 +47,20 @@ const mock = (user, permissions) => {
 };
 
 // Create the component on which the right click will open the contextual menu.
-function Component({ serverId, categoryId, channel }) {
+function Component({ serverId, category }) {
   const outerRef = useRef();
   return (
     <Router>
       <div ref={outerRef}>Right click here to open the contextual menu.</div>
-      <Menu
-        serverId={serverId}
-        categoryId={categoryId}
-        channel={channel}
-        outerRef={outerRef}
-      />
+      <Menu serverId={serverId} category={category} outerRef={outerRef} />
     </Router>
   );
 }
 
-const renderElems = (serverId, categoryId, channel) => {
+const renderElems = (serverId, category) => {
   render(
     <>
-      <Component
-        serverId={serverId}
-        categoryId={categoryId}
-        channel={channel}
-      />
+      <Component serverId={serverId} category={category} />
       <div id="modal-root" />
     </>
   );
@@ -86,16 +70,15 @@ const renderElems = (serverId, categoryId, channel) => {
 describe("The menu only opens if the user has the necessary permissions", () => {
   let server;
   let category;
-  let channel;
   let user;
 
   beforeAll(() => {
-    ({ server, category, channel, user } = create());
+    ({ server, category, user } = create());
   });
 
   test("If the user doesn't have any permissions, the menu doesn't open", () => {
     mock(user, []);
-    renderElems(server._id, category._id, channel);
+    renderElems(server._id, category);
 
     // Try to open the menu
     const elem = screen.getByText(
@@ -110,7 +93,7 @@ describe("The menu only opens if the user has the necessary permissions", () => 
 
   test("If the user has the necessary permissions, the menu open", () => {
     mock(user, [user._id]);
-    renderElems(server._id, category._id, channel);
+    renderElems(server._id, category);
 
     // Try to open the menu
     const elem = screen.getByText(
@@ -127,52 +110,51 @@ describe("The menu only opens if the user has the necessary permissions", () => 
 describe("The contextual menu buttons work as expected", () => {
   let server;
   let category;
-  let channel;
   let user;
 
   beforeEach(() => {
     // Open the contextual menu
-    ({ server, category, channel, user } = create());
+    ({ server, category, user } = create());
     mock(user, [user._id]);
-    renderElems(server._id, category._id, channel);
+    renderElems(server._id, category);
     const elem = screen.getByText(
       /right click here to open the contextual menu/i
     );
     fireEvent.contextMenu(elem);
   });
 
-  test("User can open the create channel modal from the contextual menu", () => {
+  test("User can open the create category modal from the contextual menu", () => {
     // Click on the contextual menu button
-    const createBtn = screen.getByRole("button", { name: /create channel/i });
+    const createBtn = screen.getByRole("button", { name: /create category/i });
     userEvent.click(createBtn);
 
     // Check that the create modal was opened.
     const createHeading = screen.getByRole("heading", {
-      name: /create channel/i,
+      name: /create category/i,
     });
     expect(createHeading).toBeInTheDocument();
   });
 
-  test("User can open the update channel modal from the contextual menu", () => {
+  test("User can open the update category modal from the contextual menu", () => {
     // Click on the contextual menu button
-    const updateBtn = screen.getByRole("button", { name: /update channel/i });
+    const updateBtn = screen.getByRole("button", { name: /update category/i });
     userEvent.click(updateBtn);
 
     // Check that the update modal was opened.
     const updateHeading = screen.getByRole("heading", {
-      name: /update channel/i,
+      name: /update category/i,
     });
     expect(updateHeading).toBeInTheDocument();
   });
 
-  test("User can open the delete channel modal from the contextual menu", () => {
+  test("User can open the delete category modal from the contextual menu", () => {
     // Click on the contextual menu button
-    const deleteBtn = screen.getByRole("button", { name: /delete channel/i });
+    const deleteBtn = screen.getByRole("button", { name: /delete category/i });
     userEvent.click(deleteBtn);
 
     // Check that the delete modal was opened.
     const deleteHeading = screen.getByRole("heading", {
-      name: /delete channel/i,
+      name: /delete category/i,
     });
     expect(deleteHeading).toBeInTheDocument();
   });
