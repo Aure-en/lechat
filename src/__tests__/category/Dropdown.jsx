@@ -2,12 +2,16 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
+import { useAuth } from "../../context/AuthContext";
+import { usePermission } from "../../context/PermissionContext";
 import { useUnread } from "../../context/UnreadContext";
 import useSection from "../../hooks/server/server/useSection";
 import Category from "../../components/category/Category";
 
+jest.mock("../../context/AuthContext");
 jest.mock("../../context/UnreadContext");
 jest.mock("../../hooks/server/server/useSection");
+jest.mock("../../context/PermissionContext");
 
 const init = () => {
   const server = {
@@ -26,20 +30,17 @@ const init = () => {
 
   // Mock hooks
   useUnread.mockReturnValue({
-    unread: {
-      servers: [
-        {
-          _id: "1",
-          channels: [{ _id: "3", unread: 0 }],
-        },
-      ],
-    },
+    getRoomUnread: () => 0,
   });
 
   useSection.mockReturnValue({
     sections: [channel],
     setSections: () => {},
   });
+
+  useAuth.mockReturnValue({ user: { _id: "4" } });
+
+  usePermission.mockReturnValue({ sections: [] });
 
   render(
     <Router>

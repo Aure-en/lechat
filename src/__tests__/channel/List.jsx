@@ -1,11 +1,15 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { usePermission } from "../../context/PermissionContext";
 import { useUnread } from "../../context/UnreadContext";
 import useSection from "../../hooks/server/server/useSection";
 import List from "../../components/channel/List";
 
 jest.mock("../../context/UnreadContext");
+jest.mock("../../context/AuthContext");
+jest.mock("../../context/PermissionContext");
 jest.mock("../../hooks/server/server/useSection");
 
 const init = () => {
@@ -18,7 +22,6 @@ const init = () => {
   };
 
   const channels = [];
-  const unreadChannels = [];
 
   // Generate channels
   for (let i = 1; i < 6; i += 1) {
@@ -28,24 +31,14 @@ const init = () => {
       _id: `${i}`,
     };
     channels.push(channel);
-
-    const unread = {
-      _id: `${i}`,
-      unread: 0,
-    };
-    unreadChannels.push(unread);
   }
 
   // Mock hooks
+  useAuth.mockReturnValue({ user: { _id: "1" } });
+  usePermission.mockReturnValue({ sections: [] });
+
   useUnread.mockReturnValue({
-    unread: {
-      servers: [
-        {
-          _id: "1",
-          channels: unreadChannels,
-        },
-      ],
-    },
+    getRoomUnread: () => 0,
   });
 
   useSection.mockReturnValue({

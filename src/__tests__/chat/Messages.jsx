@@ -2,13 +2,19 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import Messages from "../../components/chat/Messages";
+import { UnreadProvider } from "../../context/UnreadContext";
+import { AuthProvider } from "../../context/AuthContext";
 import { author, unordered } from "../utils/messages";
 
 describe("It orders messages by author and display them", () => {
   beforeEach(() =>
     render(
       <Router>
-        <Messages messages={unordered} setEditing={() => {}} />
+        <AuthProvider>
+          <UnreadProvider>
+            <Messages messages={unordered} setEditing={() => {}} />
+          </UnreadProvider>
+        </AuthProvider>
       </Router>
     )
   );

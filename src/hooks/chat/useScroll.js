@@ -45,7 +45,7 @@ function useScroll(messages, ref) {
 
   // When messages change, compare to the ref and scroll in consequence.
   useEffect(() => {
-    if (messages.length < 1 || !previous) return;
+    if (messages.length < 1 || !previous || !previous.current) return;
 
     // Previous messages were loaded
     if (messages[0]._id !== previous.current.first) {

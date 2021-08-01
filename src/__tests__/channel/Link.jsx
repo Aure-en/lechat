@@ -1,10 +1,14 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { usePermission } from "../../context/PermissionContext";
 import { useUnread } from "../../context/UnreadContext";
 import Channel from "../../components/channel/Channel";
 
+jest.mock("../../context/AuthContext");
 jest.mock("../../context/UnreadContext");
+jest.mock("../../context/PermissionContext");
 
 const server = {
   _id: "1",
@@ -20,6 +24,9 @@ const channel = {
 };
 
 const init = () => {
+  useAuth.mockReturnValue({ user: { _id: "4" } });
+  usePermission.mockReturnValue({ sections: [] });
+
   render(
     <Router>
       <Channel
@@ -33,7 +40,7 @@ const init = () => {
 
 describe("Link to channel renders properly", () => {
   test("Link to channel is displayed without indicator if there are no unread messages", () => {
-    useUnread.mockReturnValue({
+    useUnread.mockReturnValueOnce({
       unread: {
         servers: [
           {
@@ -42,6 +49,7 @@ describe("Link to channel renders properly", () => {
           },
         ],
       },
+      getRoomUnread: () => 0,
     });
 
     init();
@@ -66,6 +74,7 @@ describe("Link to channel renders properly", () => {
           },
         ],
       },
+      getRoomUnread: () => 1,
     });
 
     init();

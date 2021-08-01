@@ -49,7 +49,7 @@ test("User's servers preview link to the server", () => {
   const { user } = init();
 
   user.server.forEach((server) => {
-    const link = document.querySelector(`a[href="/servers/${server}"]`);
+    const link = document.body.querySelector(`a[href="/servers/${server}"]`);
     expect(link).toBeDefined();
   });
 });
@@ -59,7 +59,7 @@ test("Other servers preview link to the servers' join page", () => {
 
   servers.forEach((server) => {
     if (!user.server.includes(server)) {
-      const link = document.querySelector(`a[href="/join/${server}"]`);
+      const link = document.body.querySelector(`a[href="/join/${server}"]`);
       expect(link).toBeDefined();
     }
   });

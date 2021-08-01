@@ -12,7 +12,7 @@ function Delete({ isOpen, setIsOpen, serverId, channel }) {
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <Form onSubmit={handleSubmit}>
         <Header>
-          <Heading>Delete Category</Heading>
+          <Heading>Delete Channel</Heading>
           <p>
             Are you sure you would like to delete the channel{" "}
             <strong>{channel.name}</strong> ?

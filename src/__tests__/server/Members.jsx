@@ -1,10 +1,14 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
+import { useAuth } from "../../context/AuthContext";
+import { usePermission } from "../../context/PermissionContext";
 import useMembers from "../../hooks/server/server/useMembers";
 import Members from "../../components/server/Members";
 
+jest.mock("../../context/AuthContext");
+jest.mock("../../context/PermissionContext");
 jest.mock("../../hooks/server/server/useMembers");
 
 const init = () => {
@@ -25,6 +29,8 @@ const init = () => {
 
   // Mock users
   useMembers.mockReturnValue({ members });
+  useAuth.mockReturnValue({ user: { _id: "1" } });
+  usePermission.mockReturnValue({ server: ["1"] });
 
   // Render
   render(
@@ -65,4 +71,11 @@ describe("Dropdown renders members properly", () => {
       expect(li).toBeInTheDocument();
     });
   });
+});
+
+test("There is a special indicator next to the server admin's name", () => {
+  const members = init();
+  const admin = screen.getByText(members[0].username);
+  const svg = within(admin).getByText("crown.svg");
+  expect(svg).toBeInTheDocument();
 });

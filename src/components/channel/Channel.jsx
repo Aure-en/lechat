@@ -11,9 +11,8 @@ function Channel({ serverId, categoryId, channel }) {
   const { unread, getRoomUnread } = useUnread();
 
   // To know if the channel is currently active.
-  const current =
-    useRouteMatch("/servers/:serverId/channels/:channelId") &&
-    useRouteMatch("/servers/:serverId/channels/:channelId").params.channelId;
+  const match = useRouteMatch("/servers/:serverId/channels/:channelId");
+  const current = match && match.params.channelId;
 
   // For contextual menu
   const ref = useRef();
