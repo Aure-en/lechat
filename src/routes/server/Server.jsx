@@ -15,7 +15,7 @@ import Entry from "./Entry";
 function Server({ match }) {
   const { isOpen, setIsOpen } = useSidebar();
   const { data: server } = useFetch(
-    `${process.env.REACT_APP_URL}/servers/${match.params.serverId}`
+    `${process.env.REACT_APP_SERVER}/servers/${match.params.serverId}`
   );
   const { windowSize } = useWindowSize();
 

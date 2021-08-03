@@ -6,7 +6,7 @@ import Category from "./Category";
 
 function List({ serverId }) {
   const { sections: categories } = useSection(
-    `${process.env.REACT_APP_URL}/servers/${serverId}/categories`,
+    `${process.env.REACT_APP_SERVER}/servers/${serverId}/categories`,
     "category"
   );
 

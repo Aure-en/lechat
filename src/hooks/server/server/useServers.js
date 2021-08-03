@@ -8,7 +8,7 @@ function useServers() {
 
   const getUserServers = async (userId) => {
     const res = await fetch(
-      `${process.env.REACT_APP_URL}/users/${userId}/servers`,
+      `${process.env.REACT_APP_SERVER}/users/${userId}/servers`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,

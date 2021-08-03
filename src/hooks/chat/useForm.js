@@ -26,20 +26,20 @@ function useForm(location, message, setEditing) {
   useEffect(() => {
     // If we are editing a message
     if (message) {
-      return setUrl(`${process.env.REACT_APP_URL}/messages/${message._id}`);
+      return setUrl(`${process.env.REACT_APP_SERVER}/messages/${message._id}`);
     }
 
     // If we are writing in a private conversation
     if (location.conversation) {
       return setUrl(
-        `${process.env.REACT_APP_URL}/conversations/${location.conversation}/messages`
+        `${process.env.REACT_APP_SERVER}/conversations/${location.conversation}/messages`
       );
     }
 
     // If we are writing in a public server
     if (location.server && location.channel) {
       return setUrl(
-        `${process.env.REACT_APP_URL}/servers/${location.server}/channels/${location.channel}/messages`
+        `${process.env.REACT_APP_SERVER}/servers/${location.server}/channels/${location.channel}/messages`
       );
     }
   }, [location]);

@@ -6,7 +6,7 @@ import Preview from "./Preview";
 
 function List() {
   const { user } = useAuth();
-  const { data } = useFetch(`${process.env.REACT_APP_URL}/users/${user._id}`);
+  const { data } = useFetch(`${process.env.REACT_APP_SERVER}/users/${user._id}`);
 
   return (
     <Ul>

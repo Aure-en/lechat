@@ -5,7 +5,7 @@ import Channel from "./Channel";
 
 function List({ serverId, categoryId }) {
   const { sections: channels } = useSection(
-    `${process.env.REACT_APP_URL}/categories/${categoryId}/channels`,
+    `${process.env.REACT_APP_SERVER}/categories/${categoryId}/channels`,
     "channel",
     categoryId
   );

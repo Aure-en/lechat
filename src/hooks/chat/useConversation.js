@@ -14,7 +14,7 @@ function useConversation(userId) {
    */
   const checkExistence = async () => {
     const existRes = await fetch(
-      `${process.env.REACT_APP_URL}/conversations?members=${userId},${user._id}`,
+      `${process.env.REACT_APP_SERVER}/conversations?members=${userId},${user._id}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -31,7 +31,7 @@ function useConversation(userId) {
    */
   const create = async () => {
     const createRes = await fetch(
-      `${process.env.REACT_APP_URL}/conversations`,
+      `${process.env.REACT_APP_SERVER}/conversations`,
       {
         method: "POST",
         headers: {

@@ -54,7 +54,7 @@ function usePassword() {
    */
   const updatePassword = async () => {
     const res = await fetch(
-      `${process.env.REACT_APP_URL}/users/${user._id}/password`,
+      `${process.env.REACT_APP_SERVER}/users/${user._id}/password`,
       {
         method: "PUT",
         headers: {

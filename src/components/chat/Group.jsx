@@ -11,15 +11,14 @@ function Group({ messages, setEditing }) {
   return (
     <Li>
       {messages.messages.map((message, index) => (
-        <>
+        <React.Fragment key={message._id}>
           {message.unread && <New />}
           <Message
-            key={message._id}
             message={message}
             isFirst={index === 0}
             setEditing={setEditing}
           />
-        </>
+        </React.Fragment>
       ))}
     </Li>
   );

@@ -9,7 +9,7 @@ function Delete({ message }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const remove = async (id) => {
-    await fetch(`${process.env.REACT_APP_URL}/messages/${id}`, {
+    await fetch(`${process.env.REACT_APP_SERVER}/messages/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,

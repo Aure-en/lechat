@@ -8,7 +8,7 @@ function Delete({ friend, friendship }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const remove = async (friendship) => {
-    await fetch(`${process.env.REACT_APP_URL}/friends/${friendship}`, {
+    await fetch(`${process.env.REACT_APP_SERVER}/friends/${friendship}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,

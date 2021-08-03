@@ -7,7 +7,7 @@ import Form from "../../components/server/Join";
 
 function Join({ match }) {
   const { data: server } = useFetch(
-    `${process.env.REACT_APP_URL}/servers/${match.params.serverId}`
+    `${process.env.REACT_APP_SERVER}/servers/${match.params.serverId}`
   );
   const history = useHistory();
 

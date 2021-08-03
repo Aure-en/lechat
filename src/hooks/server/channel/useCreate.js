@@ -16,8 +16,8 @@ function useCreate(serverId, categoryId, channel) {
 
     // Save the channel (create or update it)
     const url = channel
-      ? `${process.env.REACT_APP_URL}/channels/${channel._id}`
-      : `${process.env.REACT_APP_URL}/servers/${serverId}/categories/${categoryId}/channels`;
+      ? `${process.env.REACT_APP_SERVER}/channels/${channel._id}`
+      : `${process.env.REACT_APP_SERVER}/servers/${serverId}/categories/${categoryId}/channels`;
 
     const method = channel ? "PUT" : "POST";
 

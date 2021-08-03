@@ -21,7 +21,7 @@ function useRequest() {
 
     // Check if user exists
     const userRes = await fetch(
-      `${process.env.REACT_APP_URL}/users?search=${friend}`
+      `${process.env.REACT_APP_SERVER}/users?search=${friend}`
     );
     const userJson = await userRes.json();
 
@@ -30,7 +30,7 @@ function useRequest() {
 
     // User exists, send friend request
     const res = await fetch(
-      `${process.env.REACT_APP_URL}/users/${userJson._id}/friends`,
+      `${process.env.REACT_APP_SERVER}/users/${userJson._id}/friends`,
       {
         method: "POST",
         headers: {

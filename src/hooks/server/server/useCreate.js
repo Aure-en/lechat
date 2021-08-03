@@ -18,7 +18,7 @@ function useCreate(server) {
     if (image) formData.append("image", image);
 
     // Submit the form
-    const res = await fetch(`${process.env.REACT_APP_URL}/servers`, {
+    const res = await fetch(`${process.env.REACT_APP_SERVER}/servers`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -42,7 +42,7 @@ function useCreate(server) {
     if (image) formData.append("image", image);
 
     const res = await fetch(
-      `${process.env.REACT_APP_URL}/servers/${server._id}`,
+      `${process.env.REACT_APP_SERVER}/servers/${server._id}`,
       {
         method: "PUT",
         headers: {

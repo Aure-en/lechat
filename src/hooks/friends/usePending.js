@@ -11,7 +11,7 @@ function usePending() {
     (async () => {
       if (!user) return;
       const res = await fetch(
-        `${process.env.REACT_APP_URL}/users/${user._id}/pending`,
+        `${process.env.REACT_APP_SERVER}/users/${user._id}/pending`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("jwt")}`,

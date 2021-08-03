@@ -7,7 +7,7 @@ import useFetch from "../../hooks/shared/useFetch";
 function Explore() {
   const { user } = useAuth();
   const { data: servers } = useFetch(
-    `${process.env.REACT_APP_URL}/servers?sort_by=members&order=desc`
+    `${process.env.REACT_APP_SERVER}/servers?sort_by=members&order=desc`
   );
 
   return (

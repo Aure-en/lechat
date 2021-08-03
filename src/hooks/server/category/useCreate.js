@@ -15,8 +15,8 @@ function useCreate(serverId, category) {
 
     // Save the category (create or update it)
     const url = category
-      ? `${process.env.REACT_APP_URL}/categories/${category._id}`
-      : `${process.env.REACT_APP_URL}/servers/${serverId}/categories`;
+      ? `${process.env.REACT_APP_SERVER}/categories/${category._id}`
+      : `${process.env.REACT_APP_SERVER}/servers/${serverId}/categories`;
 
     const method = category ? "PUT" : "POST";
 

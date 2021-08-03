@@ -24,7 +24,7 @@ export function UnreadProvider({ children }) {
     const responses = await Promise.all(
       conversations.map((conversation) =>
         fetch(
-          `${process.env.REACT_APP_URL}/conversations/${conversation._id}`,
+          `${process.env.REACT_APP_SERVER}/conversations/${conversation._id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -57,7 +57,7 @@ export function UnreadProvider({ children }) {
     const responses = await Promise.all(
       conversations.map((conversation) =>
         fetch(
-          `${process.env.REACT_APP_URL}/conversations/${conversation._id}/messages?after=${conversation.timestamp}`,
+          `${process.env.REACT_APP_SERVER}/conversations/${conversation._id}/messages?after=${conversation.timestamp}`,
           {
             method: "HEAD",
             headers: {
@@ -95,7 +95,7 @@ export function UnreadProvider({ children }) {
     const responses = await Promise.all(
       channels.map((channel) =>
         fetch(
-          `${process.env.REACT_APP_URL}/channels/${channel._id}/messages?after=${channel.timestamp}`,
+          `${process.env.REACT_APP_SERVER}/channels/${channel._id}/messages?after=${channel.timestamp}`,
           {
             method: "HEAD",
             headers: {
@@ -264,7 +264,7 @@ export function UnreadProvider({ children }) {
   const handleConversation = async (message) => {
     // Fetch the conversation to get its informations.
     const response = await fetch(
-      `${process.env.REACT_APP_URL}/conversations/${message.conversation}`,
+      `${process.env.REACT_APP_SERVER}/conversations/${message.conversation}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,

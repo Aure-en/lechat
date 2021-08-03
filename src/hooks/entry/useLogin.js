@@ -51,7 +51,7 @@ function useLogin() {
    * @returns {object} json containing the user's information or errors.
    */
   const send = async () => {
-    const response = await fetch(`${process.env.REACT_APP_URL}/auth/login`, {
+    const response = await fetch(`${process.env.REACT_APP_SERVER}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

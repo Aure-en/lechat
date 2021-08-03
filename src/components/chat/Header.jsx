@@ -10,9 +10,7 @@ function Header({ name, description }) {
   return (
     <Container>
       <Content>
-        <Heading>{name}</Heading>
-        <Icons>
-          <OpenRight />
+        <Left>
           {description && (
             <Button
               type="button"
@@ -22,6 +20,11 @@ function Header({ name, description }) {
               <IconChevron />
             </Button>
           )}
+          <Heading>{name}</Heading>
+        </Left>
+
+        <Icons>
+          <OpenRight />
         </Icons>
       </Content>
       {isOpen && <Description>{description}</Description>}
@@ -54,6 +57,11 @@ const Content = styled.div`
   align-items: center;
 `;
 
+const Left = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const Icons = styled.div`
   display: flex;
   justify-content: space-between;
@@ -62,9 +70,11 @@ const Icons = styled.div`
 `;
 
 const Button = styled.button`
-  right: 2rem; // Padding
+  margin-right: 0.5rem;
+  position: relative;
+  top: ${(props) => (props.$isOpen ? "2px" : "0")};
   color: ${(props) => props.theme.text_secondary};
-  transform: ${(props) => !props.$isOpen && "rotate(90deg)"};
+  transform: ${(props) => !props.$isOpen && "rotate(-90deg)"};
   transition: transform 0.3s linear;
 `;
 

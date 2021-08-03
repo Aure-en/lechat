@@ -50,7 +50,7 @@ function useConversation(id) {
       };
       const blob = new Blob([body], headers);
       navigator.sendBeacon(
-        `${process.env.REACT_APP_URL}/activity/${user._id}/conversations`,
+        `${process.env.REACT_APP_SERVER}/activity/${user._id}/conversations`,
         blob
       );
     };

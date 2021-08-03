@@ -65,7 +65,7 @@ function useSignUp() {
    *   - If SignUp failed, return { errors: [] }
    */
   const send = async () => {
-    const response = await fetch(`${process.env.REACT_APP_URL}/auth/signup`, {
+    const response = await fetch(`${process.env.REACT_APP_SERVER}/auth/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -101,7 +101,7 @@ function useSignUp() {
    * tracking the user's activity.
    */
   const setActivity = async (token, user) => {
-    await fetch(`${process.env.REACT_APP_URL}/activity`, {
+    await fetch(`${process.env.REACT_APP_SERVER}/activity`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,

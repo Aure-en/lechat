@@ -22,13 +22,13 @@ function useMessage(location) {
   // Helper function to get the endpoint linked to the room
   const setUrl = (location, lastMessageId) => {
     if (location.conversation) {
-      return `${process.env.REACT_APP_URL}/conversations/${
+      return `${process.env.REACT_APP_SERVER}/conversations/${
         location.conversation
       }/messages${lastMessageId ? `?last_key=${lastMessageId}` : ""}`;
     }
 
     if (location.channel) {
-      return `${process.env.REACT_APP_URL}/channels/${
+      return `${process.env.REACT_APP_SERVER}/channels/${
         location.channel
       }/messages${lastMessageId ? `?last_key=${lastMessageId}` : ""}`;
     }

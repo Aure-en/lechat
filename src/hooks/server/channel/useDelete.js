@@ -13,7 +13,7 @@ function useDelete(channelId, serverId) {
    */
   const remove = async (channelId) => {
     const res = await fetch(
-      `${process.env.REACT_APP_URL}/channels/${channelId}`,
+      `${process.env.REACT_APP_SERVER}/channels/${channelId}`,
       {
         method: "DELETE",
         headers: {

@@ -13,7 +13,7 @@ function useChannel(serverId, channelId) {
 
   // Get channel informations & messages
   const { data: channel } = useFetch(
-    `${process.env.REACT_APP_URL}/channels/${channelId}`
+    `${process.env.REACT_APP_SERVER}/channels/${channelId}`
   );
 
   // User activity
@@ -50,7 +50,7 @@ function useChannel(serverId, channelId) {
       };
       const blob = new Blob([body], headers);
       navigator.sendBeacon(
-        `${process.env.REACT_APP_URL}/activity/${user._id}/servers`,
+        `${process.env.REACT_APP_SERVER}/activity/${user._id}/servers`,
         blob
       );
     };

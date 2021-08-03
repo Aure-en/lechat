@@ -8,7 +8,7 @@ function useServer(serverId) {
   useEffect(() => {
     (async () => {
       const res = await fetch(
-        `${process.env.REACT_APP_URL}/servers/${serverId}`,
+        `${process.env.REACT_APP_SERVER}/servers/${serverId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("jwt")}`,

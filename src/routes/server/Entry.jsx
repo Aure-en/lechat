@@ -27,7 +27,7 @@ function Entry() {
       // Checks if any channel exists.
       // Search for all channels
       const res = await fetch(
-        `${process.env.REACT_APP_URL}/servers/${serverId}/channels`,
+        `${process.env.REACT_APP_SERVER}/servers/${serverId}/channels`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("jwt")}`,

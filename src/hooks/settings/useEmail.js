@@ -40,7 +40,7 @@ export default function useEmail() {
    */
   const updateEmail = async () => {
     const res = await fetch(
-      `${process.env.REACT_APP_URL}/users/${user._id}/email`,
+      `${process.env.REACT_APP_SERVER}/users/${user._id}/email`,
       {
         method: "PUT",
         headers: {

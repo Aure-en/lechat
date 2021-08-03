@@ -11,7 +11,7 @@ function useLeave(serverId) {
    */
   const leave = async (serverId) => {
     const res = await fetch(
-      `${process.env.REACT_APP_URL}/users/${
+      `${process.env.REACT_APP_SERVER}/users/${
         JSON.parse(localStorage.getItem("user"))._id
       }/servers/${serverId}`,
       {

@@ -10,7 +10,7 @@ function useDelete(categoryId) {
    */
   const remove = async (categoryId) => {
     const res = await fetch(
-      `${process.env.REACT_APP_URL}/categories/${categoryId}`,
+      `${process.env.REACT_APP_SERVER}/categories/${categoryId}`,
       {
         method: "DELETE",
         headers: {

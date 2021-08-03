@@ -6,7 +6,7 @@ function useMembers(serverId) {
 
   const getMembers = async (serverId) => {
     const res = await fetch(
-      `${process.env.REACT_APP_URL}/servers/${serverId}/members`,
+      `${process.env.REACT_APP_SERVER}/servers/${serverId}/members`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,

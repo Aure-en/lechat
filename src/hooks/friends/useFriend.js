@@ -11,7 +11,7 @@ function useFriend() {
     (async () => {
       if (!user) return;
       const res = await fetch(
-        `${process.env.REACT_APP_URL}/users/${user._id}/friends`,
+        `${process.env.REACT_APP_SERVER}/users/${user._id}/friends`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("jwt")}`,

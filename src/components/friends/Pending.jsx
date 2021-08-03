@@ -43,7 +43,7 @@ function Pending() {
 
 function Request({ request }) {
   const handleRequest = async (requestId, isAccepting) => {
-    await fetch(`${process.env.REACT_APP_URL}/friends/${requestId}`, {
+    await fetch(`${process.env.REACT_APP_SERVER}/friends/${requestId}`, {
       method: isAccepting ? "PUT" : "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,

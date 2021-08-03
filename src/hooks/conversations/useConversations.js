@@ -9,7 +9,7 @@ function useConversations() {
   // Load conversations
   const getConversations = async () => {
     const res = await fetch(
-      `${process.env.REACT_APP_URL}/users/${user._id}/conversations`,
+      `${process.env.REACT_APP_SERVER}/users/${user._id}/conversations`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -38,7 +38,7 @@ function useConversations() {
     const messages = await Promise.all(
       conversationsId.map(async (id) => {
         const res = await fetch(
-          `${process.env.REACT_APP_URL}/conversations/${id}/messages?limit=1`,
+          `${process.env.REACT_APP_SERVER}/conversations/${id}/messages?limit=1`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("jwt")}`,

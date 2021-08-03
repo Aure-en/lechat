@@ -11,7 +11,7 @@ function useActivity() {
     (async () => {
       if (!user) return;
       const res = await fetch(
-        `${process.env.REACT_APP_URL}/activity/${user._id}`,
+        `${process.env.REACT_APP_SERVER}/activity/${user._id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -30,7 +30,7 @@ function useActivity() {
 
   // Update the activity document when the user leaves a channel
   const updateChannelActivity = (user, serverId, channelId) => {
-    fetch(`${process.env.REACT_APP_URL}/activity/${user._id}/servers`, {
+    fetch(`${process.env.REACT_APP_SERVER}/activity/${user._id}/servers`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -45,7 +45,7 @@ function useActivity() {
 
   // Update the activity document when the user leaves a conversation
   const updateConversationActivity = (user, conversationId) => {
-    fetch(`${process.env.REACT_APP_URL}/activity/${user._id}/conversations`, {
+    fetch(`${process.env.REACT_APP_SERVER}/activity/${user._id}/conversations`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,

@@ -11,7 +11,7 @@ function useJoin(serverId) {
   const join = async (serverId) => {
     // Join server
     await fetch(
-      `${process.env.REACT_APP_URL}/users/${
+      `${process.env.REACT_APP_SERVER}/users/${
         JSON.parse(localStorage.getItem("user"))._id
       }/servers/${serverId}`,
       {
@@ -31,7 +31,7 @@ function useJoin(serverId) {
    */
   const setActivity = async (serverId) => {
     const res = await fetch(
-      `${process.env.REACT_APP_URL}/servers/${serverId}/channels`
+      `${process.env.REACT_APP_SERVER}/servers/${serverId}/channels`
     );
     const json = await res.json();
 
