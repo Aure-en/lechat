@@ -151,7 +151,7 @@ const GlobalStyles = createGlobalStyle`
     background: ${({ theme }) => theme.bg_code};
     padding: .5rem;
     margin: 1rem;
-    font-family: "Monospace";
+    font-family: Monospace, Consolas, Assistant, Arial, sans-serif;
     font-size: 0.875rem;
   }
 

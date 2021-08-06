@@ -66,6 +66,7 @@ const Container = styled.div`
   border-radius: 1rem;
   overflow: hidden;
   background: ${(props) => props.theme.bg_card};
+  height: 100%;
 `;
 
 const Banner = styled.div`

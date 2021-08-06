@@ -48,4 +48,5 @@ const Li = styled.li`
   background: ${(props) => props.theme.tooltip_key};
   padding: 0 0.25rem;
   border-radius: 3px;
+  word-break: keep-all;
 `;

@@ -12,7 +12,7 @@ const Container = styled.div`
   background: ${(props) => props.theme.bg_code};
   padding: 0.5rem 1rem;
   margin: 1rem;
-  font-family: "Monospace";
+  font-family: Monospace, Consolas, Assistant, Arial, sans-serif;
   font-size: 0.875rem;
   white-space: pre;
   overflow: auto;

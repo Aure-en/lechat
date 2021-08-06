@@ -41,7 +41,9 @@ Messages.defaultProps = {
 const Ul = styled.ul`
   padding: 0 1rem;
   margin-right: 0.25rem; // Prevents scrollbar from sticking to the right
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  word-break: break-all;
 
   &::-webkit-scrollbar {
     width: 0.4rem;

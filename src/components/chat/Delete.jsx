@@ -60,6 +60,7 @@ Delete.propTypes = {
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  word-break: break-all;
 `;
 
 const Content = styled.div`

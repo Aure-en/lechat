@@ -90,8 +90,15 @@ function useForm(location, message, setEditing) {
 
     const text = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
 
+    // Reset the form
+    if (message) {
+      setEditing(false);
+    }
+
+    setEditorState(() => EditorState.createEmpty(decorator));
+
     // Save the message in the database (create or update)
-    await fetch(url, {
+    fetch(url, {
       method: message ? "PUT" : "POST",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -99,13 +106,6 @@ function useForm(location, message, setEditing) {
       },
       body: JSON.stringify({ text }),
     });
-
-    // Reset the form
-    if (message) {
-      setEditing(false);
-    }
-
-    setEditorState(() => EditorState.createEmpty(decorator));
   };
 
   return {

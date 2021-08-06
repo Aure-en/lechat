@@ -10,6 +10,7 @@ import Ordered from "./Ordered";
 import Quote from "./Quote";
 import Link from "./Link";
 import Spoiler from "./Spoiler";
+import Unstyled from "./Unstyled";
 
 // just a helper to add a <br /> after a block
 const addBreaklines = (children) => children.map((child) => [child, <br />]);
@@ -39,7 +40,7 @@ const renderers = {
    * Note that children are an array of blocks with same styling,
    */
   blocks: {
-    unstyled: (children) => children.map((child) => <>{child}</>),
+    unstyled: (children) => children.map((child) => <Unstyled>{child}</Unstyled>),
     blockquote: (children) => <Quote>{addBreaklines(children)}</Quote>,
     // You can also access the original keys of the blocks
     "code-block": (children, { keys }) => (

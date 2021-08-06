@@ -114,27 +114,12 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
     }
 
     if (command === "new-block") {
-      // Create a new block
-      const blockMap = editorState.getCurrentContent().getBlockMap();
-      const newBlock = new ContentBlock({
-        key: genKey(),
-        text: "",
-        type: "unstyled",
-      });
-
-      // Insert the new block in the contentState
-      const newBlockMap = blockMap
-        .toSeq()
-        .concat([[newBlock.getKey(), newBlock]])
-        .toOrderedMap();
-      const newContent = editorState
-        .getCurrentContent()
-        .merge({ blockMap: newBlockMap });
-      const stateWithBlock = EditorState.push(editorState, newContent);
-
-      // Force the selection to the end
-      const stateWithFocus = EditorState.moveFocusToEnd(stateWithBlock);
-      setEditorState(stateWithFocus);
+      const currentContent = editorState.getCurrentContent();
+      const selection = editorState.getSelection();
+      const textWithEntity = Modifier.splitBlock(currentContent, selection);
+      setEditorState(
+        EditorState.push(editorState, textWithEntity, "split-block")
+      );
     }
 
     if (command === "send") {
