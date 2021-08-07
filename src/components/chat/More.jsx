@@ -10,6 +10,7 @@ import Delete from "./Delete";
 import { ReactComponent as IconDots } from "../../assets/icons/general/dots.svg";
 
 function More({ message, setEditing, setIsActive }) {
+  // Dropdown system
   const ref = useRef();
   const { isDropdownOpen, setIsDropdownOpen } = useDropdown(ref);
 
@@ -17,7 +18,7 @@ function More({ message, setEditing, setIsActive }) {
   // to:
   //   - Delete the message (=user is either the author or has server permissions)
   //   - Edit the message (=user is the author)
-  const { messages } = usePermission();
+  const { messages, pins } = usePermission();
   const { user } = useAuth();
 
   useEffect(() => {
@@ -28,10 +29,16 @@ function More({ message, setEditing, setIsActive }) {
     }
   }, [isDropdownOpen]);
 
-  const pin = (id) => {};
+  const pin = async (id) => {
+    await fetch(`${process.env.REACT_APP_SERVER}/messages/${id}/pin`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    });
+  };
 
   /* Menu only opens if the user can access any of the following options (pinning, editing, deleting a message...) */
-
   if (message.author._id !== user._id && !messages.includes(user._id)) {
     return <></>;
   }
@@ -58,7 +65,7 @@ function More({ message, setEditing, setIsActive }) {
                 </Option>
               )}
 
-              {messages.includes(user._id) && (
+              {pins.includes(user._id) && !message.pinned && (
                 <Option type="button" onClick={() => pin(message._id)}>
                   Pin Message
                 </Option>
@@ -83,6 +90,7 @@ More.propTypes = {
     author: PropTypes.shape({
       _id: PropTypes.string,
     }),
+    pinned: PropTypes.bool,
   }).isRequired,
   setEditing: PropTypes.func,
   setIsActive: PropTypes.func,

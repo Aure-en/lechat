@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import Pins from "./Pins";
 import OpenRight from "../shared/sidebar/OpenRight";
 import IconChevron from "../../assets/icons/general/IconChevron";
 
-function Header({ name, description }) {
+function Header({ name, description, location }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -24,6 +25,7 @@ function Header({ name, description }) {
         </Left>
 
         <Icons>
+          <Pins location={location} />
           <OpenRight />
         </Icons>
       </Content>
@@ -37,6 +39,11 @@ export default Header;
 Header.propTypes = {
   name: PropTypes.string.isRequired,
   description: PropTypes.string,
+  location: PropTypes.shape({
+    conversation: PropTypes.string,
+    server: PropTypes.string,
+    channel: PropTypes.string,
+  }).isRequired,
 };
 
 Header.defaultProps = {

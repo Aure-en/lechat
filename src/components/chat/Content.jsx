@@ -86,7 +86,7 @@ const Default = styled.div`
   background: ${(props) => props.theme.bg_button};
   color: ${(props) => props.theme.server_icon_text};
   font-size: 1.5rem;
-  margin-top: 5px;
+  margin-top: 3px;
 `;
 
 const Edited = styled.small`

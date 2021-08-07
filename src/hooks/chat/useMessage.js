@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import socket from "../../socket/socket";
 import { useUnread } from "../../context/UnreadContext";
 

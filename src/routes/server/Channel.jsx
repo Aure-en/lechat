@@ -15,7 +15,13 @@ function Channel() {
 
   return (
     <Container>
-      {channel && <Header name={channel.name} description={channel.about} />}
+      {channel && (
+        <Header
+          name={channel.name}
+          description={channel.about}
+          location={{ channel: channelId }}
+        />
+      )}
       <Messages
         location={{ server: serverId, channel: channelId }}
         setEditing={setEditing}

@@ -11,7 +11,7 @@ function Right({ serverId, close }) {
   return (
     <Container>
       <Members serverId={serverId} />
-      {windowSize.width < 768 && (
+      {windowSize.width < 992 && (
         <Button type="button" onClick={close}>
           <IconClose size="30" strokeWidth="1" />
         </Button>
@@ -39,10 +39,19 @@ const Container = styled.div`
   border-left: 1px solid ${(props) => props.theme.bg_sidebar};
 
   @media all and (min-width: 768px) {
+    margin-top: 1rem;
+    max-height: calc(100vh - 1rem);
+    border-top: 1px solid ${(props) => props.theme.bg_sidebar};
+    border-radius: 1rem 0 0 0;
+  }
+
+  @media all and (min-width: 992px) {
     position: relative;
     right: initial;
     max-height: 100vh;
     border-left: 0;
+    border-top: 0;
+    margin-top: 0;
   }
 `;
 

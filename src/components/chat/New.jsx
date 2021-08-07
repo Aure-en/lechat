@@ -9,7 +9,7 @@ export default New;
 
 const Indicator = styled.div`
   position: relative;
-  top: -0.5rem;
+  top: -1rem;
   display: flex;
   color: ${(props) => props.theme.bg_secondary};
   text-transform: uppercase;

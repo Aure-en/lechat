@@ -16,6 +16,8 @@ export function PermissionProvider({ serverId, children }) {
   const [sections, setSections] = useState([]);
   // List of users who can delete other users' messages
   const [messages, setMessages] = useState([]);
+  // List of users who can pin messages
+  const [pins, setPins] = useState([]);
 
   // Load the server informations
   const { server: informations } = useServer(serverId);
@@ -27,12 +29,14 @@ export function PermissionProvider({ serverId, children }) {
     setServer([informations.admin]);
     setSections([informations.admin]);
     setMessages([informations.admin]);
+    setPins([informations.admin]);
   }, [informations]);
 
   const value = {
     server,
     sections,
     messages,
+    pins,
   };
 
   return (

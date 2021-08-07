@@ -71,7 +71,7 @@ const Container = styled.div`
     background-color: ${(props) => props.theme.bg_sidebar};
   }
 
-  @media all and (min-width: 768px) {
+  @media all and (min-width: 992px) {
     width: 17.5rem;
     padding: 2rem 2rem 2rem 1rem;
   }
