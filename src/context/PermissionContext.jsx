@@ -66,9 +66,7 @@ export function PermissionProvider({ location, children }) {
     })();
   }, [location.server, location.conversation]);
 
-  const value = {
-    permissions,
-  };
+  const value = permissions;
 
   return (
     <PermissionContext.Provider value={value}>

@@ -8,7 +8,7 @@ import { ReactComponent as IconUnpin } from "../../assets/icons/chat/unpin.svg";
 
 function Pin({ message }) {
   const { user } = useAuth();
-  const { permissions } = usePermission();
+  const { pins } = usePermission();
 
   const unpin = async (id) => {
     await fetch(`${process.env.REACT_APP_SERVER}/messages/${id}/unpin`, {
@@ -22,7 +22,7 @@ function Pin({ message }) {
   return (
     <Container>
       <Content message={message} />
-      {permissions.pins.includes(user._id) && (
+      {pins.includes(user._id) && (
         <Button
           type="button"
           onClick={() => unpin(message._id)}

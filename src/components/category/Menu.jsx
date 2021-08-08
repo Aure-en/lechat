@@ -13,12 +13,12 @@ function Menu({ serverId, category, outerRef, ignoreRef }) {
 
   // Used to check if the user has the permission
   // to see the CUD channels buttons
-  const { permissions } = usePermission();
+  const { sections } = usePermission();
   const { user } = useAuth();
 
   return (
     <>
-      {permissions.sections.includes(user._id) && (
+      {sections.includes(user._id) && (
         <>
           <Contextual outerRef={outerRef} ignoreRef={ignoreRef}>
             <button type="button" onClick={() => setIsCreateOpen(true)}>

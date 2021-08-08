@@ -13,10 +13,10 @@ function Menu({ serverId, categoryId, channel, outerRef }) {
 
   // Used to check if the user has the permission
   // to see the CUD channels buttons
-  const { permissions } = usePermission();
+  const { sections } = usePermission();
   const { user } = useAuth();
 
-  if (!permissions.sections.includes(user._id)) {
+  if (!sections.includes(user._id)) {
     return <></>;
   }
 
@@ -67,7 +67,7 @@ Menu.propTypes = {
   outerRef: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-  ]),
+  ]).isRequired,
   serverId: PropTypes.string.isRequired,
   categoryId: PropTypes.string.isRequired,
   channel: PropTypes.shape({}).isRequired,
