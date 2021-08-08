@@ -52,11 +52,12 @@ export function PermissionProvider({ location, children }) {
       // Set up permissions depending on the type of room
       if (location.server) {
         setPermissions({
-          server: json.admin,
-          sections: json.admin,
-          message: json.admin,
-          pins: json.admin,
+          server: [json.admin],
+          sections: [json.admin],
+          messages: [json.admin],
+          pins: [json.admin],
         });
+
       } else if (location.conversation) {
         setPermissions((prev) => ({
           ...prev,

@@ -6,11 +6,16 @@ import Messages from "../../components/chat/Messages";
 import Form from "../../components/chat/form/Form";
 import Typing from "../../components/chat/Typing";
 import useChannel from "../../hooks/server/channel/useChannel";
+import useMessage from "../../hooks/chat/useMessage";
 
 function Channel() {
   const { serverId, channelId } = useRouteMatch(
     "/servers/:serverId/channels/:channelId"
   ).params;
+  const { ordered, getPrevious, setMessages } = useMessage({
+    server: serverId,
+    channel: channelId,
+  });
   const { editing, setEditing, channel } = useChannel(serverId, channelId);
 
   return (
@@ -23,7 +28,8 @@ function Channel() {
         />
       )}
       <Messages
-        location={{ server: serverId, channel: channelId }}
+        ordered={ordered}
+        getPrevious={getPrevious}
         setEditing={setEditing}
       />
 
@@ -33,6 +39,7 @@ function Channel() {
             location={{ server: serverId, channel: channelId }}
             message={editing}
             setEditing={setEditing}
+            setMessages={setMessages}
           />
           <Typing location={channelId} />
         </>

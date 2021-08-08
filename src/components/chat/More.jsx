@@ -40,9 +40,10 @@ function More({ message, setEditing, setIsActive }) {
 
   /* Menu only opens if the user can access any of the following options (pinning, editing, deleting a message...) */
   if (
-    message.author._id !== user._id &&
-    !messages.includes(user._id) &&
-    (!pins.includes(user._id) || message.pinned)
+    (message.author._id !== user._id &&
+      !messages.includes(user._id) &&
+      (!pins.includes(user._id) || message.pinned)) ||
+    message.tempId // If it has a tempId, it hasn't been saved in the DB yet.
   ) {
     return <></>;
   }
@@ -95,6 +96,7 @@ More.propTypes = {
       _id: PropTypes.string,
     }),
     pinned: PropTypes.bool,
+    tempId: PropTypes.number,
   }).isRequired,
   setEditing: PropTypes.func,
   setIsActive: PropTypes.func,

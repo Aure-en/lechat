@@ -55,7 +55,9 @@ function Message({ message, isFirst, setEditing }) {
   );
 }
 
-export default Message;
+// Used React.memo to prevent all <Message> from re-rendering
+// whenever a message is inserted / deleted.
+export default React.memo(Message);
 
 Message.propTypes = {
   message: PropTypes.shape({

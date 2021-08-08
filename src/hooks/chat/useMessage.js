@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import socket from "../../socket/socket";
 import { useUnread } from "../../context/UnreadContext";
+import { useAuth } from "../../context/AuthContext";
 
 /**
  * Fetch the messages from a certain conversation / server channel.
@@ -16,6 +17,9 @@ function useMessage(location) {
   // Used to load more messages
   const [last, setLast] = useState("");
 
+  // Socket event handlers will be different if the message author is the current user.
+  // (So that messages written by a user display instantly for them)
+  const { user } = useAuth();
   // Get the number of unread to separate older from newer messages.
   const { getRoomUnread } = useUnread();
 
@@ -154,9 +158,10 @@ function useMessage(location) {
     // Checks the location to know if the current room is related to the change.
     // If it is, add the message.
     if (
-      (location.conversation &&
+      ((location.conversation &&
         message.conversation === location.conversation) ||
-      (location.channel && message.channel === location.channel)
+        (location.channel && message.channel === location.channel)) &&
+      message.author._id !== user._id
     ) {
       setMessages([...messages, newMessage.document]);
     }
@@ -208,7 +213,7 @@ function useMessage(location) {
   }, [messages]);
 
   return {
-    messages,
+    setMessages,
     ordered,
     getPrevious,
   };

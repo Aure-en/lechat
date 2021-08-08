@@ -2,12 +2,10 @@ import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Group from "./Group";
-import useMessage from "../../hooks/chat/useMessage";
 import useIntersection from "../../hooks/shared/useIntersection";
 import useScroll from "../../hooks/chat/useScroll";
 
-function Messages({ location, setEditing }) {
-  const { ordered, getPrevious } = useMessage(location);
+function Messages({ ordered, getPrevious, setEditing }) {
   const containerRef = useRef();
   const triggerRef = useRef();
   useIntersection(containerRef, triggerRef, getPrevious);
@@ -26,15 +24,20 @@ function Messages({ location, setEditing }) {
 export default Messages;
 
 Messages.propTypes = {
-  location: PropTypes.shape({
-    conversation: PropTypes.string,
-    server: PropTypes.string,
-    channel: PropTypes.string,
-  }).isRequired,
+  ordered: PropTypes.arrayOf(
+    PropTypes.shape({
+      messages: PropTypes.shape({
+        _id: PropTypes.string,
+      }),
+    })
+  ),
+  getPrevious: PropTypes.func,
   setEditing: PropTypes.func,
 };
 
 Messages.defaultProps = {
+  ordered: [],
+  getPrevious: () => {},
   setEditing: () => {},
 };
 

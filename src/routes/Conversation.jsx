@@ -10,12 +10,16 @@ import { useAuth } from "../context/AuthContext";
 import { PermissionProvider } from "../context/PermissionContext";
 import useConversation from "../hooks/conversations/useConversation";
 import useWindowSize from "../hooks/shared/useWindowSize";
+import useMessage from "../hooks/chat/useMessage";
 
 function Conversation({ match }) {
   const { user } = useAuth();
   const { editing, setEditing, conversation } = useConversation(
     match.params.userId
   );
+  const { ordered, getPrevious, setMessages } = useMessage({
+    conversation: conversation && conversation._id,
+  });
   const { windowSize } = useWindowSize();
 
   if (conversation) {
@@ -33,7 +37,8 @@ function Conversation({ match }) {
           />
 
           <Messages
-            location={{ conversation: conversation._id }}
+            ordered={ordered}
+            getPrevious={getPrevious}
             setEditing={setEditing}
           />
 
@@ -41,6 +46,7 @@ function Conversation({ match }) {
             location={{ conversation: conversation._id }}
             message={editing}
             setEditing={setEditing}
+            setMessages={setMessages}
           />
 
           <Typing location={conversation._id} />
