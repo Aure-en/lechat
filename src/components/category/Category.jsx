@@ -20,7 +20,7 @@ function Category({ serverId, category }) {
 
   // Used to check if the user has the permission
   // to see the create button
-  const { sections } = usePermission();
+  const { permissions } = usePermission();
   const { user } = useAuth();
 
   return (
@@ -36,7 +36,7 @@ function Category({ serverId, category }) {
           {category.name}
         </Name>
 
-        {sections.includes(user._id) && (
+        {permissions.sections.includes(user._id) && (
           <button type="button" onClick={() => setIsFormOpen(true)}>
             <IconPlus />
           </button>
@@ -49,7 +49,7 @@ function Category({ serverId, category }) {
         </div>
       )}
 
-      {sections.includes(user._id) && (
+      {permissions.sections.includes(user._id) && (
         <Modal
           isOpen={isFormOpen}
           setIsOpen={setIsFormOpen}

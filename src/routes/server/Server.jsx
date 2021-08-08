@@ -25,7 +25,7 @@ function Server({ match }) {
   }, [server]);
 
   return (
-    <PermissionProvider serverId={match.params.serverId}>
+    <PermissionProvider location={{ server: match.params.serverId }}>
       <Container $isRightOpen={isOpen}>
         {/* Left sidebar */}
         {windowSize.width > 768 && (

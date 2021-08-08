@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect, createContext } from "react";
 import PropTypes from "prop-types";
-import useServer from "../hooks/server/server/useServer";
 
 const PermissionContext = createContext();
 
@@ -8,35 +7,67 @@ export function usePermission() {
   return useContext(PermissionContext);
 }
 
-export function PermissionProvider({ serverId, children }) {
-  // List of users who can update / delete the whole server.
-  // For now, it is only the server owner.
-  const [server, setServer] = useState([]);
-  // List of users who can create / update / delete channels and categories
-  const [sections, setSections] = useState([]);
-  // List of users who can delete other users' messages
-  const [messages, setMessages] = useState([]);
-  // List of users who can pin messages
-  const [pins, setPins] = useState([]);
-
-  // Load the server informations
-  const { server: informations } = useServer(serverId);
+/**
+ * Give the list of users who have permissions to do certain actions
+ * in a server or a conversation.
+ * @param {*} param
+ */
+export function PermissionProvider({ location, children }) {
+  /**
+   * Object containing list of users with a specific permission.
+   * {
+   *    server: [] - List of users who can update / delete the server.
+   *    sections: [] - List of users who can create / update / delete channels and categories
+   *    messages: [] - List of users who can delete other users' messages
+   *    pins: [] - List of users who can pin messages
+   * }
+   */
+  const [permissions, setPermissions] = useState({
+    server: [],
+    sections: [],
+    messages: [],
+    pins: [],
+  });
 
   // Set up permissions
-  // For now, only the owner has all permissions.
   useEffect(() => {
-    if (!informations) return;
-    setServer([informations.admin]);
-    setSections([informations.admin]);
-    setMessages([informations.admin]);
-    setPins([informations.admin]);
-  }, [informations]);
+    (async () => {
+      // Set up the URL to fetch the room information
+      let url;
+
+      if (location.server) {
+        url = `${process.env.REACT_APP_SERVER}/servers/${location.server}`;
+      } else if (location.conversation) {
+        url = `${process.env.REACT_APP_SERVER}/conversations/${location.conversation}`;
+      }
+
+      // Get the room information
+      const res = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        },
+      });
+      const json = await res.json();
+
+      // Set up permissions depending on the type of room
+      if (location.server) {
+        setPermissions({
+          server: json.admin,
+          sections: json.admin,
+          message: json.admin,
+          pins: json.admin,
+        });
+      } else if (location.conversation) {
+        setPermissions((prev) => ({
+          ...prev,
+          pins: [...json.members.map((member) => member._id)],
+        }));
+      }
+    })();
+  }, [location.server, location.conversation]);
 
   const value = {
-    server,
-    sections,
-    messages,
-    pins,
+    permissions,
   };
 
   return (
@@ -53,7 +84,11 @@ PermissionProvider.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
-  serverId: PropTypes.string.isRequired,
+  location: PropTypes.shape({
+    conversation: PropTypes.string,
+    server: PropTypes.string,
+    channel: PropTypes.string,
+  }).isRequired,
 };
 
 PermissionProvider.defaultProps = {

@@ -71,6 +71,7 @@ const Content = styled.div`
   padding: 0 1rem;
   width: 100%;
   margin-bottom: 1.5rem;
+  line-height: 1.5rem;
 `;
 
 const Header = styled.div`

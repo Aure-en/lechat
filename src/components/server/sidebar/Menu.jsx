@@ -10,12 +10,12 @@ function Menu({ serverId, ignoreRef, outerRef }) {
 
   // Used to check if the user has the permission
   // to see the Create Category button
-  const { sections } = usePermission();
+  const { permissions } = usePermission();
   const { user } = useAuth();
 
   return (
     <>
-      {sections.includes(user._id) && (
+      {permissions.sections.includes(user._id) && (
         <>
           <Contextual outerRef={outerRef} ignoreRef={ignoreRef}>
             <button type="button" onClick={() => setIsLeaveOpen(true)}>

@@ -13,10 +13,10 @@ function Menu({ serverId, categoryId, channel, outerRef }) {
 
   // Used to check if the user has the permission
   // to see the CUD channels buttons
-  const { sections } = usePermission();
+  const { permissions } = usePermission();
   const { user } = useAuth();
 
-  if (!sections.includes(user._id)) {
+  if (!permissions.sections.includes(user._id)) {
     return <></>;
   }
 

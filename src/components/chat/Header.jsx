@@ -26,7 +26,7 @@ function Header({ name, description, location }) {
 
         <Icons>
           <Pins location={location} />
-          <OpenRight />
+          {location.server && <OpenRight />}
         </Icons>
       </Content>
       {isOpen && <Description>{description}</Description>}

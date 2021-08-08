@@ -1,11 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import Header from "../components/chat/Header";
 import Form from "../components/chat/form/Form";
 import Messages from "../components/chat/Messages";
 import Profile from "../components/user/Profile";
 import Typing from "../components/chat/Typing";
 import { useAuth } from "../context/AuthContext";
+import { PermissionProvider } from "../context/PermissionContext";
 import useConversation from "../hooks/conversations/useConversation";
 import useWindowSize from "../hooks/shared/useWindowSize";
 
@@ -18,18 +20,17 @@ function Conversation({ match }) {
 
   if (conversation) {
     return (
-      <>
+      <PermissionProvider location={{ conversation: conversation._id }}>
         <Container>
-          <Header>
-            <Heading>
-              {/* Display username of the conversation member who isn't the current one */}
-              {
-                conversation.members.find(
-                  (member) => member._id.toString() !== user._id
-                ).username
-              }
-            </Heading>
-          </Header>
+          <Header
+            /* Display username of the conversation member who isn't the current one */
+            name={
+              conversation.members.find(
+                (member) => member._id.toString() !== user._id
+              ).username
+            }
+            location={{ conversation: conversation._id }}
+          />
 
           <Messages
             location={{ conversation: conversation._id }}
@@ -52,7 +53,7 @@ function Conversation({ match }) {
             )}
           />
         )}
-      </>
+      </PermissionProvider>
     );
   }
 
@@ -83,19 +84,4 @@ const Container = styled.main`
     height: calc(100vh - 1rem); // margin-top
     border-radius: 1rem 1rem 0 0;
   }
-`;
-
-const Header = styled.header`
-  position: relative;
-  padding: 1.5rem 1rem 1rem 4rem;
-
-  @media all and (min-width: 768px) {
-    padding: 2rem 2rem 1rem 2rem;
-  }
-`;
-
-const Heading = styled.h1`
-  font-family: "Assistant", sans-serif;
-  font-size: 1.25rem;
-  font-weight: 300;
 `;

@@ -18,7 +18,7 @@ function More({ message, setEditing, setIsActive }) {
   // to:
   //   - Delete the message (=user is either the author or has server permissions)
   //   - Edit the message (=user is the author)
-  const { messages, pins } = usePermission();
+  const { permissions } = usePermission();
   const { user } = useAuth();
 
   useEffect(() => {
@@ -39,7 +39,11 @@ function More({ message, setEditing, setIsActive }) {
   };
 
   /* Menu only opens if the user can access any of the following options (pinning, editing, deleting a message...) */
-  if (message.author._id !== user._id && !messages.includes(user._id)) {
+  if (
+    message.author._id !== user._id &&
+    !permissions.messages.includes(user._id) &&
+    (!permissions.pins.includes(user._id) || message.pinned)
+  ) {
     return <></>;
   }
 
@@ -65,14 +69,16 @@ function More({ message, setEditing, setIsActive }) {
                 </Option>
               )}
 
-              {pins.includes(user._id) && !message.pinned && (
+              {permissions.pins.includes(user._id) && !message.pinned && (
                 <Option type="button" onClick={() => pin(message._id)}>
                   Pin Message
                 </Option>
               )}
 
               {(message.author._id === user._id ||
-                messages.includes(user._id)) && <Delete message={message} />}
+                permissions.messages.includes(user._id)) && (
+                <Delete message={message} />
+              )}
             </Menu>,
             document.body.querySelector("#modal-root")
           )}
