@@ -199,11 +199,10 @@ export function UnreadProvider({ children }) {
   const handleChannel = (message) => {
     // If I am currently on the channel the message was sent in
     // → Return.
-
     if (
       message.channel &&
-      new RegExp(`${location.pathname}`).test(
-        `/servers/${message.server}/channels/${message.channel}`
+      new RegExp(`/servers/${message.server}/channels/${message.channel}`).test(
+        `${location.pathname}`
       )
     )
       return;
@@ -246,6 +245,7 @@ export function UnreadProvider({ children }) {
       );
       channel.unread += 1;
 
+      console.log(updated);
       return updated;
     });
   };

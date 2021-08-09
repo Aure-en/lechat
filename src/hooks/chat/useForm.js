@@ -125,7 +125,7 @@ function useForm(location, message, setEditing, setMessages) {
         server: location.server,
         conversation: location.conversation,
         text,
-        timestamp: new Date(),
+        timestamp: Date.now(),
         tempId,
       },
     ]);

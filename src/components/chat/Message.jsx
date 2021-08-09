@@ -92,6 +92,7 @@ const First = styled.div`
   grid-column-gap: 1rem;
   background: ${(props) => props.$hovered && props.theme.chat_bg_hover};
   padding: 0 1rem;
+  margin-top: 0.5rem;
 `;
 
 const Container = styled.div`

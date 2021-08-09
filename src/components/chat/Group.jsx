@@ -11,7 +11,7 @@ function Group({ messages, setEditing }) {
   return (
     <Li>
       {messages.messages.map((message, index) => (
-        <React.Fragment key={message._id}>
+        <React.Fragment key={message._id || message.tempId}>
           {message.unread && <New />}
           <Message
             message={message}
@@ -44,7 +44,10 @@ Group.defaultProps = {
 const Li = styled.li`
   display: flex;
   flex-direction: column;
-  margin: 1rem 0;
   line-height: 1.5rem;
   padding: 0;
+
+  & > div:last-child {
+    margin-bottom: 0.5rem;
+  }
 `;

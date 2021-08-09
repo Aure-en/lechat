@@ -26,9 +26,11 @@ export default Messages;
 Messages.propTypes = {
   ordered: PropTypes.arrayOf(
     PropTypes.shape({
-      messages: PropTypes.shape({
-        _id: PropTypes.string,
-      }),
+      messages: PropTypes.arrayOf(
+        PropTypes.shape({
+          _id: PropTypes.string,
+        })
+      ),
     })
   ),
   getPrevious: PropTypes.func,
