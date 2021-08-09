@@ -50,15 +50,15 @@ function useLogin() {
   /** Send the form to the server.
    * @returns {object} json containing the user's information or errors.
    */
-  const send = async () => {
+  const send = async (identifier, password) => {
     const response = await fetch(`${process.env.REACT_APP_SERVER}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        identifier: values.identifier,
-        password: values.password,
+        identifier,
+        password,
       }),
     });
 
@@ -103,7 +103,7 @@ function useLogin() {
     setErrors(initial);
 
     if (hasErrors()) return;
-    const json = await send();
+    const json = await send(values.identifier, values.password);
 
     if (json.errors) {
       return displayErrors(json.errors);
@@ -118,11 +118,21 @@ function useLogin() {
     }
   };
 
+  const handleSample = async (e) => {
+    e.preventDefault();
+    const json = await send("User", "lechat");
+    if (json.user && json.token) {
+      authentify(json.token, json.user);
+      history.push("/");
+    }
+  };
+
   return {
     values,
     errors,
     handleInputChange,
     handleSubmit,
+    handleSample,
   };
 }
 

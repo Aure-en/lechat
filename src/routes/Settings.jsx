@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import ReactTooltip from "react-tooltip";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import Setting from "../components/user/Setting";
@@ -8,6 +9,7 @@ import Password from "../components/settings/Password";
 import Username from "../components/settings/Username";
 import Avatar from "../components/settings/Avatar";
 import Theme from "../components/settings/Theme";
+import Disabled from "../components/shared/buttons/Disabled";
 
 function Settings() {
   const { user } = useAuth();
@@ -27,25 +29,37 @@ function Settings() {
         <Field>
           <Information>Username</Information>
           <div>{user.username}</div>
-          <Setting>
-            <Username />
-          </Setting>
+          {user._id === process.env.REACT_APP_SAMPLE ? (
+            <Disabled />
+          ) : (
+            <Setting>
+              <Username />
+            </Setting>
+          )}
         </Field>
 
         <Field>
           <Information>Email</Information>
           <div>{user.email}</div>
-          <Setting>
-            <Email />
-          </Setting>
+          {user._id === process.env.REACT_APP_SAMPLE ? (
+            <Disabled />
+          ) : (
+            <Setting>
+              <Email />
+            </Setting>
+          )}
         </Field>
 
         <Field>
           <Information>Password</Information>
           <small>Password must be at least 6 characters long</small>
-          <Setting>
-            <Password />
-          </Setting>
+          {user._id === process.env.REACT_APP_SAMPLE ? (
+            <Disabled />
+          ) : (
+            <Setting>
+              <Password />
+            </Setting>
+          )}
         </Field>
       </Section>
 
@@ -57,6 +71,8 @@ function Settings() {
           <Theme />
         </Field>
       </Section>
+
+      <ReactTooltip id="settings" effect="solid" place="left" multiline />
     </Container>
   );
 }
@@ -67,7 +83,6 @@ const Container = styled.main`
   background: ${(props) => props.theme.bg_secondary};
   border-radius: 1rem;
   padding: 1.25rem 1rem;
-  height: 100%;
 
   @media all and (min-width: 576px) {
     padding: 3rem;

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Switch, Link, useLocation } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext";
+import useLogin from "../../hooks/entry/useLogin";
 import EntryRoute from "../types/EntryRoute";
 import SignUp from "./SignUp";
 import Login from "./Login";
@@ -9,6 +10,7 @@ import Login from "./Login";
 function Entry() {
   const location = useLocation();
   const { theme } = useTheme(); // Change the background image
+  const { handleSample } = useLogin(); // Login on the sample account
 
   return (
     <Container $theme={theme}>
@@ -35,9 +37,9 @@ function Entry() {
         </main>
 
         <Footer>
-          <button type="button">
+          <a href="#" onClick={handleSample}>
             Or try Lechat with a pre-existing account &#129042; {/* 🠒 */}
-          </button>
+          </a>
         </Footer>
       </Content>
     </Container>
@@ -108,8 +110,9 @@ const Header = styled.header`
 const Footer = styled.footer`
   display: flex;
   justify-content: flex-end;
+  font-size: 0.875rem;
 
-  & > button {
+  & > a {
     color: ${(props) => props.theme.text_tertiary};
 
     &:hover {

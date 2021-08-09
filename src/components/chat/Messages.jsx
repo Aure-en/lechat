@@ -44,7 +44,7 @@ Messages.defaultProps = {
 };
 
 const Ul = styled.ul`
-  padding: 0 1rem;
+  padding: 1rem;
   margin-right: 0.25rem; // Prevents scrollbar from sticking to the right
   overflow-y: auto;
   overflow-x: hidden;
