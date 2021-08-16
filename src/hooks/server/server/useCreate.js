@@ -72,10 +72,7 @@ function useCreate(server) {
     // Submit the form
     if (!server) {
       const newServer = await create();
-      socket.emit("join", {
-        location: newServer._id,
-        users: [user._id],
-      });
+      socket.emit(newServer._id);
     } else {
       update();
     }

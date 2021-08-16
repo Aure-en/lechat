@@ -75,6 +75,7 @@ Conversation.propTypes = {
       text: PropTypes.string,
       timestamp: PropTypes.number,
     }),
+    _id: PropTypes.string,
   }).isRequired,
 };
 

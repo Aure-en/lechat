@@ -6,17 +6,16 @@ import PrivateRoute from "../types/PrivateRoute";
 import { useSidebar } from "../../context/SidebarContext";
 import { PermissionProvider } from "../../context/PermissionContext";
 import useWindowSize from "../../hooks/shared/useWindowSize";
-import useFetch from "../../hooks/shared/useFetch";
+import useServer from "../../hooks/server/server/useServer";
 import SidebarLeft from "../../components/server/sidebar/Left";
 import SidebarRight from "../../components/server/sidebar/Right";
+import NotFound from "../../components/error/NotFound";
 import Channel from "./Channel";
 import Entry from "./Entry";
 
 function Server({ match }) {
   const { isOpen, setIsOpen } = useSidebar();
-  const { data: server } = useFetch(
-    `${process.env.REACT_APP_SERVER}/servers/${match.params.serverId}`
-  );
+  const { server, loading } = useServer(match.params.serverId);
   const { windowSize } = useWindowSize();
 
   // Save latest visited server
@@ -24,36 +23,48 @@ function Server({ match }) {
     if (server) localStorage.setItem("server", server._id);
   }, [server]);
 
-  return (
-    <PermissionProvider location={{ server: match.params.serverId }}>
-      <Container $isRightOpen={isOpen}>
-        {/* Left sidebar */}
-        {windowSize.width > 768 && (
-          <SidebarLeft serverId={match.params.serverId} />
-        )}
+  if (server) {
+    return (
+      <PermissionProvider location={{ server: match.params.serverId }}>
+        <Container $isRightOpen={isOpen}>
+          {/* Left sidebar */}
+          {windowSize.width > 768 && (
+            <SidebarLeft serverId={match.params.serverId} />
+          )}
 
-        {/* Main */}
-        {server && (
-          <Switch>
-            <PrivateRoute
-              exact
-              path="/servers/:serverId/channels/:channelId"
-              component={Channel}
+          {/* Main */}
+          {server && (
+            <Switch>
+              <PrivateRoute
+                exact
+                path="/servers/:serverId/channels/:channelId"
+                component={Channel}
+              />
+              <PrivateRoute exact path="/servers/:serverId" component={Entry} />
+            </Switch>
+          )}
+
+          {/* Right sidebar */}
+          {isOpen && (
+            <SidebarRight
+              serverId={match.params.serverId}
+              close={() => setIsOpen(false)}
             />
-            <PrivateRoute exact path="/servers/:serverId" component={Entry} />
-          </Switch>
-        )}
+          )}
+        </Container>
+      </PermissionProvider>
+    );
+  }
 
-        {/* Right sidebar */}
-        {isOpen && (
-          <SidebarRight
-            serverId={match.params.serverId}
-            close={() => setIsOpen(false)}
-          />
-        )}
-      </Container>
-    </PermissionProvider>
-  );
+  if (!server && !loading) {
+    return (
+      <Empty>
+        <NotFound />
+      </Empty>
+    );
+  }
+
+  return <></>;
 }
 
 export default Server;
@@ -71,4 +82,8 @@ const Container = styled.div`
   display: flex;
   height: 100%;
   width: 100%;
+`;
+
+const Empty = styled.div`
+  margin-left: 1rem;
 `;

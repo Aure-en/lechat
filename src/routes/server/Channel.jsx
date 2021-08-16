@@ -5,6 +5,7 @@ import Header from "../../components/chat/Header";
 import Messages from "../../components/chat/Messages";
 import Form from "../../components/chat/form/Form";
 import Typing from "../../components/chat/Typing";
+import NotFound from "../../components/error/NotFound";
 import useChannel from "../../hooks/server/channel/useChannel";
 import useMessage from "../../hooks/chat/useMessage";
 
@@ -16,36 +17,47 @@ function Channel() {
     server: serverId,
     channel: channelId,
   });
-  const { editing, setEditing, channel } = useChannel(serverId, channelId);
-
-  return (
-    <Container>
-      {channel && (
-        <Header
-          name={channel.name}
-          description={channel.about}
-          location={{ channel: channelId }}
-        />
-      )}
-      <Messages
-        ordered={ordered}
-        getPrevious={getPrevious}
-        setEditing={setEditing}
-      />
-
-      {serverId && channelId && (
-        <>
-          <Form
-            location={{ server: serverId, channel: channelId }}
-            message={editing}
-            setEditing={setEditing}
-            setMessages={setMessages}
-          />
-          <Typing location={channelId} />
-        </>
-      )}
-    </Container>
+  const { editing, setEditing, channel, loading } = useChannel(
+    serverId,
+    channelId
   );
+
+  if (channel) {
+    return (
+      <Container>
+        {channel && (
+          <Header
+            name={channel.name}
+            description={channel.about}
+            location={{ channel: channelId }}
+          />
+        )}
+        <Messages
+          ordered={ordered}
+          getPrevious={getPrevious}
+          setEditing={setEditing}
+        />
+
+        {serverId && channelId && (
+          <>
+            <Form
+              location={{ server: serverId, channel: channelId }}
+              message={editing}
+              setEditing={setEditing}
+              setMessages={setMessages}
+            />
+            <Typing location={channelId} />
+          </>
+        )}
+      </Container>
+    );
+  }
+
+  if (!loading && !channel) {
+    return <NotFound />;
+  }
+
+  return <></>;
 }
 
 export default Channel;

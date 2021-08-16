@@ -9,12 +9,19 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
-  const [user, _setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [user, _setUser] = useState(
+    localStorage.getItem("user") && JSON.parse(localStorage.getItem("user"))
+  );
 
   // Set user and persist the new value in localStorage.
   const setUser = (user) => {
     _setUser(user);
     localStorage.setItem("user", JSON.stringify(user));
+  };
+
+  const logOut = () => {
+    _setUser(undefined);
+    localStorage.removeItem("user");
   };
 
   // Socket listeners to handle authentication
@@ -44,6 +51,7 @@ export function AuthProvider({ children }) {
   const value = {
     user,
     setUser,
+    logOut,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

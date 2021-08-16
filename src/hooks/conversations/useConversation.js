@@ -10,7 +10,7 @@ function useConversation(id) {
   const [editing, setEditing] = useState(false);
 
   // Get conversation and its messages
-  const { conversation } = useLoadConversation(id);
+  const { conversation, loading } = useLoadConversation(id);
 
   // User activity
   const { user } = useAuth();
@@ -20,7 +20,8 @@ function useConversation(id) {
   // On mount, set the conversation as read.
   useEffect(() => {
     if (conversation)
-      setTimeout(() => handleReadConversation(conversation._id), 3000);
+      // Leave time for <New /> to be displayed
+      setTimeout(() => handleReadConversation(conversation._id), 1000);
   }, [conversation]);
 
   // On unmount, update the activity
@@ -66,6 +67,7 @@ function useConversation(id) {
     editing,
     setEditing,
     conversation,
+    loading,
   };
 }
 

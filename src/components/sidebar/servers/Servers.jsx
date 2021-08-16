@@ -23,6 +23,7 @@ function Servers() {
       >
         <IconServers />
       </Button>
+
       {isDropdownOpen && (
         <Container>
           <Ul>
@@ -89,11 +90,13 @@ const Ul = styled.ul`
   }
 
   &::-webkit-scrollbar {
-    width: 0.4rem;
+    width: 0.3rem;
   }
   &::-webkit-scrollbar-track {
     background: none;
+    margin: 0.5rem 0;
   }
+
   &::-webkit-scrollbar-thumb {
     border-radius: 5rem;
     background-color: ${(props) => props.theme.bg_sidebar};

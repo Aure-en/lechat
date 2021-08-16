@@ -52,6 +52,7 @@ const Container = styled.main`
   }
   &::-webkit-scrollbar-thumb {
     border-radius: 5rem;
-    background-color: ${(props) => props.theme.bg_sidebar};
+    background-color: ${(props) => props.theme.bg_button};
+    opacity: 0.5;
   }
 `;

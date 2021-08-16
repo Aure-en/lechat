@@ -21,12 +21,15 @@ export default Sidebar;
 
 const Container = styled.div`
   background: ${(props) => props.theme.bg_primary};
-  height: 100%;
   z-index: 2;
-  padding: 1rem;
+  padding: 1rem 0 0 0;
   border-radius: 0 1rem 1rem 0;
   border-right: 1px solid ${(props) => props.theme.bg_sidebar};
   width: 15rem;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  height: calc(100vh - 1rem); // 100vh - padding
 
   @media all and (min-width: 768px) {
     border-radius: 0;

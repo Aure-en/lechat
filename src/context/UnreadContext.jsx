@@ -359,10 +359,27 @@ export function UnreadProvider({ children }) {
     });
   };
 
+  /**
+   * Socket listener to update conversation list when a new
+   * conversation is created, and the current user is one of its
+   * members.
+   */
+  const handleInsert = (update) => {
+    setUnread((prev) => {
+      const updated = { ...prev };
+      updated.conversations.push({ ...update.document, unread: 0 });
+      return updated;
+    });
+  };
+
   useEffect(() => {
     socket.on("insert message", handleUnread);
-    return () => socket.off("insert message", handleUnread);
-  });
+    socket.on("insert conversation", handleInsert);
+    return () => {
+      socket.off("insert message", handleUnread);
+      socket.off("insert conversation", handleInsert);
+    };
+  }, [unread]);
 
   const value = {
     unread,

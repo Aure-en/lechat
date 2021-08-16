@@ -1,17 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import useFetch from "../../hooks/shared/useFetch";
-import { useAuth } from "../../context/AuthContext";
+import useServers from "../../hooks/server/server/useServers";
 import Preview from "./Preview";
 
 function List() {
-  const { user } = useAuth();
-  const { data } = useFetch(`${process.env.REACT_APP_SERVER}/users/${user._id}`);
+  const { servers } = useServers();
 
   return (
     <Ul>
-      {data &&
-        data.server.map((server) => (
+      {servers &&
+        servers.map((server) => (
           <li key={server._id}>
             <Preview server={server} join={false} />
           </li>

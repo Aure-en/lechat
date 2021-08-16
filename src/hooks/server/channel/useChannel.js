@@ -1,6 +1,4 @@
-import { useEffect, useState, useRef } from "react";
-
-import useMessage from "../../chat/useMessage";
+import { useEffect, useState } from "react";
 import useFetch from "../../shared/useFetch";
 import { useAuth } from "../../../context/AuthContext";
 import { useUnread } from "../../../context/UnreadContext";
@@ -12,7 +10,7 @@ function useChannel(serverId, channelId) {
   const [editing, setEditing] = useState();
 
   // Get channel informations & messages
-  const { data: channel } = useFetch(
+  const { data: channel, loading } = useFetch(
     `${process.env.REACT_APP_SERVER}/channels/${channelId}`
   );
 
@@ -25,8 +23,8 @@ function useChannel(serverId, channelId) {
     if (channel) {
       // Store last visited channel to redirect the user to it later.
       localStorage.setItem(serverId, channelId);
-      // Set the channel as read
-      setTimeout(() => handleReadChannel(serverId, channelId), 3000);
+      // Set the channel as read (leave time for <New /> to be displayed)
+      setTimeout(() => handleReadChannel(serverId, channelId), 1000);
     }
   }, [channel]);
 
@@ -74,6 +72,7 @@ function useChannel(serverId, channelId) {
     editing,
     setEditing,
     channel,
+    loading,
   };
 }
 

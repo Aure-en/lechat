@@ -5,6 +5,7 @@ import socket from "../../socket/socket";
 
 function useConversation(userId) {
   const [conversation, setConversation] = useState();
+  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const { updateConversationActivity } = useActivity();
 
@@ -59,22 +60,22 @@ function useConversation(userId) {
       if (!conversation) {
         conversation = await create();
 
-        // Update the member's activity to insert the conversation
-        // Make them join the conversation's socket room.
-        await Promise.all(
-          conversation.members.map((member) => {
-            updateConversationActivity(member, conversation._id);
-          })
-        );
-
-        socket.emit("join", {
-          location: conversation._id,
-          users: conversation.members.map((member) => member._id),
-        });
+        if (!conversation.errors) {
+          // Update the member's activity to insert the conversation
+          // Make them join the conversation's socket room.
+          await Promise.all(
+            conversation.members.map((member) => {
+              updateConversationActivity(member, conversation._id);
+            })
+          );
+        }
       }
 
       // Set the conversation.
-      setConversation(conversation);
+      if (!conversation.errors) {
+        setConversation(conversation);
+      }
+      setLoading(false);
     })();
   }, [userId]);
 
@@ -95,7 +96,7 @@ function useConversation(userId) {
     return () => socket.off("user update", handleUpdate);
   }, [conversation]);
 
-  return { conversation };
+  return { conversation, loading };
 }
 
 export default useConversation;

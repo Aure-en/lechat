@@ -11,10 +11,11 @@ import { PermissionProvider } from "../context/PermissionContext";
 import useConversation from "../hooks/conversations/useConversation";
 import useWindowSize from "../hooks/shared/useWindowSize";
 import useMessage from "../hooks/chat/useMessage";
+import NotFound from "../components/error/NotFound";
 
 function Conversation({ match }) {
   const { user } = useAuth();
-  const { editing, setEditing, conversation } = useConversation(
+  const { editing, setEditing, conversation, loading } = useConversation(
     match.params.userId
   );
   const { ordered, getPrevious, setMessages } = useMessage({
@@ -63,6 +64,10 @@ function Conversation({ match }) {
     );
   }
 
+  if (!loading && !conversation) {
+    return <NotFound />;
+  }
+
   return <></>;
 }
 
@@ -86,7 +91,7 @@ const Container = styled.main`
   flex: 1;
 
   @media all and (min-width: 768px) {
-    margin: 1rem 1rem 0 1rem;
+    margin: 1rem 1rem 0 0;
     height: calc(100vh - 1rem); // margin-top
     border-radius: 1rem 1rem 0 0;
   }

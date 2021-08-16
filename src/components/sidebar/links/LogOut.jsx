@@ -7,10 +7,10 @@ import { ReactComponent as IconLogOut } from "../../../assets/icons/nav/logout.s
 
 function LogOut() {
   const history = useHistory();
-  const { user } = useAuth();
+  const { user, logOut } = useAuth();
 
   const handleLogOut = () => {
-    localStorage.clear();
+    logOut();
     socket.emit("deauthentication", JSON.stringify(user));
     history.push("/auth/login");
   };

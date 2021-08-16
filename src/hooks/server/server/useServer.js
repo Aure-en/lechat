@@ -3,6 +3,7 @@ import socket from "../../../socket/socket";
 
 function useServer(serverId) {
   const [server, setServer] = useState();
+  const [loading, setLoading] = useState(true);
 
   // Load existing server
   useEffect(() => {
@@ -17,6 +18,7 @@ function useServer(serverId) {
       );
       const json = await res.json();
       if (!json.error) setServer(json);
+      setLoading(false);
     })();
   }, [serverId]);
 
@@ -33,6 +35,7 @@ function useServer(serverId) {
 
   return {
     server,
+    loading,
   };
 }
 

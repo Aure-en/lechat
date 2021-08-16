@@ -49,10 +49,7 @@ function useJoin(serverId) {
     e.preventDefault();
     await join(serverId);
     await setActivity(serverId);
-    socket.emit("join", {
-      location: serverId,
-      users: [user._id],
-    });
+    socket.emit("join", serverId);
     history.push(`/servers/${serverId}`);
   };
 

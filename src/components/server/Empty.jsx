@@ -25,6 +25,7 @@ const Wrapper = styled.div`
   border-radius: 1rem 1rem 0 0;
   height: calc(100vh - 1rem);
   background: ${(props) => props.theme.bg_secondary};
+  flex: 1;
 `;
 
 const Container = styled.div`

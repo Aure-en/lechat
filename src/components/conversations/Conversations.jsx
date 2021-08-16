@@ -34,11 +34,37 @@ function Conversations() {
 
 export default Conversations;
 
-const Container = styled.div``;
+const Container = styled.div`
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr;
+`;
 
 const Ul = styled.ul`
+  overflow-y: auto;
+  padding-right: 0.2rem;
+  margin-right: 0.15rem;
+  padding-left: 1rem;
+
+  @media all and (min-width: 768px) {
+    margin-right: 0.3rem;
+  }
+
+  &::-webkit-scrollbar {
+    width: 0.4rem;
+  }
+  &::-webkit-scrollbar-track {
+    background: none;
+    margin: 0.25rem 0;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5rem;
+    background-color: ${(props) => props.theme.bg_sidebar};
+  }
+
   & > li {
     margin-bottom: 0.4rem;
+    padding-right: 0.5rem;
   }
 
   & > li:last-child {
@@ -57,7 +83,7 @@ const Header = styled.button`
   overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
-  margin-bottom: 0.5rem;
+  padding: 0 1.5rem 0.5rem 1.5rem;
 
   &::-webkit-scrollbar {
     width: 0.4rem;

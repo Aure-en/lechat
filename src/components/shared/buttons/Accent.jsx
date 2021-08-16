@@ -26,6 +26,7 @@ const Button = styled.button`
   text-transform: uppercase;
   align-self: flex-end;
   overflow: hidden;
+  min-height: 2.2rem;
 
   & > span {
     display: flex;

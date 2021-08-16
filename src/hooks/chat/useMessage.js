@@ -125,7 +125,9 @@ function useMessage(location) {
     (async () => {
       const url = setUrl(location);
       const messages = await getMessages(url);
-      setMessages(messages.sort((a, b) => a.timestamp - b.timestamp));
+      if (!messages.error) {
+        setMessages(messages.sort((a, b) => a.timestamp - b.timestamp));
+      }
     })();
   }, [location.conversation, location.server, location.channel]);
 
