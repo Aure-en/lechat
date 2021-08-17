@@ -35,6 +35,7 @@ About.propTypes = {
 const Container = styled.div`
   display: flex;
   align-items: center;
+  margin-right: 1rem;
 
   @media all and (min-width: 768px) {
     flex-direction: column;

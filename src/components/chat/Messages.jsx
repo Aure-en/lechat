@@ -1,23 +1,34 @@
-import React, { useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Group from "./Group";
 import useIntersection from "../../hooks/shared/useIntersection";
 import useScroll from "../../hooks/chat/useScroll";
+import ScrollToPresent from "./ScrollToPresent";
 
 function Messages({ ordered, getPrevious, setEditing }) {
   const containerRef = useRef();
   const triggerRef = useRef();
   useIntersection(containerRef, triggerRef, getPrevious);
-  useScroll(ordered, containerRef);
+  const { scrollToBottom, hasScrolled, handleScroll } = useScroll(
+    ordered,
+    containerRef
+  );
 
   return (
-    <Ul ref={containerRef}>
-      <div ref={triggerRef} />
-      {ordered.map((messages) => (
-        <Group key={messages._id} messages={messages} setEditing={setEditing} />
-      ))}
-    </Ul>
+    <Wrapper>
+      <Ul ref={containerRef} onScroll={handleScroll}>
+        <div ref={triggerRef} />
+        {ordered.map((messages) => (
+          <Group
+            key={messages._id}
+            messages={messages}
+            setEditing={setEditing}
+          />
+        ))}
+      </Ul>
+      {hasScrolled && <ScrollToPresent scrollToPresent={scrollToBottom} />}
+    </Wrapper>
   );
 }
 
@@ -43,12 +54,18 @@ Messages.defaultProps = {
   setEditing: () => {},
 };
 
+const Wrapper = styled.div`
+  position: relative;
+  overflow: hidden;
+`;
+
 const Ul = styled.ul`
   padding: 1rem;
   margin-right: 0.25rem; // Prevents scrollbar from sticking to the right
   overflow-y: auto;
   overflow-x: hidden;
   word-break: break-all;
+  max-height: 100%;
 
   &::-webkit-scrollbar {
     width: 0.4rem;

@@ -72,7 +72,7 @@ const Container = styled.main`
   flex: 1;
 
   @media all and (min-width: 768px) {
-    margin: 1rem 1rem 0 1rem;
+    margin: 1rem 1rem 0 0;
     height: calc(100vh - 1rem); // margin-top
     border-radius: 1rem 1rem 0 0;
   }

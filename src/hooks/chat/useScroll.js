@@ -5,11 +5,38 @@ import { useState, useEffect, useRef } from "react";
  * @param {HTMLElement} ref
  */
 function useScroll(messages, ref) {
-  const [isFirst, setIsFirst] = useState(true);
+  const [isFirst, setIsFirst] = useState(true); // First loading
+  const [hasScrolled, setHasScrolled] = useState(false); // If the user has scrolled, display a button to scroll back to present.
   const previous = useRef();
   const currentHeight = useRef(); // Calculate the scroll after loading new messages
 
+  /** Scroll to bottom */
+  const scrollToBottom = () => {
+    ref.current.scrollTop = ref.current.scrollHeight - ref.current.clientHeight;
+    currentHeight.current = ref.current.scrollHeight;
+  };
+
+  /** Update the state after the user scrolls */
+  const handleScroll = () => {
+    if (!ref.current) return;
+    if (
+      ref.current.scrollHeight - ref.current.scrollTop >
+      ref.current.clientHeight * 2
+    ) {
+      ref.current.style.scrollBehavior = "smooth";
+      setHasScrolled(true);
+    } else {
+      setHasScrolled(false);
+    }
+  };
+
+  // Set scroll behavior back to normal after clicking on the scroll button.
+  useEffect(() => {
+    ref.current.style.scrollBehavior = "initial";
+  }, [hasScrolled]);
+
   /**
+   * -- Automatic scroll --
    * Saves the first and last messages in a reference.
    * When the messages props change, the component will know whether the new messages
    * appeared on top (=previous messages have been loaded) or on the bottom (=someone
@@ -74,6 +101,12 @@ function useScroll(messages, ref) {
       ]._id,
     };
   }, [messages]);
+
+  return {
+    scrollToBottom,
+    hasScrolled,
+    handleScroll,
+  };
 }
 
 export default useScroll;

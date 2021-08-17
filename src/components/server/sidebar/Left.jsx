@@ -50,8 +50,12 @@ const Container = styled.div`
 
 const Content = styled.div`
   overflow-y: auto;
-  padding-right: 1rem;
-  margin-right: 0.3rem;
+  padding-right: 2rem;
+  margin-right: 0.1rem;
+
+  @media all and (min-width: 768px) {
+    margin-right: 0.3rem;
+  }
 
   &::-webkit-scrollbar {
     width: 0.4rem;
@@ -60,6 +64,7 @@ const Content = styled.div`
     background: none;
     margin: 0.5rem 0;
   }
+
   &::-webkit-scrollbar-thumb {
     border-radius: 5rem;
     background-color: ${(props) => props.theme.bg_sidebar};
