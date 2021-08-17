@@ -4,21 +4,30 @@ import styled from "styled-components";
 import { createPortal } from "react-dom";
 import usePin from "../../hooks/chat/usePin";
 import useDropdown from "../../hooks/shared/useDropdown";
+import useIntersection from "../../hooks/shared/useIntersection";
 import Pin from "./Pin";
 
+// Icons
 import { ReactComponent as IconPin } from "../../assets/icons/chat/pin.svg";
 import IconClose from "../../assets/icons/general/IconClose";
 
 function Pins({ location }) {
   // Dropdown system
-  const ref = useRef();
-  const { isDropdownOpen, setIsDropdownOpen } = useDropdown(ref);
+  const containerRef = useRef();
+  const { isDropdownOpen, setIsDropdownOpen } = useDropdown(containerRef);
 
-  // Messages
+  // Pinned messages, function to load more of them.
   const { messages, getPrevious } = usePin(location);
 
+  // Refs to know when we have scrolled to the last pin
+  // So we know we should load more.
+  const pinsRef = useRef(); // Pins container.
+  const triggerRef = useRef(); // When we reach this ref, load more pins.
+
+  useIntersection(pinsRef, triggerRef, getPrevious);
+
   return (
-    <Wrapper ref={ref}>
+    <div ref={containerRef}>
       <button type="button" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
         <IconPin />
       </button>
@@ -29,23 +38,28 @@ function Pins({ location }) {
         <>
           {createPortal(
             <Container
-              $top={ref.current.getBoundingClientRect().top}
-              $right={ref.current.getBoundingClientRect().left}
+              $top={containerRef.current.getBoundingClientRect().top}
+              $right={containerRef.current.getBoundingClientRect().left}
+              ref={pinsRef}
             >
               <Header>
                 <Heading>Pins</Heading>
+                <Button type="button" onClick={() => setIsDropdownOpen(false)}>
+                  <IconClose />
+                </Button>
               </Header>
               <Content>
                 {messages.map((message) => (
                   <Pin key={`pin-${message._id}`} message={message} />
                 ))}
+                <div ref={triggerRef} />
               </Content>
             </Container>,
             document.body.querySelector("#modal-root")
           )}
         </>
       )}
-    </Wrapper>
+    </div>
   );
 }
 
@@ -59,9 +73,9 @@ Pins.propTypes = {
   }).isRequired,
 };
 
-const Wrapper = styled.div``;
-
 const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
   padding: 2rem;
 `;
 
@@ -73,23 +87,30 @@ const Heading = styled.h2`
 
 const Container = styled.div`
   position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
   display: grid;
   grid-template-rows: min-content 1fr;
-  top: ${(props) => `${props.$top}px`};
-  right: ${(props) => `calc(-${props.$right}px + 1rem)`};
   border: 1px solid ${(props) => props.theme.border_button};
   background: ${(props) => props.theme.bg_secondary};
   border-radius: 1rem;
-  width: 40rem;
-  height: 40rem;
   z-index: 10;
   padding-bottom: 2rem;
+
+  @media all and (min-width: 768px) {
+    top: ${(props) => `${props.$top}px`};
+    right: ${(props) => `calc(-${props.$right}px + 1rem)`};
+    left: initial;
+    width: 40rem;
+    height: 40rem;
+  }
 `;
 
 const Content = styled.ul`
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 0 2rem 2rem 2rem;
+  padding: 0 2rem;
   margin-right: 0.25rem;
 
   &::-webkit-scrollbar {
@@ -109,5 +130,17 @@ const Content = styled.ul`
 
   & > li:last-child {
     margin-bottom: 0;
+  }
+`;
+
+const Button = styled.button`
+  color: ${(props) => props.theme.text_secondary};
+
+  &:hover {
+    color: ${(props) => props.theme.text_tertiary};
+  }
+
+  @media all and (min-width: 768px) {
+    display: none;
   }
 `;

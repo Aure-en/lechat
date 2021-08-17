@@ -17,7 +17,7 @@ function usePin(location) {
     if (location.conversation) {
       return `${process.env.REACT_APP_SERVER}/conversations/${
         location.conversation
-      }/messages?pinned=true${
+      }/messages?limit=15&pinned=true${
         lastMessageId ? `&last_key=${lastMessageId}` : ""
       }`;
     }
@@ -25,7 +25,7 @@ function usePin(location) {
     if (location.channel) {
       return `${process.env.REACT_APP_SERVER}/channels/${
         location.channel
-      }/messages?pinned=true${
+      }/messages?limit=15&pinned=true${
         lastMessageId ? `&last_key=${lastMessageId}` : ""
       }`;
     }
@@ -66,8 +66,8 @@ function usePin(location) {
       const url = setUrl(location, last);
       const previous = await getMessages(url);
       setMessages((prev) => [
-        ...previous.sort((a, b) => a.timestamp - b.timestamp),
         ...prev,
+        ...previous.sort((a, b) => a.timestamp - b.timestamp),
       ]);
     })();
   }, [last]);
@@ -83,7 +83,7 @@ function usePin(location) {
         [...prev].filter((pinned) => pinned._id !== message._id)
       );
     } else if (message.pinned) {
-      setMessages((prev) => [...prev, message]);
+      setMessages((prev) => [message, ...prev]);
     }
   };
 
