@@ -19,7 +19,7 @@ function Conversation({ match }) {
     match.params.userId
   );
   const { ordered, getPrevious, setMessages } = useMessage({
-    conversation: conversation && conversation._id,
+    conversation: conversation?._id,
   });
   const { windowSize } = useWindowSize();
 

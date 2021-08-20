@@ -16,6 +16,8 @@ function useForm(location, message, setEditing, setMessages) {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(decorator)
   );
+  const [files, setFiles] = useState([]);
+
   const [url, setUrl] = useState("");
   const { user } = useAuth();
 
@@ -171,6 +173,8 @@ function useForm(location, message, setEditing, setMessages) {
     editorState,
     setEditorState,
     handleSubmit,
+    files,
+    setFiles,
   };
 }
 

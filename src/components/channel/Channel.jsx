@@ -12,7 +12,7 @@ function Channel({ serverId, categoryId, channel }) {
 
   // To know if the channel is currently active.
   const match = useRouteMatch("/servers/:serverId/channels/:channelId");
-  const current = match && match.params.channelId;
+  const current = match?.params.channelId;
 
   // For contextual menu
   const ref = useRef();

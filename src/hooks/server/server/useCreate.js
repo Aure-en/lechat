@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { useAuth } from "../../../context/AuthContext";
 import socket from "../../../socket/socket";
 
 function useCreate(server) {
-  const [name, setName] = useState((server && server.name) || "");
-  const [about, setAbout] = useState((server && server.about) || "");
+  const [name, setName] = useState(server?.name || "");
+  const [about, setAbout] = useState(server?.about || "");
   const [nameError, setNameError] = useState("");
   const [image, setImage] = useState();
-  const { user } = useAuth();
 
   // Helper functions
   const create = async () => {

@@ -6,12 +6,15 @@ import Editor from "./editor/Editor";
 import useForm from "../../../hooks/chat/useForm";
 import Buttons from "./buttons/Buttons";
 import Send from "./buttons/Send";
+import Files from "./files/Files";
 
 function Form({ location, message, setEditing, setMessages }) {
   const {
     editorState: text,
     setEditorState: setText,
     handleSubmit,
+    files,
+    setFiles,
   } = useForm(location, message, setEditing, setMessages);
 
   return (
@@ -21,8 +24,14 @@ function Form({ location, message, setEditing, setMessages }) {
         setEditorState={setText}
         onEnter={handleSubmit}
       />
+      <Files files={files} setFiles={setFiles} />
       <Row>
-        <Buttons editorState={text} setEditorState={setText} />
+        <Buttons
+          editorState={text}
+          setEditorState={setText}
+          setFiles={setFiles}
+          files={files}
+        />
         <Send
           onEnter={handleSubmit}
           disabled={

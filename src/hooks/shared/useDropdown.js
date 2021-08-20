@@ -6,8 +6,7 @@ function useDropdown(ref) {
   // Close dropdown if clicking outside
   const handleClickOutside = (e) => {
     if (
-      ref.current &&
-      !ref.current.contains(e.target) &&
+      !ref.current?.contains(e.target) &&
       // Clicking in a modal doesn't close the dropdown.
       !document.querySelector("#modal-root").contains(e.target)
     ) {
