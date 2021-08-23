@@ -3,14 +3,12 @@ import PropTypes from "prop-types";
 import styled, { ThemeContext } from "styled-components";
 import { useLocation } from "react-router-dom";
 import {
-  ContentBlock,
   Editor,
   EditorState,
   Modifier,
   RichUtils,
   getDefaultKeyBinding,
   KeyBindingUtil,
-  genKey,
 } from "draft-js";
 import "draft-js/dist/Draft.css";
 

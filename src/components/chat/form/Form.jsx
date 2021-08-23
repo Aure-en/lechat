@@ -4,9 +4,11 @@ import styled from "styled-components";
 import { convertToRaw } from "draft-js";
 import Editor from "./editor/Editor";
 import useForm from "../../../hooks/chat/useForm";
+import useDragAndDrop from "../../../hooks/shared/useDragAndDrop";
 import Buttons from "./buttons/Buttons";
 import Send from "./buttons/Send";
 import Files from "./files/Files";
+import Drag from "./Drag";
 
 function Form({ location, message, setEditing, setMessages }) {
   const {
@@ -16,9 +18,25 @@ function Form({ location, message, setEditing, setMessages }) {
     files,
     setFiles,
   } = useForm(location, message, setEditing, setMessages);
+  const {
+    dragging,
+    handleDragOver,
+    handleDragEnter,
+    handleDragLeave,
+    handleDrop,
+  } = useDragAndDrop();
 
   return (
     <FormContainer onSubmit={handleSubmit}>
+      {dragging && (
+        <Drag
+          onDragOver={handleDragOver}
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          setFiles={setFiles}
+        />
+      )}
       <Editor
         editorState={text}
         setEditorState={setText}
@@ -70,6 +88,7 @@ Form.defaultProps = {
 };
 
 const FormContainer = styled.form`
+  position: relative;
   border-top: 1px solid ${(props) => props.theme.bg_primary};
   word-break: break-all; // Prevent horizontal scrollbar
 `;
