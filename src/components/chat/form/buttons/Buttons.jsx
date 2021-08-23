@@ -17,7 +17,7 @@ import Files from "./Files";
 import IconChevron from "../../../../assets/icons/general/IconChevron";
 import IconNotebook from "../../../../assets/icons/editor/IconNotebook";
 
-function Buttons({ editorState, setEditorState, files, setFiles }) {
+function Buttons({ editorState, setEditorState, files, addFiles }) {
   const [isOpen, setIsOpen] = useState(true);
   return (
     <Wrapper>
@@ -56,7 +56,7 @@ function Buttons({ editorState, setEditorState, files, setFiles }) {
               setEditorState={setEditorState}
             />
             <Quote editorState={editorState} setEditorState={setEditorState} />
-            <Files files={files} setFiles={setFiles} />
+            <Files files={files} addFiles={addFiles} />
           </Container>
         )}
       </Transition>

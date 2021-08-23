@@ -17,6 +17,7 @@ function Form({ location, message, setEditing, setMessages }) {
     handleSubmit,
     files,
     setFiles,
+    addFiles,
   } = useForm(location, message, setEditing, setMessages);
   const {
     dragging,
@@ -34,7 +35,7 @@ function Form({ location, message, setEditing, setMessages }) {
           onDragEnter={handleDragEnter}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
-          setFiles={setFiles}
+          addFiles={addFiles}
         />
       )}
       <Editor
@@ -47,7 +48,7 @@ function Form({ location, message, setEditing, setMessages }) {
         <Buttons
           editorState={text}
           setEditorState={setText}
-          setFiles={setFiles}
+          addFiles={addFiles}
           files={files}
         />
         <Send

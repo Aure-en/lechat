@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { ReactComponent as IconFile } from "../../../assets/icons/chat/file.svg";
 
-function Drag({ onDragOver, onDragEnter, onDragLeave, onDrop, setFiles }) {
+function Drag({ onDragOver, onDragEnter, onDragLeave, onDrop, addFiles }) {
   const handleFilesDrop = (e) => {
     if (e.dataTransfer?.files.length > 0) {
-      setFiles((prev) => [...prev, ...e.dataTransfer.files]);
+      addFiles(e.dataTransfer.files);
     }
   };
 
@@ -35,7 +35,7 @@ Drag.propTypes = {
   onDragEnter: PropTypes.func.isRequired,
   onDragLeave: PropTypes.func.isRequired,
   onDrop: PropTypes.func.isRequired,
-  setFiles: PropTypes.func.isRequired,
+  addFiles: PropTypes.func.isRequired,
 };
 
 const DragZone = styled.div`

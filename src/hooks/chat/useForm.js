@@ -89,6 +89,28 @@ function useForm(location, message, setEditing, setMessages) {
       });
   }, [location.conversation, location.server, location.channel]);
 
+  /**
+   * When adding files, first check that:
+   * - The max number of files hasn't been reached (5)
+   * - The max size of files hasn't been reached (10MB)
+   */
+  const addFiles = (newFiles) => {
+    if ([...files, ...newFiles].length > 5) {
+      return console.log("You can only send up to 5 files in a message.");
+    }
+
+    if (
+      [...files, ...newFiles]
+        .map((file) => file.size)
+        .reduce((sum, current) => sum + current, 0) >
+      10 ** 7
+    ) {
+      return console.log("You can only send up to 10MB of files in a message.");
+    }
+
+    setFiles((prev) => [...prev, ...newFiles]);
+  };
+
   const saveMessage = async (method, text) => {
     const res = await fetch(url, {
       method,
@@ -175,6 +197,7 @@ function useForm(location, message, setEditing, setMessages) {
     handleSubmit,
     files,
     setFiles,
+    addFiles,
   };
 }
 

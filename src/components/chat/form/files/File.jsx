@@ -8,7 +8,6 @@ import IconClose from "../../../../assets/icons/general/IconClose";
  * File preview before it is sent in a message.
  */
 function File({ file, remove }) {
-  console.log(file);
   const [hovered, setHovered] = useState(false);
 
   const formatSize = (size) => {

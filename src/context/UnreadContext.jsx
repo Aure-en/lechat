@@ -245,7 +245,6 @@ export function UnreadProvider({ children }) {
       );
       channel.unread += 1;
 
-      console.log(updated);
       return updated;
     });
   };
