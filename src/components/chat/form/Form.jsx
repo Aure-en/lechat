@@ -42,6 +42,7 @@ function Form({ location, message, setEditing, setMessages }) {
         editorState={text}
         setEditorState={setText}
         onEnter={handleSubmit}
+        setEditing={setEditing}
       />
       <Files files={files} setFiles={setFiles} />
       <Row>
