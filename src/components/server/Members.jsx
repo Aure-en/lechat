@@ -25,7 +25,7 @@ function Members({ serverId }) {
             <Li key={member._id}>
               {member.avatar ? (
                 <Avatar
-                  src={`data:${member.avatar.contentType};base64,${Buffer.from(
+                  src={`data:${member.avatar.type};base64,${Buffer.from(
                     member.avatar.data
                   ).toString("base64")}`}
                   alt={member.username}

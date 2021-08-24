@@ -56,7 +56,7 @@ function Request({ request }) {
     <Li>
       {request.sender.avatar ? (
         <Avatar
-          src={`data:${request.sender.avatar.contentType};base64,${Buffer.from(
+          src={`data:${request.sender.avatar.type};base64,${Buffer.from(
             request.sender.avatar.data
           ).toString("base64")}`}
           alt={request.sender.username}
@@ -90,7 +90,7 @@ Request.propTypes = {
     sender: PropTypes.shape({
       username: PropTypes.string,
       avatar: PropTypes.shape({
-        contentType: PropTypes.string,
+        type: PropTypes.string,
         data: PropTypes.shape({
           type: PropTypes.string,
           data: PropTypes.arrayOf(PropTypes.number),

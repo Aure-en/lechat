@@ -112,16 +112,23 @@ function useForm(location, message, setEditing, setMessages) {
   };
 
   const saveMessage = async (method, text) => {
+    const formData = new FormData();
+    formData.append("text", text);
+
+    for (let i = 0; i < files.length; i += 1) {
+      formData.append("files", files[i]);
+    }
+
     const res = await fetch(url, {
       method,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ text }),
+      body: formData,
     });
 
     const json = await res.json();
+
     return json;
   };
 
@@ -164,12 +171,17 @@ function useForm(location, message, setEditing, setMessages) {
   };
 
   const handleSubmit = async (e) => {
-    e && e.preventDefault();
+    e?.preventDefault();
 
     // Validation
     // If nothing is written in the text editor, doesn't submit the form.
     const content = convertToRaw(editorState.getCurrentContent());
-    if (content.blocks.length === 1 && !content.blocks[0].text) return;
+    if (
+      content.blocks.length === 1 &&
+      !content.blocks[0].text &&
+      files.length === 0
+    )
+      return;
 
     const text = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
 
@@ -179,6 +191,7 @@ function useForm(location, message, setEditing, setMessages) {
     }
 
     setEditorState(() => EditorState.createEmpty(decorator));
+    setFiles([]);
 
     // Display the message immediately for its author
 

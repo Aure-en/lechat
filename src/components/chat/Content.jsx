@@ -4,6 +4,7 @@ import styled from "styled-components";
 import redraft from "redraft";
 import renderers from "./convert/renderers";
 import Timestamp from "./Timestamp";
+import Files from "./files/Files";
 
 function Content({ message }) {
   return (
@@ -12,7 +13,7 @@ function Content({ message }) {
       {message.author.avatar &&
       Object.keys(message.author.avatar).length > 0 ? (
         <Icon
-          src={`data:${message.author.avatar.contentType};base64,${Buffer.from(
+          src={`data:${message.author.avatar.type};base64,${Buffer.from(
             message.author.avatar.data
           ).toString("base64")}`}
           alt={message.author.username}
@@ -27,10 +28,21 @@ function Content({ message }) {
         <Timestamp timestamp={message.timestamp} isFirst />
       </Information>
 
-      <div>
-        {redraft(JSON.parse(message.text), renderers)}
-        {message.edited && <Edited>(edited)</Edited>}
-      </div>
+      {/* Text */}
+      {!(
+        JSON.parse(message.text)?.blocks.length === 1 &&
+        !JSON.parse(message.text)?.blocks[0].text
+      ) && (
+        <div>
+          {redraft(JSON.parse(message.text), renderers)}
+          {message.edited && <Edited>(edited)</Edited>}
+        </div>
+      )}
+
+      {/* Files */}
+      {message.files?.length > 0 && (
+        <Files files={message.files} messageId={message._id} />
+      )}
     </>
   );
 }
@@ -45,14 +57,24 @@ Content.propTypes = {
       username: PropTypes.string,
       _id: PropTypes.string,
       avatar: PropTypes.shape({
-        contentType: PropTypes.string,
+        type: PropTypes.string,
         data: PropTypes.shape({
           type: PropTypes.string,
           data: PropTypes.arrayOf(PropTypes.number),
         }),
       }),
     }),
+    files: PropTypes.arrayOf(
+      PropTypes.shape({
+        type: PropTypes.string,
+        data: PropTypes.shape({
+          type: PropTypes.string,
+          data: PropTypes.arrayOf(PropTypes.number),
+        }),
+      })
+    ),
     edited: PropTypes.bool,
+    _id: PropTypes.string,
   }).isRequired,
 };
 

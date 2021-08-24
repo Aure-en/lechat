@@ -29,7 +29,7 @@ function Form({ location, message, setEditing, setMessages }) {
 
   return (
     <FormContainer onSubmit={handleSubmit}>
-      {dragging && (
+      {dragging && !message && (
         <Drag
           onDragOver={handleDragOver}
           onDragEnter={handleDragEnter}
@@ -50,12 +50,14 @@ function Form({ location, message, setEditing, setMessages }) {
           setEditorState={setText}
           addFiles={addFiles}
           files={files}
+          isEditing={message}
         />
         <Send
           onEnter={handleSubmit}
           disabled={
             convertToRaw(text.getCurrentContent()).blocks.length === 1 &&
-            !convertToRaw(text.getCurrentContent()).blocks[0].text
+            !convertToRaw(text.getCurrentContent()).blocks[0].text &&
+            files.length === 0
           }
         />
       </Row>

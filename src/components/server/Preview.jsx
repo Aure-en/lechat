@@ -18,7 +18,7 @@ function Preview({ server, join }) {
         </Banner>
         {server.icon ? (
           <Icon
-            src={`data:${server.icon.contentType};base64,${Buffer.from(
+            src={`data:${server.icon.type};base64,${Buffer.from(
               server.icon.data
             ).toString("base64")}`}
             alt={server.name}
@@ -43,7 +43,7 @@ Preview.propTypes = {
     about: PropTypes.string,
     _id: PropTypes.string,
     icon: PropTypes.shape({
-      contentType: PropTypes.string,
+      type: PropTypes.string,
       data: PropTypes.shape({
         type: PropTypes.string,
         data: PropTypes.arrayOf(PropTypes.number),
@@ -82,7 +82,7 @@ const Banner = styled.div`
     height: 100%;
     background: ${(props) =>
       props.$banner
-        ? `url(data:${props.$banner.contentType};base64,${Buffer.from(
+        ? `url(data:${props.$banner.type};base64,${Buffer.from(
             props.$banner.data
           ).toString("base64")})`
         : `${props.theme.bg_sidebar}`};

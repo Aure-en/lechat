@@ -6,6 +6,7 @@ import renderers from "./convert/renderers";
 import Timestamp from "./Timestamp";
 import More from "./More";
 import Content from "./Content";
+import Files from "./files/Files";
 
 function Message({ message, isFirst, setEditing }) {
   const [hovered, setHovered] = useState(false);
@@ -44,10 +45,24 @@ function Message({ message, isFirst, setEditing }) {
           <Timestamp timestamp={message.timestamp} />
         </Time>
       )}
-      <div>
-        {redraft(JSON.parse(message.text), renderers)}
-        {message.edited && <Edited>(edited)</Edited>}
-      </div>
+
+      {/* Text */}
+      {!(
+        JSON.parse(message.text)?.blocks.length === 1 &&
+        !JSON.parse(message.text)?.blocks[0].text
+      ) && (
+        <div>
+          {redraft(JSON.parse(message.text), renderers)}
+          {message.edited && <Edited>(edited)</Edited>}
+        </div>
+      )}
+
+      {/* Files */}
+      {message.files?.length > 0 && (
+        <Files files={message.files} messageId={message._id} />
+      )}
+
+      {/* More, on hover */}
       {(hovered || more) && (
         <More message={message} setEditing={setEditing} setIsActive={setMore} />
       )}
@@ -63,11 +78,20 @@ Message.propTypes = {
   message: PropTypes.shape({
     timestamp: PropTypes.number,
     text: PropTypes.string,
+    files: PropTypes.arrayOf(
+      PropTypes.shape({
+        type: PropTypes.string,
+        data: PropTypes.shape({
+          type: PropTypes.string,
+          data: PropTypes.arrayOf(PropTypes.number),
+        }),
+      })
+    ),
     author: PropTypes.shape({
       username: PropTypes.string,
       _id: PropTypes.string,
       avatar: PropTypes.shape({
-        contentType: PropTypes.string,
+        type: PropTypes.string,
         data: PropTypes.shape({
           type: PropTypes.string,
           data: PropTypes.arrayOf(PropTypes.number),
@@ -75,6 +99,7 @@ Message.propTypes = {
       }),
     }),
     edited: PropTypes.bool,
+    _id: PropTypes.string,
   }).isRequired,
   isFirst: PropTypes.bool,
   setEditing: PropTypes.func,
