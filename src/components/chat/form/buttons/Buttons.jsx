@@ -12,11 +12,12 @@ import Code from "./Code";
 import Ordered from "./Ordered";
 import Unordered from "./Unordered";
 import Quote from "./Quote";
+import Files from "./Files";
 
 import IconChevron from "../../../../assets/icons/general/IconChevron";
 import IconNotebook from "../../../../assets/icons/editor/IconNotebook";
 
-function Buttons({ editorState, setEditorState }) {
+function Buttons({ editorState, setEditorState, files, addFiles, isEditing }) {
   const [isOpen, setIsOpen] = useState(true);
   return (
     <Wrapper>
@@ -55,6 +56,7 @@ function Buttons({ editorState, setEditorState }) {
               setEditorState={setEditorState}
             />
             <Quote editorState={editorState} setEditorState={setEditorState} />
+            {!isEditing && <Files files={files} addFiles={addFiles} />}
           </Container>
         )}
       </Transition>

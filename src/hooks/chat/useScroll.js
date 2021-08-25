@@ -55,21 +55,22 @@ function useScroll(messages, ref) {
    */
 
   useEffect(() => {
-    if (!ref || messages.length < 1) return;
+
+    if (!ref) return;
     ref.current.scrollTop = ref.current.scrollHeight - ref.current.clientHeight;
     currentHeight.current = ref.current.scrollHeight;
 
     previous.current = {
-      first: messages[0]._id,
-      last: messages[messages.length - 1].messages[
-        messages[messages.length - 1].messages.length - 1
+      first: messages[0]?._id,
+      last: messages[messages.length - 1]?.messages[
+        messages[messages.length - 1]?.messages.length - 1
       ]._id,
     };
   }, [messages, ref]);
 
   // When messages change, compare to the ref and scroll in consequence.
   useEffect(() => {
-    if (messages.length < 1 || !previous || !previous.current) return;
+    if (messages.length < 1 || !previous?.current) return;
 
     // Previous messages were loaded
     if (messages[0]._id !== previous.current.first) {

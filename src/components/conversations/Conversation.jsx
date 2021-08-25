@@ -9,9 +9,7 @@ import Timestamp from "../chat/Timestamp";
 import renderers from "../chat/convert/renderers";
 
 function Conversation({ conversation }) {
-  const id =
-    useRouteMatch("/conversations/:id") &&
-    useRouteMatch("/conversations/:id").params.id;
+  const id = useRouteMatch("/conversations/:id")?.params.id;
   const { user } = useAuth();
   const { unread } = useUnread();
   const [unreadNumber, setUnreadNumber] = useState(0);
@@ -23,7 +21,7 @@ function Conversation({ conversation }) {
     const conversationUnread = unread.conversations.find(
       (conv) => conversation._id === conv._id
     );
-    const number = conversationUnread && conversationUnread.unread;
+    const number = conversationUnread?.unread;
     setUnreadNumber(number);
   }, [unread]);
 
@@ -35,7 +33,7 @@ function Conversation({ conversation }) {
       >
         {member.avatar && Object.keys(member.avatar).length > 0 ? (
           <Avatar
-            src={`data:${member.avatar.contentType};base64,${Buffer.from(
+            src={`data:${member.avatar.type};base64,${Buffer.from(
               member.avatar.data
             ).toString("base64")}`}
             alt={member.username}

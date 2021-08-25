@@ -21,7 +21,7 @@ function useMembers(serverId) {
     getMembers(serverId);
   }, []);
 
-  // Set up socket listeners
+  // When someone leaves / joins the server, update the members list.
   const handleEvent = () => {
     getMembers(serverId);
   };

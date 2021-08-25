@@ -16,7 +16,7 @@ function Conversation({ conversation, friend }) {
         >
           {friend.avatar ? (
             <Avatar
-              src={`data:${friend.avatar.contentType};base64,${Buffer.from(
+              src={`data:${friend.avatar.type};base64,${Buffer.from(
                 friend.avatar.data
               ).toString("base64")}`}
               alt={friend.username}
@@ -46,7 +46,7 @@ Conversation.propTypes = {
     _id: PropTypes.string,
     username: PropTypes.string,
     avatar: PropTypes.shape({
-      contentType: PropTypes.string,
+      type: PropTypes.string,
       data: PropTypes.shape({
         type: PropTypes.string,
         data: PropTypes.arrayOf(PropTypes.number),

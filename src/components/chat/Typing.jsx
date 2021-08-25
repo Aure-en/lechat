@@ -4,6 +4,7 @@ import styled from "styled-components";
 import useTyping from "../../hooks/chat/useTyping";
 import { useAuth } from "../../context/AuthContext";
 
+// Component displaying the names of users who are currently typing in a channel / conversation.
 function Typing({ location }) {
   const { typing } = useTyping(location);
   const { user } = useAuth();

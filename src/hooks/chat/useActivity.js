@@ -2,6 +2,11 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import socket from "../../socket/socket";
 
+/**
+ * Activity saves the timestamp at which the user last visited a room.
+ * It is used to differentiate messages the user has read from
+ * messages they haven't read.
+ */
 function useActivity() {
   const [activity, setActivity] = useState();
   const { user } = useAuth();
@@ -45,16 +50,19 @@ function useActivity() {
 
   // Update the activity document when the user leaves a conversation
   const updateConversationActivity = (user, conversationId) => {
-    fetch(`${process.env.REACT_APP_SERVER}/activity/${user._id}/conversations`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        conversation: conversationId,
-      }),
-    });
+    fetch(
+      `${process.env.REACT_APP_SERVER}/activity/${user._id}/conversations`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          conversation: conversationId,
+        }),
+      }
+    );
   };
 
   useEffect(() => {

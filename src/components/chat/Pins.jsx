@@ -23,7 +23,6 @@ function Pins({ location }) {
   // So we know we should load more.
   const pinsRef = useRef(); // Pins container.
   const triggerRef = useRef(); // When we reach this ref, load more pins.
-
   useIntersection(pinsRef, triggerRef, getPrevious);
 
   return (

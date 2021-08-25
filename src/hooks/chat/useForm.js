@@ -16,6 +16,8 @@ function useForm(location, message, setEditing, setMessages) {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(decorator)
   );
+  const [files, setFiles] = useState([]);
+
   const [url, setUrl] = useState("");
   const { user } = useAuth();
 
@@ -87,17 +89,46 @@ function useForm(location, message, setEditing, setMessages) {
       });
   }, [location.conversation, location.server, location.channel]);
 
+  /**
+   * When adding files, first check that:
+   * - The max number of files hasn't been reached (5)
+   * - The max size of files hasn't been reached (10MB)
+   */
+  const addFiles = (newFiles) => {
+    if ([...files, ...newFiles].length > 5) {
+      return console.log("You can only send up to 5 files in a message.");
+    }
+
+    if (
+      [...files, ...newFiles]
+        .map((file) => file.size)
+        .reduce((sum, current) => sum + current, 0) >
+      10 ** 7
+    ) {
+      return console.log("You can only send up to 10MB of files in a message.");
+    }
+
+    setFiles((prev) => [...prev, ...newFiles]);
+  };
+
   const saveMessage = async (method, text) => {
+    const formData = new FormData();
+    formData.append("text", text);
+
+    for (let i = 0; i < files.length; i += 1) {
+      formData.append("files", files[i]);
+    }
+
     const res = await fetch(url, {
       method,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ text }),
+      body: formData,
     });
 
     const json = await res.json();
+
     return json;
   };
 
@@ -140,12 +171,17 @@ function useForm(location, message, setEditing, setMessages) {
   };
 
   const handleSubmit = async (e) => {
-    e && e.preventDefault();
+    e?.preventDefault();
 
     // Validation
     // If nothing is written in the text editor, doesn't submit the form.
     const content = convertToRaw(editorState.getCurrentContent());
-    if (content.blocks.length === 1 && !content.blocks[0].text) return;
+    if (
+      content.blocks.length === 1 &&
+      !content.blocks[0].text &&
+      files.length === 0
+    )
+      return;
 
     const text = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
 
@@ -155,6 +191,7 @@ function useForm(location, message, setEditing, setMessages) {
     }
 
     setEditorState(() => EditorState.createEmpty(decorator));
+    setFiles([]);
 
     // Display the message immediately for its author
 
@@ -171,6 +208,9 @@ function useForm(location, message, setEditing, setMessages) {
     editorState,
     setEditorState,
     handleSubmit,
+    files,
+    setFiles,
+    addFiles,
   };
 }
 

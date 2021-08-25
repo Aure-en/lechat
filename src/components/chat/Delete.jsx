@@ -26,9 +26,10 @@ function Delete({ message }) {
 
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <Form
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
-            remove(message._id);
+            await remove(message._id);
+            setIsOpen(false);
           }}
         >
           <Header>

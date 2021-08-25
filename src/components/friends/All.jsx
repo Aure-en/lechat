@@ -67,11 +67,10 @@ function Friend({ friendship }) {
         {friendship.friend.avatar &&
         Object.keys(friendship.friend.avatar).length > 0 ? (
           <Avatar
-            src={`data:${
-              friendship.friend.avatar.contentType
-            };base64,${Buffer.from(friendship.friend.avatar.data).toString(
-              "base64"
-            )}`}
+            src={`data:${friendship.friend.avatar.type};base64,${Buffer.from(
+              friendship.friend.avatar.thumbnail ||
+                friendship.friend.avatar.data
+            ).toString("base64")}`}
             alt={friendship.friend.username}
           />
         ) : (
@@ -94,12 +93,17 @@ Friend.propTypes = {
     friend: PropTypes.shape({
       username: PropTypes.string,
       avatar: PropTypes.shape({
-        contentType: PropTypes.string,
+        type: PropTypes.string,
         data: PropTypes.shape({
           type: PropTypes.string,
           data: PropTypes.arrayOf(PropTypes.number),
         }),
+        thumbnail: PropTypes.shape({
+          type: PropTypes.string,
+          data: PropTypes.arrayOf(PropTypes.number),
+        }),
       }),
+      _id: PropTypes.string,
     }),
   }).isRequired,
 };

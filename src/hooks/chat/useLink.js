@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { EditorState, Modifier, SelectionState } from "draft-js";
 
+// Insert a link in a message.
 function useLink(editorState, setEditorState) {
   const initial = {
     text: "",

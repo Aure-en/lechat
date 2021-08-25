@@ -32,7 +32,7 @@ export default Upload;
 
 Upload.propTypes = {
   previous: PropTypes.shape({
-    contentType: PropTypes.string,
+    type: PropTypes.string,
     data: PropTypes.shape({
       type: PropTypes.string,
       data: PropTypes.arrayOf(PropTypes.number),
@@ -65,7 +65,7 @@ const Label = styled.label`
   background: ${(props) => {
     if (props.$preview) return `url(${props.$preview})`;
     if (props.$previous && !props.$preview)
-      return `url('data:${props.$previous.contentType};base64,${Buffer.from(
+      return `url('data:${props.$previous.type};base64,${Buffer.from(
         props.$previous.data
       ).toString("base64")}')`;
   }};

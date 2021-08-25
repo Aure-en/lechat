@@ -23,6 +23,7 @@ function useSection(url, section, categoryId) {
     })();
   }, [url]);
 
+  // Socket listeners to update categories / channels in real time.
   const handleInsert = (document) => {
     if (
       (document.section === "category" && section === "category") ||

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
+// Indicator separating read from unread messages.
 function New() {
   return <Indicator />;
 }

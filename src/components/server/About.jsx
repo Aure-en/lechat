@@ -12,7 +12,7 @@ function About({ serverId }) {
     <Container>
       {server.icon ? (
         <Icon
-          src={`data:${server.icon.contentType};base64,${Buffer.from(
+          src={`data:${server.icon.type};base64,${Buffer.from(
             server.icon.data
           ).toString("base64")}`}
           alt={server.name}
@@ -51,8 +51,13 @@ const Heading = styled.h2`
 `;
 
 const Description = styled.p`
+  display: none;
   color: ${(props) => props.theme.text_secondary};
   font-size: 0.875rem;
+
+  @media all and (min-width: 768px) {
+    display: block;
+  }
 `;
 
 const icon = `

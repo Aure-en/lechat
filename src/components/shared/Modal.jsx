@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 import styled from "styled-components";
 import IconClose from "../../assets/icons/general/IconClose";
 
-function Modal({ isOpen, setIsOpen, children }) {
+function Modal({ isOpen, setIsOpen, children, isFullSize }) {
   const ref = useRef();
 
   return (
@@ -18,15 +18,19 @@ function Modal({ isOpen, setIsOpen, children }) {
               }}
             >
               <Container ref={ref}>
-                <Content>
-                  <CloseBtn type="button" onClick={() => setIsOpen(false)}>
-                    <IconClose />
-                  </CloseBtn>
+                <Content $isFullSize={isFullSize}>
+                  {!isFullSize && (
+                    <CloseBtn type="button" onClick={() => setIsOpen(false)}>
+                      <IconClose />
+                    </CloseBtn>
+                  )}
                   {React.cloneElement(children, { setIsOpen })}
 
-                  <BackBtn type="button" onClick={() => setIsOpen(false)}>
-                    ← Back
-                  </BackBtn>
+                  {!isFullSize && (
+                    <BackBtn type="button" onClick={() => setIsOpen(false)}>
+                      ← Back
+                    </BackBtn>
+                  )}
                 </Content>
               </Container>
             </Wrapper>,
@@ -47,6 +51,11 @@ Modal.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]).isRequired,
+  isFullSize: PropTypes.bool,
+};
+
+Modal.defaultProps = {
+  isFullSize: false,
 };
 
 const Wrapper = styled.div`
@@ -77,7 +86,7 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
-  padding: 3rem;
+  padding: ${(props) => !props.$isFullSize && "3rem"};
 `;
 
 const Button = styled.button`

@@ -56,7 +56,13 @@ function More({ message, setEditing, setIsActive }) {
 
       {/* Menu must be positioned out of the chat container that has overflow: auto.
       Otherwise, the menu on the last message may cause a scroll.
-      Because it is outside of the Container, it uses the container ref to be positioned properly. */}
+      Because it is outside of the Container, it uses the container ref to be positioned properly.
+    
+      Each button is only displayed if the user fulfills the permissions conditions:
+      - Edit button: only displayed for the message's author
+      - Pin button: only displayed to users who can pins in a server / conversation.
+      - Delete: only displayed to author and server's admin.
+      */}
       {isDropdownOpen && (
         <>
           {createPortal(

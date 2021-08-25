@@ -9,16 +9,12 @@ function Contextual({ outerRef, ignoreRef, children }) {
 
   const handleContextMenu = (e) => {
     // If we right-click on a children with a distinct contextual menu, return.
-    if (
-      ignoreRef &&
-      ignoreRef.current &&
-      ignoreRef.current.contains(e.target)
-    ) {
+    if (ignoreRef?.current?.contains(e.target)) {
       return setIsOpen(false);
     }
 
     // Open the menu at mouse's coordinates.
-    if (outerRef && outerRef.current.contains(e.target)) {
+    if (outerRef?.current.contains(e.target)) {
       e.preventDefault();
       setPosition({ x: e.clientX, y: e.clientY });
       setIsOpen(true);

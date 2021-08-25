@@ -25,9 +25,9 @@ function useIntersection(containerRef, triggerRef, callback) {
     }, options);
 
     observer.observe(triggerRef.current);
-  
+
     return () => {
-      if (triggerRef && triggerRef.current) {
+      if (triggerRef?.current) {
         observer.unobserve(triggerRef.current);
       }
     }

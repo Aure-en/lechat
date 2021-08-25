@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 function useCreate(serverId, categoryId, channel) {
-  const [name, setName] = useState((channel && channel.name) || "");
-  const [about, setAbout] = useState((channel && channel.about) || "");
+  const [name, setName] = useState(channel?.name || "");
+  const [about, setAbout] = useState(channel?.about || "");
   const [error, setError] = useState("");
 
   const onSubmit = async () => {

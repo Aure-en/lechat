@@ -245,7 +245,6 @@ export function UnreadProvider({ children }) {
       );
       channel.unread += 1;
 
-      console.log(updated);
       return updated;
     });
   };
@@ -257,9 +256,8 @@ export function UnreadProvider({ children }) {
    */
 
   // Get the conversation the user is currently on.
-  const current =
-    useRouteMatch("/conversations/:conversationId") &&
-    useRouteMatch("/conversations/:conversationId").params.conversationId;
+  const current = useRouteMatch("/conversations/:conversationId")?.params
+    .conversationId;
 
   const handleConversation = async (message) => {
     // Fetch the conversation to get its informations.

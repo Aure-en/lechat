@@ -3,18 +3,17 @@ import PropTypes from "prop-types";
 import styled, { ThemeContext } from "styled-components";
 import { useLocation } from "react-router-dom";
 import {
-  ContentBlock,
   Editor,
   EditorState,
   Modifier,
   RichUtils,
   getDefaultKeyBinding,
   KeyBindingUtil,
-  genKey,
 } from "draft-js";
 import "draft-js/dist/Draft.css";
+import decorator from "./entities/decorator";
 
-function TextEditor({ editorState, setEditorState, onEnter }) {
+function TextEditor({ editorState, setEditorState, onEnter, setEditing }) {
   const editorRef = useRef(); // Used to auto-focus on load.
 
   const onChange = (editorState) => {
@@ -89,6 +88,10 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
     ) {
       return "send";
     }
+
+    if (e.code === "Escape") {
+      return "escape";
+    }
     return getDefaultKeyBinding(e);
   };
 
@@ -124,6 +127,12 @@ function TextEditor({ editorState, setEditorState, onEnter }) {
 
     if (command === "send") {
       onEnter();
+      return "handled";
+    }
+
+    if (command === "escape") {
+      setEditing(false);
+      setEditorState(EditorState.createEmpty(decorator));
       return "handled";
     }
 
