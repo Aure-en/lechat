@@ -23,7 +23,6 @@ const Button = styled.button`
   position: relative;
   padding: 0.5rem 1rem;
   text-transform: uppercase;
-  align-self: center;
   overflow: hidden;
 
   & > span {

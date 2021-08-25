@@ -68,8 +68,7 @@ function Friend({ friendship }) {
         Object.keys(friendship.friend.avatar).length > 0 ? (
           <Avatar
             src={`data:${friendship.friend.avatar.type};base64,${Buffer.from(
-              friendship.friend.avatar.thumbnail ||
-                friendship.friend.avatar.data
+              friendship.friend.avatar.data
             ).toString("base64")}`}
             alt={friendship.friend.username}
           />
@@ -95,10 +94,6 @@ Friend.propTypes = {
       avatar: PropTypes.shape({
         type: PropTypes.string,
         data: PropTypes.shape({
-          type: PropTypes.string,
-          data: PropTypes.arrayOf(PropTypes.number),
-        }),
-        thumbnail: PropTypes.shape({
           type: PropTypes.string,
           data: PropTypes.arrayOf(PropTypes.number),
         }),

@@ -7,8 +7,16 @@ import Upload from "../shared/form/Upload";
 import SubmitBtn from "../shared/buttons/Gradient";
 
 function Form({ server }) {
-  const { name, setName, about, setAbout, nameError, setImage, handleSubmit } =
-    useCreate(server);
+  const {
+    name,
+    setName,
+    about,
+    setAbout,
+    nameError,
+    setImage,
+    handleSubmit,
+    message,
+  } = useCreate(server);
 
   return (
     <div>
@@ -61,6 +69,7 @@ function Form({ server }) {
           <SubmitBtn type="submit">
             {server ? "Update" : "Create"} Server
           </SubmitBtn>
+          <Small>{message}</Small>
         </Button>
       </FormContainer>
     </div>
@@ -152,6 +161,16 @@ const Error = styled.div`
 `;
 
 const Button = styled.div`
+  position: relative;
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  align-self: flex-end;
+  align-items: flex-end;
+  width: 100%;
+`;
+
+const Small = styled.small`
+  position: absolute;
+  bottom: -1.25rem;
+  color: ${(props) => props.theme.text_quaternary};
 `;

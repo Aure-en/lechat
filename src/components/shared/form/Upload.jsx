@@ -4,33 +4,39 @@ import PropTypes from "prop-types";
 
 import { ReactComponent as IconUpload } from "../../../assets/icons/general/upload.svg";
 
-function Upload({ id, previous, send }) {
+function Upload({ id, previous, send, message }) {
   const [preview, setPreview] = useState();
 
   return (
-    <Label htmlFor={`image-${id}`} $previous={previous} $preview={preview}>
-      {!preview && !previous && (
-        <>
-          <IconUpload />
-          Upload
-        </>
-      )}
-      <Input
-        type="file"
-        id={`image-${id}`}
-        name={`image-${id}`}
-        onChange={(e) => {
-          send(e.target.files[0]);
-          setPreview(URL.createObjectURL(e.target.files[0]));
-        }}
-      />
-    </Label>
+    <Field>
+      <Label htmlFor={`image-${id}`} $previous={previous} $preview={preview}>
+        {!preview && !previous && (
+          <>
+            <IconUpload />
+            Upload
+          </>
+        )}
+        <Input
+          type="file"
+          id={`image-${id}`}
+          name={`image-${id}`}
+          onChange={(e) => {
+            if (e.target.files.length > 0) {
+              send(e.target.files[0]);
+              setPreview(URL.createObjectURL(e.target.files[0]));
+            }
+          }}
+        />
+      </Label>
+      {message && <small>{message}</small>}
+    </Field>
   );
 }
 
 export default Upload;
 
 Upload.propTypes = {
+  // Previous image.
   previous: PropTypes.shape({
     type: PropTypes.string,
     data: PropTypes.shape({
@@ -41,11 +47,23 @@ Upload.propTypes = {
   // To identify the input when there are several on the same page
   id: PropTypes.string.isRequired,
   send: PropTypes.func.isRequired,
+  message: PropTypes.string, // Message displayed next to input.
 };
 
 Upload.defaultProps = {
   previous: undefined,
+  message: undefined,
 };
+
+const Field = styled.div`
+  display: flex;
+  align-items: center;
+
+  & > small {
+    margin-left: 2rem;
+    color: ${(props) => props.theme.text_quaternary};
+  }
+`;
 
 const Label = styled.label`
   display: flex;

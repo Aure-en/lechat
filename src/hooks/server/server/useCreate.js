@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 import socket from "../../../socket/socket";
 
 function useCreate(server) {
@@ -6,6 +7,8 @@ function useCreate(server) {
   const [about, setAbout] = useState(server?.about || "");
   const [nameError, setNameError] = useState("");
   const [image, setImage] = useState();
+  const [message, setMessage] = useState("");
+  const history = useHistory();
 
   // Helper functions
   const create = async () => {
@@ -14,6 +17,7 @@ function useCreate(server) {
     formData.append("name", name);
     formData.append("about", about);
     if (image) formData.append("image", image);
+    setMessage("Creating server...");
 
     // Submit the form
     const res = await fetch(`${process.env.REACT_APP_SERVER}/servers`, {
@@ -28,8 +32,10 @@ function useCreate(server) {
     // If there are errors, display them.
     if (json.errors) {
       setNameError(json.errors.filter((err) => err.param === "name")[0].msg);
+    } else {
+      setMessage("Server successfully created.");
+      history.push(`/servers/${json._id}`);
     }
-
     return json;
   };
 
@@ -38,6 +44,7 @@ function useCreate(server) {
     formData.append("name", name);
     formData.append("about", about);
     if (image) formData.append("image", image);
+    setMessage("Updating...");
 
     const res = await fetch(
       `${process.env.REACT_APP_SERVER}/servers/${server._id}`,
@@ -55,6 +62,8 @@ function useCreate(server) {
     // If there are errors, display them.
     if (json.errors) {
       setNameError(json.errors.filter((err) => err.param === "name")[0].msg);
+    } else {
+      setMessage("Server successfully updated.");
     }
   };
 
@@ -70,7 +79,9 @@ function useCreate(server) {
     // Submit the form
     if (!server) {
       const newServer = await create();
-      socket.emit(newServer._id);
+
+      // Join room to get real time updates.
+      socket.emit("join", newServer._id);
     } else {
       update();
     }
@@ -83,6 +94,7 @@ function useCreate(server) {
     setAbout,
     nameError,
     setImage,
+    message,
     handleSubmit,
   };
 }
