@@ -2,6 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
+/**
+ * Display a user's avatar and username.
+ */
 function Profile({ user }) {
   if (!user) return <></>;
 

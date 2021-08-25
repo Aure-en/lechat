@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import socket from "../../../socket/socket";
 
+// Keep track of a server's informations.
 function useServer(serverId) {
   const [server, setServer] = useState();
   const [loading, setLoading] = useState(true);

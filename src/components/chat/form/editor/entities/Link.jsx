@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import ReactTooltip from "react-tooltip";
 
+/** Embedded link in message */
 export function Component({ contentState, entityKey, children }) {
   const url = contentState.getEntity(entityKey).getData();
   return (
@@ -15,7 +15,6 @@ export function Component({ contentState, entityKey, children }) {
       >
         {children}
       </Link>
-      <ReactTooltip />
     </>
   );
 }

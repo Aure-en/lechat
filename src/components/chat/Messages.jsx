@@ -7,6 +7,7 @@ import useScroll from "../../hooks/chat/useScroll";
 import ScrollToPresent from "./ScrollToPresent";
 
 function Messages({ ordered, getPrevious, setEditing }) {
+  // Used to load more messages when scrolling to the top (=towards triggerRef)
   const containerRef = useRef();
   const triggerRef = useRef();
   useIntersection(containerRef, triggerRef, getPrevious);

@@ -39,6 +39,7 @@ function TextEditor({ editorState, setEditorState, onEnter, setEditing }) {
   const themeContext = useContext(ThemeContext); // To style customStyleMap
   const location = useLocation();
 
+  /** Key commands */
   const keyBindingFn = (e) => {
     const { hasCommandModifier } = KeyBindingUtil;
     // Cmd + 1 🠒 Ordered List
@@ -232,6 +233,11 @@ TextEditor.propTypes = {
     getSelection: PropTypes.func,
   }).isRequired,
   setEditorState: PropTypes.func.isRequired,
+  setEditing: PropTypes.func,
+};
+
+TextEditor.defaultProps = {
+  setEditing: () => {},
 };
 
 TextEditor.defaultProps = {

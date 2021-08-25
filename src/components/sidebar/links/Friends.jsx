@@ -9,6 +9,7 @@ function Friends() {
   const { friendships } = usePending();
   const { user } = useAuth();
 
+  // Get the user who is part of the relationship who is not the current user.
   const incoming = [...friendships].filter(
     (friendship) => friendship.recipient._id.toString() === user._id
   );

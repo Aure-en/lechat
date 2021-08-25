@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
+/** Automatically detected link entity in text message. */
 export function Component({ children }) {
   return (
     <>

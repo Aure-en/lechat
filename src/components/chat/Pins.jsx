@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import usePin from "../../hooks/chat/usePin";
 import useDropdown from "../../hooks/shared/useDropdown";
 import useIntersection from "../../hooks/shared/useIntersection";
+import NoPins from "../error/NoPins";
 import Pin from "./Pin";
 
 // Icons
@@ -17,7 +18,7 @@ function Pins({ location }) {
   const { isDropdownOpen, setIsDropdownOpen } = useDropdown(containerRef);
 
   // Pinned messages, function to load more of them.
-  const { messages, getPrevious } = usePin(location);
+  const { messages, loading, getPrevious } = usePin(location);
 
   // Refs to know when we have scrolled to the last pin
   // So we know we should load more.
@@ -47,12 +48,20 @@ function Pins({ location }) {
                   <IconClose />
                 </Button>
               </Header>
-              <Content>
-                {messages.map((message) => (
-                  <Pin key={`pin-${message._id}`} message={message} />
-                ))}
-                <div ref={triggerRef} />
-              </Content>
+
+              {/* If there are no pins, display a message. */}
+
+              {!loading && messages.length === 0 && <NoPins />}
+
+              {/* Else, display messages. */}
+              {messages.length > 0 && (
+                <Content>
+                  {messages.map((message) => (
+                    <Pin key={`pin-${message._id}`} message={message} />
+                  ))}
+                  <div ref={triggerRef} />
+                </Content>
+              )}
             </Container>,
             document.body.querySelector("#modal-root")
           )}

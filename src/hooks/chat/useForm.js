@@ -3,6 +3,7 @@ import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import { useAuth } from "../../context/AuthContext";
 import decorator from "../../components/chat/form/editor/entities/decorator";
 import socket from "../../socket/socket";
+import { toastify } from "../../components/shared/Toast";
 
 /**
  * Chat form. Saves new / updated message.
@@ -96,7 +97,7 @@ function useForm(location, message, setEditing, setMessages) {
    */
   const addFiles = (newFiles) => {
     if ([...files, ...newFiles].length > 5) {
-      return console.log("You can only send up to 5 files in a message.");
+      return toastify("You can only send up to 5 files in a message.");
     }
 
     if (
@@ -105,7 +106,7 @@ function useForm(location, message, setEditing, setMessages) {
         .reduce((sum, current) => sum + current, 0) >
       10 ** 7
     ) {
-      return console.log("You can only send up to 10MB of files in a message.");
+      return toastify("You can only send up to 10MB of files in a message.");
     }
 
     setFiles((prev) => [...prev, ...newFiles]);
@@ -158,6 +159,7 @@ function useForm(location, message, setEditing, setMessages) {
         text,
         timestamp: Date.now(),
         tempId,
+        loading: files.length > 0, // If there are files, put a placeholder "loading" property instead of displaying the files.
       },
     ]);
 

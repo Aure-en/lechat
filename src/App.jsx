@@ -9,6 +9,7 @@ import PrivateRoute from "./routes/types/PrivateRoute";
 import EntryRoute from "./routes/types/EntryRoute";
 import Entry from "./routes/entry/Entry";
 import Dashboard from "./routes/dashboard/Dashboard";
+import Toast from "./components/shared/Toast";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
                 <PrivateRoute path="/" component={Dashboard} />
               </Switch>
             </Wrapper>
+            <Toast />
           </UnreadProvider>
         </AuthProvider>
       </ThemeProvider>

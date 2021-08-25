@@ -6,6 +6,11 @@ import ServersList from "../servers/List";
 import ConversationsList from "../conversations/List";
 import Create from "../../server/Modal";
 
+/**
+ * Left panel. Displays:
+ * - Unread conversations list.
+ * - Server list.
+ */
 function Left() {
   // For conversations
   const [conversations, setConversations] = useState([]);

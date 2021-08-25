@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import socket from "../../../socket/socket";
 
+// Keep track of the servers the user is a member of.
 function useServers() {
   const [servers, setServers] = useState([]);
   const { user } = useAuth();

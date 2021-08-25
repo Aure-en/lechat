@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import socket from "../../../socket/socket";
 
+/**
+ * Keep track of a server's categories and channels.
+ */
 function useSection(url, section, categoryId) {
   const [sections, setSections] = useState([]);
 

@@ -7,6 +7,7 @@ import Timestamp from "./Timestamp";
 import More from "./More";
 import Content from "./Content";
 import Files from "./files/Files";
+import IconLoad from "../../assets/icons/general/IconLoad";
 
 function Message({ message, isFirst, setEditing }) {
   const [hovered, setHovered] = useState(false);
@@ -21,6 +22,7 @@ function Message({ message, isFirst, setEditing }) {
         $hovered={hovered}
       >
         <Content message={message} />
+        {message.loading && <IconLoad />}
 
         {(hovered || more) && (
           <More
@@ -57,6 +59,7 @@ function Message({ message, isFirst, setEditing }) {
           {message.edited && <Edited>(edited)</Edited>}
         </div>
       )}
+      {message.loading && <IconLoad />}
 
       {/* Files */}
       {message.files?.length > 0 && (
@@ -72,7 +75,7 @@ function Message({ message, isFirst, setEditing }) {
 }
 
 // Used React.memo to prevent all <Message> from re-rendering
-// whenever a message is inserted / deleted.
+// whenever a message is inserted / updated / deleted.
 export default React.memo(Message);
 
 Message.propTypes = {
@@ -99,6 +102,7 @@ Message.propTypes = {
         }),
       }),
     }),
+    loading: PropTypes.bool, // True if message has files that have to be uploaded to the BD.
     edited: PropTypes.bool,
     _id: PropTypes.string,
   }).isRequired,

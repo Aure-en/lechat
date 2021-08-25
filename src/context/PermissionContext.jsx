@@ -57,7 +57,6 @@ export function PermissionProvider({ location, children }) {
           messages: [json.admin],
           pins: [json.admin],
         });
-
       } else if (location.conversation) {
         setPermissions((prev) => ({
           ...prev,

@@ -4,6 +4,11 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 
+/**
+ * Display:
+ * - Avatar of the user who messaged us.
+ * - Number of unread messages.
+ */
 function Conversation({ conversation, friend }) {
   return (
     <>

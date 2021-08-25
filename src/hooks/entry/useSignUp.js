@@ -65,17 +65,20 @@ function useSignUp() {
    *   - If SignUp failed, return { errors: [] }
    */
   const send = async () => {
-    const response = await fetch(`${process.env.REACT_APP_SERVER}/auth/signup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: values.username,
-        email: values.email,
-        password: values.password,
-      }),
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_SERVER}/auth/signup`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: values.username,
+          email: values.email,
+          password: values.password,
+        }),
+      }
+    );
 
     const json = await response.json();
     return json;

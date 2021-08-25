@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import IconPaperclip from "../../../../assets/icons/editor/IconPaperclip";
 
-function Files({ files, addFiles }) {
+function Files({ addFiles }) {
   return (
     <Label htmlFor="file-upload">
       <div>
@@ -12,7 +12,10 @@ function Files({ files, addFiles }) {
           type="file"
           id="file-upload"
           multiple
-          onChange={(e) => addFiles(e.target.files)}
+          onChange={(e) => {
+            addFiles(e.target.files);
+            e.target.value = null;
+          }}
         />
       </div>
     </Label>
@@ -20,6 +23,11 @@ function Files({ files, addFiles }) {
 }
 
 export default Files;
+
+Files.propTypes = {
+  // Add files to the form files state.
+  addFiles: PropTypes.func.isRequired,
+};
 
 const Input = styled.input`
   display: none;

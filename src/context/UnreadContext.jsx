@@ -6,6 +6,9 @@ import useActivity from "../hooks/chat/useActivity";
 
 const UnreadContext = createContext();
 
+/**
+ * Keeps track of unread messages in all conversations / servers / channels.
+ */
 export function useUnread() {
   return useContext(UnreadContext);
 }

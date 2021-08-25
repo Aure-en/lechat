@@ -10,7 +10,8 @@ import socket from "../../socket/socket";
  */
 function usePin(location) {
   const [messages, setMessages] = useState([]);
-  const [last, setLast] = useState(""); // Used to load more messages
+  const [last, setLast] = useState(""); // Used to load more messages by fetching messages with an id < last id loaded.
+  const [loading, setLoading] = useState(true);
 
   // Helper function to get the endpoint linked to the room
   const setUrl = (location, lastMessageId) => {
@@ -47,6 +48,7 @@ function usePin(location) {
       const url = setUrl(location);
       const messages = await getMessages(url);
       setMessages(messages.sort((a, b) => a.timestamp - b.timestamp));
+      setLoading(false);
     })();
   }, [location.conversation, location.server, location.channel]);
 
