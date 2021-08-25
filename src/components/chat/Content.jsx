@@ -14,7 +14,7 @@ function Content({ message }) {
       Object.keys(message.author.avatar).length > 0 ? (
         <Icon
           src={`data:${message.author.avatar.type};base64,${Buffer.from(
-            message.author.avatar.thumbnail || message.author.avatar.data
+            message.author.avatar.data
           ).toString("base64")}`}
           alt={message.author.username}
         />
@@ -59,10 +59,6 @@ Content.propTypes = {
       avatar: PropTypes.shape({
         type: PropTypes.string,
         data: PropTypes.shape({
-          type: PropTypes.string,
-          data: PropTypes.arrayOf(PropTypes.number),
-        }),
-        thumbnail: PropTypes.shape({
           type: PropTypes.string,
           data: PropTypes.arrayOf(PropTypes.number),
         }),

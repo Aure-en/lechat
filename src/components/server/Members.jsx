@@ -27,7 +27,7 @@ function Members({ serverId }) {
               {member.avatar ? (
                 <Avatar
                   src={`data:${member.avatar.type};base64,${Buffer.from(
-                    member.avatar.thumbnail || member.avatar.data
+                    member.avatar.data
                   ).toString("base64")}`}
                   alt={member.username}
                 />

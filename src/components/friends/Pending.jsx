@@ -57,7 +57,7 @@ function Request({ request }) {
       {request.sender.avatar ? (
         <Avatar
           src={`data:${request.sender.avatar.type};base64,${Buffer.from(
-            request.sender.avatar.thumbnail || request.sender.avatar.data
+            request.sender.avatar.data
           ).toString("base64")}`}
           alt={request.sender.username}
         />
@@ -92,10 +92,6 @@ Request.propTypes = {
       avatar: PropTypes.shape({
         type: PropTypes.string,
         data: PropTypes.shape({
-          type: PropTypes.string,
-          data: PropTypes.arrayOf(PropTypes.number),
-        }),
-        thumbnail: PropTypes.shape({
           type: PropTypes.string,
           data: PropTypes.arrayOf(PropTypes.number),
         }),
