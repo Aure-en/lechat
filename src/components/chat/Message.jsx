@@ -59,7 +59,7 @@ function Message({ message, isFirst, setEditing }) {
 
       {/* Files */}
       {message.files?.length > 0 && (
-        <Files files={message.files} messageId={message._id} />
+        <Files files={message.files} message={message} />
       )}
 
       {/* More, on hover */}

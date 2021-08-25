@@ -4,14 +4,14 @@ import PropTypes from "prop-types";
 import File from "./File";
 import Image from "./Image";
 
-function Files({ messageId, files }) {
+function Files({ message, files }) {
   return (
     <List>
       {files.map((file, index) => {
         if (file.contentType.split("/")[0] === "image") {
-          return <Image image={file} messageId={messageId} index={index} />;
+          return <Image image={file} message={message} index={index} />;
         }
-        return <File file={file} messageId={messageId} index={index} />;
+        return <File file={file} messageId={message._id} index={index} />;
       })}
     </List>
   );
@@ -28,7 +28,9 @@ Files.propTypes = {
       type: PropTypes.string,
     })
   ).isRequired,
-  messageId: PropTypes.string.isRequired,
+  message: PropTypes.shape({
+    _id: PropTypes.string,
+  }).isRequired,
 };
 
 const List = styled.ul`

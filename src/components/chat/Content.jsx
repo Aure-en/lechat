@@ -41,7 +41,7 @@ function Content({ message }) {
 
       {/* Files */}
       {message.files?.length > 0 && (
-        <Files files={message.files} messageId={message._id} />
+        <Files files={message.files} message={message} />
       )}
     </>
   );

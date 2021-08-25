@@ -51,8 +51,13 @@ const Heading = styled.h2`
 `;
 
 const Description = styled.p`
+  display: none;
   color: ${(props) => props.theme.text_secondary};
   font-size: 0.875rem;
+
+  @media all and (min-width: 768px) {
+    display: block;
+  }
 `;
 
 const icon = `
