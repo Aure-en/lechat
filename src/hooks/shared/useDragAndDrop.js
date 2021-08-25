@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
 function useDragAndDrop() {
-  const [dragging, setDragging] = useState(false);
-  const [inDragZone, setInDragZone] = useState(false);
+  const [dragging, setDragging] = useState(false); // Indicate if the user is dragging a file in the window
+  const [inDragZone, setInDragZone] = useState(false); // Indicate if the user is dragging a file in a specific area.
 
   const handleDragEnter = (e) => {
     e.preventDefault();

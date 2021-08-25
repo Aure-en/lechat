@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Modal from "../../shared/Modal";
 import ImageLarge from "./ImageLarge";
 
+// Small image preview. On click, create a modal with a huge version of the image.
 function Image({ image }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -12,7 +13,7 @@ function Image({ image }) {
       <Wrapper onClick={() => setIsModalOpen(true)}>
         <Preview
           src={`data:${image.contentType};base64,${Buffer.from(
-            image.data
+            image.thumbnail || image.data
           ).toString("base64")}`}
           alt={image.name}
         />
@@ -35,6 +36,10 @@ Image.propTypes = {
       type: PropTypes.string,
       data: PropTypes.arrayOf(PropTypes.number),
     }),
+    thumbnail: PropTypes.shape({
+      type: PropTypes.string,
+      data: PropTypes.arrayOf(PropTypes.number),
+    }),
   }).isRequired,
 };
 
@@ -45,6 +50,7 @@ const Wrapper = styled.li`
   border: 1px solid ${(props) => props.theme.bg_button};
   background: ${(props) => props.theme.bg_secondary};
   border-radius: 3px;
+  cursor: pointer;
 `;
 
 const Preview = styled.img`

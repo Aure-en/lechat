@@ -19,7 +19,7 @@ function Join({ server }) {
         {server.icon ? (
           <Icon
             src={`data:${server.icon.type};base64,${Buffer.from(
-              server.icon.data
+              server.icon.thumbnail || server.icon.data
             ).toString("base64")}`}
             alt={server.name}
           />
@@ -51,6 +51,10 @@ Join.propTypes = {
     icon: PropTypes.shape({
       type: PropTypes.string,
       data: PropTypes.shape({
+        type: PropTypes.string,
+        data: PropTypes.arrayOf(PropTypes.number),
+      }),
+      thumbnail: PropTypes.shape({
         type: PropTypes.string,
         data: PropTypes.arrayOf(PropTypes.number),
       }),

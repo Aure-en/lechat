@@ -10,7 +10,7 @@ function Profile({ user }) {
       {user.avatar && Object.keys(user.avatar).length > 0 ? (
         <Icon
           src={`data:${user.avatar.type};base64,${Buffer.from(
-            user.avatar.data
+            user.avatar.thumbnail || user.avatar.data
           ).toString("base64")}`}
           alt={user.username}
         />
@@ -29,6 +29,10 @@ Profile.propTypes = {
     avatar: PropTypes.shape({
       type: PropTypes.string,
       data: PropTypes.shape({
+        type: PropTypes.string,
+        data: PropTypes.arrayOf(PropTypes.number),
+      }),
+      thumbnail: PropTypes.shape({
         type: PropTypes.string,
         data: PropTypes.arrayOf(PropTypes.number),
       }),

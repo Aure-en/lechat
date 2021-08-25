@@ -34,7 +34,7 @@ function Conversation({ conversation }) {
         {member.avatar && Object.keys(member.avatar).length > 0 ? (
           <Avatar
             src={`data:${member.avatar.type};base64,${Buffer.from(
-              member.avatar.data
+              member.avatar.thumbnail || member.avatar.data
             ).toString("base64")}`}
             alt={member.username}
           />

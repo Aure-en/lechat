@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { ReactComponent as IconFile } from "../../../assets/icons/chat/download.svg";
 
-/**
- * File preview before it is sent in a message.
- */
+// File - can be downloaded on click.
 function File({ file, messageId, index }) {
   const formatSize = (size) => {
     if (size < 1000) return `${size} bytes`;
@@ -42,6 +40,8 @@ File.propTypes = {
 };
 
 const Wrapper = styled.li`
+  cursor: pointer;
+
   & > a {
     position: relative;
     display: flex;

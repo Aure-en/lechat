@@ -53,17 +53,13 @@ function usePending() {
 
   useEffect(() => {
     socket.on("insert friend", handleInsert);
-    return () => socket.off("insert friend", handleInsert);
-  }, [friendships]);
-
-  useEffect(() => {
     socket.on("update friend", handleUpdate);
-    return () => socket.off("update friend", handleUpdate);
-  }, [friendships]);
-
-  useEffect(() => {
     socket.on("delete friend", handleDelete);
-    return () => socket.off("delete friend", handleDelete);
+    return () => {
+      socket.off("insert friend", handleInsert);
+      socket.off("update friend", handleUpdate);
+      socket.off("delete friend", handleDelete);
+    };
   }, [friendships]);
 
   return {

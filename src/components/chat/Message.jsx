@@ -33,6 +33,7 @@ function Message({ message, isFirst, setEditing }) {
     );
   }
 
+  // Other messages only display the content.
   return (
     <Container
       onMouseEnter={() => setHovered(true)}

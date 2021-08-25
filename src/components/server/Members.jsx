@@ -21,12 +21,13 @@ function Members({ serverId }) {
       </Button>
       {isOpen && (
         <ul>
+          {/* Display user's avatar, name, and indicator if the user is the admin. */}
           {members.map((member) => (
             <Li key={member._id}>
               {member.avatar ? (
                 <Avatar
                   src={`data:${member.avatar.type};base64,${Buffer.from(
-                    member.avatar.data
+                    member.avatar.thumbnail || member.avatar.data
                   ).toString("base64")}`}
                   alt={member.username}
                 />

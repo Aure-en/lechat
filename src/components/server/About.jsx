@@ -13,7 +13,7 @@ function About({ serverId }) {
       {server.icon ? (
         <Icon
           src={`data:${server.icon.type};base64,${Buffer.from(
-            server.icon.data
+            server.icon.thumbnail || server.icon.data
           ).toString("base64")}`}
           alt={server.name}
         />

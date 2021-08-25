@@ -19,9 +19,11 @@ function Modal({ isOpen, setIsOpen, children, isFullSize }) {
             >
               <Container ref={ref}>
                 <Content $isFullSize={isFullSize}>
-                  <CloseBtn type="button" onClick={() => setIsOpen(false)}>
-                    <IconClose />
-                  </CloseBtn>
+                  {!isFullSize && (
+                    <CloseBtn type="button" onClick={() => setIsOpen(false)}>
+                      <IconClose />
+                    </CloseBtn>
+                  )}
                   {React.cloneElement(children, { setIsOpen })}
 
                   {!isFullSize && (

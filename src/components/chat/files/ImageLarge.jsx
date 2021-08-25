@@ -7,12 +7,14 @@ import styled from "styled-components";
  */
 function ImageLarge({ image }) {
   return (
-    <Image
-      src={`data:${image.contentType};base64,${Buffer.from(image.data).toString(
-        "base64"
-      )}`}
-      alt={image.name}
-    />
+    <Container>
+      <Image
+        src={`data:${image.contentType};base64,${Buffer.from(
+          image.data
+        ).toString("base64")}`}
+        alt={image.name}
+      />
+    </Container>
   );
 }
 
@@ -29,10 +31,20 @@ ImageLarge.propTypes = {
   }).isRequired,
 };
 
+const Container = styled.div`
+  min-width: 10rem;
+  min-height: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const Image = styled.img`
   display: block;
   max-width: 90vw;
   max-height: 90vh;
+  min-height: 10rem;
+  min-width: 10rem;
   height: auto;
   object-fit: cover;
 `;
