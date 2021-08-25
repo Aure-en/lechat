@@ -55,10 +55,11 @@ function useScroll(messages, ref) {
    */
 
   useEffect(() => {
+
     if (!ref) return;
     ref.current.scrollTop = ref.current.scrollHeight - ref.current.clientHeight;
-
     currentHeight.current = ref.current.scrollHeight;
+
     previous.current = {
       first: messages[0]?._id,
       last: messages[messages.length - 1]?.messages[
