@@ -119,18 +119,23 @@ function useMessage(location) {
     setOrdered(ordered);
   }, [messages]);
 
-  // Load messages after entering a room
+  /**
+   * After entering a new room:
+   * - Load the room's messages
+   * - Reset last message id.
+   */
   useEffect(() => {
     (async () => {
       const url = setUrl(location);
       const messages = await getMessages(url);
       if (!messages.error) {
         setMessages(messages.sort((a, b) => a.timestamp - b.timestamp));
+        setLast("");
       }
     })();
   }, [location.conversation, location.server, location.channel]);
 
-  /** Load more messages by modying the last id */
+  /** Load more messages by modifying the last id */
   const getPrevious = async () => {
     if (messages.length > 1 && (!last || messages[0]._id < last)) {
       // Tells useMessage the key of the latest message we loaded
@@ -153,27 +158,8 @@ function useMessage(location) {
   }, [last]);
 
   // Set up socket listeners
-  function handleInsert(newMessage) {
-    const message = newMessage.document;
-
-    if (
-      // Checks the location to know if the current room is related to the change.
-      // If it is, add the message.
-      ((location.conversation &&
-        message.conversation === location.conversation) ||
-        (location.channel && message.channel === location.channel)) &&
-      // Check if the message author is the current user.
-      // If they are, replace the temporary placeholding message
-      // by the new message.
-      (message.author._id !== user._id ||
-        !messages.find(
-          (old) =>
-            old.tempId === message.timestamp &&
-            old.author._id === message.author._id
-        ))
-    ) {
-      setMessages([...messages, newMessage.document]);
-    }
+  function handleInsert(change) {
+    const message = change.document;
 
     if (
       // Checks the location to know if the current room is related to the change.
@@ -182,43 +168,41 @@ function useMessage(location) {
         message.conversation === location.conversation) ||
       (location.channel && message.channel === location.channel)
     ) {
-      if (
-        /* If the message is not displayed yet, adds it.
-         * It is the case if:
-         * - The current user is not the author or
-         * - The current user is the author, but they wrote the message
-         *   on another tab. Thus, it was not displayed instantly by
-         *   useForm (l.158).
-         */
-        message.author._id !== user._id ||
-        !messages.find(
-          (old) =>
-            old.tempId === message.timestamp &&
-            old.author._id === message.author._id
-        )
-      ) {
-        setMessages([...messages, newMessage.document]);
-      } else {
+      setMessages((prev) => {
+        if (
+          /* If the message is not displayed yet, adds it.
+           * It is the case if:
+           * - The current user is not the author or
+           * - The current user is the author, but they wrote the message
+           *   on another tab. Thus, it was not displayed instantly by
+           *   useForm (l.158).
+           */
+          message.author._id !== user._id ||
+          !prev.find(
+            (old) =>
+              old.tempId === message.timestamp &&
+              old.author._id === message.author._id
+          )
+        ) {
+          return [...prev, message];
+        }
         /* If the message author is the current user and
          * the message has a placeholder, replace the placeholder.
          */
-        setMessages(
-          [...messages].map((old) =>
-            old.tempId === old.timestamp &&
-            old.author._id === message.author._id
-              ? message
-              : old
-          )
+        return [...prev].map((old) =>
+          old.tempId === old.timestamp && old.author._id === message.author._id
+            ? message
+            : old
         );
-      }
+      });
     }
   }
 
-  const handleUpdate = (updated) => {
+  const handleUpdate = (change) => {
     setMessages((prev) => {
       const update = [...prev].map((message) => {
-        return message._id.toString() === updated.document._id
-          ? updated.document
+        return message._id.toString() === change.document._id
+          ? change.document
           : message;
       });
       return update;

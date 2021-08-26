@@ -95,6 +95,7 @@ const Name = styled.button`
   color: ${(props) => props.theme.text_tertiary};
   word-break: break-all;
   text-align: left;
+  flex: 1; // So that it takes all the width, allowing the user to click a wider surface.
 
   &:hover {
     color: ${(props) => props.theme.text_tertiary_hover};

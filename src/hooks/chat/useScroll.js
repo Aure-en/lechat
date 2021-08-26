@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 /**
  * Handle messages pagination
- * @param {array} messages
+ * @param {array} messages (group of messages: { author, timestamp, messages: []})
  * @param {HTMLElement} ref (messages container)
  */
 function useScroll(messages, ref) {
@@ -50,9 +50,13 @@ function useScroll(messages, ref) {
    *      automatically.
    */
 
-  /** Handle the scroll for the first render of messages. */
+  /* After changing location:
+   * - Handle the scroll for the first render of messages.
+   * - Since it leads to a scroll back to bottom, set hasScrolled to false.
+   */
   useEffect(() => {
     setIsFirst(true);
+    setHasScrolled(false);
   }, [location.key]);
 
   useEffect(() => {

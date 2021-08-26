@@ -163,7 +163,7 @@ function useForm(location, message, setEditing, setMessages) {
         server: location.server,
         conversation: location.conversation,
         text,
-        timestamp: Date.now(),
+        timestamp,
         tempId: timestamp,
         loading: files.length > 0, // If there are files, put a placeholder "loading" property instead of displaying the files.
       },
