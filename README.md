@@ -1,70 +1,58 @@
-# Getting Started with Create React App
+# Lechat
+* [View Live](https://lechat.vercel.app)
+* [View Back Repository](https://github.com/Aure-en/lechat_api)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Ever wanted to chat with new people, or send funny pictures to your friends? Lechat is a chat website that allows you send prettily formatted messages in public servers or private conversations. Built with Node.js, Express, React and MongoDB, it allows you to create or join rooms where you can share thoughts with users around the world.
 
-## Available Scripts
+## Features
+*	User authentification with username / email. JWT are used for authentification, and bcryptjs for password encryption.
+*	Personalized user profiles with avatars.
+*	Friendship system between users.
+*	Server creation and server organization in different categories and channels.
+*	Server exploration for users to find a place to hang out at.
+*	Messages sent privately to another user, or publicly in a server channel.
+*	Editable messages formatted through a rich text editor.
+*	Small files and images attachment to messages.
+*	Infinite scroll to load previous messages.
+*	Indicators to differentiate read from unread messages.
+*	Light and dark mode.
+*	Responsive.
 
-In the project directory, you can run:
+## Preview
+### Server Navigation
 
-### `npm start`
+<img src="https://firebasestorage.googleapis.com/v0/b/aurelie-nguyen.appspot.com/o/lechat%2Fscreen-capture.gif?alt=media&token=dd99c572-ab6c-470f-be10-1dd80813fd87" gif width='600px' alt="Navigationg between server channels" />
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Friendship
+<img src="https://firebasestorage.googleapis.com/v0/b/aurelie-nguyen.appspot.com/o/lechat%2Fscreen-capture%20(1).gif?alt=media&token=9bfbb2e9-8fd3-4fb9-b795-55283033adb8" gif width='600px' alt="Adding a new friend and sending them a message" />
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Chat Features
+<img src="https://firebasestorage.googleapis.com/v0/b/aurelie-nguyen.appspot.com/o/lechat%2Fscreen-capture%20(2).gif?alt=media&token=beb00301-ecea-4fb6-ac16-6527e0734551" gif width='600px' alt="Trying out rich text editor features in chat" />
 
-### `npm test`
+## Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Requirements
+*	Node.js
+*	[Lechat API](https://github.com/Aure-en/lechat_api)
 
-### `npm run build`
+### Installation
+*	git clone
+*	npm install
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Set up environment variables
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Start
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Dependencies
+*	React
+*	React-Router
+*	Socket.io
+*	Styled-components
+*	View more in the [package.json](https://github.com/Aure-en/lechat/blob/master/package.json
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+#### Design Inspiration
+[1](https://discord.com/) – [2](https://dribbble.com/shots/14598880-Chat-dashboard) – [3](https://dribbble.com/shots/11369220-sign-up-dark) 
