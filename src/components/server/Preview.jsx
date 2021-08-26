@@ -98,7 +98,7 @@ const Banner = styled.div`
     background: ${(props) =>
       props.$banner
         ? `url(data:${props.$banner.type};base64,${Buffer.from(
-            props.$banner.thumbnail || props.$banner.data
+            props.$banner.data
           ).toString("base64")})`
         : `${props.theme.bg_sidebar}`};
     background-position: center;
