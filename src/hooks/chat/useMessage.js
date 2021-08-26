@@ -102,7 +102,6 @@ function useMessage(location) {
           push it in the same group.
         - Else, create a new group of messages.
       */
-
       if (
         message.author._id === ordered[ordered.length - 1].author._id &&
         compareDates(message.timestamp, ordered[ordered.length - 1].timestamp)
@@ -167,9 +166,51 @@ function useMessage(location) {
       // If they are, replace the temporary placeholding message
       // by the new message.
       (message.author._id !== user._id ||
-        !messages.find((old) => old.tempId === message.timestamp))
+        !messages.find(
+          (old) =>
+            old.tempId === message.timestamp &&
+            old.author._id === message.author._id
+        ))
     ) {
       setMessages([...messages, newMessage.document]);
+    }
+
+    if (
+      // Checks the location to know if the current room is related to the change.
+      // If it is, add the message.
+      (location.conversation &&
+        message.conversation === location.conversation) ||
+      (location.channel && message.channel === location.channel)
+    ) {
+      if (
+        /* If the message is not displayed yet, adds it.
+         * It is the case if:
+         * - The current user is not the author or
+         * - The current user is the author, but they wrote the message
+         *   on another tab. Thus, it was not displayed instantly by
+         *   useForm (l.158).
+         */
+        message.author._id !== user._id ||
+        !messages.find(
+          (old) =>
+            old.tempId === message.timestamp &&
+            old.author._id === message.author._id
+        )
+      ) {
+        setMessages([...messages, newMessage.document]);
+      } else {
+        /* If the message author is the current user and
+         * the message has a placeholder, replace the placeholder.
+         */
+        setMessages(
+          [...messages].map((old) =>
+            old.tempId === old.timestamp &&
+            old.author._id === message.author._id
+              ? message
+              : old
+          )
+        );
+      }
     }
   }
 
@@ -195,6 +236,7 @@ function useMessage(location) {
     }
   };
 
+  // Update messages' author username / avatar when the user changes it.
   const handleUserUpdate = (user) => {
     const updated = [...messages].map((message) => {
       if (message.author._id === user.document._id) {

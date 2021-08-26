@@ -6,10 +6,12 @@ import { useAuth } from "../../context/AuthContext";
 import Modal from "../channel/Modal";
 import Menu from "./Menu";
 import Channels from "../channel/List";
-
 import IconChevron from "../../assets/icons/general/IconChevron";
 import IconPlus from "../../assets/icons/general/IconPlus";
 
+/**
+ * Category names and links to channels it contains.
+ */
 function Category({ serverId, category }) {
   const [areChannelsOpen, setAreChannelsOpen] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);

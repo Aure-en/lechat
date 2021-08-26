@@ -11,16 +11,16 @@ export function useTheme() {
 }
 
 export function ThemeProvider({ children }) {
-  const current = sessionStorage.getItem("theme");
+  const current = localStorage.getItem("theme");
   const [theme, setTheme] = useState(current || "light");
 
   const changeTheme = () => {
     if (theme === "light") {
       setTheme("dark");
-      sessionStorage.setItem("theme", "dark");
+      localStorage.setItem("theme", "dark");
     } else {
       setTheme("light");
-      sessionStorage.setItem("theme", "light");
+      localStorage.setItem("theme", "light");
     }
   };
 

@@ -29,7 +29,7 @@ function useForm(location, message, setEditing, setMessages) {
    */
   const isEmpty = (editorState) => {
     const content = convertToRaw(editorState.getCurrentContent());
-    if (content.blocks.length === 1 && !content.blocks[0].text) return true;
+    return content.blocks.length === 1 && !content.blocks[0].text;
   };
 
   // Set up the URL depending on the location and whether or not we are updating a message
@@ -64,6 +64,7 @@ function useForm(location, message, setEditing, setMessages) {
   }, [message]);
 
   // Send an event when the user starts / stops typing.
+  // Used to display which users are typing in the chatroom.
   useEffect(() => {
     socket.emit("typing", {
       location: location.conversation
@@ -131,7 +132,6 @@ function useForm(location, message, setEditing, setMessages) {
     });
 
     const json = await res.json();
-
     return json;
   };
 
@@ -151,7 +151,10 @@ function useForm(location, message, setEditing, setMessages) {
   const createMessage = async (text) => {
     const timestamp = Date.now();
 
-    // Placeholder so the message appears "instantly" to its author.
+    /* Placeholder so the message appears "instantly" to its author.
+     * Add a temporary id to the message to identify it and replace it
+     * with the one from the DB, containing an _id and files.
+     */
     setMessages((prev) => [
       ...prev,
       {
@@ -166,15 +169,7 @@ function useForm(location, message, setEditing, setMessages) {
       },
     ]);
 
-    // Once the message has been saved to the DB with
-    // an _id and resized files, replace it.
-    const messageFromDB = await saveMessage("POST", text, timestamp);
-
-    setMessages((prev) =>
-      [...prev].map((old) =>
-        old.tempId && old.tempId === timestamp ? messageFromDB : old
-      )
-    );
+    await saveMessage("POST", text, timestamp);
   };
 
   const handleSubmit = async (e) => {

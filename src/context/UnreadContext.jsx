@@ -76,7 +76,7 @@ export function UnreadProvider({ children }) {
     responses.forEach((response, index) =>
       unread.push({
         _id: conversations[index]._id,
-        unread: +response.headers.get("X-Total-Count"),
+        unread: parseInt(response.headers.get("X-Total-Count"), 10),
         members: members[index],
       })
     );
