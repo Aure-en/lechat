@@ -157,13 +157,18 @@ function useMessage(location) {
   function handleInsert(newMessage) {
     const message = newMessage.document;
 
-    // Checks the location to know if the current room is related to the change.
-    // If it is, add the message.
     if (
-      ((location.conversation &&
+      // Checks the location to know if the current room is related to the change.
+      // If it is, add the message.
+      (location.conversation &&
         message.conversation === location.conversation) ||
-        (location.channel && message.channel === location.channel)) &&
-      message.author._id !== user._id
+      (location.channel &&
+        message.channel === location.channel &&
+        // Check if the message author is the current user.
+        // If they are, replace the temporary placeholding message
+        // by the new message.
+        (message.author._id !== user._id ||
+          !messages.find((old) => old.tempId === message.timestamp)))
     ) {
       setMessages([...messages, newMessage.document]);
     }

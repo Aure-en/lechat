@@ -277,9 +277,11 @@ export function UnreadProvider({ children }) {
 
     // If the user is already in the conversation, returns.
     if (
+      current &&
       conversation.members.find((member) => member._id.toString() === current)
-    )
+    ) {
       return;
+    }
 
     // Otherwise, update the unread conversations' list.
 
@@ -288,7 +290,7 @@ export function UnreadProvider({ children }) {
 
       // If the conversation isn't in the list, add it.
       if (
-        !updated.conversations.find(
+        !updated?.conversations.find(
           (conversation) => conversation._id === message.conversation.toString()
         )
       ) {

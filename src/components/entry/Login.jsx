@@ -5,7 +5,8 @@ import useLogin from "../../hooks/entry/useLogin";
 import Button from "../shared/buttons/Gradient";
 
 function Login() {
-  const { values, errors, handleInputChange, handleSubmit } = useLogin();
+  const { values, errors, message, handleInputChange, handleSubmit } =
+    useLogin();
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -42,6 +43,7 @@ function Login() {
       <Bottom>
         <div>
           <Button>Log In</Button>
+          {message && <Message>{message}</Message>}
           {errors.response && <Error>{errors.response}</Error>}
         </div>
         <Small>
@@ -90,7 +92,7 @@ const Input = styled.input`
   }
 `;
 
-const Error = styled.div`
+const Error = styled.small`
   color: ${(props) => props.theme.error};
   font-size: 0.825rem;
 `;
@@ -99,6 +101,10 @@ const Small = styled.small`
   display: block;
   font-size: 0.825rem;
   color: ${(props) => props.theme.text_secondary};
+`;
+
+const Message = styled(Small)`
+  color: ${(props) => props.theme.text_quaternary};
 `;
 
 const Bottom = styled.div`
@@ -112,5 +118,11 @@ const Bottom = styled.div`
     &:hover {
       text-decoration: underline;
     }
+  }
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 `;

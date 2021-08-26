@@ -24,18 +24,17 @@ function useConversation(id) {
       setTimeout(() => handleReadConversation(conversation._id), 1000);
   }, [conversation]);
 
-  // On unmount, update the activity
+  // On unmount, update the activity.
   useEffect(() => {
     return () =>
       conversation && updateConversationActivity(user, conversation._id);
   }, [conversation]);
 
-  // Join / leave the channel socket room
+  // Join the channel socket room to know which users are typing in the room.
   useEffect(() => {
     if (conversation) {
       socket.emit("join room", conversation._id);
     }
-    return () => socket.emit("leave room");
   }, [conversation]);
 
   // On close, update the activity

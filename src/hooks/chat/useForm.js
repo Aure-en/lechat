@@ -112,9 +112,11 @@ function useForm(location, message, setEditing, setMessages) {
     setFiles((prev) => [...prev, ...newFiles]);
   };
 
-  const saveMessage = async (method, text) => {
+  // Save message to the DB.
+  const saveMessage = async (method, text, timestamp = null) => {
     const formData = new FormData();
     formData.append("text", text);
+    if (timestamp) formData.append("timestamp", timestamp);
 
     for (let i = 0; i < files.length; i += 1) {
       formData.append("files", files[i]);
@@ -146,8 +148,8 @@ function useForm(location, message, setEditing, setMessages) {
     saveMessage("PUT", text);
   };
 
-  const createMessage = async (text) => {
-    const tempId = Date.now();
+  const createMessage = (text) => {
+    const timestamp = Date.now();
 
     // Placeholder so the message appears "instantly" to its author.
     setMessages((prev) => [
@@ -159,18 +161,12 @@ function useForm(location, message, setEditing, setMessages) {
         conversation: location.conversation,
         text,
         timestamp: Date.now(),
-        tempId,
+        tempId: timestamp,
         loading: files.length > 0, // If there are files, put a placeholder "loading" property instead of displaying the files.
       },
     ]);
 
-    const messageWithId = await saveMessage("POST", text);
-
-    setMessages((prev) =>
-      [...prev].map((old) =>
-        old.tempId && old.tempId === tempId ? messageWithId : old
-      )
-    );
+    saveMessage("POST", text, timestamp);
   };
 
   const handleSubmit = async (e) => {

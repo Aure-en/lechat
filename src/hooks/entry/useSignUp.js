@@ -13,6 +13,7 @@ function useSignUp() {
 
   const [values, setValues] = useState(initial);
   const [errors, setErrors] = useState({ ...initial, response: "" });
+  const [message, setMessage] = useState("");
   const { setUser } = useAuth();
   const history = useHistory();
 
@@ -130,14 +131,17 @@ function useSignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors(initial);
+    setMessage("");
 
     // If there are errors, display them without submitting the Form.
     if (hasErrors()) return;
+    setMessage("Creating an account...");
     const json = await send();
 
     // If there are errors, display them.
     if (json.errors) {
       displayErrors(json.errors);
+      setMessage("");
     }
 
     // If the user was created and logged-in properly
@@ -145,6 +149,7 @@ function useSignUp() {
     // - Create a document to track the user's activity
     // - Once everything is done, redirects the user to their dashboard.
     if (json.user && json.token) {
+      setMessage("Account successfully created.");
       authentify(json.token, json.user);
       await setActivity(json.token, json.user);
       history.push("/");
@@ -154,6 +159,7 @@ function useSignUp() {
   return {
     values,
     errors,
+    message,
     handleInputChange,
     handleSubmit,
   };

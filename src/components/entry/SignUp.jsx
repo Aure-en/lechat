@@ -5,7 +5,8 @@ import useSignUp from "../../hooks/entry/useSignUp";
 import Button from "../shared/buttons/Gradient";
 
 function SignUp() {
-  const { values, errors, handleInputChange, handleSubmit } = useSignUp();
+  const { values, errors, message, handleInputChange, handleSubmit } =
+    useSignUp();
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -66,8 +67,11 @@ function SignUp() {
       </Field>
 
       <Bottom>
-        <Button type="submit">Sign Up</Button>
-        {errors.response && <Error>{errors.response}</Error>}
+        <div>
+          <Button type="submit">Sign Up</Button>
+          {message && <Message>{message}</Message>}
+          {errors.response && <Error>{errors.response}</Error>}
+        </div>
 
         <Small>
           Do you already have an account? Please use the{" "}
@@ -128,6 +132,11 @@ const Small = styled.small`
   max-width: 50%;
 `;
 
+const Message = styled(Small)`
+  color: ${(props) => props.theme.text_quaternary};
+  max-width: 70%;
+`;
+
 const Bottom = styled.div`
   display: flex;
   align-items: center;
@@ -139,5 +148,11 @@ const Bottom = styled.div`
     &:hover {
       text-decoration: underline;
     }
+  }
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 `;

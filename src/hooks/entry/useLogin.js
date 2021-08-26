@@ -11,6 +11,7 @@ function useLogin() {
 
   const [values, setValues] = useState(initial);
   const [errors, setErrors] = useState({ ...initial, response: "" });
+  const [message, setMessage] = useState("");
   const history = useHistory();
   const { setUser } = useAuth();
 
@@ -101,16 +102,20 @@ function useLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors(initial);
+    setMessage("");
 
     if (hasErrors()) return;
+    setMessage("Authenticating...");
     const json = await send(values.identifier, values.password);
 
     if (json.errors) {
+      setMessage("");
       return displayErrors(json.errors);
     }
 
     // If the user was logged-in properly, save the jwt and user information.
     if (json.user && json.token) {
+      setMessage("Successfully authenticated.");
       authentify(json.token, json.user);
 
       // Everything was done properly, redirects the user to their dashboard.
@@ -130,6 +135,7 @@ function useLogin() {
   return {
     values,
     errors,
+    message,
     handleInputChange,
     handleSubmit,
     handleSample,
