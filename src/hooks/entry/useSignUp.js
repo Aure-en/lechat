@@ -122,7 +122,7 @@ function useSignUp() {
    * @param {object} user
    */
   const authentify = (token, user) => {
-    localStorage.setItem("jwt", token);
+    sessionStorage.setItem("jwt", token);
     setUser(user);
     socket.emit("authentication", JSON.stringify(user));
   };

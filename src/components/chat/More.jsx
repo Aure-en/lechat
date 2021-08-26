@@ -33,7 +33,7 @@ function More({ message, setEditing, setIsActive }) {
     await fetch(`${process.env.REACT_APP_SERVER}/messages/${id}/pin`, {
       method: "PUT",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
       },
     });
   };

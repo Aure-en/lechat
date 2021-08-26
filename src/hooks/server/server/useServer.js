@@ -13,7 +13,7 @@ function useServer(serverId) {
         `${process.env.REACT_APP_SERVER}/servers/${serverId}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
           },
         }
       );

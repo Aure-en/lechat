@@ -23,7 +23,7 @@ function useCreate(serverId, category) {
     const res = await fetch(url, {
       method,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ name }),

@@ -20,7 +20,7 @@ function Server({ match }) {
 
   // Save latest visited server
   useEffect(() => {
-    if (server) localStorage.setItem("server", server._id);
+    if (server) sessionStorage.setItem("server", server._id);
   }, [server]);
 
   if (server) {

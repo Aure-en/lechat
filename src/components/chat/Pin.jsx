@@ -14,7 +14,7 @@ function Pin({ message }) {
     await fetch(`${process.env.REACT_APP_SERVER}/messages/${id}/unpin`, {
       method: "PUT",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
       },
     });
   };

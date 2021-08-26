@@ -12,7 +12,7 @@ function Delete({ message }) {
     await fetch(`${process.env.REACT_APP_SERVER}/messages/${id}`, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
         "Content-Type": "application/json",
       },
     });

@@ -46,7 +46,7 @@ function useConversation(id) {
         conversation: conversation._id,
       });
       const headers = {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
         type: "application/json",
       };
       const blob = new Blob([body], headers);

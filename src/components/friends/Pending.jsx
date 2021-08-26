@@ -46,7 +46,7 @@ function Request({ request }) {
     await fetch(`${process.env.REACT_APP_SERVER}/friends/${requestId}`, {
       method: isAccepting ? "PUT" : "DELETE",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
         "Content-Type": "application/json",
       },
     });

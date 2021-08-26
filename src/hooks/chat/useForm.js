@@ -123,7 +123,7 @@ function useForm(location, message, setEditing, setMessages) {
     const res = await fetch(url, {
       method,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
       },
       body: formData,
     });
@@ -149,6 +149,7 @@ function useForm(location, message, setEditing, setMessages) {
   const createMessage = async (text) => {
     const tempId = Date.now();
 
+    // Placeholder so the message appears "instantly" to its author.
     setMessages((prev) => [
       ...prev,
       {

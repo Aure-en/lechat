@@ -23,7 +23,7 @@ function useCreate(server) {
     const res = await fetch(`${process.env.REACT_APP_SERVER}/servers`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
       },
       body: formData,
     });
@@ -51,7 +51,7 @@ function useCreate(server) {
       {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
         },
         body: formData,
       }

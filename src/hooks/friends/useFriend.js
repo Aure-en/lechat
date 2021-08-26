@@ -14,7 +14,7 @@ function useFriend() {
         `${process.env.REACT_APP_SERVER}/users/${user._id}/friends`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
           },
         }
       );

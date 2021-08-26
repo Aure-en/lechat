@@ -44,7 +44,7 @@ export function PermissionProvider({ location, children }) {
       // Get the room information
       const res = await fetch(url, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
         },
       });
       const json = await res.json();

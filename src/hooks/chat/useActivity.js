@@ -19,7 +19,7 @@ function useActivity() {
         `${process.env.REACT_APP_SERVER}/activity/${user._id}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
           },
         }
       );
@@ -38,7 +38,7 @@ function useActivity() {
     fetch(`${process.env.REACT_APP_SERVER}/activity/${user._id}/servers`, {
       method: "PUT",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -55,7 +55,7 @@ function useActivity() {
       {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({

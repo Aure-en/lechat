@@ -12,12 +12,12 @@ function useLeave(serverId) {
   const leave = async (serverId) => {
     const res = await fetch(
       `${process.env.REACT_APP_SERVER}/users/${
-        JSON.parse(localStorage.getItem("user"))._id
+        JSON.parse(sessionStorage.getItem("user"))._id
       }/servers/${serverId}`,
       {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
           "Content-Type": "application/json",
         },
       }

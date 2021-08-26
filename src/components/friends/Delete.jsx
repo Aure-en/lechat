@@ -11,7 +11,7 @@ function Delete({ friend, friendship }) {
     await fetch(`${process.env.REACT_APP_SERVER}/friends/${friendship}`, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
         "Content-Type": "application/json",
       },
     });

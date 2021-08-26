@@ -58,7 +58,7 @@ function usePassword() {
       {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({

@@ -13,7 +13,7 @@ function useConversations() {
       `${process.env.REACT_APP_SERVER}/users/${user._id}/conversations`,
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
         },
       }
     );
@@ -42,7 +42,7 @@ function useConversations() {
           `${process.env.REACT_APP_SERVER}/conversations/${id}/messages?limit=1`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+              Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
             },
           }
         );

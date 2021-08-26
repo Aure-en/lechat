@@ -22,7 +22,7 @@ function useChannel(serverId, channelId) {
   useEffect(() => {
     if (channel) {
       // Store last visited channel to redirect the user to it later.
-      localStorage.setItem(serverId, channelId);
+      sessionStorage.setItem(serverId, channelId);
       // Set the channel as read (leave time for <New /> to be displayed)
       setTimeout(() => handleReadChannel(serverId, channelId), 1000);
     }
@@ -43,7 +43,7 @@ function useChannel(serverId, channelId) {
         channel: channelId,
       });
       const headers = {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
         type: "application/json",
       };
       const blob = new Blob([body], headers);

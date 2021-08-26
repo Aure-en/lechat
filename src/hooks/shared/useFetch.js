@@ -10,7 +10,7 @@ function useFetch(url) {
       setLoading(true);
       const res = await fetch(url, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
           "Content-Type": "application/json",
         },
       });

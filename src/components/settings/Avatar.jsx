@@ -14,7 +14,7 @@ function Avatar() {
     await fetch(`${process.env.REACT_APP_SERVER}/users/${user._id}/avatar`, {
       method: "PUT",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
       },
       body: formData,
     });

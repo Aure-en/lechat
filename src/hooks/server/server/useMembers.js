@@ -9,7 +9,7 @@ function useMembers(serverId) {
       `${process.env.REACT_APP_SERVER}/servers/${serverId}/members`,
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
         },
       }
     );

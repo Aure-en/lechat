@@ -10,9 +10,9 @@ import IconClose from "../../../assets/icons/general/IconClose";
 
 function Nav({ close, setIsContentOpen }) {
   const setServerLink = () => {
-    const server = localStorage.getItem("server");
+    const server = sessionStorage.getItem("server");
     const channel =
-      server && localStorage.getItem(localStorage.getItem("server"));
+      server && sessionStorage.getItem(sessionStorage.getItem("server"));
 
     if (server) {
       return channel

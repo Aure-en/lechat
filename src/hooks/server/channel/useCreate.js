@@ -24,7 +24,7 @@ function useCreate(serverId, categoryId, channel) {
     const res = await fetch(url, {
       method,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ name, about, category: categoryId }),

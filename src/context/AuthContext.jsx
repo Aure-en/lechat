@@ -10,18 +10,18 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [user, _setUser] = useState(
-    localStorage.getItem("user") && JSON.parse(localStorage.getItem("user"))
+    sessionStorage.getItem("user") && JSON.parse(sessionStorage.getItem("user"))
   );
 
-  // Set user and persist the new value in localStorage.
+  // Set user and persist the new value in sessionStorage.
   const setUser = (user) => {
     _setUser(user);
-    localStorage.setItem("user", JSON.stringify(user));
+    sessionStorage.setItem("user", JSON.stringify(user));
   };
 
   const logOut = () => {
     _setUser(undefined);
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
   };
 
   // Socket listeners to handle authentication

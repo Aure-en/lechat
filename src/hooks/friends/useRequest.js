@@ -34,7 +34,7 @@ function useRequest() {
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
           "Content-Type": "application/json",
         },
       }

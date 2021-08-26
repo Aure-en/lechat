@@ -30,7 +30,7 @@ export function UnreadProvider({ children }) {
           `${process.env.REACT_APP_SERVER}/conversations/${conversation._id}`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+              Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
             },
           }
         )
@@ -64,7 +64,7 @@ export function UnreadProvider({ children }) {
           {
             method: "HEAD",
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+              Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
             },
           }
         )
@@ -102,7 +102,7 @@ export function UnreadProvider({ children }) {
           {
             method: "HEAD",
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+              Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
             },
           }
         )
@@ -268,7 +268,7 @@ export function UnreadProvider({ children }) {
       `${process.env.REACT_APP_SERVER}/conversations/${message.conversation}`,
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
         },
       }
     );

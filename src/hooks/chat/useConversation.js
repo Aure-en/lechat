@@ -18,7 +18,7 @@ function useConversation(userId) {
       `${process.env.REACT_APP_SERVER}/conversations?members=${userId},${user._id}`,
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
           "Content-Type": "application/json",
         },
       }
@@ -36,7 +36,7 @@ function useConversation(userId) {
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({

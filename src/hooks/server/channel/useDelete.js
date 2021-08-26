@@ -17,7 +17,7 @@ function useDelete(channelId, serverId) {
       {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
           "Content-Type": "application/json",
         },
       }

@@ -30,7 +30,7 @@ function Entry() {
         `${process.env.REACT_APP_SERVER}/servers/${serverId}/channels`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
             "Content-Type": "application/json",
           },
         }
@@ -45,13 +45,13 @@ function Entry() {
       /* If the user has already visited a channel and it still exists
           → Redirects them to this channel. */
       if (
-        localStorage.getItem(serverId) &&
+        sessionStorage.getItem(serverId) &&
         channels.some(
-          (channel) => channel._id.toString() === localStorage.getItem(serverId)
+          (channel) => channel._id.toString() === sessionStorage.getItem(serverId)
         )
       ) {
         return history.push(
-          `/servers/${serverId}/channels/${localStorage.getItem(serverId)}`
+          `/servers/${serverId}/channels/${sessionStorage.getItem(serverId)}`
         );
       }
 

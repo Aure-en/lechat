@@ -41,7 +41,7 @@ function useMessage(location) {
   const getMessages = async (url) => {
     const res = await fetch(url, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
       },
     });
     const json = await res.json();
