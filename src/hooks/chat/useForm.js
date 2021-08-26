@@ -148,7 +148,7 @@ function useForm(location, message, setEditing, setMessages) {
     saveMessage("PUT", text);
   };
 
-  const createMessage = (text) => {
+  const createMessage = async (text) => {
     const timestamp = Date.now();
 
     // Placeholder so the message appears "instantly" to its author.
@@ -166,7 +166,15 @@ function useForm(location, message, setEditing, setMessages) {
       },
     ]);
 
-    saveMessage("POST", text, timestamp);
+    // Once the message has been saved to the DB with
+    // an _id and resized files, replace it.
+    const messageFromDB = await saveMessage("POST", text, timestamp);
+
+    setMessages((prev) =>
+      [...prev].map((old) =>
+        old.tempId && old.tempId === timestamp ? messageFromDB : old
+      )
+    );
   };
 
   const handleSubmit = async (e) => {
