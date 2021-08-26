@@ -34,25 +34,36 @@ Ever wanted to chat with new people, or send funny pictures to your friends? Lec
 ### Requirements
 *	Node.js
 *	[Lechat API](https://github.com/Aure-en/lechat_api)
+* Serve
 
-### Installation
-*	git clone
-*	npm install
+### Clone the repository
+```
+$ git clone git@github.com:Aure-en/lechat.git
+$ cd lechat
+$ npm install
+```
 
 ### Set up environment variables
+Create a .env file in the root directory and set the following variables
+
+```
+REACT_APP_SERVER=your server url
+REACT_APP_SAMPLE=id of the sample account if you add any.
+```
 
 ### Start
 
+```
+$ npm run build
+$ serve -s build
+```
+
 ## Dependencies
 *	React
-*	React-Router
+*	React Router
 *	Socket.io
 *	Styled-components
 *	View more in the [package.json](https://github.com/Aure-en/lechat/blob/master/package.json
-
-
-
-
 
 #### Design Inspiration
 [1](https://discord.com/) – [2](https://dribbble.com/shots/14598880-Chat-dashboard) – [3](https://dribbble.com/shots/11369220-sign-up-dark) 
