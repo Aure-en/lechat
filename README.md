@@ -63,7 +63,7 @@ $ serve -s build
 *	React Router
 *	Socket.io
 *	Styled-components
-*	View more in the [package.json](https://github.com/Aure-en/lechat/blob/master/package.json
+*	View more in the [package.json](https://github.com/Aure-en/lechat/blob/master/package.json)
 
 #### Design Inspiration
 [1](https://discord.com/) – [2](https://dribbble.com/shots/14598880-Chat-dashboard) – [3](https://dribbble.com/shots/11369220-sign-up-dark) 
