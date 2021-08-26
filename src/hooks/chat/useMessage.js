@@ -160,15 +160,14 @@ function useMessage(location) {
     if (
       // Checks the location to know if the current room is related to the change.
       // If it is, add the message.
-      (location.conversation &&
+      ((location.conversation &&
         message.conversation === location.conversation) ||
-      (location.channel &&
-        message.channel === location.channel &&
-        // Check if the message author is the current user.
-        // If they are, replace the temporary placeholding message
-        // by the new message.
-        (message.author._id !== user._id ||
-          !messages.find((old) => old.tempId === message.timestamp)))
+        (location.channel && message.channel === location.channel)) &&
+      // Check if the message author is the current user.
+      // If they are, replace the temporary placeholding message
+      // by the new message.
+      (message.author._id !== user._id ||
+        !messages.find((old) => old.tempId === message.timestamp))
     ) {
       setMessages([...messages, newMessage.document]);
     }
