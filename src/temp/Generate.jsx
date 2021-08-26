@@ -7,8 +7,8 @@ function Generate() {
       type="button"
       onClick={async () => {
         for (let i = 1; i < 251; i += 1) {
-          await fetch(
-            `${process.env.REACT_APP_URL}/servers/60fe76d1b3be8b2137751bc6/channels/60fe76d8b3be8b2137751bc8/messages`,
+          fetch(
+            `${process.env.REACT_APP_SERVER}/servers/6126b3b8ac2d3f325b2232b1/channels/6126b479ac2d3f325b2232b3/messages`,
             {
               method: "POST",
               headers: {

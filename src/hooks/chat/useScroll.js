@@ -1,13 +1,16 @@
 import { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 /**
  * Handle messages pagination
  * @param {array} messages
  * @param {HTMLElement} ref
  */
 function useScroll(messages, ref) {
+  const [isFirst, setIsFirst] = useState(true); // First loading
   const [hasScrolled, setHasScrolled] = useState(false); // If the user has scrolled, display a button to scroll back to present.
   const previous = useRef();
   const currentHeight = useRef(); // Calculate the scroll after loading new messages
+  const location = useLocation();
 
   /** Scroll to bottom */
   const scrollToBottom = () => {
@@ -22,20 +25,18 @@ function useScroll(messages, ref) {
       ref.current.scrollHeight - ref.current.scrollTop >
       ref.current.clientHeight * 2
     ) {
-      ref.current.style.scrollBehavior = "smooth";
       setHasScrolled(true);
     } else {
       setHasScrolled(false);
     }
   };
 
-  // Set scroll behavior back to normal after clicking on the scroll button.
-  useEffect(() => {
-    ref.current.style.scrollBehavior = "initial";
-  }, [hasScrolled]);
-
   /**
    * -- Automatic scroll --
+   * If it is the messages first render:
+   * - Scroll to the bottom
+   * - Set up ref.
+   *
    * Saves the first and last messages in a reference.
    * When the messages props change, the component will know whether the new messages
    * appeared on top (=previous messages have been loaded) or on the bottom (=someone
@@ -49,27 +50,29 @@ function useScroll(messages, ref) {
    *      automatically.
    */
 
-  /* After the messages' first render:
-   * - Scroll to the bottom of the container.
-   * - Set up ref
-   */
+  /** Handle the scroll for the first render of messages. */
+  useEffect(() => {
+    setIsFirst(true);
+  }, [location.key]);
 
   useEffect(() => {
-    if (!ref) return;
+    if (!ref || messages.length < 1 || !isFirst) return;
     ref.current.scrollTop = ref.current.scrollHeight - ref.current.clientHeight;
-    currentHeight.current = ref.current.scrollHeight;
 
+    currentHeight.current = ref.current.scrollHeight;
     previous.current = {
-      first: messages[0]?._id,
-      last: messages[messages.length - 1]?.messages[
-        messages[messages.length - 1]?.messages.length - 1
+      first: messages[0]._id,
+      last: messages[messages.length - 1].messages[
+        messages[messages.length - 1].messages.length - 1
       ]._id,
     };
+
+    setIsFirst(false);
   }, [messages, ref]);
 
-  // When messages change, compare to the ref and scroll in consequence.
+  // When messages change, compare to the refs and scroll in consequence.
   useEffect(() => {
-    if (messages.length < 1 || !previous?.current) return;
+    if (messages.length < 1 || !previous || !previous.current) return;
 
     // Previous messages were loaded
     if (messages[0]._id !== previous.current.first) {

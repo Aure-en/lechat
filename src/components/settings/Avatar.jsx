@@ -20,7 +20,6 @@ function Avatar() {
     });
 
     setMessage("Avatar successfully updated.");
-    setTimeout(() => setMessage(""), 3000);
   };
 
   return (

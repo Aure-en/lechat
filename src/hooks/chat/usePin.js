@@ -11,7 +11,7 @@ import socket from "../../socket/socket";
 function usePin(location) {
   const [messages, setMessages] = useState([]);
   const [last, setLast] = useState(""); // Used to load more messages by fetching messages with an id < last id loaded.
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Used to know when the response for the first request has arrived.
 
   // Helper function to get the endpoint linked to the room
   const setUrl = (location, lastMessageId) => {
@@ -95,6 +95,7 @@ function usePin(location) {
   }, []);
 
   return {
+    loading,
     messages,
     getPrevious,
   };
