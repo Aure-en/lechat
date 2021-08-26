@@ -26,10 +26,10 @@ export default IconClose;
 
 IconClose.propTypes = {
   size: PropTypes.string,
-  strokeWidth: PropTypes.string,
+  strokeWidth: PropTypes.number,
 };
 
 IconClose.defaultProps = {
-  size: "24",
-  strokeWidth: "0.5",
+  size: "24px",
+  strokeWidth: 0.5,
 };

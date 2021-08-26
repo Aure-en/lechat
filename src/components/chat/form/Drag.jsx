@@ -45,8 +45,8 @@ const DragZone = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.9);
-  border: 2px dashed ${(props) => props.theme.bg_sidebar};
+  background: ${(props) => props.theme.bg_overlay};
+  border: 2px dashed ${(props) => props.theme.text_quaternary};
   border-radius: 3px;
   margin: 0.5rem;
   z-index: 10;

@@ -1,10 +1,11 @@
 const colors = {
   // Font
   text_primary: "rgb(200, 200, 200)",
-  text_secondary: "rgb(164, 167, 177)",
+  text_secondary: "rgb(164, 167, 177)", // Less visible than primary
   text_tertiary: "rgb(150, 142, 137)",
   text_tertiary_hover: "rgb(202, 184, 174)",
-  text_quaternary: "rgb(152, 132, 120)",
+  text_quaternary: "rgb(152, 132, 120)", // Accent-color
+  text_accent: "rgb(200, 200, 200)",
   text_link: "rgb(40, 156, 184)",
   text_link_hover: "rgb(6, 105, 145)",
 
@@ -17,6 +18,7 @@ const colors = {
   bg_button: "rgb(39, 54, 68)", // Buttons, default icons
   bg_code: "rgb(45, 54, 64)", // Code in rich editor
   bg_card: "rgb(38, 47, 58)", // Server preview cards
+  bg_overlay: "rgba(22, 25, 31, 0.9)", // Drag zone.
 
   // Borders
   border: "rgb(152, 132, 120)",
@@ -36,14 +38,12 @@ const colors = {
 
   // Chat
   chat_bg_hover: "rgb(34, 42, 51)",
+  bg_secondary_hover: "rgb(39, 49, 62)",
 
-  more_bg: "rgb(30, 38, 47)",
-  more_bg_hover: "rgb(39, 49, 62)",
-
-  send_bg: "rgb(59, 76, 99)",
-  send_bg_disabled: "rgb(41, 49, 60)",
-  send_bg_hover: "rgb(73, 93, 119)",
-  send_text: "rgb(180, 180, 180)",
+  send_bg: "rgb(138, 121, 113)",
+  send_bg_disabled: "rgb(95, 86, 82)",
+  send_bg_hover: "rgb(167, 129, 111)",
+  send_text: "rgb(30, 38, 47)",
 
   // Text Editor buttons
   editor_bg_hover: "rgb(36, 45, 56)",

@@ -70,14 +70,19 @@ const Button = styled.button`
 const Menu = styled.div`
   position: absolute;
   top: ${(props) => `calc(${props.$top}px + 2.25rem)`};
-  left: ${(props) => `calc(${props.$right}px + 0.5rem)`};
+  left: ${(props) => `calc(${props.$right}px - 5.75rem)`};
   padding: 0.25rem 0;
   display: flex;
   flex-direction: column;
   z-index: 10;
-  background: ${(props) => props.theme.more_bg};
+  background: ${(props) => props.theme.bg_secondary};
   border: 1px solid ${(props) => props.theme.border_button};
   border-radius: 3px;
+
+  @media all and (min-width: 1400px) {
+    left: ${(props) => `calc(${props.$right}px + 0.5rem)`};
+    right: initial;
+  }
 `;
 
 const Option = styled(Link)`
@@ -88,6 +93,6 @@ const Option = styled(Link)`
   white-space: nowrap;
 
   &:hover {
-    background: ${(props) => props.theme.more_bg_hover};
+    background: ${(props) => props.theme.bg_secondary_hover};
   }
 `;

@@ -55,7 +55,7 @@ const Wrapper = styled.li`
   width: 10rem;
   height: 4rem;
   border: 1px solid ${(props) => props.theme.bg_button};
-  background: url(${(props) => props.$src});
+  background: url(${(props) => props.$src || props.theme.bg_card});
   background-position: center;
   background-size: cover;
   border-radius: 3px;

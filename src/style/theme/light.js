@@ -1,10 +1,11 @@
 const colors = {
   // Font
   text_primary: "rgb(25, 25, 25)",
-  text_secondary: "rgb(105, 105, 105)",
+  text_secondary: "rgb(105, 105, 105)", // Less visible than primary
   text_tertiary: "rgb(35, 120, 140)",
   text_tertiary_hover: "rgb(6, 56, 68)",
-  text_quaternary: "rgb(92, 167, 181)",
+  text_quaternary: "rgb(92, 167, 181)", // Accent-color
+  text_accent: "rgb(255, 255, 255)",
   text_link: "rgb(40, 156, 184)",
   text_link_hover: "rgb(6, 105, 145)",
 
@@ -17,6 +18,7 @@ const colors = {
   bg_button: "rgb(144, 182, 191)",
   bg_code: "rgb(236, 247, 250)", // Code in rich editor
   bg_card: "rgb(255, 255, 255)", // Server preview cards
+  bg_overlay: "rgba(255, 255, 255, 0.9)", // Drag zone.
 
   // Borders
   border: "rgb(104, 153, 165)",
@@ -36,9 +38,7 @@ const colors = {
 
   // Chat
   chat_bg_hover: "rgb(255, 246, 243)",
-
-  more_bg: "rgb(255, 255, 255)",
-  more_bg_hover: "rgb(236, 247, 250)",
+  bg_secondary_hover: "rgb(236, 247, 250)",
 
   send_bg: "rgb(234, 144, 77)",
   send_bg_disabled: "rgb(255, 214, 183)",

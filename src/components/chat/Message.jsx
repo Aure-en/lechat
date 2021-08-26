@@ -22,6 +22,9 @@ function Message({ message, isFirst, setEditing }) {
         $hovered={hovered}
       >
         <Content message={message} />
+
+        {/* If the message contains files that are currently being uploaded to
+        the BDD, display a loader */}
         {message.loading && <IconLoad />}
 
         {(hovered || more) && (
@@ -59,6 +62,9 @@ function Message({ message, isFirst, setEditing }) {
           {message.edited && <Edited>(edited)</Edited>}
         </div>
       )}
+
+      {/* If the message contains files that are currently being uploaded to
+      the BDD, display a loader */}
       {message.loading && <IconLoad />}
 
       {/* Files */}

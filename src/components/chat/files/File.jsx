@@ -50,7 +50,7 @@ const Wrapper = styled.li`
     width: 10rem;
     height: 4rem;
     border: 1px solid ${(props) => props.theme.bg_button};
-    background: ${(props) => props.theme.bg_secondary};
+    background: ${(props) => props.theme.bg_card};
     border-radius: 3px;
     overflow: hidden;
     padding: 0 0.5rem;

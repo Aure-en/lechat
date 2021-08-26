@@ -3,9 +3,17 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+/**
+ * Display a server informations.
+ */
 function Preview({ server, join }) {
   const [hovered, setHovered] = useState(false);
 
+  /**
+   * If the user is not a member of the server
+   * - Display a link to join the server.
+   * - Otherwise, display a link to the server itself.
+   */
   return (
     <Link
       to={join ? `/join/${server._id}` : `/servers/${server._id}`}
@@ -38,6 +46,7 @@ function Preview({ server, join }) {
 export default Preview;
 
 Preview.propTypes = {
+  // Server informations
   server: PropTypes.shape({
     name: PropTypes.string,
     about: PropTypes.string,
@@ -54,6 +63,8 @@ Preview.propTypes = {
       }),
     }),
   }).isRequired,
+
+  // Is the current user a member of the server?
   join: PropTypes.bool,
 };
 
@@ -87,7 +98,7 @@ const Banner = styled.div`
     background: ${(props) =>
       props.$banner
         ? `url(data:${props.$banner.type};base64,${Buffer.from(
-            props.$banner.data
+            props.$banner.thumbnail || props.$banner.data
           ).toString("base64")})`
         : `${props.theme.bg_sidebar}`};
     background-position: center;

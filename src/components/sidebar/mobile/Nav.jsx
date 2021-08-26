@@ -41,7 +41,7 @@ function Nav({ close, setIsContentOpen }) {
       <Settings />
 
       <button type="button" onClick={() => close(false)}>
-        <IconClose size="36" strokeWidth="1.5" />
+        <IconClose size="36" strokeWidth={1.5} />
       </button>
     </Container>
   );

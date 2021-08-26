@@ -13,7 +13,7 @@ function Right({ serverId, close }) {
       <Members serverId={serverId} />
       {windowSize.width < 992 && (
         <Button type="button" onClick={close}>
-          <IconClose size="30" strokeWidth="1" />
+          <IconClose size="30" strokeWidth={1} />
         </Button>
       )}
     </Container>

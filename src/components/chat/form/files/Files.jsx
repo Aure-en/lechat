@@ -15,9 +15,13 @@ function Files({ files, setFiles }) {
     <List>
       {files.map((file, index) => {
         if (file.type.split("/")[0] === "image") {
-          return <Image image={file} remove={() => remove(index)} />;
+          return (
+            <Image key={file.name} image={file} remove={() => remove(index)} />
+          );
         }
-        return <File file={file} remove={() => remove(index)} />;
+        return (
+          <File key={file.name} file={file} remove={() => remove(index)} />
+        );
       })}
     </List>
   );

@@ -4,14 +4,32 @@ import PropTypes from "prop-types";
 import File from "./File";
 import Image from "./Image";
 
+/**
+ * Display files preview, depending on
+ * whether the file is an image or not.
+ */
 function Files({ message, files }) {
   return (
     <List>
       {files.map((file, index) => {
         if (file.contentType.split("/")[0] === "image") {
-          return <Image image={file} message={message} index={index} />;
+          return (
+            <Image
+              key={file.name}
+              image={file}
+              message={message}
+              index={index}
+            />
+          );
         }
-        return <File file={file} messageId={message._id} index={index} />;
+        return (
+          <File
+            key={file.name}
+            file={file}
+            messageId={message._id}
+            index={index}
+          />
+        );
       })}
     </List>
   );

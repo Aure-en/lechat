@@ -48,7 +48,7 @@ const Wrapper = styled.li`
   width: 4rem;
   height: 4rem;
   border: 1px solid ${(props) => props.theme.bg_button};
-  background: ${(props) => props.theme.bg_secondary};
+  background: ${(props) => props.theme.bg_card};
   border-radius: 3px;
   cursor: pointer;
 `;

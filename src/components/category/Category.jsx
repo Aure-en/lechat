@@ -81,18 +81,18 @@ Category.propTypes = {
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: 0.25rem 0;
 `;
 
 const Name = styled.button`
   display: flex;
-  align-items: center;
   text-transform: uppercase;
   font-size: 0.875rem;
   font-weight: 400;
   color: ${(props) => props.theme.text_tertiary};
-  overflow: auto;
+  word-break: break-all;
+  text-align: left;
 
   &:hover {
     color: ${(props) => props.theme.text_tertiary_hover};

@@ -3,14 +3,14 @@ import { useLocation } from "react-router-dom";
 /**
  * Handle messages pagination
  * @param {array} messages
- * @param {HTMLElement} ref
+ * @param {HTMLElement} ref (messages container)
  */
 function useScroll(messages, ref) {
   const [isFirst, setIsFirst] = useState(true); // First loading
   const [hasScrolled, setHasScrolled] = useState(false); // If the user has scrolled, display a button to scroll back to present.
-  const previous = useRef();
+  const previous = useRef(); // Used to know if previous messages were loaded, or if a new one was added.
   const currentHeight = useRef(); // Calculate the scroll after loading new messages
-  const location = useLocation();
+  const location = useLocation(); // Used to reset the scroll when changing room.
 
   /** Scroll to bottom */
   const scrollToBottom = () => {
@@ -72,7 +72,8 @@ function useScroll(messages, ref) {
 
   // When messages change, compare to the refs and scroll in consequence.
   useEffect(() => {
-    if (messages.length < 1 || !previous || !previous.current) return;
+    // If there were / are no messages, do nothing.
+    if (messages.length < 1 || !previous?.current) return;
 
     // Previous messages were loaded
     if (messages[0]._id !== previous.current.first) {

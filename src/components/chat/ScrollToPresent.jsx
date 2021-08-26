@@ -25,7 +25,7 @@ const Button = styled.button`
   padding: 0.1rem 1rem;
   width: 100%;
   background: ${(props) => props.theme.bg_button};
-  color: ${(props) => props.theme.bg_secondary};
+  color: ${(props) => props.theme.text_accent};
   border-radius: 2px 2px 0 0;
   font-weight: 400;
 

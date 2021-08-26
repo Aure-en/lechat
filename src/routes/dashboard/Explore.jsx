@@ -60,7 +60,7 @@ const Heading = styled.h1`
 
 const Ul = styled.ul`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(15.625rem, 1fr)); // 250px;
   grid-gap: 2rem;
-  grid-auto-rows: 1fr;
+  grid-auto-rows: 1fr; // Equal height.
 `;

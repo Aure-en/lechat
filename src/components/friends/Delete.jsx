@@ -65,7 +65,7 @@ const Option = styled.button`
   white-space: nowrap;
 
   &:hover {
-    background: ${(props) => props.theme.more_bg_hover};
+    background: ${(props) => props.theme.bg_secondary_hover};
   }
 `;
 

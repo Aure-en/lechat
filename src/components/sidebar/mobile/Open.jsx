@@ -24,7 +24,7 @@ const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${(props) => props.theme.bg_sidebar};
+  color: ${(props) => props.theme.text_quaternary};
   top: 0.5rem;
   left: 0.5rem;
   border-radius: 50%;

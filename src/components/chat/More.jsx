@@ -129,11 +129,11 @@ const Button = styled.button`
   border: 1px solid ${(props) => props.theme.border_button};
   border-radius: 3px;
   padding: 0.07rem 0.15rem;
-  background: ${(props) => props.theme.more_bg};
+  background: ${(props) => props.theme.bg_secondary};
   color: ${(props) => props.theme.text_tertiary};
 
   &:hover {
-    background: ${(props) => props.theme.more_bg_hover};
+    background: ${(props) => props.theme.bg_secondary_hover};
   }
 `;
 
@@ -145,7 +145,7 @@ const Menu = styled.div`
   display: flex;
   flex-direction: column;
   z-index: 10;
-  background: ${(props) => props.theme.more_bg};
+  background: ${(props) => props.theme.bg_secondary};
   border: 1px solid ${(props) => props.theme.border_button};
   border-radius: 3px;
 `;
@@ -158,6 +158,6 @@ const Option = styled.button`
   white-space: nowrap;
 
   &:hover {
-    background: ${(props) => props.theme.more_bg_hover};
+    background: ${(props) => props.theme.bg_secondary_hover};
   }
 `;

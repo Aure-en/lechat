@@ -82,7 +82,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   z-index: 20;
-  background: ${(props) => props.theme.more_bg};
+  background: ${(props) => props.theme.bg_secondary};
   border: 1px solid ${(props) => props.theme.border_button};
   border-radius: 3px;
 
@@ -94,7 +94,7 @@ const Container = styled.div`
     white-space: nowrap;
 
     &:hover {
-      background: ${(props) => props.theme.more_bg_hover};
+      background: ${(props) => props.theme.bg_secondary_hover};
     }
   }
 `;

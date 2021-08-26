@@ -84,7 +84,7 @@ const Container = styled.main`
   border-radius: 1rem;
   padding: 1.25rem 1rem;
 
-  @media all and (min-width: 576px) {
+  @media all and (min-width: 768px) {
     padding: 3rem;
     margin: 1rem;
   }
