@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, createContext } from "react";
-import { useLocation, useRouteMatch } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import socket from "../socket/socket";
 import useActivity from "../hooks/chat/useActivity";
@@ -125,7 +125,10 @@ export function UnreadProvider({ children }) {
    * For each server, use the getChannelsUnread to get the number
    * of unread messages in each channel.
    * @param {Array} servers - array of objects { _id: {str}, channels: [{ _id: {str}, timestamp: {int}}]}
+   * Each channel has a timestamp, which is the time of the user's latest visit in this channel.
+   *
    * @returns {Array} unread - array of objects { _id: {str}, channels:[{ _id: {str}, unread: {int}}]
+   * Each channel has the number of messages written in the channel since the user's latest visit.
    */
 
   const getServersUnread = async (servers) => {

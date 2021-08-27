@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import Empty from "../../components/server/Empty";
+import NoChannels from "../../components/error/NoChannels";
 
 function Entry() {
   const [loading, setLoading] = useState(true);
   const { serverId } = useRouteMatch("/servers/:serverId").params;
   const history = useHistory();
 
-  /* Objective: Redirect the user to a channel.
+  /* Objective: Redirect the user to a server channel.
     Cases :
-    1. There are no channels. 
-    → Display a special message.
+      1. There are no channels. 
+      → Display a special message.
 
-    2. The user has never visited a channel.
-    → Redirects them to the first channel of the first category.
+      2. The user has never visited a channel.
+      → Redirects them to the first channel of the first category.
 
-    3. The user has already visited a channel.
-      * The channel doesn't exist anymore.
-        → Redirects them to the first channel of the first category.
-      * The channel still exists.
-        → Redirects them to this channel.
+      3. The user has already visited a channel.
+        * The channel doesn't exist anymore.
+          → Redirects them to the first channel of the first category.
+        * The channel still exists.
+          → Redirects them to this channel.
   */
 
   useEffect(() => {
@@ -75,7 +75,7 @@ function Entry() {
   }, [serverId]);
 
   if (!loading) {
-    return <Empty />;
+    return <NoChannels />;
   }
 
   return <></>;

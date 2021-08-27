@@ -12,7 +12,7 @@ function IconLoad() {
       y="0px"
       width="40px"
       height="40px"
-      viewBox="0 0 100 100"
+      viewBox="0 0 50 100"
       enableBackground="new 0 0 0 0"
       xmlSpace="preserve"
     >
@@ -49,7 +49,7 @@ function IconLoad() {
 
 // To fit properly in a message grid.
 const Svg = styled.svg`
-  grid-column: 2;
+  justify-self: center;
 `;
 
 const Circle = styled.circle`

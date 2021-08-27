@@ -28,6 +28,7 @@ function Category({ serverId, category }) {
   return (
     <li ref={outerRef}>
       <Container>
+        {/* Button to open the channels dropdown */}
         <Name
           type="button"
           onClick={() => setAreChannelsOpen(!areChannelsOpen)}
@@ -45,6 +46,7 @@ function Category({ serverId, category }) {
         )}
       </Container>
 
+      {/* Dropdown displaying channels */}
       {areChannelsOpen && (
         <div ref={ignoreRef}>
           <Channels serverId={serverId} categoryId={category._id} />

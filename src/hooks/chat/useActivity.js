@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
-import socket from "../../socket/socket";
 
 /**
  * Activity saves the timestamp at which the user last visited a room.
- * It is used to differentiate messages the user has read from
- * messages they haven't read.
+ * It is used to:
+ * - Differentiate messages the user has read from
+ *   messages they haven't read.
+ * - Notify the user when they have unread messages.
  */
 function useActivity() {
   const [activity, setActivity] = useState();
@@ -27,11 +28,6 @@ function useActivity() {
       if (!json.error) setActivity(json);
     })();
   }, [user]);
-
-  // Set up socket listener to update activity
-  const handleUpdate = (updated) => {
-    setActivity(updated);
-  };
 
   // Update the activity document when the user leaves a channel
   const updateChannelActivity = (user, serverId, channelId) => {
@@ -64,11 +60,6 @@ function useActivity() {
       }
     );
   };
-
-  useEffect(() => {
-    socket.on("activity update", handleUpdate);
-    return () => socket.off("activity update", handleUpdate);
-  }, [activity]);
 
   return {
     activity,

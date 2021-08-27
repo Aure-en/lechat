@@ -6,6 +6,10 @@ import Contextual from "../shared/Contextual";
 import Category from "./Modal";
 import Delete from "./Delete";
 
+/**
+ * Category contextual menu.
+ * Contains buttons to access categories' create / update / delete forms.
+ */
 function Menu({ serverId, category, outerRef, ignoreRef }) {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);

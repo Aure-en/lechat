@@ -5,6 +5,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import useCreate from "../../hooks/server/channel/useCreate";
 import SubmitBtn from "../shared/buttons/Gradient";
 
+// Form to create / update a channel.
 function Form({ serverId, categoryId, channel, setIsOpen }) {
   const { name, setName, about, setAbout, error, onSubmit } = useCreate(
     serverId,

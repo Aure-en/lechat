@@ -5,6 +5,10 @@ import { useAuth } from "../../../context/AuthContext";
 import Category from "../../category/Modal";
 import Contextual from "../../shared/Contextual";
 
+/**
+ * Server sidebar contextual menu. Contains:
+ * - Button to create a category.
+ */
 function Menu({ serverId, ignoreRef, outerRef }) {
   const [isLeaveOpen, setIsLeaveOpen] = useState(false);
 

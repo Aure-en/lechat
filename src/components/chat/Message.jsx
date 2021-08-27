@@ -25,7 +25,11 @@ function Message({ message, isFirst, setEditing }) {
 
         {/* If the message contains files that are currently being uploaded to
         the BDD, display a loader */}
-        {message.loading && <IconLoad />}
+        {message.loading && (
+          <Load>
+            <IconLoad />
+          </Load>
+        )}
 
         {(hovered || more) && (
           <More
@@ -65,7 +69,11 @@ function Message({ message, isFirst, setEditing }) {
 
       {/* If the message contains files that are currently being uploaded to
       the BDD, display a loader */}
-      {message.loading && <IconLoad />}
+      {message.loading && (
+        <Load>
+          <IconLoad />
+        </Load>
+      )}
 
       {/* Files */}
       {message.files?.length > 0 && (
@@ -149,4 +157,8 @@ const Edited = styled.small`
   margin-left: 0.25rem;
   font-size: 0.75rem;
   color: ${(props) => props.theme.text_secondary};
+`;
+
+const Load = styled.div`
+  grid-column: 2;
 `;
