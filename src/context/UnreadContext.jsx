@@ -17,6 +17,8 @@ export function UnreadProvider({ children }) {
   // Tracks rooms that have unread messages (the latest message has a timestamp greater than the user's last visit)
   const [unread, setUnread] = useState();
   const { activity } = useActivity();
+
+  // Keep track of the room the user is in
   const location = useLocation();
 
   /**
@@ -199,7 +201,7 @@ export function UnreadProvider({ children }) {
    * → Increment the number of unread messages.
    * @param {string} message - New message that has been sent.
    */
-  const handleChannel = (message) => {
+  const handleNewChannelMessage = (message) => {
     // If I am currently on the channel the message was sent in
     // → Return.
     if (
@@ -255,14 +257,10 @@ export function UnreadProvider({ children }) {
   /**
    * If the new message was sent in a private conversation the user isn't currently on
    * → Increment its number of unread messages.
-   * @param {string} message - New message that has been sent.
+   * @param {object} message - New message that has been sent.
    */
 
-  // Get the conversation the user is currently on.
-  const current = useRouteMatch("/conversations/:conversationId")?.params
-    .conversationId;
-
-  const handleConversation = async (message) => {
+  const handleNewConversationMessage = async (message) => {
     // Fetch the conversation to get its informations.
     const response = await fetch(
       `${process.env.REACT_APP_SERVER}/conversations/${message.conversation}`,
@@ -275,13 +273,21 @@ export function UnreadProvider({ children }) {
 
     const conversation = await response.json();
 
+    /* If the user is in the conversation,
+     * check if they are currently in this conversation.
+     * If it is the case, do nothing. Otherwise, update the list of unread messages.
+     */
+    const currentRoom = location.pathname.match(/\/conversations\/(.*?)$/);
+    // currentRoom[1] contains the id of the conversation member the user is chatting with.
+
     // If the user is already in the conversation, returns.
     if (
-      current &&
-      conversation.members.find((member) => member._id.toString() === current)
-    ) {
+      currentRoom &&
+      conversation.members.find(
+        (member) => member._id.toString() === currentRoom[1]
+      )
+    )
       return;
-    }
 
     // Otherwise, update the unread conversations' list.
 
@@ -321,8 +327,8 @@ export function UnreadProvider({ children }) {
    */
   const handleUnread = (document) => {
     const message = document.document;
-    if (message.channel) handleChannel(message);
-    if (message.conversation) handleConversation(message);
+    if (message.channel) handleNewChannelMessage(message);
+    if (message.conversation) handleNewConversationMessage(message);
   };
 
   /**
@@ -382,7 +388,7 @@ export function UnreadProvider({ children }) {
       socket.off("insert message", handleUnread);
       socket.off("insert conversation", handleInsert);
     };
-  }, [unread]);
+  }, [unread, location.pathname]);
 
   const value = {
     unread,

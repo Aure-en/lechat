@@ -184,6 +184,10 @@ function useMessage(location) {
               old.author._id === message.author._id
           )
         ) {
+          /* Temporary fix to avoid duplicates caused by the prev.find condition...
+           * Because the messages are updated asynchronously, if the user spammed messages,
+           * they could appear as duplicated.
+           */
           return Array.from(new Set([...prev, message]));
         }
         /* If the message author is the current user and

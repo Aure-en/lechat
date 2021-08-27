@@ -8,10 +8,6 @@ function Conversations() {
   const [isOpen, setIsOpen] = useState(true);
   const { withMessage: conversations } = useConversations();
 
-  if (!conversations) {
-    return <></>;
-  }
-
   return (
     <Container>
       <Header type="button" onClick={() => setIsOpen(!isOpen)}>
