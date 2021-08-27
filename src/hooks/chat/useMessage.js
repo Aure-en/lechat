@@ -184,15 +184,20 @@ function useMessage(location) {
               old.author._id === message.author._id
           )
         ) {
-          return [...prev, message];
+          return Array.from(new Set([...prev, message]));
         }
         /* If the message author is the current user and
          * the message has a placeholder, replace the placeholder.
          */
-        return [...prev].map((old) =>
-          old.tempId === old.timestamp && old.author._id === message.author._id
-            ? message
-            : old
+        return Array.from(
+          new Set(
+            [...prev].map((old) =>
+              old.tempId === old.timestamp &&
+              old.author._id === message.author._id
+                ? message
+                : old
+            )
+          )
         );
       });
     }
