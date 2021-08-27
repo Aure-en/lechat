@@ -45,7 +45,11 @@ function Conversation({ conversation }) {
         <div>
           <div>{member.username}</div>
           <Text>
-            {redraft(JSON.parse(conversation.message.text), renderers)}
+            {conversation.message.files.length > 0 ? (
+              <span>Sent a file.</span>
+            ) : (
+              redraft(JSON.parse(conversation.message.text), renderers)
+            )}
           </Text>
         </div>
 
@@ -72,6 +76,11 @@ Conversation.propTypes = {
     message: PropTypes.shape({
       text: PropTypes.string,
       timestamp: PropTypes.number,
+      files: PropTypes.arrayOf(
+        PropTypes.shape({
+          name: PropTypes.string,
+        })
+      ),
     }),
     _id: PropTypes.string,
   }).isRequired,
