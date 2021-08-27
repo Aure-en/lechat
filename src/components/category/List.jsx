@@ -4,6 +4,7 @@ import styled from "styled-components";
 import useSection from "../../hooks/server/server/useSection";
 import Category from "./Category";
 
+// List of a server categories.
 function List({ serverId }) {
   const { sections: categories } = useSection(
     `${process.env.REACT_APP_SERVER}/servers/${serverId}/categories`,

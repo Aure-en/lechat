@@ -5,6 +5,10 @@ import Members from "../Members";
 import useWindowSize from "../../../hooks/shared/useWindowSize";
 import IconClose from "../../../assets/icons/general/IconClose";
 
+/**
+ * Server right panel.
+ * Display list of members.
+ */
 function Right({ serverId, close }) {
   const { windowSize } = useWindowSize();
 

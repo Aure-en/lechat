@@ -5,6 +5,10 @@ import About from "../About";
 import Categories from "../../category/List";
 import Menu from "./Menu";
 
+/**
+ * Server left panel.
+ * Contains informations about the server and navigation.
+ */
 function Left({ serverId }) {
   // For contextual menu
   const outerRef = useRef();

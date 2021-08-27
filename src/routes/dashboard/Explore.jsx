@@ -2,11 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import Preview from "../../components/server/Preview";
 import { useAuth } from "../../context/AuthContext";
+import IconLoad from "../../assets/icons/general/IconLoad";
 import useFetch from "../../hooks/shared/useFetch";
 
 function Explore() {
   const { user } = useAuth();
-  const { data: servers } = useFetch(
+  const { data: servers, loading } = useFetch(
     `${process.env.REACT_APP_SERVER}/servers?sort_by=members&order=desc`
   );
 
@@ -14,17 +15,21 @@ function Explore() {
     <Container>
       <Heading>Featured Servers</Heading>
 
-      <Ul>
-        {servers &&
-          servers.map((server) => (
-            <li key={server._id}>
-              <Preview
-                server={server}
-                join={!user.server.includes(server._id)}
-              />
-            </li>
-          ))}
-      </Ul>
+      {loading ? (
+        <IconLoad />
+      ) : (
+        <Ul>
+          {servers &&
+            servers.map((server) => (
+              <li key={server._id}>
+                <Preview
+                  server={server}
+                  join={!user.server.includes(server._id)}
+                />
+              </li>
+            ))}
+        </Ul>
+      )}
     </Container>
   );
 }

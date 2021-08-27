@@ -4,6 +4,7 @@ import styled from "styled-components";
 import useCreate from "../../hooks/server/category/useCreate";
 import SubmitBtn from "../shared/buttons/Gradient";
 
+// Form to create / update a category.
 function Form({ serverId, category, setIsOpen }) {
   const { name, setName, error, onSubmit } = useCreate(serverId, category);
 

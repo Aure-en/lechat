@@ -6,6 +6,10 @@ import Contextual from "../shared/Contextual";
 import Channel from "./Modal";
 import Delete from "./Delete";
 
+/**
+ * Channel contextual menu.
+ * Contains buttons to access channels' create / update / delete forms.
+ */
 function Menu({ serverId, categoryId, channel, outerRef }) {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);

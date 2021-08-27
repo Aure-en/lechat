@@ -5,6 +5,7 @@ import socket from "../../../socket/socket";
 // Keep track of the servers the user is a member of.
 function useServers() {
   const [servers, setServers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
 
   const getUserServers = async (userId) => {
@@ -22,7 +23,10 @@ function useServers() {
 
   // Load servers the user is in
   useEffect(() => {
-    getUserServers(user._id);
+    (async () => {
+      await getUserServers(user._id);
+      setLoading(false);
+    })();
   }, []);
 
   // Set up socket listener
@@ -49,7 +53,11 @@ function useServers() {
     );
   };
 
-  // Update the display when the server's settings are updated.
+  /**
+   * Update the display when:
+   * - The server's settings are updated.
+   * - The user joins / leaves a server.
+   */
   useEffect(() => {
     socket.on("update server", handleServerUpdate);
     socket.on("account update", handleUpdate);
@@ -59,7 +67,7 @@ function useServers() {
     };
   }, [servers]);
 
-  return { servers };
+  return { servers, loading };
 }
 
 export default useServers;

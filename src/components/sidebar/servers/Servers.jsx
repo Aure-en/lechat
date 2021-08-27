@@ -7,11 +7,13 @@ import Create from "../../server/Modal";
 import Explore from "./Explore";
 import List from "./List";
 import { ReactComponent as IconServers } from "../../../assets/icons/nav/grid.svg";
+import IconLoad from "../../../assets/icons/general/IconLoad";
 
 function Servers() {
   const ref = useRef(); // For dropdown
   const { isDropdownOpen, setIsDropdownOpen } = useDropdown(ref);
-  const { servers } = useServers();
+  const { loading, servers } = useServers();
+
   return (
     <div ref={ref}>
       <Button
@@ -26,9 +28,13 @@ function Servers() {
 
       {isDropdownOpen && (
         <Container>
-          <Ul>
-            <List servers={servers} />
-          </Ul>
+          {loading ? (
+            <IconLoad />
+          ) : (
+            <Ul>
+              <List servers={servers} />
+            </Ul>
+          )}
 
           <ReactTooltip id="nav-servers" effect="solid" place="right" />
           <Bottom>

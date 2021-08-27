@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { useUnread } from "../../context/UnreadContext";
 import Menu from "./Menu";
 
+// Link to a server channel
 function Channel({ serverId, categoryId, channel }) {
   // Different display if channel contains unread messages.
   const [hasUnread, setHasUnread] = useState(false);
