@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect, createContext } from "react";
 import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
+import { useAuth } from "./AuthContext";
 import socket from "../socket/socket";
 import useActivity from "../hooks/chat/useActivity";
 
@@ -17,6 +18,7 @@ export function UnreadProvider({ children }) {
   // Tracks rooms that have unread messages (the latest message has a timestamp greater than the user's last visit)
   const [unread, setUnread] = useState();
   const { activity } = useActivity();
+  const { user } = useAuth();
 
   // Keep track of the room the user is in
   const location = useLocation();
@@ -188,8 +190,8 @@ export function UnreadProvider({ children }) {
 
   useEffect(() => {
     // If unread isn't set up yet, set it up.
-    if (activity && !unread) getUnread();
-  }, [activity]);
+    if (activity) getUnread();
+  }, [activity, user]);
 
   // Socket listeners
   /* Update unread when a new message is sent in a followed room
