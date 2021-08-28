@@ -8,6 +8,12 @@ import { useUnread } from "../../context/UnreadContext";
 import Timestamp from "../chat/Timestamp";
 import renderers from "../chat/convert/renderers";
 
+/**
+ * Conversation preview.
+ * Displays:
+ * - Name / avatar of the user we are speaking to.
+ * - Latest message.
+ */
 function Conversation({ conversation }) {
   const id = useRouteMatch("/conversations/:id")?.params.id;
   const { user } = useAuth();

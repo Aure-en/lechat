@@ -31,6 +31,7 @@ export const messages = [
     content: "Message",
     timestamp: Date.now(),
     _id: "1",
+    files: [],
   },
 ];
 
@@ -49,6 +50,7 @@ export const conversation = {
     content: "Message",
     timestamp: Date.now(),
     _id: "1",
+    files: [],
   },
   _id: "1",
 };

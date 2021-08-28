@@ -22,7 +22,6 @@ describe("It orders messages by author and display them", () => {
   );
 
   test("Author is only displayed once per group of messages", () => {
-    screen.debug();
     const name = screen.getAllByText(author.username);
     expect(name.length).toBe(1);
   });

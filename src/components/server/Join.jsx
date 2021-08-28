@@ -7,7 +7,7 @@ import Button from "../shared/buttons/Gradient";
 
 function Join({ server }) {
   const history = useHistory();
-  const { handleSubmit } = useJoin(server._id);
+  const { loading, handleSubmit } = useJoin(server._id);
 
   return (
     <Container>
@@ -35,7 +35,10 @@ function Join({ server }) {
         <BackBtn type="button" onClick={() => history.push("/")}>
           ← Back
         </BackBtn>
-        <Button>Join Server</Button>
+        <Right>
+          <Button>Join Server</Button>
+          {loading && <small>Loading space...</small>}
+        </Right>
       </Form>
     </Container>
   );
@@ -129,6 +132,18 @@ const BackBtn = styled.button`
   color: ${(props) => props.theme.text_secondary};
 
   &:hover {
-    color: ${(props) => props.theme.text_primary};
+    color: ${(props) => props.theme.text_quaternary};
+  }
+`;
+
+const Right = styled.div`
+  position: relative;
+
+  & > small {
+    display: block;
+    position: absolute;
+    color: ${(props) => props.theme.text_quaternary};
+    text-align: center;
+    width: 100%;
   }
 `;

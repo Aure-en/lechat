@@ -24,6 +24,7 @@ function Members({ serverId }) {
           {/* Display user's avatar, name, and indicator if the user is the admin. */}
           {members.map((member) => (
             <Li key={member._id}>
+              {/* Avatar */}
               {member.avatar ? (
                 <Avatar
                   src={`data:${member.avatar.type};base64,${Buffer.from(
@@ -34,7 +35,11 @@ function Members({ serverId }) {
               ) : (
                 <Default>{member.username[0]}</Default>
               )}
+
+              {/* Username */}
               {member.username}
+
+              {/* Admin indicator */}
               {server.includes(member._id) && (
                 <Crown aria-label="Server Owner">
                   <IconCrown />

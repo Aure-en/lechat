@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import useActivity from "../../chat/useActivity";
 import { useAuth } from "../../../context/AuthContext";
 import socket from "../../../socket/socket";
 
 function useJoin(serverId) {
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
   const { updateChannelActivity } = useActivity();
   const { user } = useAuth();
@@ -46,6 +48,7 @@ function useJoin(serverId) {
   };
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     await join(serverId);
     await setActivity(serverId);
@@ -53,7 +56,7 @@ function useJoin(serverId) {
     history.push(`/servers/${serverId}`);
   };
 
-  return { handleSubmit };
+  return { loading, handleSubmit };
 }
 
 export default useJoin;

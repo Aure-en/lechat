@@ -26,7 +26,7 @@ function Header({ name, description, location }) {
 
         <Icons>
           <Pins location={location} />
-          {location.server && <OpenRight />}
+          {location.channel && <OpenRight />}
         </Icons>
       </Content>
       {isOpen && <Description>{description}</Description>}

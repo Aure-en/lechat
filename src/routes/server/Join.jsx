@@ -13,8 +13,8 @@ function Join({ match }) {
 
   useEffect(() => {
     // If the user is already in this server, redirects him to the server page.
-    if (!server) return;
     if (
+      server &&
       JSON.parse(sessionStorage.getItem("user")).server.includes(server._id)
     ) {
       history.push(`/servers/${server._id}`);
