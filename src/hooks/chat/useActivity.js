@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
+import socket from "../../socket/socket";
 
 /**
  * Activity saves the timestamp at which the user last visited a room.
@@ -60,6 +61,16 @@ function useActivity() {
       }
     );
   };
+
+  // Set up socket listener to update activity
+  function handleUpdate(updated) {
+    setActivity(updated);
+  }
+
+  useEffect(() => {
+    socket.on("activity update", handleUpdate);
+    return () => socket.off("activity update", handleUpdate);
+  }, [activity]);
 
   return {
     activity,

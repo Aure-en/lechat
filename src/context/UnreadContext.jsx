@@ -376,7 +376,7 @@ export function UnreadProvider({ children }) {
    * conversation is created, and the current user is one of its
    * members.
    */
-  const handleInsert = (update) => {
+  const handleInsertConversation = (update) => {
     setUnread((prev) => {
       const updated = { ...prev };
       updated.conversations.push({ ...update.document, unread: 0 });
@@ -386,10 +386,10 @@ export function UnreadProvider({ children }) {
 
   useEffect(() => {
     socket.on("insert message", handleUnread);
-    socket.on("insert conversation", handleInsert);
+    socket.on("insert conversation", handleInsertConversation);
     return () => {
       socket.off("insert message", handleUnread);
-      socket.off("insert conversation", handleInsert);
+      socket.off("insert conversation", handleInsertConversation);
     };
   }, [unread, location.pathname]);
 

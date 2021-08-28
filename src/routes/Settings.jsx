@@ -13,7 +13,6 @@ import Disabled from "../components/shared/buttons/Disabled";
 
 function Settings() {
   const { user } = useAuth();
-  console.log(user);
   const { theme } = useTheme();
 
   return (

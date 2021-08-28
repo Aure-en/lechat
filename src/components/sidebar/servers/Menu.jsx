@@ -12,9 +12,11 @@ function Menu({ server, outerRef }) {
   return (
     <>
       <Contextual outerRef={outerRef}>
-        <button type="button" onClick={() => setIsLeaveOpen(true)}>
-          Leave Server
-        </button>
+        {user._id !== server.admin && (
+          <button type="button" onClick={() => setIsLeaveOpen(true)}>
+            Leave Server
+          </button>
+        )}
 
         {/* If the user is the server admin, can access server settings. */}
         {user._id === server.admin && (

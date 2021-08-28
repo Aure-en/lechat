@@ -15,7 +15,6 @@ import renderers from "../chat/convert/renderers";
  * - Latest message.
  */
 function Conversation({ conversation }) {
-  console.log(conversation);
   const id = useRouteMatch("/conversations/:id")?.params.id;
   const { user } = useAuth();
   const { unread } = useUnread();
