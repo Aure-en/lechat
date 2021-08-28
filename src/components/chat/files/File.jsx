@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { ReactComponent as IconFile } from "../../../assets/icons/chat/download.svg";
 
 // File - can be downloaded on click.
-function File({ file, messageId, index }) {
+function File({ file }) {
   const formatSize = (size) => {
     if (size < 1000) return `${size} bytes`;
     if (size < 10 ** 6) return `${(size / 10 ** 3).toFixed(2)} kB`;
@@ -14,7 +14,7 @@ function File({ file, messageId, index }) {
   return (
     <Wrapper title={file.name}>
       <a
-        href={`${process.env.REACT_APP_SERVER}/messages/${messageId}/files/${index}`}
+        href={`${process.env.REACT_APP_SERVER}/files/${file._id}/download`}
         download
       >
         <IconFile />
@@ -34,9 +34,8 @@ File.propTypes = {
     name: PropTypes.string,
     size: PropTypes.number,
     type: PropTypes.string,
+    _id: PropTypes.string,
   }).isRequired,
-  messageId: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
 };
 
 const Wrapper = styled.li`

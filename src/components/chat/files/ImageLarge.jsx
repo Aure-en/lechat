@@ -1,19 +1,30 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import useFetch from "../../../hooks/shared/useFetch";
+import IconLoad from "../../../assets/icons/general/IconLoad";
 
 /**
  * Component displaying an image sent as huge as possible.
+ * The message and image preview only contains a thumbnail if the picture if small.
+ * ImageLarge fetches the fullsize picture on the DB and displays it.
  */
-function ImageLarge({ image }) {
+function ImageLarge({ imageId }) {
+  const { data: image, loading } = useFetch(
+    `${process.env.REACT_APP_SERVER}/files/${imageId}`
+  );
+
   return (
     <Container>
-      <Image
-        src={`data:${image.contentType};base64,${Buffer.from(
-          image.data
-        ).toString("base64")}`}
-        alt={image.name}
-      />
+      {loading && <IconLoad />}
+      {image && (
+        <Image
+          src={`data:${image.contentType};base64,${Buffer.from(
+            image.data
+          ).toString("base64")}`}
+          alt={image.name}
+        />
+      )}
     </Container>
   );
 }
@@ -21,14 +32,7 @@ function ImageLarge({ image }) {
 export default ImageLarge;
 
 ImageLarge.propTypes = {
-  image: PropTypes.shape({
-    name: PropTypes.string,
-    contentType: PropTypes.string,
-    data: PropTypes.shape({
-      type: PropTypes.string,
-      data: PropTypes.arrayOf(PropTypes.number),
-    }),
-  }).isRequired,
+  imageId: PropTypes.string.isRequired,
 };
 
 const Container = styled.div`

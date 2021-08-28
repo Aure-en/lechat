@@ -20,7 +20,7 @@ function Image({ image }) {
       </Wrapper>
 
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} isFullSize>
-        <ImageLarge image={image} />
+        <ImageLarge imageId={image._id} />
       </Modal>
     </>
   );
@@ -40,6 +40,7 @@ Image.propTypes = {
       type: PropTypes.string,
       data: PropTypes.arrayOf(PropTypes.number),
     }),
+    _id: PropTypes.string,
   }).isRequired,
 };
 

@@ -24,7 +24,7 @@ function Message({ message, isFirst, setEditing }) {
         <Content message={message} />
 
         {/* If the message contains files that are currently being uploaded to
-        the BDD, display a loader */}
+        the DB, display a loader */}
         {message.loading && (
           <Load>
             <IconLoad />
