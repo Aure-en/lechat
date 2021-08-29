@@ -189,8 +189,8 @@ export function UnreadProvider({ children }) {
   };
 
   useEffect(() => {
-    // If unread isn't set up yet, set it up.
-    if (activity) getUnread();
+    // When the user changes, set up unread for their account.
+    if (activity && user) getUnread();
   }, [activity, user]);
 
   // Socket listeners

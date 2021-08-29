@@ -188,19 +188,25 @@ function useMessage(location) {
            * Because the messages are updated asynchronously, if the user spammed messages,
            * they could appear as duplicated.
            */
-          return Array.from(new Set([...prev, message]));
+          return Array.from(
+            new Set(
+              [...prev, message].sort((a, b) => a.timestamp - b.timestamp)
+            )
+          );
         }
         /* If the message author is the current user and
          * the message has a placeholder, replace the placeholder.
          */
         return Array.from(
           new Set(
-            [...prev].map((old) =>
-              old.tempId === old.timestamp &&
-              old.author._id === message.author._id
-                ? message
-                : old
-            )
+            [...prev]
+              .map((old) =>
+                old.tempId === old.timestamp &&
+                old.author._id === message.author._id
+                  ? message
+                  : old
+              )
+              .sort((a, b) => a.timestamp - b.timestamp)
           )
         );
       });
