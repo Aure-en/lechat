@@ -310,7 +310,7 @@ export function UnreadProvider({ children }) {
           unread: 0,
           members: conversation.members,
         };
-        updated.push(newConversation);
+        updated.conversations.push(newConversation);
       }
 
       // Increment the number of unread of the conversation
@@ -343,11 +343,11 @@ export function UnreadProvider({ children }) {
    */
   const handleReadChannel = (serverId, channelId) => {
     setUnread((prev) => {
-      if (!prev || prev.servers.length === 0) return;
       const updated = { ...prev };
+      if (prev.servers.length === 0) return updated;
 
       const server = updated.servers.find((server) => server._id === serverId);
-      if (!server) return;
+      if (!server) return updated;
 
       const channel = server.channels.find(
         (channel) => channel._id === channelId
@@ -363,8 +363,9 @@ export function UnreadProvider({ children }) {
    */
   const handleReadConversation = (conversationId) => {
     setUnread((prev) => {
-      if (!prev || prev.conversations.length === 0) return;
       const updated = { ...prev };
+      if (prev.conversations.length === 0) return updated;
+
       const conversation = updated.conversations.find(
         (conversation) => conversation._id.toString() === conversationId
       );

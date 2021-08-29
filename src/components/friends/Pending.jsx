@@ -24,7 +24,9 @@ function Pending() {
 
       {isOpen && (
         <Container>
-          {friends && friends.length > 0 ? (
+          {friends &&
+          friends.filter((friend) => friend.recipient._id === user._id).length >
+            0 ? (
             <ul>
               {friends.map((request) => {
                 if (request.recipient._id.toString() === user._id) {
