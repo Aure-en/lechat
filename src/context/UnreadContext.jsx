@@ -297,6 +297,7 @@ export function UnreadProvider({ children }) {
     // Otherwise, update the unread conversations' list.
 
     setUnread((prev) => {
+      if (!prev) return prev;
       const updated = { ...prev };
 
       // If the conversation isn't in the list, add it.
@@ -343,8 +344,8 @@ export function UnreadProvider({ children }) {
    */
   const handleReadChannel = (serverId, channelId) => {
     setUnread((prev) => {
+      if (prev || prev.servers.length === 0) return prev;
       const updated = { ...prev };
-      if (prev.servers.length === 0) return updated;
 
       const server = updated.servers.find((server) => server._id === serverId);
       if (!server) return updated;
@@ -363,8 +364,8 @@ export function UnreadProvider({ children }) {
    */
   const handleReadConversation = (conversationId) => {
     setUnread((prev) => {
+      if (!prev || prev.conversations.length === 0) return prev;
       const updated = { ...prev };
-      if (prev.conversations.length === 0) return updated;
 
       const conversation = updated.conversations.find(
         (conversation) => conversation._id.toString() === conversationId
