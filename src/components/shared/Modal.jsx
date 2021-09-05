@@ -64,6 +64,7 @@ const Wrapper = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
+  max-height: -webkit-fill-available;
   max-width: 100vw;
   background: ${(props) => props.theme.modal_overlay};
   z-index: 99;

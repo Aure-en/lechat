@@ -22,7 +22,7 @@ function Preview({ member }) {
       )}
 
       {/* Username */}
-      {member.username}
+      <Username>{member.username}</Username>
 
       {/* Admin indicator */}
       {server.includes(member._id) && (
@@ -53,6 +53,7 @@ Preview.propTypes = {
 const Container = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 const Avatar = styled.img`
@@ -73,6 +74,12 @@ const Default = styled.div`
   background: ${(props) => props.theme.bg_button};
   color: ${(props) => props.theme.server_icon_text};
   margin-right: 0.5rem;
+`;
+
+const Username = styled.span`
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const Crown = styled.span`

@@ -67,7 +67,8 @@ const Container = styled.main`
   grid-template-rows: auto 1fr auto 1.25rem;
   background: ${(props) => props.theme.bg_secondary};
   border-radius: 1rem;
-  height: 100vh; // margin-top
+  height: 100vh;
+  max-height: -webkit-fill-available;
   overflow: hidden;
   flex: 1;
 

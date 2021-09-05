@@ -13,8 +13,8 @@ function Card({ user, position, parentPosition }) {
   const { friendships } = useFriend(); // To check if we are already friend with the user
   const { send } = useRequest(); // To send a friend request to another user
 
-  const handleSendRequest = async (user) => {
-    const result = await send(user);
+  const handleSendRequest = async (userId) => {
+    const result = await send(userId);
     if (result.error) {
       toastify(result.error);
     } else {
@@ -53,13 +53,13 @@ function Card({ user, position, parentPosition }) {
                     this user, do not display the "Send a friend request" button. */}
                 {!friendships.find(
                   (friendship) =>
-                    (friendship.recipient._id === user._id &&
-                      friendship.sender._id === currentUser._id) ||
-                    (friendship.sender._id === currentUser._id &&
-                      friendship.recipient._id === user._id)
+                    friendship.recipient._id === user._id ||
+                    friendship.sender._id === user._id
                 ) && (
-                  <button type="button" onClick={() => handleSendRequest(user)}>
-                    {user._id}
+                  <button
+                    type="button"
+                    onClick={() => handleSendRequest(user._id)}
+                  >
                     Send a friend request
                   </button>
                 )}
@@ -124,10 +124,9 @@ const Container = styled.div`
   // Position
   position: absolute;
   top: ${(props) =>
-    props.$parentPosition.top + 180 < document.body.clientHeight &&
-    `${props.$parentPosition.top}px`};
-  bottom: ${(props) =>
-    props.$parentPosition.top + 180 > document.body.clientHeight && "0px"};
+    props.$parentPosition.top + 180 < document.body.clientHeight
+      ? `${props.$parentPosition.top}px`
+      : document.body.clientHeight - 180};
   left: ${(props) =>
     props.$position === "left" &&
     `calc(${props.$parentPosition.left}px - 17rem)`};

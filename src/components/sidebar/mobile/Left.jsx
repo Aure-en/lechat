@@ -52,6 +52,7 @@ const Container = styled.div`
   min-width: 4rem;
   padding: 0.75rem 0 3.5rem 0; // Padding-bottom is the nav-bar.
   height: 100vh;
+  max-height: -webkit-fill-available;
   transform: translateZ(-10px); // Put the panel under the sidebar
   overflow: auto; // Scroll
 

@@ -35,5 +35,5 @@ function App() {
 export default App;
 
 const Wrapper = styled.div`
-  height: 100vh;
+  height: 100%;
 `;

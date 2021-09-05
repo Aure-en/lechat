@@ -38,6 +38,7 @@ const Container = styled.div`
   grid-template-rows: auto 1fr;
   background: ${(props) => props.theme.bg_primary};
   height: 100vh;
+  max-height: -webkit-fill-available;
   z-index: 2;
   padding: 1rem 0 1rem 1rem;
   border-radius: 0 1rem 1rem 0;

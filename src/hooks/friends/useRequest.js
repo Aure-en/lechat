@@ -7,6 +7,21 @@ function useRequest() {
   const [success, setSuccess] = useState("");
   const { user } = useAuth();
 
+  const send = async (userId) => {
+    const res = await fetch(
+      `${process.env.REACT_APP_SERVER}/users/${userId}/friends`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const json = await res.json();
+    return json;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -29,24 +44,14 @@ function useRequest() {
     if (userJson.error) return setError(userJson.error);
 
     // User exists, send friend request
-    const res = await fetch(
-      `${process.env.REACT_APP_SERVER}/users/${userJson._id}/friends`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const json = await res.json();
-    if (json.error) return setError(json.error);
-
+    const result = await send(userJson._id);
+    if (result.error) return setError(result.error);
     return setSuccess("Friend request successfully sent.");
   };
 
   return {
     friend,
+    send,
     setFriend,
     error,
     handleSubmit,
