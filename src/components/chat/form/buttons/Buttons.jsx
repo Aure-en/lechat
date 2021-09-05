@@ -30,34 +30,53 @@ function Buttons({ editorState, setEditorState, files, addFiles, isEditing }) {
 
       <Transition in={isOpen} timeout={100}>
         {(state) => (
-          <Container $state={state}>
-            <Bold editorState={editorState} setEditorState={setEditorState} />
-            <Underline
-              editorState={editorState}
-              setEditorState={setEditorState}
-            />
-            <Italic editorState={editorState} setEditorState={setEditorState} />
-            <Strikethrough
-              editorState={editorState}
-              setEditorState={setEditorState}
-            />
-            <Spoiler
-              editorState={editorState}
-              setEditorState={setEditorState}
-            />
-            <Link editorState={editorState} setEditorState={setEditorState} />
-            <Code editorState={editorState} setEditorState={setEditorState} />
-            <Ordered
-              editorState={editorState}
-              setEditorState={setEditorState}
-            />
-            <Unordered
-              editorState={editorState}
-              setEditorState={setEditorState}
-            />
-            <Quote editorState={editorState} setEditorState={setEditorState} />
-            {!isEditing && <Files files={files} addFiles={addFiles} />}
-          </Container>
+          <>
+            {isOpen && (
+              <Container $state={state}>
+                <Bold
+                  editorState={editorState}
+                  setEditorState={setEditorState}
+                />
+                <Underline
+                  editorState={editorState}
+                  setEditorState={setEditorState}
+                />
+                <Italic
+                  editorState={editorState}
+                  setEditorState={setEditorState}
+                />
+                <Strikethrough
+                  editorState={editorState}
+                  setEditorState={setEditorState}
+                />
+                <Spoiler
+                  editorState={editorState}
+                  setEditorState={setEditorState}
+                />
+                <Link
+                  editorState={editorState}
+                  setEditorState={setEditorState}
+                />
+                <Code
+                  editorState={editorState}
+                  setEditorState={setEditorState}
+                />
+                <Ordered
+                  editorState={editorState}
+                  setEditorState={setEditorState}
+                />
+                <Unordered
+                  editorState={editorState}
+                  setEditorState={setEditorState}
+                />
+                <Quote
+                  editorState={editorState}
+                  setEditorState={setEditorState}
+                />
+                {!isEditing && <Files files={files} addFiles={addFiles} />}
+              </Container>
+            )}
+          </>
         )}
       </Transition>
     </Wrapper>
@@ -111,4 +130,11 @@ Buttons.propTypes = {
     getCurrentInlineStyle: PropTypes.func,
   }).isRequired,
   setEditorState: PropTypes.func.isRequired,
+  files: PropTypes.arrayOf(PropTypes.shape({})),
+  addFiles: PropTypes.func.isRequired,
+  isEditing: PropTypes.func.isRequired,
+};
+
+Buttons.defaultProps = {
+  files: [],
 };

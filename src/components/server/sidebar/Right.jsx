@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import Members from "../Members";
+import Members from "../members/Members";
 import useWindowSize from "../../../hooks/shared/useWindowSize";
 import IconClose from "../../../assets/icons/general/IconClose";
 

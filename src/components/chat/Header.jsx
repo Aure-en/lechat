@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import Pins from "./Pins";
+import Pins from "./pins/Pins";
 import OpenRight from "../shared/sidebar/OpenRight";
 import IconChevron from "../../assets/icons/general/IconChevron";
 
+/**
+ * Channel header.
+ * Display the channel's name and description.
+ */
 function Header({ name, description, location }) {
   const [isOpen, setIsOpen] = useState(false);
 

@@ -1,26 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import redraft from "redraft";
-import renderers from "./convert/renderers";
-import Timestamp from "./Timestamp";
+import Avatar from "./message/component/Avatar";
+import Text from "./message/component/Text";
+import Timestamp from "./message/component/Timestamp";
 import Files from "./files/Files";
 
 function Content({ message }) {
   return (
     <>
-      {/* Avatar */}
-      {message.author.avatar &&
-      Object.keys(message.author.avatar).length > 0 ? (
-        <Icon
-          src={`data:${message.author.avatar.type};base64,${Buffer.from(
-            message.author.avatar.data
-          ).toString("base64")}`}
-          alt={message.author.username}
-        />
-      ) : (
-        <Default>{message.author.username[0]}</Default>
-      )}
+      <Avatar user={message.author} />
 
       {/* Author and date */}
       <Information>
@@ -29,15 +18,7 @@ function Content({ message }) {
       </Information>
 
       {/* Text */}
-      {!(
-        JSON.parse(message.text)?.blocks.length === 1 &&
-        !JSON.parse(message.text)?.blocks[0].text
-      ) && (
-        <div>
-          {redraft(JSON.parse(message.text), renderers)}
-          {message.edited && <Edited>(edited)</Edited>}
-        </div>
-      )}
+      <Text text={message.text} editer={message.edited} />
 
       {/* Files */}
       {message.files?.length > 0 && (
@@ -86,33 +67,4 @@ const Information = styled.div`
   & > *:last-child {
     margin-left: 0.5rem;
   }
-`;
-
-const Icon = styled.img`
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  object-fit: cover;
-  grid-row: 1 / -1;
-  margin-top: 3px;
-`;
-
-const Default = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  grid-row: 1 / -1;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  background: ${(props) => props.theme.bg_button};
-  color: ${(props) => props.theme.server_icon_text};
-  font-size: 1.5rem;
-  margin-top: 3px;
-`;
-
-const Edited = styled.small`
-  font-size: 0.75rem;
-  margin-left: 0.25rem;
-  color: ${(props) => props.theme.text_secondary};
 `;

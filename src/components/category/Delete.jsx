@@ -14,7 +14,8 @@ function Delete({ isOpen, setIsOpen, category }) {
         <Header>
           <Heading>Delete Category</Heading>
           <p>
-            Are you sure you would like to delete the category <strong>{category.name}</strong> ?
+            Are you sure you would like to delete the category{" "}
+            <strong>{category.name}</strong> ?
           </p>
         </Header>
 

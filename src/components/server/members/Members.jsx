@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import IconChevron from "../../assets/icons/general/IconChevron";
-import { usePermission } from "../../context/PermissionContext";
-import useMembers from "../../hooks/server/server/useMembers";
-import { ReactComponent as IconCrown } from "../../assets/icons/server/crown.svg";
+import IconChevron from "../../../assets/icons/general/IconChevron";
+import useMembers from "../../../hooks/server/server/useMembers";
+import Member from "./Member";
 
 function Members({ serverId }) {
   const [isOpen, setIsOpen] = useState(true);
   const { members } = useMembers(serverId);
-  const { server } = usePermission();
 
   return (
     <Container>
@@ -23,29 +21,7 @@ function Members({ serverId }) {
         <ul>
           {/* Display user's avatar, name, and indicator if the user is the admin. */}
           {members.map((member) => (
-            <Li key={member._id}>
-              {/* Avatar */}
-              {member.avatar ? (
-                <Avatar
-                  src={`data:${member.avatar.type};base64,${Buffer.from(
-                    member.avatar.data
-                  ).toString("base64")}`}
-                  alt={member.username}
-                />
-              ) : (
-                <Default>{member.username[0]}</Default>
-              )}
-
-              {/* Username */}
-              {member.username}
-
-              {/* Admin indicator */}
-              {server.includes(member._id) && (
-                <Crown aria-label="Server Owner">
-                  <IconCrown />
-                </Crown>
-              )}
-            </Li>
+            <Member key={member._id} member={member} />
           ))}
         </ul>
       )}
@@ -96,42 +72,9 @@ const Heading = styled.h3`
   margin-bottom: 0.5rem;
 `;
 
-const Li = styled.li`
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.5rem;
-`;
-
 const Icon = styled.span`
   position: relative;
   top: ${(props) => (props.$isOpen ? "0" : "2px")};
   transition: all 0.3s linear;
   transform: ${(props) => !props.$isOpen && "rotate(90deg)"};
-`;
-
-const Avatar = styled.img`
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 0.5rem;
-`;
-
-const Default = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  background: ${(props) => props.theme.bg_button};
-  color: ${(props) => props.theme.server_icon_text};
-  margin-right: 0.5rem;
-`;
-
-const Crown = styled.span`
-  display: flex;
-  align-items: flex-end;
-  margin-left: 0.5rem;
-  color: ${(props) => props.theme.send_bg};
 `;

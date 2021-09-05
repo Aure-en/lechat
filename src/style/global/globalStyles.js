@@ -76,8 +76,8 @@ const GlobalStyles = createGlobalStyle`
   #root {
     width: 100vw;
     height: 100vh;
-    max-width: 100%;
-    max-height: 100%;
+    min-height: -webkit-fill-available;
+    overflow: hidden;
   }
 
   a {
