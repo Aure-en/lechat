@@ -35,7 +35,7 @@ function Server({ match }) {
 
           {/* Main */}
           {server && (
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<></>}>
               <Switch>
                 <PrivateRoute
                   exact

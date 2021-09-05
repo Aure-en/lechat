@@ -20,7 +20,7 @@ function App() {
         <AuthProvider>
           <UnreadProvider>
             <Wrapper>
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<></>}>
                 <Switch>
                   <EntryRoute path="/auth" component={Entry} />
                   <PrivateRoute path="/" component={Dashboard} />

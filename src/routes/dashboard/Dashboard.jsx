@@ -23,7 +23,7 @@ function Dashboard() {
       {windowSize.width < 768 && <Mobile />}
       {windowSize.width > 768 && <Sidebar />}
       <SidebarProvider>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<></>}>
           <Switch>
             <PrivateRoute exact path="/explore" component={Explore} />
             <PrivateRoute
