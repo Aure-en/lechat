@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { Transition } from "react-transition-group";
 import Preview from "./Preview";
 import useCard from "../../../hooks/user/useCard";
 import Card from "../../user/Card";
@@ -13,13 +14,20 @@ function Member({ member }) {
   return (
     <Li key={member._id} onClick={() => setIsOpen(!isOpen)} ref={ref}>
       <Preview member={member} />
-      {isOpen && (
-        <Card
-          user={member}
-          position="left"
-          parentPosition={ref.current.getBoundingClientRect()}
-        />
-      )}
+      <Transition in={isOpen} timeout={0}>
+        {(state) => (
+          <>
+            {isOpen && (
+              <Card
+                user={member}
+                position="left"
+                parentPosition={ref.current.getBoundingClientRect()}
+                $state={state}
+              />
+            )}
+          </>
+        )}
+      </Transition>
     </Li>
   );
 }
