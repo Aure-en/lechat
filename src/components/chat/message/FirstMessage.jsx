@@ -23,14 +23,11 @@ function FirstMessage({ message, setEditing }) {
       onMouseLeave={() => setHovered(false)}
       $hovered={hovered}
     >
-      <Avatar
-        avatar={message.author.avatar}
-        username={message.author.username}
-      />
+      <Avatar user={message.author} />
 
       {/* Author and date */}
       <Information>
-        <Author username={message.author.username} />
+        <Author user={message.author} />
         <Timestamp timestamp={message.timestamp} isFirst />
       </Information>
 

@@ -50,10 +50,11 @@ Preview.propTypes = {
   }).isRequired,
 };
 
-const Container = styled.div`
+const Container = styled.button`
   display: flex;
   align-items: center;
   cursor: pointer;
+  font-size: 1rem;
 `;
 
 const Avatar = styled.img`

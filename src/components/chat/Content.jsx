@@ -9,10 +9,7 @@ import Files from "./files/Files";
 function Content({ message }) {
   return (
     <>
-      <Avatar
-        avatar={message.author.avatar}
-        username={message.author.username}
-      />
+      <Avatar user={message.author} />
 
       {/* Author and date */}
       <Information>

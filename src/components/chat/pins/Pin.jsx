@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import Content from "./Content";
-import { useAuth } from "../../context/AuthContext";
-import { usePermission } from "../../context/PermissionContext";
-import { ReactComponent as IconUnpin } from "../../assets/icons/chat/unpin.svg";
+import Content from "../Content";
+import { useAuth } from "../../../context/AuthContext";
+import { usePermission } from "../../../context/PermissionContext";
+import { ReactComponent as IconUnpin } from "../../../assets/icons/chat/unpin.svg";
 
 function Pin({ message }) {
   const { user } = useAuth();

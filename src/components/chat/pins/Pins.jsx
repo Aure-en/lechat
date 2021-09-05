@@ -2,15 +2,15 @@ import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { createPortal } from "react-dom";
-import usePin from "../../hooks/chat/usePin";
-import useDropdown from "../../hooks/shared/useDropdown";
-import useIntersection from "../../hooks/shared/useIntersection";
-import NoPins from "../error/NoPins";
+import usePin from "../../../hooks/chat/usePin";
+import useDropdown from "../../../hooks/shared/useDropdown";
+import useIntersection from "../../../hooks/shared/useIntersection";
+import NoPins from "../../error/NoPins";
 import Pin from "./Pin";
 
 // Icons
-import { ReactComponent as IconPin } from "../../assets/icons/chat/pin.svg";
-import IconClose from "../../assets/icons/general/IconClose";
+import { ReactComponent as IconPin } from "../../../assets/icons/chat/pin.svg";
+import IconClose from "../../../assets/icons/general/IconClose";
 
 function Pins({ location }) {
   // Dropdown system

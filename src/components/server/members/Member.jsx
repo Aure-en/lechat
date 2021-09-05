@@ -1,30 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Preview from "./Preview";
+import useCard from "../../../hooks/user/useCard";
 import Card from "../../user/Card";
 
 function Member({ member }) {
-  // Open / closes the member's information card.
-  const [isOpen, setIsOpen] = useState(false);
-
-  // When the card is open, clicking outside the ref will close it.
+  // Used to close the card on click outside.
   const ref = useRef();
-
-  const handleClick = (e) => {
-    if (!ref?.current?.contains(e.target)) {
-      setIsOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.addEventListener("click", handleClick);
-    } else {
-      document.body.removeEventListener("click", handleClick);
-    }
-    return () => document.body.removeEventListener("click", handleClick);
-  }, [isOpen]);
+  const { isOpen, setIsOpen } = useCard(ref);
 
   return (
     <Li key={member._id} onClick={() => setIsOpen(!isOpen)} ref={ref}>

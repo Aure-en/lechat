@@ -8,7 +8,7 @@ import useRequest from "../../hooks/friends/useRequest";
 import useFriend from "../../hooks/friends/useFriend";
 import { toastify } from "../shared/Toast";
 
-function Card({ user, position, parentPosition }) {
+function Card({ user, position, parentPosition, $state }) {
   const { user: currentUser } = useAuth();
   const { friendships } = useFriend(); // To check if we are already friend with the user
   const { send } = useRequest(); // To send a friend request to another user
@@ -25,7 +25,11 @@ function Card({ user, position, parentPosition }) {
   return (
     <>
       {createPortal(
-        <Container $position={position} $parentPosition={parentPosition}>
+        <Container
+          $position={position}
+          $parentPosition={parentPosition}
+          $state={$state}
+        >
           <Banner />
           {user.avatar ? (
             <Icon
@@ -102,11 +106,15 @@ Card.propTypes = {
     right: PropTypes.number,
   }).isRequired,
 
+  // For transition
+  $state: PropTypes.string,
+
   position: PropTypes.string,
 };
 
 Card.defaultProps = {
   position: "right",
+  $state: "entered",
 };
 
 const Container = styled.div`
@@ -128,8 +136,23 @@ const Container = styled.div`
       ? `${props.$parentPosition.top}px`
       : document.body.clientHeight - 180};
   left: ${(props) =>
-    props.$position === "left" &&
-    `calc(${props.$parentPosition.left}px - 17rem)`};
+    props.$position === "left"
+      ? // Card placed on the left of the parent (17rem = card width + a bit of margin)
+        `calc(${props.$parentPosition.left}px - 17rem)`
+      : // Card placed on the right of the parent
+        `calc(${props.$parentPosition.right}px + 0.4rem)`};
+
+  // Transition
+  transition: transform 0.15s ease-out, opacity 0.1s linear;
+  opacity: ${(props) => (props.$state === "entered" ? 1 : 0)};
+  transform: translateX(
+    ${(props) =>
+      props.$state === "entered"
+        ? "0"
+        : props.$position === "left"
+        ? "5%"
+        : "-5%"}
+  );
 `;
 
 const Banner = styled.div`
