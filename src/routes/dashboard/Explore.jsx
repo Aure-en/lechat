@@ -43,7 +43,7 @@ const Container = styled.div`
   padding: 3rem;
   border-radius: 1rem;
   height: 100vh;
-  max-height: -webkit-fill-available;
+  min-height: -webkit-fill-available;
   overflow: hidden;
   flex: 1;
 

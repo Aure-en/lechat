@@ -87,7 +87,7 @@ const Container = styled.main`
   background: ${(props) => props.theme.bg_secondary};
   border-radius: 1rem;
   height: 100vh; // margin-top
-  max-height: -webkit-fill-available;
+  min-height: -webkit-fill-available;
   overflow: hidden;
   flex: 1;
 

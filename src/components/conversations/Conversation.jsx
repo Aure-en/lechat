@@ -5,7 +5,7 @@ import { Link, useRouteMatch } from "react-router-dom";
 import redraft from "redraft";
 import { useAuth } from "../../context/AuthContext";
 import { useUnread } from "../../context/UnreadContext";
-import Timestamp from "../chat/Timestamp";
+import Timestamp from "../chat/message/component/Timestamp";
 import renderers from "../chat/convert/renderers";
 
 /**
