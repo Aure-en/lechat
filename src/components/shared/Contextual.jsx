@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { createPortal } from "react-dom";
 
 function Contextual({ outerRef, ignoreRef, children }) {
   const [isOpen, setIsOpen] = useState(false);
+
+  // Used to determine if the contextual menu will overflow to the bottom.
+  const [height, setHeight] = useState();
+  const ref = useRef();
+
+  // Position the contextual menu
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const handleContextMenu = (e) => {
@@ -34,12 +40,21 @@ function Contextual({ outerRef, ignoreRef, children }) {
     };
   }, []);
 
+  // Set contextual menu height
+  useEffect(() => {
+    if (ref?.current) {
+      setHeight(ref.current.offsetHeight);
+    }
+  }, [ref]);
+
   return (
     <>
       {isOpen && (
         <>
           {createPortal(
-            <Container $position={position}>{children}</Container>,
+            <Container $position={position} ref={ref} $height={height}>
+              {children}
+            </Container>,
             document.querySelector("#modal-root")
           )}
         </>
@@ -75,7 +90,10 @@ Contextual.defaultProps = {
 
 const Container = styled.div`
   position: absolute;
-  top: ${(props) => `${props.$position.y}px`};
+  top: ${(props) =>
+    props.$position.y + props.$height > document.body.clientHeight
+      ? `${document.body.clientHeight - props.$height}px`
+      : `${props.$position.y}px`};
   left: ${(props) => `${props.$position.x}px`};
   background: ${(props) => props.theme.bg_secondary};
   padding: 0.25rem 0;
