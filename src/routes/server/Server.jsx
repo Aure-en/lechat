@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Switch } from "react-router-dom";
@@ -10,8 +10,9 @@ import useServer from "../../hooks/server/server/useServer";
 import SidebarLeft from "../../components/server/sidebar/Left";
 import SidebarRight from "../../components/server/sidebar/Right";
 import NotFound from "../../components/error/NotFound";
-import Channel from "./Channel";
-import Entry from "./Entry";
+
+const Entry = lazy(() => import("./Entry"));
+const Channel = lazy(() => import("./Channel"));
 
 function Server({ match }) {
   const { isOpen, setIsOpen } = useSidebar();
@@ -34,14 +35,20 @@ function Server({ match }) {
 
           {/* Main */}
           {server && (
-            <Switch>
-              <PrivateRoute
-                exact
-                path="/servers/:serverId/channels/:channelId"
-                component={Channel}
-              />
-              <PrivateRoute exact path="/servers/:serverId" component={Entry} />
-            </Switch>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/servers/:serverId/channels/:channelId"
+                  component={Channel}
+                />
+                <PrivateRoute
+                  exact
+                  path="/servers/:serverId"
+                  component={Entry}
+                />
+              </Switch>
+            </Suspense>
           )}
 
           {/* Right sidebar */}
