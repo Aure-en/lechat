@@ -1,15 +1,16 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import styled from "styled-components";
 import ReactTooltip from "react-tooltip";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import Setting from "../components/user/Setting";
-import Email from "../components/settings/Email";
-import Password from "../components/settings/Password";
-import Username from "../components/settings/Username";
 import Avatar from "../components/settings/Avatar";
 import Theme from "../components/settings/Theme";
 import Disabled from "../components/shared/buttons/Disabled";
+
+const Email = lazy(() => import("../components/settings/Email"));
+const Password = lazy(() => import("../components/settings/Password"));
+const Username = lazy(() => import("../components/settings/Username"));
 
 function Settings() {
   const { user } = useAuth();
@@ -33,7 +34,9 @@ function Settings() {
             <Disabled />
           ) : (
             <Setting>
-              <Username />
+              <Suspense fallback={<></>}>
+                <Username />
+              </Suspense>
             </Setting>
           )}
         </Field>
@@ -45,7 +48,9 @@ function Settings() {
             <Disabled />
           ) : (
             <Setting>
-              <Email />
+              <Suspense fallback={<></>}>
+                <Email />
+              </Suspense>
             </Setting>
           )}
         </Field>
@@ -57,7 +62,9 @@ function Settings() {
             <Disabled />
           ) : (
             <Setting>
-              <Password />
+              <Suspense fallback={<></>}>
+                <Password />
+              </Suspense>
             </Setting>
           )}
         </Field>

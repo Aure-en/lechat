@@ -132,9 +132,10 @@ Buttons.propTypes = {
   setEditorState: PropTypes.func.isRequired,
   files: PropTypes.arrayOf(PropTypes.shape({})),
   addFiles: PropTypes.func.isRequired,
-  isEditing: PropTypes.func.isRequired,
+  isEditing: PropTypes.bool,
 };
 
 Buttons.defaultProps = {
   files: [],
+  isEditing: false,
 };

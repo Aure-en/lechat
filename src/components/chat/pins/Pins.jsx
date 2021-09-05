@@ -1,16 +1,17 @@
-import React, { useRef } from "react";
+import React, { Suspense, lazy, useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { createPortal } from "react-dom";
 import usePin from "../../../hooks/chat/usePin";
 import useDropdown from "../../../hooks/shared/useDropdown";
 import useIntersection from "../../../hooks/shared/useIntersection";
-import NoPins from "../../error/NoPins";
-import Pin from "./Pin";
 
 // Icons
 import { ReactComponent as IconPin } from "../../../assets/icons/chat/pin.svg";
 import IconClose from "../../../assets/icons/general/IconClose";
+
+const Pin = lazy(() => import("./Pin"));
+const NoPins = lazy(() => import("../../error/NoPins"));
 
 function Pins({ location }) {
   // Dropdown system
@@ -32,41 +33,46 @@ function Pins({ location }) {
         <IconPin />
       </button>
 
-      {/* Menu must be positioned out of the chat container that has overflow: auto to not be cut.
+      <Suspense fallback={<></>}>
+        {/* Menu must be positioned out of the chat container that has overflow: auto to not be cut.
       Because it is outside of the Container, it uses the container ref to be positioned properly. */}
-      {isDropdownOpen && (
-        <>
-          {createPortal(
-            <Container
-              $top={containerRef.current.getBoundingClientRect().top}
-              $right={containerRef.current.getBoundingClientRect().left}
-              ref={pinsRef}
-            >
-              <Header>
-                <Heading>Pins</Heading>
-                <Button type="button" onClick={() => setIsDropdownOpen(false)}>
-                  <IconClose />
-                </Button>
-              </Header>
+        {isDropdownOpen && (
+          <>
+            {createPortal(
+              <Container
+                $top={containerRef.current.getBoundingClientRect().top}
+                $right={containerRef.current.getBoundingClientRect().left}
+                ref={pinsRef}
+              >
+                <Header>
+                  <Heading>Pins</Heading>
+                  <Button
+                    type="button"
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    <IconClose />
+                  </Button>
+                </Header>
 
-              {/* If there are no pins, display a message. */}
+                {/* If there are no pins, display a message. */}
 
-              {!loading && messages.length === 0 && <NoPins />}
+                {!loading && messages.length === 0 && <NoPins />}
 
-              {/* Else, display messages. */}
-              {messages.length > 0 && (
-                <Content>
-                  {messages.map((message) => (
-                    <Pin key={`pin-${message._id}`} message={message} />
-                  ))}
-                  <div ref={triggerRef} />
-                </Content>
-              )}
-            </Container>,
-            document.body.querySelector("#modal-root")
-          )}
-        </>
-      )}
+                {/* Else, display messages. */}
+                {messages.length > 0 && (
+                  <Content>
+                    {messages.map((message) => (
+                      <Pin key={`pin-${message._id}`} message={message} />
+                    ))}
+                    <div ref={triggerRef} />
+                  </Content>
+                )}
+              </Container>,
+              document.body.querySelector("#modal-root")
+            )}
+          </>
+        )}
+      </Suspense>
     </div>
   );
 }
