@@ -10,7 +10,7 @@ import { toastify } from "../shared/Toast";
 
 function Card({ user, position, parentPosition, $state }) {
   const { user: currentUser } = useAuth();
-  const { friendships } = useFriend(); // To check if we are already friend with the user
+  const { friendships, loading } = useFriend(); // To check if we are already friend with the user
   const { send } = useRequest(); // To send a friend request to another user
 
   const handleSendRequest = async (userId) => {
@@ -55,18 +55,19 @@ function Card({ user, position, parentPosition, $state }) {
 
                 {/* If the current user is already friend or has already sent a friend request to
                     this user, do not display the "Send a friend request" button. */}
-                {!friendships.find(
-                  (friendship) =>
-                    friendship.recipient._id === user._id ||
-                    friendship.sender._id === user._id
-                ) && (
-                  <button
-                    type="button"
-                    onClick={() => handleSendRequest(user._id)}
-                  >
-                    Send a friend request
-                  </button>
-                )}
+                {!loading &&
+                  !friendships.find(
+                    (friendship) =>
+                      friendship.recipient._id === user._id ||
+                      friendship.sender._id === user._id
+                  ) && (
+                    <button
+                      type="button"
+                      onClick={() => handleSendRequest(user._id)}
+                    >
+                      Send a friend request
+                    </button>
+                  )}
               </>
             )}
           </Links>

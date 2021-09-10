@@ -4,6 +4,7 @@ import socket from "../../socket/socket";
 
 function useFriend() {
   const [friendships, setFriendships] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
 
   // Load current friends
@@ -20,6 +21,7 @@ function useFriend() {
       );
       const json = await res.json();
       if (!json.error) setFriendships(json);
+      setLoading(false);
     })();
   }, []);
 
@@ -74,6 +76,7 @@ function useFriend() {
 
   return {
     friendships,
+    loading,
   };
 }
 
