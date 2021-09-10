@@ -7,6 +7,7 @@ import Setting from "../components/user/Setting";
 import Avatar from "../components/settings/Avatar";
 import Theme from "../components/settings/Theme";
 import Disabled from "../components/shared/buttons/Disabled";
+import DisabledAvatar from "../components/settings/DisabledAvatar";
 
 const Email = lazy(() => import("../components/settings/Email"));
 const Password = lazy(() => import("../components/settings/Password"));
@@ -24,7 +25,11 @@ function Settings() {
         <Subheading>Account Preferences</Subheading>
 
         <Field>
-          <Avatar />
+          {user._id === process.env.REACT_APP_SAMPLE ? (
+            <DisabledAvatar />
+          ) : (
+            <Avatar />
+          )}
         </Field>
 
         <Field>
