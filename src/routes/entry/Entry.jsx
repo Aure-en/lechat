@@ -38,7 +38,7 @@ function Entry() {
 
         <Footer>
           <a href="#" onClick={handleSample}>
-            Or try Lechat with a pre-existing account &#129042; {/* 🠒 */}
+            Or try Lechat with a pre-existing account &#8594; {/* 🠒 */}
           </a>
         </Footer>
       </Content>
