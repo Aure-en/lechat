@@ -122,38 +122,77 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   border: 1px solid ${(props) => props.theme.bg_sidebar};
-  border-radius: 1rem;
   overflow: hidden;
   background: ${(props) => props.theme.bg_card};
   z-index: 10;
   padding-bottom: 1rem;
-  width: 15rem;
   max-height: 11.25rem; // 180px
 
   // Position
   position: absolute;
-  top: ${(props) =>
-    props.$parentPosition.top + 180 < document.body.clientHeight
-      ? `${props.$parentPosition.top}px`
-      : document.body.clientHeight - 180};
-  left: ${(props) =>
-    props.$position === "left"
-      ? // Card placed on the left of the parent (17rem = card width + a bit of margin)
-        `calc(${props.$parentPosition.left}px - 17rem)`
-      : // Card placed on the right of the parent
-        `calc(${props.$parentPosition.right}px + 0.4rem)`};
+
+  bottom: 0;
+  width: 100%;
+  border-radius: 1rem 1rem 0 0;
+
+  // On small screen, the card is positionned near its parents.
+  @media all and (min-width: 400px) {
+    top: ${(props) =>
+      props.$parentPosition.top + 180 < document.body.clientHeight
+        ? props.$position === "left"
+          ? `${props.$parentPosition.bottom}px`
+          : `${props.$parentPosition.top}px`
+        : document.body.clientHeight -
+          180}; // Boundary, prevent the card from overflowing to the bottom.
+
+    left: ${(props) =>
+      props.$position === "left"
+        ? // Card placed on the left of the parent (17rem = card width + a bit of margin)
+          `initial`
+        : // Card placed on the right of the parent
+          `calc(${props.$parentPosition.right}px + 0.4rem)`};
+
+    right: ${(props) => props.$position === "left" && "1rem"};
+    bottom: initial;
+    border-radius: 1rem;
+    width: 15rem;
+  }
+
+  @media all and (min-width: 500px) {
+    top: ${(props) =>
+      props.$parentPosition.top + 180 < document.body.clientHeight
+        ? `${props.$parentPosition.top}px`
+        : document.body.clientHeight -
+          180}; // Boundary, prevent the card from overflowing to the bottom.
+
+    left: ${(props) =>
+      props.$position === "left"
+        ? // Card placed on the left of the parent (17rem = card width + a bit of margin)
+          `calc(${props.$parentPosition.left}px - 17rem)`
+        : // Card placed on the right of the parent
+          `calc(${props.$parentPosition.right}px + 0.4rem)`};
+  }
 
   // Transition
+
+  // On small screen, transition from bottom to top.
   transition: transform 0.15s ease-out, opacity 0.1s linear;
   opacity: ${(props) => (props.$state === "entered" ? 1 : 0)};
-  transform: translateX(
-    ${(props) =>
-      props.$state === "entered"
-        ? "0"
-        : props.$position === "left"
-        ? "5%"
-        : "-5%"}
+  transform: translateY(
+    ${(props) => (props.$state === "entered" ? "0" : "5%")}
   );
+
+  // On larger screen, transition is horizontal.
+  @media all and (min-width: 400px) {
+    transform: translateX(
+      ${(props) =>
+        props.$state === "entered"
+          ? "0"
+          : props.$position === "left"
+          ? "5%"
+          : "-5%"}
+    );
+  }
 `;
 
 const Banner = styled.div`

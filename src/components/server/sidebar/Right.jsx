@@ -36,8 +36,6 @@ const Container = styled.div`
   right: 0;
   background: ${(props) => props.theme.bg_primary};
   z-index: 5;
-  display: grid;
-  grid-template-rows: 1fr min-content;
   height: 100%;
   border-radius: 1rem 0 0 1rem;
   border-left: 1px solid ${(props) => props.theme.bg_sidebar};
@@ -60,6 +58,9 @@ const Container = styled.div`
 `;
 
 const Button = styled.button`
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
   color: ${(props) => props.theme.bg_sidebar};
   justify-self: end;
 `;
