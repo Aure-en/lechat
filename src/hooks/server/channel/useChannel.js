@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useFetch from "../../shared/useFetch";
+import useSWR from "swr";
 import { useAuth } from "../../../context/AuthContext";
 import { useUnread } from "../../../context/UnreadContext";
 import useActivity from "../../chat/useActivity";
@@ -9,15 +9,16 @@ function useChannel(serverId, channelId) {
   // For messages form
   const [editing, setEditing] = useState();
 
-  // Get channel informations & messages
-  const { data: channel, loading } = useFetch(
-    `${process.env.REACT_APP_SERVER}/channels/${channelId}`
-  );
-
   // User activity
   const { updateChannelActivity } = useActivity();
   const { handleReadChannel } = useUnread();
   const { user } = useAuth();
+
+  // Channel informations & messages
+  const { data: channel, loading } = useSWR([
+    `${process.env.REACT_APP_SERVER}/channels/${channelId}`,
+    sessionStorage.getItem("jwt"),
+  ]);
 
   useEffect(() => {
     if (channel) {

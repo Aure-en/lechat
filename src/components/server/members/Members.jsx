@@ -8,6 +8,7 @@ import Member from "./Member";
 function Members({ serverId }) {
   const [isOpen, setIsOpen] = useState(true);
   const { members } = useMembers(serverId);
+  console.log(members);
 
   return (
     <Container>

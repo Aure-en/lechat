@@ -2,24 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import NavLink from "./NavLink";
 import usePending from "../../../hooks/friends/usePending";
-import { useAuth } from "../../../context/AuthContext";
 import { ReactComponent as IconFriends } from "../../../assets/icons/nav/users.svg";
 
 function Friends() {
-  const { friendships } = usePending();
-  const { user } = useAuth();
-
-  // Get the user who is part of the relationship who is not the current user.
-  const incoming = [...friendships].filter(
-    (friendship) => friendship.recipient._id.toString() === user._id
-  );
+  const { incomingRequests } = usePending();
 
   return (
     <NavLink to="/" tip="Friends">
       <Container>
         <IconFriends />
-        {incoming.length > 0 && (
-          <Number>{incoming.length > 9 ? "9+" : incoming.length}</Number>
+        {incomingRequests.length > 0 && (
+          <Number>
+            {incomingRequests.length > 9 ? "9+" : incomingRequests.length}
+          </Number>
         )}
       </Container>
     </NavLink>
