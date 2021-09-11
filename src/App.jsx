@@ -13,17 +13,24 @@ import Toast from "./components/shared/Toast";
 const Entry = lazy(() => import("./routes/entry/Entry"));
 const Dashboard = lazy(() => import("./routes/dashboard/Dashboard"));
 
+const fetcher = (url, jwt = undefined) => {
+  if (jwt) {
+    return fetch(url, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    }).then((res) => res.json());
+  }
+  return fetch(url).then((res) => res.json());
+};
+
 function App() {
   return (
     <Router>
       <SWRConfig
         value={{
-          fetcher: (url, jwt) =>
-            fetch(url, {
-              headers: {
-                Authorization: `Bearer ${jwt}`,
-              },
-            }).then((res) => res.json()),
+          revalidateIfStale: false,
+          fetcher,
         }}
       >
         <ThemeProvider>

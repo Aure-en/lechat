@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import useSWR from "swr";
 import { useHistory } from "react-router-dom";
-import useFetch from "../../hooks/shared/useFetch";
 import Form from "../../components/server/Join";
 
 function Join({ match }) {
-  const { data: server } = useFetch(
+  const { data: server } = useSWR(
     `${process.env.REACT_APP_SERVER}/servers/${match.params.serverId}`
   );
   const history = useHistory();

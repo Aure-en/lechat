@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import useSWR from "swr";
 import { useAuth } from "../../context/AuthContext";
 import socket from "../../socket/socket";
 
@@ -10,25 +11,11 @@ import socket from "../../socket/socket";
  * - Notify the user when they have unread messages.
  */
 function useActivity() {
-  const [activity, setActivity] = useState();
   const { user } = useAuth();
-
-  // Loads activity
-  useEffect(() => {
-    (async () => {
-      if (!user) return;
-      const res = await fetch(
-        `${process.env.REACT_APP_SERVER}/activity/${user._id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
-          },
-        }
-      );
-      const json = await res.json();
-      if (!json.error) setActivity(json);
-    })();
-  }, [user]);
+  const { data: activity, mutate } = useSWR([
+    `${process.env.REACT_APP_SERVER}/activity/${user._id}`,
+    sessionStorage.getItem("jwt"),
+  ]);
 
   // Update the activity document when the user leaves a channel
   const updateChannelActivity = (user, serverId, channelId) => {
@@ -63,8 +50,8 @@ function useActivity() {
   };
 
   // Set up socket listener to update activity
-  function handleUpdate(updated) {
-    setActivity(updated);
+  function handleUpdate() {
+    mutate();
   }
 
   useEffect(() => {

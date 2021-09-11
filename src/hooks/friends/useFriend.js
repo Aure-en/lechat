@@ -67,7 +67,6 @@ function useFriend() {
       }
       return friendship;
     });
-
     mutate(updated);
   };
 

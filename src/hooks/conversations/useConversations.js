@@ -1,30 +1,15 @@
 import { useState, useEffect } from "react";
+import useSWR from "swr";
 import { useAuth } from "../../context/AuthContext";
 import socket from "../../socket/socket";
 
 function useConversations() {
-  const [conversations, setConversations] = useState([]);
-  const [withMessage, setWithMessage] = useState([]);
   const { user } = useAuth();
-
-  // Load conversations
-  const getConversations = async () => {
-    const res = await fetch(
-      `${process.env.REACT_APP_SERVER}/users/${user._id}/conversations`,
-      {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
-        },
-      }
-    );
-
-    const json = await res.json();
-    if (!json.error) setConversations(json);
-  };
-
-  useEffect(() => {
-    getConversations();
-  }, []);
+  const { data: conversations, mutate } = useSWR([
+    `${process.env.REACT_APP_SERVER}/users/${user._id}/conversations`,
+    sessionStorage.getItem("jwt"),
+  ]);
+  const [withMessage, setWithMessage] = useState([]);
 
   /**
    * Fetch the conversations' latest message
@@ -74,7 +59,9 @@ function useConversations() {
   };
 
   useEffect(() => {
-    getMessages();
+    if (conversations) {
+      getMessages();
+    }
   }, [conversations]);
 
   // Set up socket listeners
@@ -85,7 +72,7 @@ function useConversations() {
    * members.
    */
   const handleConversation = (update) => {
-    setConversations((prev) => [...prev, update.document]);
+    mutate(async (prev) => [...prev, update.document]);
   };
 
   /**

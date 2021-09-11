@@ -13,7 +13,7 @@ function List({ serverId, categoryId }) {
 
   return (
     <ul>
-      {channels.map((channel) => (
+      {channels?.map((channel) => (
         <Channel
           key={channel._id}
           serverId={serverId}

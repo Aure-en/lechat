@@ -1,13 +1,13 @@
 import React from "react";
+import useSWR from "swr";
 import styled from "styled-components";
 import Preview from "../../components/server/Preview";
 import { useAuth } from "../../context/AuthContext";
 import IconLoad from "../../assets/icons/general/IconLoad";
-import useFetch from "../../hooks/shared/useFetch";
 
 function Explore() {
   const { user } = useAuth();
-  const { data: servers, loading } = useFetch(
+  const { data: servers, loading } = useSWR(
     `${process.env.REACT_APP_SERVER}/servers?sort_by=members&order=desc`
   );
 

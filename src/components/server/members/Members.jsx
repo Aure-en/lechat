@@ -8,7 +8,6 @@ import Member from "./Member";
 function Members({ serverId }) {
   const [isOpen, setIsOpen] = useState(true);
   const { members } = useMembers(serverId);
-  console.log(members);
 
   return (
     <Container>
@@ -21,7 +20,7 @@ function Members({ serverId }) {
       {isOpen && (
         <ul>
           {/* Display user's avatar, name, and indicator if the user is the admin. */}
-          {members.map((member) => (
+          {members?.map((member) => (
             <Member key={member._id} member={member} />
           ))}
         </ul>
