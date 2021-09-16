@@ -13,7 +13,7 @@ function useActivity() {
   const [activity, setActivity] = useState();
   const { user } = useAuth();
 
-  // Loads activity
+  // Loads activity on connect
   useEffect(() => {
     (async () => {
       if (!user) return;
@@ -28,6 +28,13 @@ function useActivity() {
       const json = await res.json();
       if (!json.error) setActivity(json);
     })();
+  }, [user]);
+
+  // Unloads activity on disconnect
+  useEffect(() => {
+    if (!user) {
+      setActivity();
+    }
   }, [user]);
 
   // Update the activity document when the user leaves a channel
@@ -61,16 +68,6 @@ function useActivity() {
       }
     );
   };
-
-  // Set up socket listener to update activity
-  function handleUpdate(updated) {
-    setActivity(updated);
-  }
-
-  useEffect(() => {
-    socket.on("activity update", handleUpdate);
-    return () => socket.off("activity update", handleUpdate);
-  }, [activity]);
 
   return {
     activity,
