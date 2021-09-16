@@ -39,7 +39,7 @@ function useUsername() {
    */
   const updateUsername = async () => {
     const res = await fetch(
-      `${process.env.REACT_APP_SERVER}/users/${user._id}/username`,
+      `${process.env.REACT_APP_SERVER}/users/${user?._id}/username`,
       {
         method: "PUT",
         headers: {

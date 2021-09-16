@@ -10,7 +10,7 @@ function useFriend() {
     loading,
     mutate,
   } = useSWR([
-    `${process.env.REACT_APP_SERVER}/users/${user._id}/friends`,
+    `${process.env.REACT_APP_SERVER}/users/${user?._id}/friends`,
     sessionStorage.getItem("jwt"),
   ]);
   const [friends, setFriends] = useState([]);

@@ -344,7 +344,23 @@ export function UnreadProvider({ children }) {
    */
   const handleReadChannel = (serverId, channelId) => {
     setUnread((prev) => {
-      if (prev || prev.servers.length === 0) return prev;
+      if (!prev || !prev.servers || prev.servers.length === 0) {
+        return {
+          servers: [
+            {
+              _id: serverId,
+              channels: [
+                {
+                  _id: channelId,
+                  unread: 0,
+                },
+              ],
+            },
+          ],
+          conversations: [],
+        };
+      }
+
       const updated = { ...prev };
 
       const server = updated.servers.find((server) => server._id === serverId);
@@ -354,6 +370,7 @@ export function UnreadProvider({ children }) {
         (channel) => channel._id === channelId
       );
       if (channel) channel.unread = 0;
+
       return updated;
     });
   };
@@ -364,13 +381,20 @@ export function UnreadProvider({ children }) {
    */
   const handleReadConversation = (conversationId) => {
     setUnread((prev) => {
-      if (!prev || prev.conversations.length === 0) return prev;
+      if (!prev || !prev.conversations || prev.conversations.length === 0) {
+        return {
+          servers: [],
+          conversations: [{ _id: conversationId, unread: 0 }],
+        };
+      }
+
       const updated = { ...prev };
 
       const conversation = updated.conversations.find(
         (conversation) => conversation._id.toString() === conversationId
       );
       if (conversation) conversation.unread = 0;
+
       return updated;
     });
   };

@@ -1,52 +1,57 @@
 import { useState, useEffect } from "react";
+import useSWRInfinite from "swr/infinite";
 import socket from "../../socket/socket";
 import { useUnread } from "../../context/UnreadContext";
 import { useAuth } from "../../context/AuthContext";
 
 /**
  * Fetch the messages from a certain conversation / server channel.
+ * Regroup those who were written in a row by the same author.
  * Update them in real time with socket listeners.
  * @param {object} location. Either :
  * - { conversation: {string} id }
  * - { channel: {string} id }
  */
+
 function useMessage(location) {
-  // Messages
-  const [messages, setMessages] = useState([]);
+  const getKey = (lastMessageId) => {
+    if (location.conversation) {
+      return [
+        // Fetch URL
+        `${process.env.REACT_APP_SERVER}/conversations/${
+          location.conversation
+        }/messages&limit=10${
+          lastMessageId ? `?last_key=${lastMessageId}` : ""
+        }`,
+
+        // Fetch JWT Token
+        sessionStorage.getItem("jwt"),
+      ];
+    }
+
+    if (location.channel) {
+      return [
+        // Fetch URL
+        `${process.env.REACT_APP_SERVER}/channels/${
+          location.channel
+        }/messages?limit=10${
+          lastMessageId ? `&last_key=${lastMessageId}` : ""
+        }`,
+
+        // Fetch JWT Token
+        sessionStorage.getItem("jwt"),
+      ];
+    }
+  };
+
+  const { data: messages, mutate, setSize } = useSWRInfinite(getKey);
   const [ordered, setOrdered] = useState([]);
-  // Used to load more messages
-  const [last, setLast] = useState("");
 
   // Socket event handlers will be different if the message author is the current user.
   // (So that messages written by a user display instantly for them)
   const { user } = useAuth();
   // Get the number of unread to separate older from newer messages.
   const { getRoomUnread } = useUnread();
-
-  // Helper function to get the endpoint linked to the room
-  const setUrl = (location, lastMessageId) => {
-    if (location.conversation) {
-      return `${process.env.REACT_APP_SERVER}/conversations/${
-        location.conversation
-      }/messages${lastMessageId ? `?last_key=${lastMessageId}` : ""}`;
-    }
-
-    if (location.channel) {
-      return `${process.env.REACT_APP_SERVER}/channels/${
-        location.channel
-      }/messages${lastMessageId ? `?last_key=${lastMessageId}` : ""}`;
-    }
-  };
-
-  const getMessages = async (url) => {
-    const res = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
-      },
-    });
-    const json = await res.json();
-    return json;
-  };
 
   // Helper function to compare dates
   const compareDates = (timestamp1, timestamp2) => {
@@ -61,14 +66,17 @@ function useMessage(location) {
     return false;
   };
 
-  // Group messages by author and time so that the author isn't displayed in front of every message.
+  // Regroup messages written by the same author in a row.
   useEffect(() => {
     const ordered = [];
-    let unordered = [...messages];
 
-    if (messages.length < 1) {
+    if (!messages || messages.length === 0) {
       return setOrdered([]);
     }
+
+    let unordered = [...messages]
+      .flat()
+      .sort((a, b) => a.timestamp - b.timestamp);
 
     // Get unread messages
     const unread = getRoomUnread(location);
@@ -116,46 +124,19 @@ function useMessage(location) {
         });
       }
     });
+
     setOrdered(ordered);
   }, [messages]);
 
-  /**
-   * After entering a new room:
-   * - Load the room's messages
-   * - Reset last message id.
-   */
-  useEffect(() => {
-    (async () => {
-      const url = setUrl(location);
-      const messages = await getMessages(url);
-      if (!messages.error) {
-        setMessages(messages.sort((a, b) => a.timestamp - b.timestamp));
-        setLast("");
-      }
-    })();
-  }, [location.conversation, location.server, location.channel]);
-
   /** Load more messages by modifying the last id */
   const getPrevious = async () => {
-    if (messages.length > 1 && (!last || messages[0]._id < last)) {
+    if (messages && messages.flat().length > 1) {
       // Tells useMessage the key of the latest message we loaded
       // useMessage will then fetch messages with a key < the latest key.
       // and add them to the messages array.
-      setLast(messages[0]._id);
+      setSize(messages.flat().sort((a, b) => a.timestamp - b.timestamp)[0]._id);
     }
   };
-
-  useEffect(() => {
-    if (!last) return;
-    (async () => {
-      const url = setUrl(location, last);
-      const previous = await getMessages(url);
-      setMessages((prev) => [
-        ...previous.sort((a, b) => a.timestamp - b.timestamp),
-        ...prev,
-      ]);
-    })();
-  }, [last]);
 
   // Set up socket listeners
   function handleInsert(change) {
@@ -168,7 +149,7 @@ function useMessage(location) {
         message.conversation === location.conversation) ||
       (location.channel && message.channel === location.channel)
     ) {
-      setMessages((prev) => {
+      mutate(async (prev) => {
         if (
           /* If the message is not displayed yet, adds it.
            * It is the case if:
@@ -184,9 +165,8 @@ function useMessage(location) {
               old.author._id === message.author._id
           )
         ) {
-          /* Temporary fix to avoid duplicates caused by the prev.find condition...
-           * Because the messages are updated asynchronously, if the user spammed messages,
-           * they could appear as duplicated.
+          /* If the message author is not the current user,
+           * the message has no placeholder, so it is added to the list.
            */
           return Array.from(
             new Set(
@@ -214,7 +194,7 @@ function useMessage(location) {
   }
 
   const handleUpdate = (change) => {
-    setMessages((prev) => {
+    mutate(async (prev) => {
       const update = [...prev].map((message) => {
         return message._id.toString() === change.document._id
           ? change.document
@@ -229,7 +209,7 @@ function useMessage(location) {
       messages.findIndex((message) => message._id === deleted.document._id) !==
       -1
     ) {
-      setMessages((prev) =>
+      mutate(async (prev) =>
         [...prev].filter((message) => message._id !== deleted.document._id)
       );
     }
@@ -243,7 +223,7 @@ function useMessage(location) {
       }
       return message;
     });
-    setMessages(updated);
+    mutate(updated);
   };
 
   useEffect(() => {
@@ -260,7 +240,7 @@ function useMessage(location) {
   }, [messages]);
 
   return {
-    setMessages,
+    setMessages: mutate,
     ordered,
     getPrevious,
   };

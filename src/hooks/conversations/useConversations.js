@@ -6,7 +6,7 @@ import socket from "../../socket/socket";
 function useConversations() {
   const { user } = useAuth();
   const { data: conversations, mutate } = useSWR([
-    `${process.env.REACT_APP_SERVER}/users/${user._id}/conversations`,
+    `${process.env.REACT_APP_SERVER}/users/${user?._id}/conversations`,
     sessionStorage.getItem("jwt"),
   ]);
   const [withMessage, setWithMessage] = useState([]);

@@ -1,30 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import IconChevron from "../../../assets/icons/general/IconChevron";
 import useMembers from "../../../hooks/server/server/useMembers";
 import Member from "./Member";
 
 function Members({ serverId }) {
-  const [isOpen, setIsOpen] = useState(true);
   const { members } = useMembers(serverId);
 
   return (
     <Container>
-      <Button type="button" onClick={() => setIsOpen(!isOpen)}>
-        <Heading>Members</Heading>
-        <Icon $isOpen={isOpen}>
-          <IconChevron />
-        </Icon>
-      </Button>
-      {isOpen && (
-        <ul>
-          {/* Display user's avatar, name, and indicator if the user is the admin. */}
-          {members?.map((member) => (
-            <Member key={member._id} member={member} />
-          ))}
-        </ul>
-      )}
+      <Heading>Members</Heading>
+      <ul>
+        {/* Display user's avatar, name, and indicator if the user is the admin. */}
+        {members.map((member) => (
+          <Member key={member._id} member={member} />
+        ))}
+      </ul>
     </Container>
   );
 }
@@ -59,22 +50,9 @@ const Container = styled.div`
   }
 `;
 
-const Button = styled.button`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  color: ${(props) => props.theme.text_secondary};
-`;
-
 const Heading = styled.h3`
   text-transform: uppercase;
   color: ${(props) => props.theme.text_tertiary};
   margin-bottom: 0.5rem;
-`;
-
-const Icon = styled.span`
-  position: relative;
-  top: ${(props) => (props.$isOpen ? "0" : "2px")};
-  transition: all 0.3s linear;
-  transform: ${(props) => !props.$isOpen && "rotate(90deg)"};
+  font-size: 0.925rem;
 `;

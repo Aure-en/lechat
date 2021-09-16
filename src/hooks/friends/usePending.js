@@ -10,7 +10,7 @@ function usePending() {
     loading,
     mutate,
   } = useSWR([
-    `${process.env.REACT_APP_SERVER}/users/${user._id}/pending`,
+    `${process.env.REACT_APP_SERVER}/users/${user?._id}/pending`,
     sessionStorage.getItem("jwt"),
   ]);
   const [incomingRequests, setIncomingRequests] = useState([]);

@@ -49,7 +49,7 @@ function useChannel(serverId, channelId) {
       };
       const blob = new Blob([body], headers);
       navigator.sendBeacon(
-        `${process.env.REACT_APP_SERVER}/activity/${user._id}/servers`,
+        `${process.env.REACT_APP_SERVER}/activity/${user?._id}/servers`,
         blob
       );
     };

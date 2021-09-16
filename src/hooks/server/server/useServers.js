@@ -11,7 +11,7 @@ function useServers() {
     loading,
     mutate,
   } = useSWR([
-    `${process.env.REACT_APP_SERVER}/users/${user._id}/servers`,
+    `${process.env.REACT_APP_SERVER}/users/${user?._id}/servers`,
     sessionStorage.getItem("jwt"),
   ]);
 
