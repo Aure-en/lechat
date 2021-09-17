@@ -188,24 +188,37 @@ function useMessage(location) {
   }
 
   const handleUpdate = (change) => {
-    mutate(async (prev) => {
-      const update = [...prev].map((message) => {
-        return message._id.toString() === change.document._id
-          ? change.document
-          : message;
+    // Page which contains the updated message
+    const pageIndex = messages.findIndex((page) =>
+      page.find((message) => message._id === change.document._id)
+    );
+
+    if (pageIndex !== -1) {
+      mutate(async (prev) => {
+        const updated = [...prev];
+        updated[pageIndex] = updated[pageIndex].map((message) => {
+          return message._id.toString() === change.document._id
+            ? change.document
+            : message;
+        });
+        return updated;
       });
-      return update;
-    });
+    }
   };
 
   const handleDelete = (deleted) => {
-    if (
-      messages.findIndex((message) => message._id === deleted.document._id) !==
-      -1
-    ) {
-      mutate(async (prev) =>
-        [...prev].filter((message) => message._id !== deleted.document._id)
-      );
+    // Page which contains the deleted message
+    const pageIndex = messages.findIndex((page) =>
+      page.find((message) => message._id === deleted.document._id)
+    );
+
+    if (pageIndex !== -1) {
+      mutate(async (prev) => {
+        const updated = [...prev];
+        updated[pageIndex] = updated[pageIndex].filter(
+          (message) => message._id !== deleted.document._id
+        );
+      });
     }
   };
 

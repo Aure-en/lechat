@@ -155,9 +155,10 @@ function useForm(location, message, setEditing, setMessages) {
      * Add a temporary id to the message to identify it and replace it
      * with the one from the DB, containing an _id and files.
      */
-    setMessages((prev) => [
-      ...prev,
-      {
+
+    setMessages((prev) => {
+      const updated = [...prev];
+      updated[updated.length - 1].push({
         author: user,
         channel: location.channel,
         server: location.server,
@@ -166,8 +167,9 @@ function useForm(location, message, setEditing, setMessages) {
         timestamp,
         tempId: timestamp,
         loading: files.length > 0, // If there are files, put a placeholder "loading" property instead of displaying the files.
-      },
-    ]);
+      });
+      return updated;
+    });
 
     await saveMessage("POST", text, timestamp);
   };
