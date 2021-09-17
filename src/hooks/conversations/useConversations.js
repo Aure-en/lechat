@@ -5,7 +5,11 @@ import socket from "../../socket/socket";
 
 function useConversations() {
   const { user } = useAuth();
-  const { data: conversations, mutate } = useSWR([
+  const {
+    data: conversations,
+    error,
+    mutate,
+  } = useSWR([
     `${process.env.REACT_APP_SERVER}/users/${user?._id}/conversations`,
     sessionStorage.getItem("jwt"),
   ]);
@@ -119,6 +123,7 @@ function useConversations() {
 
   return {
     withMessage,
+    error,
   };
 }
 

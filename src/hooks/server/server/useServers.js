@@ -8,7 +8,7 @@ function useServers() {
   const { user } = useAuth();
   const {
     data: servers,
-    loading,
+    error,
     mutate,
   } = useSWR([
     `${process.env.REACT_APP_SERVER}/users/${user?._id}/servers`,
@@ -48,7 +48,7 @@ function useServers() {
     };
   }, [servers]);
 
-  return { servers, loading };
+  return { servers, error };
 }
 
 export default useServers;

@@ -7,7 +7,7 @@ function usePending() {
   const { user } = useAuth();
   const {
     data: friendships,
-    loading,
+    error,
     mutate,
   } = useSWR([
     `${process.env.REACT_APP_SERVER}/users/${user?._id}/pending`,
@@ -68,7 +68,7 @@ function usePending() {
   return {
     friendships,
     incomingRequests,
-    loading,
+    error,
   };
 }
 

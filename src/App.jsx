@@ -19,9 +19,19 @@ const fetcher = (url, jwt = undefined) => {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
-    }).then((res) => res.json());
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.error) throw new Error(json.error);
+        return json;
+      });
   }
-  return fetch(url).then((res) => res.json());
+  return fetch(url)
+    .then((res) => res.json())
+    .then((json) => {
+      if (json.error) throw new Error(json.error);
+      return json;
+    });
 };
 
 function App() {

@@ -6,8 +6,8 @@ import socket from "../../../socket/socket";
 function useServer(serverId) {
   const {
     data: server,
-    loading,
     mutate,
+    error,
   } = useSWR([`${process.env.REACT_APP_SERVER}/servers/${serverId}`]);
 
   // Set up socket listeners
@@ -23,7 +23,7 @@ function useServer(serverId) {
 
   return {
     server,
-    loading,
+    error,
   };
 }
 

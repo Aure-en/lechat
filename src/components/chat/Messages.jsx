@@ -20,7 +20,7 @@ function Messages({ ordered, getPrevious, setEditing }) {
     <Wrapper>
       <Ul ref={containerRef} onScroll={handleScroll}>
         <div ref={triggerRef} />
-        {ordered.map((messages) => (
+        {ordered?.map((messages) => (
           <Group
             key={messages._id}
             messages={messages}

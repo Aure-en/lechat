@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import useSWRInfinite from "swr/infinite";
 import socket from "../../socket/socket";
 import { useUnread } from "../../context/UnreadContext";
@@ -14,37 +14,31 @@ import { useAuth } from "../../context/AuthContext";
  */
 
 function useMessage(location) {
-  const getKey = (lastMessageId) => {
-    if (location.conversation) {
-      return [
-        // Fetch URL
-        `${process.env.REACT_APP_SERVER}/conversations/${
-          location.conversation
-        }/messages&limit=10${
-          lastMessageId ? `?last_key=${lastMessageId}` : ""
-        }`,
+  const getKey = (index, prev) => {
+    if (index !== 0 && !prev[prev.length - 1]?._id) return; // There are no messages left.
 
-        // Fetch JWT Token
-        sessionStorage.getItem("jwt"),
-      ];
+    let endpoint = `${process.env.REACT_APP_SERVER}`;
+    if (location.conversation) {
+      endpoint += `/conversations/${location.conversation}/messages?limit=50`;
+
+      // If there already are loaded messages, fetch the previous ones.
+      if (prev && prev[prev.length - 1]?._id) {
+        endpoint += `&last_key=${prev[prev.length - 1]._id}`;
+      }
     }
 
     if (location.channel) {
-      return [
-        // Fetch URL
-        `${process.env.REACT_APP_SERVER}/channels/${
-          location.channel
-        }/messages?limit=10${
-          lastMessageId ? `&last_key=${lastMessageId}` : ""
-        }`,
+      endpoint += `/channels/${location.channel}/messages?limit=50`;
 
-        // Fetch JWT Token
-        sessionStorage.getItem("jwt"),
-      ];
+      // If there already are loaded messages, fetch the previous ones.
+      if (prev && prev[prev.length - 1]?._id) {
+        endpoint += `&last_key=${prev[prev.length - 1]._id}`;
+      }
     }
+    return [endpoint, sessionStorage.getItem("jwt")];
   };
 
-  const { data: messages, mutate, setSize } = useSWRInfinite(getKey);
+  const { data: messages, mutate, size, setSize } = useSWRInfinite(getKey);
   const [ordered, setOrdered] = useState([]);
 
   // Socket event handlers will be different if the message author is the current user.
@@ -129,14 +123,14 @@ function useMessage(location) {
   }, [messages]);
 
   /** Load more messages by modifying the last id */
-  const getPrevious = async () => {
-    if (messages && messages.flat().length > 1) {
+  const getPrevious = useCallback(async () => {
+    if (messages?.length > 0) {
       // Tells useMessage the key of the latest message we loaded
       // useMessage will then fetch messages with a key < the latest key.
       // and add them to the messages array.
-      setSize(messages.flat().sort((a, b) => a.timestamp - b.timestamp)[0]._id);
+      setSize(size + 1);
     }
-  };
+  }, [messages]);
 
   // Set up socket listeners
   function handleInsert(change) {

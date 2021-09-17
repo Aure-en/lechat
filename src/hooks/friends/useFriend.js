@@ -7,7 +7,7 @@ function useFriend() {
   const { user } = useAuth();
   const {
     data: friendships,
-    loading,
+    error,
     mutate,
   } = useSWR([
     `${process.env.REACT_APP_SERVER}/users/${user?._id}/friends`,
@@ -84,7 +84,7 @@ function useFriend() {
   return {
     friendships,
     friends,
-    loading,
+    error,
   };
 }
 

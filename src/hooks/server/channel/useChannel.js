@@ -6,7 +6,6 @@ import useActivity from "../../chat/useActivity";
 import socket from "../../../socket/socket";
 
 function useChannel(serverId, channelId) {
-  // For messages form
   const [editing, setEditing] = useState();
 
   // User activity
@@ -15,7 +14,7 @@ function useChannel(serverId, channelId) {
   const { user } = useAuth();
 
   // Channel informations & messages
-  const { data: channel, loading } = useSWR([
+  const { data: channel, error } = useSWR([
     `${process.env.REACT_APP_SERVER}/channels/${channelId}`,
     sessionStorage.getItem("jwt"),
   ]);
@@ -73,7 +72,7 @@ function useChannel(serverId, channelId) {
     editing,
     setEditing,
     channel,
-    loading,
+    error,
   };
 }
 
