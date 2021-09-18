@@ -111,7 +111,7 @@ function useMessage(location) {
         - Else, create a new group of messages.
       */
       if (
-        message.author._id === ordered[ordered.length - 1].author._id &&
+        message.author?._id === ordered[ordered.length - 1].author._id &&
         compareDates(message.timestamp, ordered[ordered.length - 1].timestamp)
       ) {
         ordered[ordered.length - 1].messages.push(message);
@@ -218,7 +218,7 @@ function useMessage(location) {
         );
 
         return updated;
-      });
+      }, false);
     }
   }
 
@@ -238,7 +238,7 @@ function useMessage(location) {
             : message;
         });
         return updated;
-      });
+      }, false);
     }
   };
 
@@ -255,19 +255,21 @@ function useMessage(location) {
         updated[pageIndex] = updated[pageIndex].filter(
           (message) => message._id !== deleted.document._id
         );
-      });
+      }, false);
     }
   };
 
   // Update messages' author username / avatar when the user changes it.
   const handleUserUpdate = (user) => {
-    const updated = [...messages].map((message) => {
-      if (message.author._id === user.document._id) {
-        return { ...message, author: user.document };
-      }
-      return message;
-    });
-    mutate(updated);
+    const updated = [...messages].map((group) =>
+      group.map((message) => {
+        if (message.author._id === user.document._id) {
+          return { ...message, author: user.document };
+        }
+        return message;
+      })
+    );
+    mutate(updated, false);
   };
 
   useEffect(() => {

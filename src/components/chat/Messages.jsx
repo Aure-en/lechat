@@ -6,9 +6,8 @@ import useScroll from "../../hooks/chat/useScroll";
 import ScrollToPresent from "./ScrollToPresent";
 
 function Messages({ ordered, getPrevious, setEditing }) {
-  // Used to load more messages when scrolling to the top (=towards triggerRef)
+  // Used to load more messages when scrolling to the top
   const containerRef = useRef();
-  const triggerRef = useRef();
   const { scrollToBottom, hasScrolled, handleScroll } = useScroll(
     ordered,
     containerRef,
@@ -18,7 +17,6 @@ function Messages({ ordered, getPrevious, setEditing }) {
   return (
     <Wrapper>
       <Ul ref={containerRef} onScroll={handleScroll}>
-        <div ref={triggerRef} />
         {ordered?.map((messages) => (
           <Group
             key={messages._id}

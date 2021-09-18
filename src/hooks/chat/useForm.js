@@ -136,13 +136,15 @@ function useForm(location, message, setEditing, setMessages) {
   };
 
   const updateMessage = (text) => {
-    setMessages((prev) =>
-      [...prev].map((old) => {
-        if (old._id === message._id) {
-          return { ...old, text };
-        }
-        return old;
-      })
+    setMessages(
+      (prev) =>
+        [...prev].map((old) => {
+          if (old._id === message._id) {
+            return { ...old, text };
+          }
+          return old;
+        }),
+      false
     );
 
     saveMessage("PUT", text);
@@ -169,7 +171,7 @@ function useForm(location, message, setEditing, setMessages) {
         loading: files.length > 0, // If there are files, put a placeholder "loading" property instead of displaying the files.
       });
       return updated;
-    });
+    }, false);
 
     await saveMessage("POST", text, timestamp);
   };
