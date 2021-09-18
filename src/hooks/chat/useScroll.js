@@ -80,14 +80,13 @@ function useScroll(messages, ref) {
     if (messages.length < 1 || !previous?.current) return;
 
     // Previous messages were loaded
-    if (messages[0]._id !== previous.current.first) {
+    if (messages[0]._id < previous.current.first) {
       ref.current.scrollTop = ref.current.scrollHeight - currentHeight.current;
       currentHeight.current = ref.current.scrollHeight;
     }
 
     // A new message was written and the user was near the bottom
     // Scroll them to the bottom.
-
     const latestMessage =
       messages[messages.length - 1].messages[
         messages[messages.length - 1].messages.length - 1
@@ -101,7 +100,7 @@ function useScroll(messages, ref) {
      */
 
     if (
-      (latestMessage._id !== previous.current.last || !latestMessage._id) &&
+      (latestMessage._id > previous.current.last || !latestMessage._id) &&
       ref.current.scrollHeight - ref.current.clientHeight <
         ref.current.scrollTop + 500
     ) {
