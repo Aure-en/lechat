@@ -42,6 +42,11 @@ function useMessage(location) {
   const { data: messages, mutate, size, setSize } = useSWRInfinite(getKey);
   const [ordered, setOrdered] = useState([]);
 
+  const isLoadingInitial = !messages;
+  const isLoadingMore =
+    isLoadingInitial ||
+    (size > 0 && messages && typeof messages[size - 1] === "undefined");
+
   // Socket event handlers will be different if the message author is the current user.
   // (So that messages written by a user display instantly for them)
   const { user } = useAuth();
@@ -125,13 +130,13 @@ function useMessage(location) {
 
   /** Load more messages by modifying the last id */
   const getPrevious = useCallback(async () => {
-    if (messages?.length > 0) {
+    if (messages?.length > 0 && !isLoadingMore) {
       // Tells useMessage the key of the latest message we loaded
       // useMessage will then fetch messages with a key < the latest key.
       // and add them to the messages array.
       setSize(size + 1);
     }
-  }, [messages]);
+  }, [messages, isLoadingMore]);
 
   // Set up socket listeners
 
@@ -282,6 +287,7 @@ function useMessage(location) {
     setMessages: mutate,
     ordered,
     getPrevious,
+    isLoading: isLoadingMore,
   };
 }
 

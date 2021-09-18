@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
  * @param {array} messages (group of messages: { author, timestamp, messages: []})
  * @param {HTMLElement} ref (messages container)
  */
-function useScroll(messages, ref) {
+function useScroll(messages, ref, callback) {
   const [isFirst, setIsFirst] = useState(true); // First loading
   const [hasScrolled, setHasScrolled] = useState(false); // If the user has scrolled, display a button to scroll back to present.
   const previous = useRef(); // Used to know if previous messages were loaded, or if a new one was added.
@@ -21,6 +21,8 @@ function useScroll(messages, ref) {
   /** Update the state after the user scrolls */
   const handleScroll = () => {
     if (!ref.current) return;
+
+    // If the user has scrolled, display a "back to bottom" button.
     if (
       ref.current.scrollHeight - ref.current.scrollTop >
       ref.current.clientHeight * 2
@@ -28,6 +30,12 @@ function useScroll(messages, ref) {
       setHasScrolled(true);
     } else {
       setHasScrolled(false);
+    }
+
+    // If the user has scrolled to the top,
+    // call the callback that loads more messages.
+    if (ref.current.scrollTop < 50) {
+      callback();
     }
   };
 
