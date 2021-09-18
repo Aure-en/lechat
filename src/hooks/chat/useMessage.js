@@ -14,12 +14,13 @@ import { useAuth } from "../../context/AuthContext";
  */
 
 function useMessage(location) {
+  const LIMIT = 50;
   const getKey = (index, prev) => {
     if (index !== 0 && !prev[prev.length - 1]?._id) return; // There are no messages left.
 
     let endpoint = `${process.env.REACT_APP_SERVER}`;
     if (location.conversation) {
-      endpoint += `/conversations/${location.conversation}/messages?limit=50`;
+      endpoint += `/conversations/${location.conversation}/messages?limit=${LIMIT}`;
 
       // If there already are loaded messages, fetch the previous ones.
       if (prev && prev[prev.length - 1]?._id) {
@@ -28,7 +29,7 @@ function useMessage(location) {
     }
 
     if (location.channel) {
-      endpoint += `/channels/${location.channel}/messages?limit=50`;
+      endpoint += `/channels/${location.channel}/messages?limit=${LIMIT}`;
 
       // If there already are loaded messages, fetch the previous ones.
       if (prev && prev[prev.length - 1]?._id) {
@@ -133,6 +134,12 @@ function useMessage(location) {
   }, [messages]);
 
   // Set up socket listeners
+
+  /**
+   * When a new message is written:
+   * - On the author's screen, replace the placeholder message by the BDD message.
+   * - On everyone else's screen, add the message to the messages list.
+   */
   function handleInsert(change) {
     const message = change.document;
 
@@ -153,27 +160,48 @@ function useMessage(location) {
            *   useForm (l.158).
            */
           message.author._id !== user._id ||
-          !prev.find(
-            (old) =>
-              old.tempId === message.timestamp &&
-              old.author._id === message.author._id
+          !prev.some((group) =>
+            group.some(
+              (old) =>
+                old.tempId === message.timestamp &&
+                old.author._id === message.author._id
+            )
           )
         ) {
           /* If the message author is not the current user,
            * the message has no placeholder, so it is added to the list.
            */
-          return Array.from(
+
+          const updated = [...prev];
+          updated[updated.length - 1].push(message);
+          updated[updated.length - 1] = Array.from(
             new Set(
-              [...prev, message].sort((a, b) => a.timestamp - b.timestamp)
+              [...updated[updated.length - 1]].sort(
+                (a, b) => a.timestamp - b.timestamp
+              )
             )
           );
+
+          return updated;
         }
         /* If the message author is the current user and
          * the message has a placeholder, replace the placeholder.
          */
-        return Array.from(
+
+        const updated = [...prev];
+
+        // Look for the page that contains the placeholder
+        const pageIndex = updated.findIndex((page) =>
+          page.some(
+            (old) =>
+              old.tempId === message.timestamp &&
+              old.author._id === message.author._id
+          )
+        );
+
+        updated[pageIndex] = Array.from(
           new Set(
-            [...prev]
+            [...updated[pageIndex]]
               .map((old) =>
                 old.tempId === old.timestamp &&
                 old.author._id === message.author._id
@@ -183,10 +211,13 @@ function useMessage(location) {
               .sort((a, b) => a.timestamp - b.timestamp)
           )
         );
+
+        return updated;
       });
     }
   }
 
+  // Replace the message by its updated version when an user updates a message.
   const handleUpdate = (change) => {
     // Page which contains the updated message
     const pageIndex = messages.findIndex((page) =>
@@ -206,6 +237,7 @@ function useMessage(location) {
     }
   };
 
+  // Remove a message when the user deletes a message.
   const handleDelete = (deleted) => {
     // Page which contains the deleted message
     const pageIndex = messages.findIndex((page) =>
