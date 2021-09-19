@@ -1,26 +1,17 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import useSWR from "swr";
 import { useAuth } from "../../context/AuthContext";
 import socket from "../../socket/socket";
 
 function useConversations() {
-  const { user } = useAuth();
-  const {
-    data: conversations,
-    error,
-    mutate,
-  } = useSWR([
-    `${process.env.REACT_APP_SERVER}/users/${user?._id}/conversations`,
-    sessionStorage.getItem("jwt"),
-  ]);
-  const [withMessage, setWithMessage] = useState([]);
-
   /**
    * Fetch the conversations' latest message
    * Add the latest message to the conversations
    * Only returns conversations with a message.
    */
-  const getMessages = async () => {
+  const getMessages = async (conversations) => {
+    if (!conversations) return;
+
     const conversationsId = conversations.map(
       (conversation) => conversation._id
     );
@@ -59,8 +50,54 @@ function useConversations() {
       (a, b) => b.message.timestamp - a.message.timestamp
     );
 
-    setWithMessage(withMessage);
+    return withMessage;
   };
+
+  /**
+   * Fetch the conversations.
+   * For each conversation, fetch the latest message.
+   * Only keep conversations with a latest message.
+   */
+  const fetcher = async (url, jwt = undefined) => {
+    if (jwt) {
+      // Fetch conversations
+      const res = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+      const json = await res.json();
+
+      if (json.error) {
+        throw new Error(json.error);
+      }
+
+      // For each conversation, fetch the latest message.
+      const withMessage = getMessages(json);
+      return withMessage;
+    }
+
+    return fetch(url)
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.error) throw new Error(json.error);
+        return json;
+      });
+  };
+
+  const { user } = useAuth();
+
+  const {
+    data: conversations,
+    error,
+    mutate,
+  } = useSWR(
+    [
+      `${process.env.REACT_APP_SERVER}/users/${user?._id}/conversations`,
+      sessionStorage.getItem("jwt"),
+    ],
+    fetcher
+  );
 
   useEffect(() => {
     if (conversations) {
@@ -75,8 +112,8 @@ function useConversations() {
    * conversation is created, and the current user is one of its
    * members.
    */
-  const handleConversation = (update) => {
-    mutate(async (prev) => [...prev, update.document]);
+  const handleConversation = () => {
+    mutate();
   };
 
   /**
@@ -93,11 +130,11 @@ function useConversations() {
       conversations.find(
         (conversation) => conversation._id === message.conversation
       ) &&
-      !withMessage.find(
+      !conversations.find(
         (conversation) => conversation._id === message.conversation
       )
     ) {
-      setWithMessage((prev) => {
+      mutate((prev) => {
         const conversation = conversations.find(
           (conversation) => conversation._id === message.conversation
         );
@@ -108,7 +145,7 @@ function useConversations() {
           },
           ...prev,
         ];
-      });
+      }, false);
     }
   };
 
@@ -119,10 +156,10 @@ function useConversations() {
       socket.off("insert conversation", handleConversation);
       socket.off("insert message", handleWithMessage);
     };
-  }, [withMessage, conversations]);
+  }, [conversations]);
 
   return {
-    withMessage,
+    conversations,
     error,
   };
 }
