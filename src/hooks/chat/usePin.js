@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
+import useSWRInfinite from "swr/infinite";
 import socket from "../../socket/socket";
 
 /**
@@ -9,70 +10,51 @@ import socket from "../../socket/socket";
  * - { channel: {string} id }
  */
 function usePin(location) {
-  const [messages, setMessages] = useState([]);
-  const [last, setLast] = useState(""); // Used to load more messages by fetching messages with an id < last id loaded.
-  const [loading, setLoading] = useState(true); // Used to know when the response for the first request has arrived.
+  const [ordered, setOrdered] = useState([]);
+  const getKey = (index, prev) => {
+    if (index !== 0 && !prev[prev.length - 1]?._id) return; // There are no messages left.
 
-  // Helper function to get the endpoint linked to the room
-  const setUrl = (location, lastMessageId) => {
+    let endpoint = `${process.env.REACT_APP_SERVER}`;
     if (location.conversation) {
-      return `${process.env.REACT_APP_SERVER}/conversations/${
-        location.conversation
-      }/messages?limit=15&pinned=true${
-        lastMessageId ? `&last_key=${lastMessageId}` : ""
-      }`;
+      endpoint += `/conversations/${location.conversation}/messages?limit=10&pinned=true`;
+
+      // If there already are loaded messages, fetch the previous ones.
+      if (prev && prev[prev.length - 1]?._id) {
+        endpoint += `&last_key=${prev[prev.length - 1]._id}`;
+      }
     }
 
     if (location.channel) {
-      return `${process.env.REACT_APP_SERVER}/channels/${
-        location.channel
-      }/messages?limit=15&pinned=true${
-        lastMessageId ? `&last_key=${lastMessageId}` : ""
-      }`;
+      endpoint += `/channels/${location.channel}/messages?limit=10&pinned=true`;
+
+      // If there already are loaded messages, fetch the previous ones.
+      if (prev && prev[prev.length - 1]?._id) {
+        endpoint += `&last_key=${prev[prev.length - 1]._id}`;
+      }
     }
+    return [endpoint, sessionStorage.getItem("jwt")];
   };
 
-  const getMessages = async (url) => {
-    const res = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
-      },
-    });
-    const json = await res.json();
-    return json;
-  };
+  const { data: messages, mutate, size, setSize } = useSWRInfinite(getKey);
 
-  // Load pinned messages after entering a room
+  const isLoadingInitial = !messages;
+  const isLoadingMore =
+    isLoadingInitial ||
+    (size > 0 && messages && typeof messages[size - 1] === "undefined");
+
   useEffect(() => {
-    (async () => {
-      const url = setUrl(location);
-      const messages = await getMessages(url);
-      setMessages(messages.sort((a, b) => a.timestamp - b.timestamp));
-      setLoading(false);
-    })();
-  }, [location.conversation, location.server, location.channel]);
+    setOrdered(messages?.flat() || []);
+  }, [messages]);
 
   /** Load more messages by modying the last id */
-  const getPrevious = async () => {
-    if (messages.length > 1 && (!last || messages[0]._id < last)) {
+  const getPrevious = useCallback(async () => {
+    if (messages?.length > 0 && !isLoadingMore) {
       // Tells useMessage the key of the latest message we loaded
       // useMessage will then fetch messages with a key < the latest key.
       // and add them to the messages array.
-      setLast(messages[0]._id);
+      setSize(size + 1);
     }
-  };
-
-  useEffect(() => {
-    if (!last) return;
-    (async () => {
-      const url = setUrl(location, last);
-      const previous = await getMessages(url);
-      setMessages((prev) => [
-        ...prev,
-        ...previous.sort((a, b) => a.timestamp - b.timestamp),
-      ]);
-    })();
-  }, [last]);
+  }, [messages]);
 
   // Set up socket listeners to update pinned messages in real time
   const handleUpdate = (updated) => {
@@ -81,11 +63,34 @@ function usePin(location) {
     // If the message has never been pinned / unpinned, message.pinned is undefined.
     // To check if the message has been unpinned, use a strict comparison with false.
     if (message.pinned === false) {
-      setMessages((prev) =>
-        [...prev].filter((pinned) => pinned._id !== message._id)
-      );
+      // Unpin the message
+      mutate((prev) => {
+        const updated = [...prev];
+        const pageIndex = updated.findIndex((group) =>
+          group.find((pinned) => message._id === pinned._id)
+        );
+        updated[pageIndex] = updated[pageIndex].filter(
+          (pinned) => pinned._id !== message._id
+        );
+        return updated;
+      }, false);
     } else if (message.pinned) {
-      setMessages((prev) => [message, ...prev]);
+      // Pin the message
+      mutate((prev) => {
+        const updated = [...prev];
+        updated[updated.length - 1].push(message);
+        return updated;
+      }, false);
+    }
+  };
+
+  const handleScroll = (e) => {
+    if (
+      e.target.scrollHeight - e.target.scrollTop <=
+        e.target.clientHeight + 50 &&
+      !isLoadingMore
+    ) {
+      getPrevious();
     }
   };
 
@@ -95,9 +100,9 @@ function usePin(location) {
   }, []);
 
   return {
-    loading,
-    messages,
-    getPrevious,
+    messages: ordered,
+    loading: isLoadingMore,
+    handleScroll,
   };
 }
 

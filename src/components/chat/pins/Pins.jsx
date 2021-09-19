@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { createPortal } from "react-dom";
 import usePin from "../../../hooks/chat/usePin";
 import useDropdown from "../../../hooks/shared/useDropdown";
-import useIntersection from "../../../hooks/shared/useIntersection";
 
 // Icons
 import { ReactComponent as IconPin } from "../../../assets/icons/chat/pin.svg";
@@ -19,13 +18,12 @@ function Pins({ location }) {
   const { isDropdownOpen, setIsDropdownOpen } = useDropdown(containerRef);
 
   // Pinned messages, function to load more of them.
-  const { messages, loading, getPrevious } = usePin(location);
+  const { messages, loading, handleScroll } = usePin(location);
 
   // Refs to know when we have scrolled to the last pin
   // So we know we should load more.
   const pinsRef = useRef(); // Pins container.
   const triggerRef = useRef(); // When we reach this ref, load more pins.
-  useIntersection(pinsRef, triggerRef, getPrevious);
 
   return (
     <div ref={containerRef}>
@@ -35,7 +33,8 @@ function Pins({ location }) {
 
       <Suspense fallback={<></>}>
         {/* Menu must be positioned out of the chat container that has overflow: auto to not be cut.
-      Because it is outside of the Container, it uses the container ref to be positioned properly. */}
+            Because it is outside of the Container, it uses the container ref to be positioned properly.
+          */}
         {isDropdownOpen && (
           <>
             {createPortal(
@@ -60,7 +59,7 @@ function Pins({ location }) {
 
                 {/* Else, display messages. */}
                 {messages.length > 0 && (
-                  <Content>
+                  <Content onScroll={handleScroll}>
                     {messages.map((message) => (
                       <Pin key={`pin-${message._id}`} message={message} />
                     ))}

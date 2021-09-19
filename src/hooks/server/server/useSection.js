@@ -16,7 +16,7 @@ function useSection(url, section, categoryId) {
       (document.section === "category" && section === "category") ||
       (document.document.category === categoryId && section === "channel")
     ) {
-      mutate(async (prev) => [...prev, document.document]);
+      mutate(async (prev) => [...prev, document.document], false);
     }
   };
 
@@ -25,10 +25,12 @@ function useSection(url, section, categoryId) {
       (document.section === "category" && section === "category") ||
       (document.document.category === categoryId && section === "channel")
     ) {
-      mutate(async (prev) =>
-        [...prev].map((section) =>
-          document.document._id === section._id ? document.document : section
-        )
+      mutate(
+        async (prev) =>
+          [...prev].map((section) =>
+            document.document._id === section._id ? document.document : section
+          ),
+        false
       );
     }
   };
@@ -38,8 +40,10 @@ function useSection(url, section, categoryId) {
       (document.section === "category" && section === "category") ||
       (document.section === "channel" && section === "channel")
     ) {
-      mutate(async (prev) =>
-        [...prev].filter((section) => section._id !== document.document._id)
+      mutate(
+        async (prev) =>
+          [...prev].filter((section) => section._id !== document.document._id),
+        false
       );
     }
   };

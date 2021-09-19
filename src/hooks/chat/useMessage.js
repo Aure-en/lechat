@@ -14,26 +14,25 @@ import { useAuth } from "../../context/AuthContext";
  */
 
 function useMessage(location) {
-  const LIMIT = 50;
   const getKey = (index, prev) => {
     if (index !== 0 && !prev[prev.length - 1]?._id) return; // There are no messages left.
 
     let endpoint = `${process.env.REACT_APP_SERVER}`;
     if (location.conversation) {
-      endpoint += `/conversations/${location.conversation}/messages?limit=${LIMIT}`;
+      endpoint += `/conversations/${location.conversation}/messages`;
 
       // If there already are loaded messages, fetch the previous ones.
       if (prev && prev[prev.length - 1]?._id) {
-        endpoint += `&last_key=${prev[prev.length - 1]._id}`;
+        endpoint += `?last_key=${prev[prev.length - 1]._id}`;
       }
     }
 
     if (location.channel) {
-      endpoint += `/channels/${location.channel}/messages?limit=${LIMIT}`;
+      endpoint += `/channels/${location.channel}/messages`;
 
       // If there already are loaded messages, fetch the previous ones.
       if (prev && prev[prev.length - 1]?._id) {
-        endpoint += `&last_key=${prev[prev.length - 1]._id}`;
+        endpoint += `?last_key=${prev[prev.length - 1]._id}`;
       }
     }
     return [endpoint, sessionStorage.getItem("jwt")];
@@ -111,7 +110,7 @@ function useMessage(location) {
         - Else, create a new group of messages.
       */
       if (
-        message.author?._id === ordered[ordered.length - 1].author._id &&
+        message.author._id === ordered[ordered.length - 1].author._id &&
         compareDates(message.timestamp, ordered[ordered.length - 1].timestamp)
       ) {
         ordered[ordered.length - 1].messages.push(message);
