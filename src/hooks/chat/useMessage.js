@@ -184,7 +184,6 @@ function useMessage(location) {
               )
             )
           );
-          console.log('mutated', updated);
           return updated;
         }
         /* If the message author is the current user and
@@ -214,7 +213,6 @@ function useMessage(location) {
               .sort((a, b) => a.timestamp - b.timestamp)
           )
         );
-        console.log('mutated', updated);
         return updated;
       });
     }
