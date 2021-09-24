@@ -254,6 +254,7 @@ function useMessage(location) {
         updated[pageIndex] = updated[pageIndex].filter(
           (message) => message._id !== deleted.document._id
         );
+        return updated;
       }, false);
     }
   };
