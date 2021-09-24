@@ -1,30 +1,14 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import useSWR from "swr";
 import socket from "../../../socket/socket";
 
-/**
- * Keep track of a server's categories and channels.
- */
+// Keep track of a server's categories and channels.
 function useSection(url, section, categoryId) {
-  const [sections, setSections] = useState([]);
-
-  // Load categories and channels
-  useEffect(() => {
-    if (!url) return;
-    (async () => {
-      const res = await fetch(url, {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
-        },
-      });
-
-      try {
-        const json = await res.json();
-        if (!json.error) setSections(json);
-      } catch (e) {
-        setSections([]);
-      }
-    })();
-  }, [url]);
+  const {
+    data: sections,
+    loading,
+    mutate,
+  } = useSWR([url, sessionStorage.getItem("jwt")]);
 
   // Socket listeners to update categories / channels in real time.
   const handleInsert = (document) => {
@@ -32,7 +16,7 @@ function useSection(url, section, categoryId) {
       (document.section === "category" && section === "category") ||
       (document.document.category === categoryId && section === "channel")
     ) {
-      setSections((prev) => [...prev, document.document]);
+      mutate(async (prev) => [...prev, document.document], false);
     }
   };
 
@@ -41,10 +25,12 @@ function useSection(url, section, categoryId) {
       (document.section === "category" && section === "category") ||
       (document.document.category === categoryId && section === "channel")
     ) {
-      setSections((prev) =>
-        [...prev].map((section) =>
-          document.document._id === section._id ? document.document : section
-        )
+      mutate(
+        async (prev) =>
+          [...prev].map((section) =>
+            document.document._id === section._id ? document.document : section
+          ),
+        false
       );
     }
   };
@@ -54,8 +40,10 @@ function useSection(url, section, categoryId) {
       (document.section === "category" && section === "category") ||
       (document.section === "channel" && section === "channel")
     ) {
-      setSections((prev) =>
-        [...prev].filter((section) => section._id !== document.document._id)
+      mutate(
+        async (prev) =>
+          [...prev].filter((section) => section._id !== document.document._id),
+        false
       );
     }
   };
@@ -74,7 +62,7 @@ function useSection(url, section, categoryId) {
 
   return {
     sections,
-    setSections,
+    loading,
   };
 }
 

@@ -1,29 +1,15 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import useSWR from "swr";
 import socket from "../../../socket/socket";
 
 function useMembers(serverId) {
-  const [members, setMembers] = useState([]);
+  const API_ENDPOINT = `${process.env.REACT_APP_SERVER}/servers/${serverId}/members`;
 
-  const getMembers = async (serverId) => {
-    const res = await fetch(
-      `${process.env.REACT_APP_SERVER}/servers/${serverId}/members`,
-      {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
-        },
-      }
-    );
-    const json = await res.json();
-    if (!json.error) setMembers(json);
-  };
-
-  useEffect(() => {
-    getMembers(serverId);
-  }, []);
+  const { data: members, mutate } = useSWR([API_ENDPOINT]);
 
   // When someone leaves / joins the server, update the members list.
   const handleEvent = () => {
-    getMembers(serverId);
+    mutate();
   };
 
   useEffect(() => {

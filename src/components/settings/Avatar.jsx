@@ -11,7 +11,7 @@ function Avatar() {
     formData.append("image", image);
     setMessage("Updating avatar...");
 
-    await fetch(`${process.env.REACT_APP_SERVER}/users/${user._id}/avatar`, {
+    await fetch(`${process.env.REACT_APP_SERVER}/users/${user?._id}/avatar`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,

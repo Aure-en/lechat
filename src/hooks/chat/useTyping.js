@@ -31,7 +31,7 @@ function useTyping(location) {
         return copy;
       });
 
-    // Else, remove them.
+      // Else, remove them.
     } else {
       setTyping((prev) => {
         const copy = new Set(JSON.parse(JSON.stringify([...prev])));

@@ -17,7 +17,7 @@ function Channel() {
     server: serverId,
     channel: channelId,
   });
-  const { editing, setEditing, channel, loading } = useChannel(
+  const { editing, setEditing, channel, error } = useChannel(
     serverId,
     channelId
   );
@@ -53,11 +53,11 @@ function Channel() {
     );
   }
 
-  if (!loading && !channel) {
+  if (!channel && error) {
     return <NotFound />;
   }
 
-  return <></>;
+  return <Container />;
 }
 
 export default Channel;

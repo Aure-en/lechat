@@ -6,6 +6,7 @@ import useLogin from "../../hooks/entry/useLogin";
 import EntryRoute from "../types/EntryRoute";
 import SignUp from "./SignUp";
 import Login from "./Login";
+import Theme from '../../components/settings/Theme';
 
 function Entry() {
   const location = useLocation();
@@ -37,6 +38,7 @@ function Entry() {
         </main>
 
         <Footer>
+          <Theme />
           <a href="#" onClick={handleSample}>
             Or try Lechat with a pre-existing account &#8594; {/* 🠒 */}
           </a>
@@ -109,7 +111,7 @@ const Header = styled.header`
 
 const Footer = styled.footer`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   font-size: 0.875rem;
 
   & > a {

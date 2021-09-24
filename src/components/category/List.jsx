@@ -14,7 +14,7 @@ function List({ serverId }) {
   return (
     <Nav>
       <ul>
-        {categories.map((category) => (
+        {categories?.map((category) => (
           <Category
             key={category._id}
             serverId={serverId}

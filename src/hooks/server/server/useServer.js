@@ -1,31 +1,18 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import useSWR from "swr";
 import socket from "../../../socket/socket";
 
 // Keep track of a server's informations.
 function useServer(serverId) {
-  const [server, setServer] = useState();
-  const [loading, setLoading] = useState(true);
-
-  // Load existing server
-  useEffect(() => {
-    (async () => {
-      const res = await fetch(
-        `${process.env.REACT_APP_SERVER}/servers/${serverId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
-          },
-        }
-      );
-      const json = await res.json();
-      if (!json.error) setServer(json);
-      setLoading(false);
-    })();
-  }, [serverId]);
+  const {
+    data: server,
+    mutate,
+    error,
+  } = useSWR([`${process.env.REACT_APP_SERVER}/servers/${serverId}`]);
 
   // Set up socket listeners
-  const handleUpdate = (updated) => {
-    setServer(updated.document);
+  const handleUpdate = () => {
+    mutate();
   };
 
   // Update the display when the server's settings are updated.
@@ -36,7 +23,7 @@ function useServer(serverId) {
 
   return {
     server,
-    loading,
+    error,
   };
 }
 
