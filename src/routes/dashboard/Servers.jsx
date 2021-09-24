@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import List from "../../components/server/List";
 import Nav from "../../components/home/Nav";
+import Gradient from '../../components/shared/links/Gradient';
 
 function Servers() {
   return (
@@ -10,6 +11,7 @@ function Servers() {
       <Container>
         <List />
       </Container>
+      <Gradient to='/explore'>Explore Servers</Gradient>
     </Wrapper>
   );
 }
@@ -24,6 +26,7 @@ const Wrapper = styled.div`
   min-height: -webkit-fill-available;
   margin: 0;
   border-radius: 1rem;
+  padding: 1rem;
 
   @media all and (min-width: 768px) {
     height: calc(100vh - 1rem);
@@ -37,6 +40,7 @@ const Container = styled.main`
   padding: 1rem 2rem;
   margin-right: 0.25rem; // Makes the scrollbar not stick to the right.
   overflow-y: auto;
+  flex: 1;
 
   &::-webkit-scrollbar {
     width: 0.4rem;

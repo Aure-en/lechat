@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import socket from "../../../socket/socket";
 
-function useCreate(server) {
+function useCreate(server, setIsOpen) {
   const [name, setName] = useState(server?.name || "");
   const [about, setAbout] = useState(server?.about || "");
   const [nameError, setNameError] = useState("");
@@ -35,6 +35,7 @@ function useCreate(server) {
     } else {
       setMessage("Server successfully created.");
       history.push(`/servers/${json._id}`);
+      setIsOpen(false); // Close modal
     }
     return json;
   };
@@ -79,7 +80,6 @@ function useCreate(server) {
     // Submit the form
     if (!server) {
       const newServer = await create();
-
       // Join room to get real time updates.
       socket.emit("join", newServer._id);
     } else {

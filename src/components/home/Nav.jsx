@@ -25,5 +25,4 @@ export default Nav;
 
 const Container = styled.nav`
   align-self: center;
-  margin: 1rem 0;
 `;

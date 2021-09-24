@@ -8,7 +8,7 @@ import IconLoad from "../../assets/icons/general/IconLoad";
 function Explore() {
   const { user } = useAuth();
   const { data: servers, loading } = useSWR(
-    `${process.env.REACT_APP_SERVER}/servers?sort_by=members&order=desc`
+    `${process.env.REACT_APP_SERVER}/servers?sort_by=members&order=desc&limit=5`
   );
 
   return (
@@ -44,8 +44,20 @@ const Container = styled.div`
   border-radius: 1rem;
   height: 100vh;
   min-height: -webkit-fill-available;
-  overflow: hidden;
+  overflow: auto;
   flex: 1;
+
+  &::-webkit-scrollbar {
+    width: 0.4rem;
+  }
+  &::-webkit-scrollbar-track {
+    background: none;
+    margin: 0.5rem 0;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5rem;
+    background-color: ${(props) => props.theme.bg_sidebar};
+  }
 
   @media all and (min-width: 768px) {
     margin: 1rem 1rem 0 1rem;

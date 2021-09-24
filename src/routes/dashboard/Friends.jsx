@@ -27,6 +27,7 @@ const Wrapper = styled.div`
   height: 100vh;
   min-height: -webkit-fill-available;
   margin: 0;
+  padding: 1rem;
   border-radius: 1rem;
 
   @media all and (min-width: 768px) {
