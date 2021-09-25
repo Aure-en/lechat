@@ -1,49 +1,61 @@
 import { useState, useEffect } from "react";
+import useSWR from "swr";
 import { useAuth } from "../../context/AuthContext";
 import socket from "../../socket/socket";
 
 function useFriend() {
-  const [friendships, setFriendships] = useState([]);
-  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
+  const {
+    data: friendships,
+    error,
+    mutate,
+  } = useSWR([
+    `${process.env.REACT_APP_SERVER}/users/${user?._id}/friends`,
+    sessionStorage.getItem("jwt"),
+  ]);
+  const [friends, setFriends] = useState([]);
 
-  // Load current friends
+  // Get the friends
+  // Meaning the user of the friendship who is not the current user.
   useEffect(() => {
-    (async () => {
-      if (!user) return;
-      const res = await fetch(
-        `${process.env.REACT_APP_SERVER}/users/${user._id}/friends`,
-        {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
-          },
-        }
-      );
-      const json = await res.json();
-      if (!json.error) setFriendships(json);
-      setLoading(false);
-    })();
-  }, []);
+    const friends = [];
+    friendships?.forEach((friendship) =>
+      friends.push({
+        friend:
+          friendship.sender._id === user._id
+            ? friendship.recipient
+            : friendship.sender,
+        _id: friendship._id, // Necessary to delete the friendship
+      })
+    );
+    setFriends(friends);
+  }, [friendships]);
 
   // Set up socket listeners
-  // No need to handle the insert change, as it only concerns pending friends.
+  // No need to handle the insert friendship change, as it only concerns pending friends.
+
+  // The recipient accepted the friend request
+  // ⟶ Add the friendship to the list.
   const handleUpdate = (update) => {
-    setFriendships([...friendships, update.document]);
+    mutate(async (prev) => [...prev, update.document]);
   };
 
+  // The recipient declined the friend request
+  // ⟶ Remove the friendship from the list.
   const handleDelete = (deleted) => {
     if (
       friendships.findIndex(
         (friendship) => friendship._id === deleted.document._id
       ) !== -1
     ) {
-      setFriendships((prev) =>
-        prev.filter((friendship) => friendship._id !== deleted.document._id)
-      );
+      mutate(async (prev) => {
+        prev.filter((friendship) => friendship._id !== deleted.document._id);
+      });
     }
   };
 
-  // When a friend updates their username / avatar,
+  // When a friend updates their username / avatar
+  // ⟶ Update the friendship to display their new informations.
   const handleUserUpdate = (user) => {
     const updated = [...friendships].map((friendship) => {
       if (friendship.recipient._id === user.document._id) {
@@ -55,28 +67,24 @@ function useFriend() {
       }
       return friendship;
     });
-
-    setFriendships(updated);
+    mutate(updated);
   };
 
   useEffect(() => {
     socket.on("update friend", handleUpdate);
-    return () => socket.off("update friend", handleUpdate);
-  }, [friendships]);
-
-  useEffect(() => {
     socket.on("delete friend", handleDelete);
-    return () => socket.off("delete friend", handleDelete);
-  }, [friendships]);
-
-  useEffect(() => {
     socket.on("user update", handleUserUpdate);
-    return () => socket.off("user update", handleUserUpdate);
+    return () => {
+      socket.off("update friend", handleUpdate);
+      socket.off("delete friend", handleDelete);
+      socket.off("user update", handleUserUpdate);
+    };
   }, [friendships]);
 
   return {
     friendships,
-    loading,
+    friends,
+    error,
   };
 }
 

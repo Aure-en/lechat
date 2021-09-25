@@ -6,7 +6,7 @@ import useCreate from "../../hooks/server/server/useCreate";
 import Upload from "../shared/form/Upload";
 import SubmitBtn from "../shared/buttons/Gradient";
 
-function Form({ server }) {
+function Form({ server, setIsOpen }) {
   const {
     name,
     setName,
@@ -16,7 +16,7 @@ function Form({ server }) {
     setImage,
     handleSubmit,
     message,
-  } = useCreate(server);
+  } = useCreate(server, setIsOpen);
 
   return (
     <div>
@@ -90,10 +90,12 @@ Form.propTypes = {
       }),
     }),
   }),
+  setIsOpen: PropTypes.func,
 };
 
 Form.defaultProps = {
   server: undefined,
+  setIsOpen: () => {},
 };
 
 const Header = styled.div`

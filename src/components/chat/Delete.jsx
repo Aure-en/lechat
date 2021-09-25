@@ -7,8 +7,10 @@ import SubmitBtn from "../shared/buttons/Gradient";
 
 function Delete({ message }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const remove = async (id) => {
+    setIsLoading(true);
     await fetch(`${process.env.REACT_APP_SERVER}/messages/${id}`, {
       method: "DELETE",
       headers: {
@@ -16,6 +18,7 @@ function Delete({ message }) {
         "Content-Type": "application/json",
       },
     });
+    setIsLoading(false);
   };
 
   return (
@@ -43,6 +46,7 @@ function Delete({ message }) {
 
           <Buttons>
             <SubmitBtn>Delete Message</SubmitBtn>
+            {isLoading && <small>Deleting message...</small>}
           </Buttons>
         </Form>
       </Modal>
@@ -88,8 +92,15 @@ const Heading = styled.h2`
 `;
 
 const Buttons = styled.div`
+  position: relative;
   display: flex;
   justify-content: flex-end;
+
+  & > small {
+    position: absolute;
+    bottom: -1.25rem;
+    color: ${(props) => props.theme.text_quaternary};
+  }
 `;
 
 const Button = styled.button`

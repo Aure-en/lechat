@@ -407,7 +407,9 @@ export function UnreadProvider({ children }) {
   const handleInsertConversation = (update) => {
     setUnread((prev) => {
       const updated = { ...prev };
-      updated.conversations.push({ ...update.document, unread: 0 });
+      if (updated.conversations) {
+        updated.conversations.push({ ...update.document, unread: 0 });
+      }
       return updated;
     });
   };

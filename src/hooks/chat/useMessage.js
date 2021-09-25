@@ -1,52 +1,57 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import useSWRInfinite from "swr/infinite";
+import produce from "immer";
 import socket from "../../socket/socket";
 import { useUnread } from "../../context/UnreadContext";
 import { useAuth } from "../../context/AuthContext";
 
 /**
  * Fetch the messages from a certain conversation / server channel.
+ * Regroup those who were written in a row by the same author.
  * Update them in real time with socket listeners.
  * @param {object} location. Either :
  * - { conversation: {string} id }
  * - { channel: {string} id }
  */
+
 function useMessage(location) {
-  // Messages
-  const [messages, setMessages] = useState([]);
+  const getKey = (index, prev) => {
+    if (index !== 0 && !prev[prev.length - 1]?._id) return; // There are no messages left.
+
+    let endpoint = `${process.env.REACT_APP_SERVER}`;
+    if (location.conversation) {
+      endpoint += `/conversations/${location.conversation}/messages`;
+
+      // If there already are loaded messages, fetch the previous ones.
+      if (prev && prev[prev.length - 1]?._id) {
+        endpoint += `?last_key=${prev[prev.length - 1]._id}`;
+      }
+    }
+
+    if (location.channel) {
+      endpoint += `/channels/${location.channel}/messages`;
+
+      // If there already are loaded messages, fetch the previous ones.
+      if (prev && prev[prev.length - 1]?._id) {
+        endpoint += `?last_key=${prev[prev.length - 1]._id}`;
+      }
+    }
+    return [endpoint, sessionStorage.getItem("jwt")];
+  };
+
+  const { data: messages, mutate, size, setSize } = useSWRInfinite(getKey);
   const [ordered, setOrdered] = useState([]);
-  // Used to load more messages
-  const [last, setLast] = useState("");
+
+  const isLoadingInitial = !messages;
+  const isLoadingMore =
+    isLoadingInitial ||
+    (size > 0 && messages && typeof messages[size - 1] === "undefined");
 
   // Socket event handlers will be different if the message author is the current user.
   // (So that messages written by a user display instantly for them)
   const { user } = useAuth();
   // Get the number of unread to separate older from newer messages.
   const { getRoomUnread } = useUnread();
-
-  // Helper function to get the endpoint linked to the room
-  const setUrl = (location, lastMessageId) => {
-    if (location.conversation) {
-      return `${process.env.REACT_APP_SERVER}/conversations/${
-        location.conversation
-      }/messages${lastMessageId ? `?last_key=${lastMessageId}` : ""}`;
-    }
-
-    if (location.channel) {
-      return `${process.env.REACT_APP_SERVER}/channels/${
-        location.channel
-      }/messages${lastMessageId ? `?last_key=${lastMessageId}` : ""}`;
-    }
-  };
-
-  const getMessages = async (url) => {
-    const res = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
-      },
-    });
-    const json = await res.json();
-    return json;
-  };
 
   // Helper function to compare dates
   const compareDates = (timestamp1, timestamp2) => {
@@ -61,14 +66,17 @@ function useMessage(location) {
     return false;
   };
 
-  // Group messages by author and time so that the author isn't displayed in front of every message.
+  // Regroup messages written by the same author in a row.
   useEffect(() => {
     const ordered = [];
-    let unordered = [...messages];
 
-    if (messages.length < 1) {
+    if (!messages || messages.length === 0) {
       return setOrdered([]);
     }
+
+    let unordered = [...messages]
+      .flat()
+      .sort((a, b) => a.timestamp - b.timestamp);
 
     // Get unread messages
     const unread = getRoomUnread(location);
@@ -116,48 +124,27 @@ function useMessage(location) {
         });
       }
     });
+
     setOrdered(ordered);
   }, [messages]);
 
-  /**
-   * After entering a new room:
-   * - Load the room's messages
-   * - Reset last message id.
-   */
-  useEffect(() => {
-    (async () => {
-      const url = setUrl(location);
-      const messages = await getMessages(url);
-      if (!messages.error) {
-        setMessages(messages.sort((a, b) => a.timestamp - b.timestamp));
-        setLast("");
-      }
-    })();
-  }, [location.conversation, location.server, location.channel]);
-
   /** Load more messages by modifying the last id */
-  const getPrevious = async () => {
-    if (messages.length > 1 && (!last || messages[0]._id < last)) {
+  const getPrevious = useCallback(async () => {
+    if (messages?.length > 0 && !isLoadingMore) {
       // Tells useMessage the key of the latest message we loaded
       // useMessage will then fetch messages with a key < the latest key.
       // and add them to the messages array.
-      setLast(messages[0]._id);
+      setSize(size + 1);
     }
-  };
-
-  useEffect(() => {
-    if (!last) return;
-    (async () => {
-      const url = setUrl(location, last);
-      const previous = await getMessages(url);
-      setMessages((prev) => [
-        ...previous.sort((a, b) => a.timestamp - b.timestamp),
-        ...prev,
-      ]);
-    })();
-  }, [last]);
+  }, [messages, isLoadingMore]);
 
   // Set up socket listeners
+
+  /**
+   * When a new message is written:
+   * - On the author's screen, replace the placeholder message by the BDD message.
+   * - On everyone else's screen, add the message to the messages list.
+   */
   function handleInsert(change) {
     const message = change.document;
 
@@ -168,82 +155,127 @@ function useMessage(location) {
         message.conversation === location.conversation) ||
       (location.channel && message.channel === location.channel)
     ) {
-      setMessages((prev) => {
-        if (
-          /* If the message is not displayed yet, adds it.
-           * It is the case if:
-           * - The current user is not the author or
-           * - The current user is the author, but they wrote the message
-           *   on another tab. Thus, it was not displayed instantly by
-           *   useForm (l.158).
-           */
-          message.author._id !== user._id ||
-          !prev.find(
+      if (
+        /* If the message is not displayed yet, adds it.
+         * It is the case if:
+         * - The current user is not the author or
+         * - The current user is the author, but they wrote the message
+         *   on another tab. Thus, it was not displayed instantly by
+         *   useForm (l.158).
+         */
+        message.author._id !== user._id ||
+        !messages.some((group) =>
+          group.some(
             (old) =>
               old.tempId === message.timestamp &&
               old.author._id === message.author._id
           )
-        ) {
-          /* Temporary fix to avoid duplicates caused by the prev.find condition...
-           * Because the messages are updated asynchronously, if the user spammed messages,
-           * they could appear as duplicated.
-           */
-          return Array.from(
-            new Set(
-              [...prev, message].sort((a, b) => a.timestamp - b.timestamp)
-            )
-          );
-        }
+        )
+      ) {
+        /* If the message author is not the current user,
+         * the message has no placeholder, so it is added to the list.
+         */
+
+        mutate(
+          produce((prev) => {
+            prev[prev.length - 1].push(message);
+            prev[prev.length - 1] = Array.from(
+              new Set(
+                [...prev[prev.length - 1]].sort(
+                  (a, b) => a.timestamp - b.timestamp
+                )
+              )
+            );
+          }),
+          false
+        );
+      } else {
         /* If the message author is the current user and
          * the message has a placeholder, replace the placeholder.
          */
-        return Array.from(
-          new Set(
-            [...prev]
-              .map((old) =>
-                old.tempId === old.timestamp &&
-                old.author._id === message.author._id
-                  ? message
-                  : old
+
+        // Look for the page that contains the placeholder
+
+        mutate(
+          produce((prev) => {
+            const pageIndex = prev.findIndex((page) =>
+              page.some(
+                (old) =>
+                  old.tempId === message.timestamp &&
+                  old.author._id === message.author._id
               )
-              .sort((a, b) => a.timestamp - b.timestamp)
-          )
+            );
+
+            prev[pageIndex] = Array.from(
+              new Set(
+                [...prev[pageIndex]]
+                  .map((old) =>
+                    old.tempId === old.timestamp &&
+                    old.author._id === message.author._id
+                      ? message
+                      : old
+                  )
+                  .sort((a, b) => a.timestamp - b.timestamp)
+              )
+            );
+          }),
+          false
         );
-      });
+      }
     }
   }
 
+  // Replace the message by its updated version when an user updates a message.
   const handleUpdate = (change) => {
-    setMessages((prev) => {
-      const update = [...prev].map((message) => {
-        return message._id.toString() === change.document._id
-          ? change.document
-          : message;
-      });
-      return update;
-    });
+    // Page which contains the updated message
+    const pageIndex = messages.findIndex((page) =>
+      page.find((message) => message._id === change.document._id)
+    );
+
+    if (pageIndex !== -1) {
+      mutate(
+        produce((prev) => {
+          prev[pageIndex] = prev[pageIndex].map((message) => {
+            return message._id.toString() === change.document._id
+              ? change.document
+              : message;
+          });
+        }),
+        false
+      );
+    }
   };
 
+  // Remove a message when the user deletes a message.
   const handleDelete = (deleted) => {
-    if (
-      messages.findIndex((message) => message._id === deleted.document._id) !==
-      -1
-    ) {
-      setMessages((prev) =>
-        [...prev].filter((message) => message._id !== deleted.document._id)
+    // Page which contains the deleted message
+    const pageIndex = messages.findIndex((page) =>
+      page.find((message) => message._id === deleted.document._id)
+    );
+
+    if (pageIndex !== -1) {
+      mutate(
+        produce((prev) => {
+          prev[pageIndex] = prev[pageIndex].filter(
+            (message) => message._id !== deleted.document._id
+          );
+        }),
+        false
       );
     }
   };
 
   // Update messages' author username / avatar when the user changes it.
   const handleUserUpdate = (user) => {
-    const updated = [...messages].map((message) => {
-      if (message.author._id === user.document._id) {
-        return { ...message, author: user.document };
-      }
-      return message;
-    });
-    setMessages(updated);
+    const updated = [...messages].map((group) =>
+      group.map((message) => {
+        if (message.author._id === user.document._id) {
+          return { ...message, author: user.document };
+        }
+        return message;
+      })
+    );
+    mutate(updated);
   };
 
   useEffect(() => {
@@ -260,9 +292,10 @@ function useMessage(location) {
   }, [messages]);
 
   return {
-    setMessages,
+    setMessages: mutate,
     ordered,
     getPrevious,
+    isLoading: isLoadingInitial,
   };
 }
 

@@ -6,7 +6,7 @@ import Conversation from "./Conversation";
 
 function Conversations() {
   const [isOpen, setIsOpen] = useState(true);
-  const { withMessage: conversations } = useConversations();
+  const { conversations } = useConversations();
 
   return (
     <Container>
@@ -19,7 +19,7 @@ function Conversations() {
 
       {isOpen && (
         <Ul>
-          {conversations.map((conversation) => (
+          {conversations?.map((conversation) => (
             <Conversation conversation={conversation} key={conversation._id} />
           ))}
         </Ul>

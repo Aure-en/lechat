@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
  * @param {array} messages (group of messages: { author, timestamp, messages: []})
  * @param {HTMLElement} ref (messages container)
  */
-function useScroll(messages, ref) {
+function useScroll(messages, ref, callback) {
   const [isFirst, setIsFirst] = useState(true); // First loading
   const [hasScrolled, setHasScrolled] = useState(false); // If the user has scrolled, display a button to scroll back to present.
   const previous = useRef(); // Used to know if previous messages were loaded, or if a new one was added.
@@ -21,6 +21,8 @@ function useScroll(messages, ref) {
   /** Update the state after the user scrolls */
   const handleScroll = () => {
     if (!ref.current) return;
+
+    // If the user has scrolled, display a "back to bottom" button.
     if (
       ref.current.scrollHeight - ref.current.scrollTop >
       ref.current.clientHeight * 2
@@ -28,6 +30,12 @@ function useScroll(messages, ref) {
       setHasScrolled(true);
     } else {
       setHasScrolled(false);
+    }
+
+    // If the user has scrolled to the top,
+    // call the callback that loads more messages.
+    if (ref.current.scrollTop < 50) {
+      callback();
     }
   };
 
@@ -80,14 +88,13 @@ function useScroll(messages, ref) {
     if (messages.length < 1 || !previous?.current) return;
 
     // Previous messages were loaded
-    if (messages[0]._id !== previous.current.first) {
+    if (messages[0]._id < previous.current.first) {
       ref.current.scrollTop = ref.current.scrollHeight - currentHeight.current;
       currentHeight.current = ref.current.scrollHeight;
     }
 
     // A new message was written and the user was near the bottom
     // Scroll them to the bottom.
-
     const latestMessage =
       messages[messages.length - 1].messages[
         messages[messages.length - 1].messages.length - 1
@@ -101,7 +108,7 @@ function useScroll(messages, ref) {
      */
 
     if (
-      (latestMessage._id !== previous.current.last || !latestMessage._id) &&
+      (latestMessage._id > previous.current.last || !latestMessage._id) &&
       ref.current.scrollHeight - ref.current.clientHeight <
         ref.current.scrollTop + 500
     ) {

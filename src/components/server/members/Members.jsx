@@ -10,10 +10,9 @@ function Members({ serverId }) {
   return (
     <Container>
       <Heading>Members</Heading>
-
       <ul>
         {/* Display user's avatar, name, and indicator if the user is the admin. */}
-        {members.map((member) => (
+        {members?.map((member) => (
           <Member key={member._id} member={member} />
         ))}
       </ul>

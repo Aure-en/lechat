@@ -2,25 +2,22 @@ import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Group from "./Group";
-import useIntersection from "../../hooks/shared/useIntersection";
 import useScroll from "../../hooks/chat/useScroll";
 import ScrollToPresent from "./ScrollToPresent";
 
 function Messages({ ordered, getPrevious, setEditing }) {
-  // Used to load more messages when scrolling to the top (=towards triggerRef)
+  // Used to load more messages when scrolling to the top
   const containerRef = useRef();
-  const triggerRef = useRef();
-  useIntersection(containerRef, triggerRef, getPrevious);
   const { scrollToBottom, hasScrolled, handleScroll } = useScroll(
     ordered,
-    containerRef
+    containerRef,
+    getPrevious
   );
 
   return (
     <Wrapper>
       <Ul ref={containerRef} onScroll={handleScroll}>
-        <div ref={triggerRef} />
-        {ordered.map((messages) => (
+        {ordered?.map((messages) => (
           <Group
             key={messages._id}
             messages={messages}

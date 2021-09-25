@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
-import socket from "../../socket/socket";
 
 /**
  * Activity saves the timestamp at which the user last visited a room.
@@ -39,7 +38,7 @@ function useActivity() {
 
   // Update the activity document when the user leaves a channel
   const updateChannelActivity = (user, serverId, channelId) => {
-    fetch(`${process.env.REACT_APP_SERVER}/activity/${user._id}/servers`, {
+    fetch(`${process.env.REACT_APP_SERVER}/activity/${user?._id}/servers`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
@@ -55,7 +54,7 @@ function useActivity() {
   // Update the activity document when the user leaves a conversation
   const updateConversationActivity = (user, conversationId) => {
     fetch(
-      `${process.env.REACT_APP_SERVER}/activity/${user._id}/conversations`,
+      `${process.env.REACT_APP_SERVER}/activity/${user?._id}/conversations`,
       {
         method: "PUT",
         headers: {

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import useFetch from "../../../hooks/shared/useFetch";
+import useSWR from "swr";
 import IconLoad from "../../../assets/icons/general/IconLoad";
 
 /**
@@ -10,7 +10,7 @@ import IconLoad from "../../../assets/icons/general/IconLoad";
  * ImageLarge fetches the fullsize picture on the DB and displays it.
  */
 function ImageLarge({ imageId }) {
-  const { data: image, loading } = useFetch(
+  const { data: image, loading } = useSWR(
     `${process.env.REACT_APP_SERVER}/files/${imageId}`
   );
 

@@ -18,19 +18,28 @@ function useIntersection(containerRef, triggerRef, callback) {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         // If the entry is visible
-        if (entry.intersectionRatio > 0) {
+        if (
+          entry.intersectionRatio > 0 &&
+          entry.target.dataset.loading !== true
+        ) {
+          entry.target.dataset.loading = true;
           callback();
+          setTimeout(() => {
+            entry.target.dataset.loading = false;
+          }, 2000);
         }
       });
     }, options);
 
-    observer.observe(triggerRef.current);
+    setTimeout(() => {
+      observer.observe(triggerRef.current);
+    }, 1000);
 
     return () => {
       if (triggerRef?.current) {
         observer.unobserve(triggerRef.current);
       }
-    }
+    };
   }, [containerRef, triggerRef, callback]);
 }
 

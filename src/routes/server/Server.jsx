@@ -16,7 +16,7 @@ const Channel = lazy(() => import("./Channel"));
 
 function Server({ match }) {
   const { isOpen, setIsOpen } = useSidebar();
-  const { server, loading } = useServer(match.params.serverId);
+  const { server, error } = useServer(match.params.serverId);
   const { windowSize } = useWindowSize();
 
   // Save latest visited server
@@ -63,7 +63,7 @@ function Server({ match }) {
     );
   }
 
-  if (!server && !loading) {
+  if (!server && error) {
     return (
       <Empty>
         <NotFound />
@@ -71,7 +71,7 @@ function Server({ match }) {
     );
   }
 
-  return <></>;
+  return <Container />;
 }
 
 export default Server;

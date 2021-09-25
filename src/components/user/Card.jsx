@@ -51,12 +51,12 @@ function Card({ user, position, parentPosition, $state }) {
               <Link to="/settings">Update your profile</Link>
             ) : (
               <>
-                <Link to={`/conversations/${user._id}`}>Send a message</Link>
+                <Link to={`/conversations/${user?._id}`}>Send a message</Link>
 
                 {/* If the current user is already friend or has already sent a friend request to
                     this user, do not display the "Send a friend request" button. */}
                 {!loading &&
-                  !friendships.find(
+                  !friendships?.find(
                     (friendship) =>
                       friendship.recipient._id === user._id ||
                       friendship.sender._id === user._id
