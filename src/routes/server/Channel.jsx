@@ -47,6 +47,7 @@ function Channel() {
               message={editing}
               setEditing={setEditing}
               setMessages={setMessages}
+              isLoading={isLoading}
             />
             <Typing location={channelId} />
           </>
