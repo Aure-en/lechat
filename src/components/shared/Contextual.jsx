@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { createPortal } from "react-dom";
 
+// Contextual menu.
 function Contextual({ outerRef, ignoreRef, children }) {
   const [isOpen, setIsOpen] = useState(false);
 

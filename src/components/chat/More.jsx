@@ -14,10 +14,11 @@ function More({ message, setEditing, setIsActive }) {
   const ref = useRef();
   const { isDropdownOpen, setIsDropdownOpen } = useDropdown(ref);
 
-  // Used to check if the user has the permission
-  // to:
-  //   - Delete the message (=user is either the author or has server permissions)
-  //   - Edit the message (=user is the author)
+  /* Used to check if the user has the permission
+   * to:
+   *   - Delete the message (=user is either the author or has server permissions)
+   *   - Edit the message (=user is the author)
+   */
   const { messages, pins } = usePermission();
   const { user } = useAuth();
 

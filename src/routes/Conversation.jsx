@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Header from "../components/chat/Header";
 import Form from "../components/chat/form/Form";
+import Loading from "../components/chat/Loading";
 import Messages from "../components/chat/Messages";
 import Profile from "../components/user/Profile";
 import Typing from "../components/chat/Typing";
@@ -18,7 +19,7 @@ function Conversation({ match }) {
   const { editing, setEditing, conversation, loading } = useConversation(
     match.params.userId
   );
-  const { ordered, getPrevious, setMessages } = useMessage({
+  const { ordered, getPrevious, setMessages, isLoading } = useMessage({
     conversation: conversation?._id,
   });
   const { windowSize } = useWindowSize();
@@ -27,6 +28,7 @@ function Conversation({ match }) {
     return (
       <PermissionProvider location={{ conversation: conversation._id }}>
         <Container>
+          {isLoading && <Loading />}
           <Header
             /* Display username of the conversation member who isn't the current one */
             name={
@@ -48,6 +50,7 @@ function Conversation({ match }) {
             message={editing}
             setEditing={setEditing}
             setMessages={setMessages}
+            isLoading={isLoading}
           />
 
           <Typing location={conversation._id} />
@@ -82,6 +85,7 @@ Conversation.propTypes = {
 };
 
 const Container = styled.main`
+  position: relative;
   display: grid;
   grid-template-rows: auto 1fr auto 1.25rem;
   background: ${(props) => props.theme.bg_secondary};

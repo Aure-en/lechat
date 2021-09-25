@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
+import produce from "immer";
 import { useAuth } from "../../context/AuthContext";
 import decorator from "../../components/chat/form/editor/entities/decorator";
 import socket from "../../socket/socket";
-import produce from 'immer';
 import { toastify } from "../../components/shared/Toast";
 
 /**
@@ -13,7 +13,7 @@ import { toastify } from "../../components/shared/Toast";
  * @param {function} setEditing - after the user updated a message, set the editing status to false.
  * @param {function} setMessages - adds / updates existing messages before getting the answer from the DB.
  */
-function useForm(location, message, setEditing, setMessages) {
+function useForm(location, message, setEditing, setMessages, isLoading) {
   // editorState contains the typed text with rich edition.
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(decorator)
@@ -179,6 +179,7 @@ function useForm(location, message, setEditing, setMessages) {
 
   const handleSubmit = async (e) => {
     e?.preventDefault();
+    if (isLoading) return;
 
     // Validation
     // If nothing is written in the text editor, doesn't submit the form.

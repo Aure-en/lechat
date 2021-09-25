@@ -10,7 +10,7 @@ import Send from "./buttons/Send";
 import Files from "./files/Files";
 import Drag from "./Drag";
 
-function Form({ location, message, setEditing, setMessages }) {
+function Form({ location, message, setEditing, setMessages, isLoading }) {
   const {
     editorState: text,
     setEditorState: setText,
@@ -18,7 +18,7 @@ function Form({ location, message, setEditing, setMessages }) {
     files,
     setFiles,
     addFiles,
-  } = useForm(location, message, setEditing, setMessages);
+  } = useForm(location, message, setEditing, setMessages, isLoading);
   const {
     dragging,
     handleDragOver,
@@ -56,9 +56,10 @@ function Form({ location, message, setEditing, setMessages }) {
         <Send
           onEnter={handleSubmit}
           disabled={
-            convertToRaw(text.getCurrentContent()).blocks.length === 1 &&
-            !convertToRaw(text.getCurrentContent()).blocks[0].text &&
-            files.length === 0
+            (convertToRaw(text.getCurrentContent()).blocks.length === 1 &&
+              !convertToRaw(text.getCurrentContent()).blocks[0].text &&
+              files.length === 0) ||
+            isLoading
           }
         />
       </Row>
@@ -83,12 +84,14 @@ Form.propTypes = {
     channel: PropTypes.string,
     conversation: PropTypes.string,
   }).isRequired,
+  isLoading: PropTypes.bool,
 };
 
 Form.defaultProps = {
   message: undefined,
   setEditing: () => {},
   setMessages: () => {},
+  isLoading: false,
 };
 
 const FormContainer = styled.form`

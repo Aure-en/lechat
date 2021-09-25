@@ -22,6 +22,7 @@ function FirstMessage({ message, setEditing }) {
       onMouseLeave={() => setHovered(false)}
       $hovered={hovered}
     >
+      {/* Timestamp */}
       {hovered && (
         <Time>
           <Timestamp timestamp={message.timestamp} />
@@ -29,7 +30,7 @@ function FirstMessage({ message, setEditing }) {
       )}
 
       {/* Text */}
-      <Text text={message.text} editer={message.edited} />
+      <Text text={message.text} edited={message.edited} />
 
       {/* If the message contains files that are currently being uploaded to
           the BDD, display a loader */}
