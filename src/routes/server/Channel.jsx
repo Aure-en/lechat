@@ -5,6 +5,7 @@ import Header from "../../components/chat/Header";
 import Messages from "../../components/chat/Messages";
 import Form from "../../components/chat/form/Form";
 import Typing from "../../components/chat/Typing";
+import Loading from "../../components/chat/Loading";
 import NotFound from "../../components/error/NotFound";
 import useChannel from "../../hooks/server/channel/useChannel";
 import useMessage from "../../hooks/chat/useMessage";
@@ -13,7 +14,7 @@ function Channel() {
   const { serverId, channelId } = useRouteMatch(
     "/servers/:serverId/channels/:channelId"
   ).params;
-  const { ordered, getPrevious, setMessages } = useMessage({
+  const { ordered, getPrevious, setMessages, isLoading } = useMessage({
     server: serverId,
     channel: channelId,
   });
@@ -25,6 +26,7 @@ function Channel() {
   if (channel) {
     return (
       <Container>
+        {isLoading && <Loading />}
         {channel && (
           <Header
             name={channel.name}
@@ -63,6 +65,7 @@ function Channel() {
 export default Channel;
 
 const Container = styled.main`
+  position: relative;
   display: grid;
   grid-template-rows: auto 1fr auto 1.25rem;
   background: ${(props) => props.theme.bg_secondary};

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import useSWRInfinite from "swr/infinite";
+import produce from "immer";
 import socket from "../../socket/socket";
 import { useUnread } from "../../context/UnreadContext";
 import { useAuth } from "../../context/AuthContext";
@@ -123,6 +124,7 @@ function useMessage(location) {
         });
       }
     });
+
     setOrdered(ordered);
   }, [messages]);
 
@@ -153,68 +155,73 @@ function useMessage(location) {
         message.conversation === location.conversation) ||
       (location.channel && message.channel === location.channel)
     ) {
-      mutate(async (prev) => {
-        if (
-          /* If the message is not displayed yet, adds it.
-           * It is the case if:
-           * - The current user is not the author or
-           * - The current user is the author, but they wrote the message
-           *   on another tab. Thus, it was not displayed instantly by
-           *   useForm (l.158).
-           */
-          message.author._id !== user._id ||
-          !prev.some((group) =>
-            group.some(
-              (old) =>
-                old.tempId === message.timestamp &&
-                old.author._id === message.author._id
-            )
-          )
-        ) {
-          /* If the message author is not the current user,
-           * the message has no placeholder, so it is added to the list.
-           */
-
-          const updated = [...prev];
-          updated[updated.length - 1].push(message);
-          updated[updated.length - 1] = Array.from(
-            new Set(
-              [...updated[updated.length - 1]].sort(
-                (a, b) => a.timestamp - b.timestamp
-              )
-            )
-          );
-          return updated;
-        }
-        /* If the message author is the current user and
-         * the message has a placeholder, replace the placeholder.
+      if (
+        /* If the message is not displayed yet, adds it.
+         * It is the case if:
+         * - The current user is not the author or
+         * - The current user is the author, but they wrote the message
+         *   on another tab. Thus, it was not displayed instantly by
+         *   useForm (l.158).
          */
-
-        const updated = [...prev];
-
-        // Look for the page that contains the placeholder
-        const pageIndex = updated.findIndex((page) =>
-          page.some(
+        message.author._id !== user._id ||
+        !messages.some((group) =>
+          group.some(
             (old) =>
               old.tempId === message.timestamp &&
               old.author._id === message.author._id
           )
-        );
+        )
+      ) {
+        /* If the message author is not the current user,
+         * the message has no placeholder, so it is added to the list.
+         */
 
-        updated[pageIndex] = Array.from(
-          new Set(
-            [...updated[pageIndex]]
-              .map((old) =>
-                old.tempId === old.timestamp &&
-                old.author._id === message.author._id
-                  ? message
-                  : old
+        mutate(
+          produce((prev) => {
+            prev[prev.length - 1].push(message);
+            prev[prev.length - 1] = Array.from(
+              new Set(
+                [...prev[prev.length - 1]].sort(
+                  (a, b) => a.timestamp - b.timestamp
+                )
               )
-              .sort((a, b) => a.timestamp - b.timestamp)
-          )
+            );
+          }),
+          false
         );
-        return updated;
-      });
+      } else {
+        /* If the message author is the current user and
+         * the message has a placeholder, replace the placeholder.
+         */
+
+        // Look for the page that contains the placeholder
+
+        mutate(
+          produce((prev) => {
+            const pageIndex = prev.findIndex((page) =>
+              page.some(
+                (old) =>
+                  old.tempId === message.timestamp &&
+                  old.author._id === message.author._id
+              )
+            );
+
+            prev[pageIndex] = Array.from(
+              new Set(
+                [...prev[pageIndex]]
+                  .map((old) =>
+                    old.tempId === old.timestamp &&
+                    old.author._id === message.author._id
+                      ? message
+                      : old
+                  )
+                  .sort((a, b) => a.timestamp - b.timestamp)
+              )
+            );
+          }),
+          false
+        );
+      }
     }
   }
 
@@ -226,15 +233,16 @@ function useMessage(location) {
     );
 
     if (pageIndex !== -1) {
-      mutate(async (prev) => {
-        const updated = [...prev];
-        updated[pageIndex] = updated[pageIndex].map((message) => {
-          return message._id.toString() === change.document._id
-            ? change.document
-            : message;
-        });
-        return updated;
-      }, false);
+      mutate(
+        produce((prev) => {
+          prev[pageIndex] = prev[pageIndex].map((message) => {
+            return message._id.toString() === change.document._id
+              ? change.document
+              : message;
+          });
+        }),
+        false
+      );
     }
   };
 
@@ -246,13 +254,14 @@ function useMessage(location) {
     );
 
     if (pageIndex !== -1) {
-      mutate(async (prev) => {
-        const updated = [...prev];
-        updated[pageIndex] = updated[pageIndex].filter(
-          (message) => message._id !== deleted.document._id
-        );
-        return updated;
-      }, false);
+      mutate(
+        produce((prev) => {
+          prev[pageIndex] = prev[pageIndex].filter(
+            (message) => message._id !== deleted.document._id
+          );
+        }),
+        false
+      );
     }
   };
 
@@ -266,7 +275,7 @@ function useMessage(location) {
         return message;
       })
     );
-    mutate(updated, false);
+    mutate(updated);
   };
 
   useEffect(() => {
@@ -286,7 +295,7 @@ function useMessage(location) {
     setMessages: mutate,
     ordered,
     getPrevious,
-    isLoading: isLoadingMore,
+    isLoading: isLoadingInitial,
   };
 }
 
