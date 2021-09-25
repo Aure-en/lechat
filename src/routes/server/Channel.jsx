@@ -5,7 +5,7 @@ import Header from "../../components/chat/Header";
 import Messages from "../../components/chat/Messages";
 import Form from "../../components/chat/form/Form";
 import Typing from "../../components/chat/Typing";
-import Loading from '../../components/chat/Loading';
+import Loading from "../../components/chat/Loading";
 import NotFound from "../../components/error/NotFound";
 import useChannel from "../../hooks/server/channel/useChannel";
 import useMessage from "../../hooks/chat/useMessage";

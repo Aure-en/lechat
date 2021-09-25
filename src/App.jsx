@@ -9,7 +9,6 @@ import { UnreadProvider } from "./context/UnreadContext";
 import PrivateRoute from "./routes/types/PrivateRoute";
 import EntryRoute from "./routes/types/EntryRoute";
 import Toast from "./components/shared/Toast";
-import Generate from "./temp/Generate";
 
 const Entry = lazy(() => import("./routes/entry/Entry"));
 const Dashboard = lazy(() => import("./routes/dashboard/Dashboard"));

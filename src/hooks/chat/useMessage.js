@@ -275,7 +275,7 @@ function useMessage(location) {
         return message;
       })
     );
-    mutate(updated, false);
+    mutate(updated);
   };
 
   useEffect(() => {
