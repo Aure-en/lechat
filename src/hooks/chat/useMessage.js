@@ -123,6 +123,7 @@ function useMessage(location) {
         });
       }
     });
+
     setOrdered(ordered);
   }, [messages]);
 
@@ -184,7 +185,16 @@ function useMessage(location) {
               )
             )
           );
-          return updated;
+
+          return [...prev].map((page, index) =>
+            index === prev.length - 1
+              ? Array.from(
+                  new Set(
+                    [...page, message].sort((a, b) => a.timestamp - b.timestamp)
+                  )
+                )
+              : page
+          );
         }
         /* If the message author is the current user and
          * the message has a placeholder, replace the placeholder.
@@ -213,6 +223,7 @@ function useMessage(location) {
               .sort((a, b) => a.timestamp - b.timestamp)
           )
         );
+
         return updated;
       });
     }
@@ -251,7 +262,6 @@ function useMessage(location) {
         updated[pageIndex] = updated[pageIndex].filter(
           (message) => message._id !== deleted.document._id
         );
-        return updated;
       }, false);
     }
   };
@@ -286,7 +296,7 @@ function useMessage(location) {
     setMessages: mutate,
     ordered,
     getPrevious,
-    isLoading: isLoadingMore,
+    isLoading: isLoadingInitial,
   };
 }
 

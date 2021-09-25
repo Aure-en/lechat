@@ -171,7 +171,7 @@ function useForm(location, message, setEditing, setMessages) {
         loading: files.length > 0, // If there are files, put a placeholder "loading" property instead of displaying the files.
       });
       return updated;
-    }, false);
+    });
 
     await saveMessage("POST", text, timestamp);
   };
