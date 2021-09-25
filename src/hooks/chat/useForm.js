@@ -3,6 +3,7 @@ import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import { useAuth } from "../../context/AuthContext";
 import decorator from "../../components/chat/form/editor/entities/decorator";
 import socket from "../../socket/socket";
+import produce from 'immer';
 import { toastify } from "../../components/shared/Toast";
 
 /**
@@ -158,20 +159,20 @@ function useForm(location, message, setEditing, setMessages) {
      * with the one from the DB, containing an _id and files.
      */
 
-    setMessages((prev) => {
-      const updated = [...prev];
-      updated[updated.length - 1].push({
-        author: user,
-        channel: location.channel,
-        server: location.server,
-        conversation: location.conversation,
-        text,
-        timestamp,
-        tempId: timestamp,
-        loading: files.length > 0, // If there are files, put a placeholder "loading" property instead of displaying the files.
-      });
-      return updated;
-    });
+    setMessages(
+      produce((prev) => {
+        prev[prev.length - 1].push({
+          author: user,
+          channel: location.channel,
+          server: location.server,
+          conversation: location.conversation,
+          text,
+          timestamp,
+          tempId: timestamp,
+          loading: files.length > 0, // If there are files, put a placeholder "loading" property instead of displaying the files.
+        });
+      })
+    );
 
     await saveMessage("POST", text, timestamp);
   };
