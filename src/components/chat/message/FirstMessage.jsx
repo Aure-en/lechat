@@ -32,7 +32,7 @@ function FirstMessage({ message, setEditing }) {
       </Information>
 
       {/* Text */}
-      <Text text={message.text} editer={message.edited} />
+      <Text text={message.text} edited={message.edited} />
 
       {/* Files */}
       {message.files?.length > 0 && (

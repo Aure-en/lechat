@@ -1,18 +1,18 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-function Empty({ close }) {
+const Empty = forwardRef(({ close }, ref) => {
   return (
-    <Bubble>
+    <Bubble ref={ref}>
       You have no new messages. <br />
       <Link to="/" onClick={() => close(false)}>
         How about talking to a friend ?
       </Link>
     </Bubble>
   );
-}
+});
 
 export default Empty;
 
@@ -28,8 +28,8 @@ const Bubble = styled.div`
   position: absolute;
   border: 1px solid ${(props) => props.theme.bg_sidebar};
   border-radius: 1rem;
-  top: -50%;
-  left: calc(100% + 2rem);
+  top: 7.5rem;
+  left: 7rem;
   background: ${(props) => props.theme.bg_secondary};
   color: ${(props) => props.theme.text_primary};
   padding: 1rem;

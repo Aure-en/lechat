@@ -31,7 +31,6 @@ function useServers() {
 
   // Set up socket listener
   const handleUpdate = (update) => {
-    console.log(update);
     if (!Object.keys(update.fields).find((key) => /server/.test(key))) return;
     // Fetch servers and set the new ones
     /* We could look at whether a server was added or removed in update.document

@@ -1,51 +1,33 @@
-import React, { useRef } from "react";
+import React, { forwardRef } from "react";
 import styled from "styled-components";
 import ReactTooltip from "react-tooltip";
-import useDropdown from "../../../hooks/shared/useDropdown";
 import useServers from "../../../hooks/server/server/useServers";
 import Create from "../../server/Modal";
 import Explore from "./Explore";
 import List from "./List";
-import { ReactComponent as IconServers } from "../../../assets/icons/nav/grid.svg";
 import IconLoad from "../../../assets/icons/general/IconLoad";
 
-function Servers() {
-  const ref = useRef(); // For dropdown
-  const { isDropdownOpen, setIsDropdownOpen } = useDropdown(ref);
+const Servers = forwardRef(({}, ref) => {
   const { loading, servers } = useServers();
 
   return (
-    <div ref={ref}>
-      <Button
-        type="button"
-        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        data-tip="Servers"
-        data-for="nav"
-        data-offset={"{'top': 16, 'right': -15}"}
-      >
-        <IconServers />
-      </Button>
-
-      {isDropdownOpen && (
-        <Container>
-          {loading ? (
-            <IconLoad />
-          ) : (
-            <Ul>
-              <List servers={servers} />
-            </Ul>
-          )}
-
-          <ReactTooltip id="nav-servers" effect="solid" place="right" />
-          <Bottom>
-            <Create />
-            <Explore />
-          </Bottom>
-        </Container>
+    <Container ref={ref}>
+      {loading ? (
+        <IconLoad />
+      ) : (
+        <Ul>
+          <List servers={servers} />
+        </Ul>
       )}
-    </div>
+
+      <ReactTooltip id="nav-servers" effect="solid" place="right" />
+      <Bottom>
+        <Create />
+        <Explore />
+      </Bottom>
+    </Container>
   );
-}
+});
 
 export default Servers;
 
@@ -55,7 +37,7 @@ const Container = styled.div`
   position: absolute;
   border: 1px solid ${(props) => props.theme.bg_sidebar};
   border-left: none;
-  top: 0;
+  top: 1rem;
   bottom: 0;
   left: calc(100% - 1rem);
   background: ${(props) => props.theme.bg_secondary};
@@ -64,9 +46,7 @@ const Container = styled.div`
   color: ${(props) => props.theme.text_tertiary};
   min-width: 5rem;
   padding: 0.75rem 0;
-
-  // Put the panel under the sidebar
-  transform: translateZ(-10px);
+  height: calc(100% - 2rem);
 `;
 
 const Ul = styled.ul`
@@ -113,19 +93,4 @@ const Bottom = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const Button = styled.button`
-  position: relative;
-
-  &:hover:before {
-    content: "";
-    display: inline-block;
-    position: absolute;
-    top: 50%;
-    left: calc(-1rem - 1px);
-    border: 8px solid transparent;
-    border-left: 8px solid ${(props) => props.theme.sidebar_button};
-    transform: translateY(-50%);
-  }
 `;

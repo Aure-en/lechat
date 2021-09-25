@@ -1,34 +1,86 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import ReactTooltip from "react-tooltip";
-import Conversations from "./conversations/Conversations";
+import usePanel from "../../hooks/sidebar/usePanel";
+import useConversations from "../../hooks/sidebar/useConversations";
 import Home from "./links/Home";
 import Friends from "./links/Friends";
-import Servers from "./servers/Servers";
 import Settings from "./links/Settings";
 import LogOut from "./links/LogOut";
+import ConversationButton from "./conversations/Button";
+import ConversationPanel from "./conversations/Panel";
+import ServerButton from "./servers/Button";
+import ServerPanel from "./servers/Panel";
 
 function Sidebar() {
+  // Setup conversation panel
+  const conversationsButtonRef = useRef();
+  const conversationsPanelRef = useRef();
+  const {
+    isPanelOpen: isConversationPanelOpen,
+    setIsPanelOpen: setIsConversationPanelOpen,
+  } = usePanel(conversationsButtonRef, conversationsPanelRef);
+  const { number, conversations } = useConversations();
+
+  const toggleConversationPanel = () => {
+    setIsConversationPanelOpen(!isConversationPanelOpen);
+  };
+
+  // Setup server panel
+  const serversButtonRef = useRef();
+  const serversPanelRef = useRef();
+  const {
+    isPanelOpen: isServerPanelOpen,
+    setIsPanelOpen: setIsServerPanelOpen,
+  } = usePanel(serversButtonRef, serversPanelRef);
+
+  const toggleServerPanel = () => {
+    setIsServerPanelOpen(!isServerPanelOpen);
+  };
+
   return (
-    <Nav>
-      <Content>
-        <Home />
-        <Servers />
-        <Conversations />
-        <Friends />
-        <Settings />
-      </Content>
-      <Content>
-        <LogOut />
-      </Content>
-      <ReactTooltip id="nav" effect="solid" place="right" />
-    </Nav>
+    <Container>
+      <Left>
+        <Content>
+          <Home />
+          <ServerButton
+            togglePanel={toggleServerPanel}
+            ref={serversButtonRef}
+          />
+          <ConversationButton
+            number={number}
+            togglePanel={toggleConversationPanel}
+            ref={conversationsButtonRef}
+          />
+          <Friends />
+          <Settings />
+        </Content>
+        <Content>
+          <LogOut />
+        </Content>
+        <ReactTooltip id="nav" effect="solid" place="right" />
+      </Left>
+
+      {isConversationPanelOpen && (
+        <ConversationPanel
+          ref={conversationsPanelRef}
+          toggleDropdown={setIsConversationPanelOpen}
+          conversations={conversations}
+        />
+      )}
+      {isServerPanelOpen && <ServerPanel ref={serversPanelRef} />}
+    </Container>
   );
 }
 
 export default Sidebar;
 
-const Nav = styled.nav`
+const Container = styled.nav`
+  position: relative;
+  z-index: 5;
+`;
+
+const Left = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -41,8 +93,8 @@ const Nav = styled.nav`
   margin-right: 0;
   border-radius: 1rem;
   color: ${(props) => props.theme.sidebar_button};
-  transform-style: preserve-3d; // For transform: translateZ on side-panel.
   z-index: 5;
+  height: calc(100% - 2rem); // 100% - padding
 `;
 
 const Content = styled.div`
