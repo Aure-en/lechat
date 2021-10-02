@@ -29,12 +29,13 @@ const Button = styled.button`
   min-height: 2.2rem;
 
   & > span {
-    display: flex;
+    display: inline;
     align-items: center;
     align-self: flex-end;
     background: ${(props) => props.theme.text_quaternary};
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
     transition: background 0.3s linear;
   }
 
@@ -42,6 +43,7 @@ const Button = styled.button`
     background: ${(props) => props.theme.text_tertiary};
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
   }
 
   & * {
