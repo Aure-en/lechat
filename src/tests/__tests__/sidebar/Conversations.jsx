@@ -1,42 +1,34 @@
-import React from "react";
+import React, { createRef } from "react";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
-import userEvent from "@testing-library/user-event";
 import { useAuth } from "../../../context/AuthContext";
-import { useUnread } from "../../../context/UnreadContext";
 import Conversations from "../../../components/sidebar/conversations/Panel";
 
-jest.mock("../../../hooks/server/server/useServers");
+jest.mock("../../../hooks/sidebar/useConversations");
 jest.mock("../../../context/AuthContext");
-jest.mock("../../../context/UnreadContext");
 
-const init = () => {
-  // Renders
-  render(
-    <Router>
-      <Conversations />
-    </Router>
-  );
-
-  // Open the conversations dropdown
-  const button = screen.getByRole("button", { name: /chat.svg/ });
-  userEvent.click(button);
-};
-
-test("A special message is displayed when the user has no new messages", () => {
+const init = (conversations = []) => {
   useAuth.mockReturnValue({
     user: {
       _id: "0",
-      username: "User",
-      email: "user@email.com",
-    },
-  });
-  useUnread.mockReturnValue({
-    unread: {
-      conversations: [],
+      username: "Recipient",
+      email: "recipient@email.com",
     },
   });
 
+  const mockRef = createRef();
+  render(
+    <Router>
+      <Conversations
+        ref={mockRef}
+        toggleDropdown={() => {}}
+        conversations={conversations}
+      />
+    </Router>
+  );
+};
+
+test("A special message is displayed when the user has no new messages", () => {
   init();
   const message = screen.getByText(/you have no new messages/i);
   expect(message).toBeInTheDocument();
@@ -56,24 +48,8 @@ describe("Renders new messages list", () => {
     ],
   };
 
-  beforeEach(() => {
-    useAuth.mockReturnValue({
-      user: {
-        _id: "0",
-        username: "User",
-        email: "user@email.com",
-      },
-    });
-
-    useUnread.mockReturnValue({
-      unread: {
-        conversations: [conversation],
-      },
-    });
-  });
-
   test("New conversations are rendered", () => {
-    init();
+    init([conversation]);
     const link = document.querySelector(
       `[href='/conversations/${conversation.members[1]._id}]`
     );
@@ -81,7 +57,7 @@ describe("Renders new messages list", () => {
   });
 
   test("An indicator displays the number of unread messages per conversation", () => {
-    init();
+    init([conversation]);
     const unread = document.querySelector("[aria-label='unread']");
     expect(unread.textContent).toBe(`${conversation.unread}`);
   });

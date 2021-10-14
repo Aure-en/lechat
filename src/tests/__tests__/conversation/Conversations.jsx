@@ -1,16 +1,17 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
 import { BrowserRouter as Router } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import { useAuth } from "../../../context/AuthContext";
 import { useUnread } from "../../../context/UnreadContext";
+import useConversations from "../../../hooks/conversations/useConversations";
 import { conversations, messages } from "../../utils/conversations";
 import Conversations from "../../../components/conversations/Conversations";
 
 global.fetch = jest.fn(() => {});
 jest.mock("../../../context/AuthContext");
 jest.mock("../../../context/UnreadContext");
+jest.mock("../../../hooks/conversations/useConversations");
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"), // use actual for all non-hook parts
   useRouteMatch: () => ({ params: { id: "1" } }),
@@ -24,18 +25,9 @@ const init = () => {
       conversations: [{ _id: conversations[0]._id, unread: 1 }],
     },
   });
-
-  fetch.mockImplementationOnce(() =>
-    Promise.resolve({
-      json: () => Promise.resolve(conversations),
-    })
-  );
-
-  fetch.mockImplementationOnce(() =>
-    Promise.resolve({
-      json: () => Promise.resolve(messages),
-    })
-  );
+  useConversations.mockReturnValue({
+    conversations,
+  });
 
   // Render
   render(
@@ -47,7 +39,7 @@ const init = () => {
 
 describe("Display latest conversations in a dropdown", () => {
   beforeEach(async () => {
-    await act(async () => init());
+    init();
   });
 
   test("Dropdown is open by default", () => {

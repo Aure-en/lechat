@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event";
 import { useAuth } from "../../../context/AuthContext";
 import { useUnread } from "../../../context/UnreadContext";
 import useServers from "../../../hooks/server/server/useServers";
-import Servers from "../../../components/sidebar/servers/Servers";
+import Servers from "../../../components/sidebar/servers/Panel";
 
 jest.mock("../../../hooks/server/server/useServers");
 jest.mock("../../../context/AuthContext");
@@ -18,10 +18,6 @@ const init = () => {
       <Servers />
     </Router>
   );
-
-  // Open the servers dropdown
-  const button = screen.getByRole("button", { name: "grid.svg" });
-  userEvent.click(button);
 };
 
 describe("Renders servers list", () => {
