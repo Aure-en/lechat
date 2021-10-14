@@ -10,13 +10,6 @@ for (let i = 1; i < 3; i += 1) {
   members.push(user);
 }
 
-export const conversations = [
-  {
-    members,
-    _id: "1",
-  },
-];
-
 export const messages = [
   {
     author: members[0],
@@ -54,3 +47,5 @@ export const conversation = {
   },
   _id: "1",
 };
+
+export const conversations = [conversation];

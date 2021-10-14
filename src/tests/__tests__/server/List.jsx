@@ -1,11 +1,11 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
-import useFetch from "../../../hooks/shared/useFetch";
 import { useAuth } from "../../../context/AuthContext";
+import useServers from "../../../hooks/server/server/useServers";
 import List from "../../../components/server/List";
 
-jest.mock("../../../hooks/shared/useFetch");
+jest.mock("../../../hooks/server/server/useServers");
 jest.mock("../../../context/AuthContext");
 
 const init = () => {
@@ -28,11 +28,8 @@ const init = () => {
     },
   });
 
-  useFetch.mockReturnValue({
-    data: {
-      _id: "1",
-      server: servers,
-    },
+  useServers.mockReturnValue({
+    servers,
   });
 
   // Render

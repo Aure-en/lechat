@@ -1,11 +1,10 @@
 import React from "react";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
-import userEvent from "@testing-library/user-event";
 import { useAuth } from "../../../context/AuthContext";
 import { usePermission } from "../../../context/PermissionContext";
 import useMembers from "../../../hooks/server/server/useMembers";
-import Members from "../../../components/server/Members";
+import Members from "../../../components/server/members/Members";
 
 jest.mock("../../../context/AuthContext");
 jest.mock("../../../context/PermissionContext");
@@ -42,8 +41,8 @@ const init = () => {
   return members;
 };
 
-describe("Dropdown renders members properly", () => {
-  test("Members are displayed by default", () => {
+describe("It renders members properly", () => {
+  test("Members are displayed", () => {
     const members = init();
 
     members.forEach((member) => {
@@ -52,30 +51,9 @@ describe("Dropdown renders members properly", () => {
     });
   });
 
-  test("Dropdown can be closed and opened", () => {
-    const members = init();
-
-    // Dropdown can be closed
-    const button = screen.getByRole("button", { name: /members/i });
-    userEvent.click(button);
-
-    members.forEach((member) => {
-      const li = screen.queryByText(member.username);
-      expect(li).not.toBeInTheDocument();
-    });
-
-    // Dropdown can be opened again
-    userEvent.click(button);
-    members.forEach((member) => {
-      const li = screen.getByText(member.username);
-      expect(li).toBeInTheDocument();
-    });
+  test("There is a special indicator next to the server admin's name", () => {
+    init();
+    const indicator = screen.getByLabelText("Server Owner");
+    expect(indicator).toBeInTheDocument();
   });
-});
-
-test("There is a special indicator next to the server admin's name", () => {
-  const members = init();
-  const admin = screen.getByText(members[0].username);
-  const svg = within(admin).getByText("crown.svg");
-  expect(svg).toBeInTheDocument();
 });

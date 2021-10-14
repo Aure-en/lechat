@@ -19,7 +19,7 @@ const init = () => {
 describe("Renders properly", () => {
   test("Renders a special message when the user has no friends", () => {
     useFriend.mockReturnValue({
-      friendships: [],
+      friends: [],
     });
     useAuth.mockReturnValue({});
     init();
@@ -29,16 +29,10 @@ describe("Renders properly", () => {
 
 test("Renders an user's friends when he has any", () => {
   useFriend.mockReturnValue({
-    friendships: [
+    friends: [
       {
-        status: true,
         _id: "1",
-        sender: {
-          _id: "1",
-          username: "Sender",
-          email: "sender@email.com",
-        },
-        recipient: {
+        friend: {
           _id: "2",
           username: "Recipient",
           email: "recipient@email.com",

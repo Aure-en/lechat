@@ -29,7 +29,7 @@ describe("Displays the number of pending friends requests", () => {
 
   test("Renders nothing if the user has no pending friends requests", () => {
     usePending.mockReturnValue({
-      friendships: [],
+      incomingRequests: [],
     });
     init();
     expect(screen.queryByText(/[0-9]/)).not.toBeInTheDocument();
@@ -37,10 +37,10 @@ describe("Displays the number of pending friends requests", () => {
 
   test("Renders the exact number of requests if there are <9 requests", () => {
     // Create pending friends
-    const friendships = [];
+    const incomingRequests = [];
 
     for (let i = 1; i < 6; i += 1) {
-      friendships.push({
+      incomingRequests.push({
         status: false,
         _id: `${i}`,
         sender: {
@@ -57,7 +57,7 @@ describe("Displays the number of pending friends requests", () => {
     }
 
     usePending.mockReturnValue({
-      friendships,
+      incomingRequests,
     });
 
     init();
@@ -66,10 +66,10 @@ describe("Displays the number of pending friends requests", () => {
 
   test("Renders '9+' if there are >9 requests", () => {
     // Create pending friends
-    const friendships = [];
+    const incomingRequests = [];
 
     for (let i = 1; i < 11; i += 1) {
-      friendships.push({
+      incomingRequests.push({
         status: false,
         _id: `${i}`,
         sender: {
@@ -86,7 +86,7 @@ describe("Displays the number of pending friends requests", () => {
     }
 
     usePending.mockReturnValue({
-      friendships,
+      incomingRequests,
     });
 
     init();
