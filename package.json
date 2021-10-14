@@ -60,5 +60,11 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
     "prettier": "^2.3.0"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.svg$": "<rootDir>/src/tests/__mocks__/svgrMock.js",
+      "\\.(css|less)$": "<rootDir>/src/tests/__mocks__/styleMock.js"
+    }
   }
 }

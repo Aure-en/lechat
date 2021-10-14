@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import { useAuth } from "../../../context/AuthContext";
 import { useUnread } from "../../../context/UnreadContext";
-import Conversations from "../../../components/sidebar/conversations/Conversations";
+import Conversations from "../../../components/sidebar/conversations/Panel";
 
 jest.mock("../../../hooks/server/server/useServers");
 jest.mock("../../../context/AuthContext");

@@ -6,8 +6,6 @@ import { UnreadProvider } from "../../../context/UnreadContext";
 import { AuthProvider } from "../../../context/AuthContext";
 import { author, ordered } from "../../utils/messages";
 
-import "../../__mocks__/intersectionObserver";
-
 describe("It orders messages by author and display them", () => {
   beforeEach(() =>
     render(
